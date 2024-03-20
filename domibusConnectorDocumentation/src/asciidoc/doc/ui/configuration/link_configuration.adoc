@@ -1,0 +1,107 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: {path}
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Link configuration manual
+
+Configuring the links via the UI.
+
+== Configuration via UI
+
+The backend and gateway configuration is seperated into 2 tabs.
+
+* Backend Configuration
+* Gateway Configuration
+
+Both views are representing the link table, where all available
+link partners are listed.
+
+
+=== Link Table
+
+The link table has the following columns:
+
+|===
+| Column name | Description
+
+
+
+| Link Partner Name / Link Configuration Name
+| The link partner name or link configuration name, this name has to be unique. **The uniqueness is currently not enforced!**
+
+| Edit
+| Click here to edit the link partner configuration or link configuration
+
+| Delete
+| Click here to remove the link partner or link configuration from the database. If a link configuration is removed all link partners are removed too.
+
+| Add Link Partner
+| If a link configuration supports it, by clicking on + a new link partner for this link configuration can be created.
+
+| Configured via
+| Shows the configuration source: DB, ENV (only if the source is DB, the configuration can be removed, edited)
+
+| Start on startup
+| Should the link partner be started on connector startup
+
+| Current link state
+| Shows the current link state. Shows the state of the timer job for pulling messages. If the plugin does not use pulling, the running or stopped state will have no effect. The play and stop button also might work, but it depends on the plugin if they are supported. A change might
+require a restart of the connector.
+
+| [no title]
+| Buttons for starting and stopping a link partner. If stopping is supported depends on the used link plugin.
+
+|===
+
+
+[#img-backend-config]
+.Screenshot Backend Configuration
+image:screenshot_link_overview.png[Screenshot Backend Configuration]
+
+
+== Add Link / Add New Link Configuration Button
+
+On the top left the 'Add Link' button will start the process for adding a new link configuration to the database configuration source.
+
+This will navigate you to the link configuration view.
+
+When a new link configuration is added.
+
+1. A 'Link Configuration Name' must be set. This name has to be unique.
+
+2. A 'Link Implementation' must be chosen. The link implementation depends on the communication partners capabilities.
+
+3. Every 'Link Implementation' comes with its own set of properties. The following table contains these properties. Currently, there is only a very limited validation in place. So pay attention when you are entering your settings here. Also consult the manual for the specific implementation.
+
+4. With the button 'Next' you will find yourself with the link partner configuration.
+
+[#img-add-link-screenshot1]
+.Screenshot adding link configuration
+image:screenshot_add_link_configuration.png[]
+
+=== Add Link Partner
+
+A link partner can be added to a link configuration by using the + button. But this can only be done if the link configuration is configured via DB. Also if there is already a link partner configured the link plugin must support multiple link partners.
+
+1. A 'Link Partner Name' is required. This name has to be unique. The uniqueness is currently not enforced!
+
+2. A 'Sender Mode' must be chosen. A LinkPlugin might support different sending modes (PUSH, PASSIVE). PUSH means that a message is pushed by the connector to the remote location. If passive is chosen, the other side has to pull the message.
+
+3. A 'Receiver Mode must' be chosen. A LinkPlugin might support different receiver modes (PULL, PASSIVE). If PULL is chosen the connector pulls the other side for new messages. If passive is chosen, the connector just waits for new messages to arrive.
+
+4. The link partner also can have multiple implementation specific properties. The following table contains these properties. Currently, there is only a very limited validation in place. So pay attention when you are entering your settings here. Also consult the manual for the specific implementation.
+
+
+[#img-add-link-screenshot2]
+.Screenshot adding link partner
+image:screenshot_add_link_partner.png[]
+
+
+
+

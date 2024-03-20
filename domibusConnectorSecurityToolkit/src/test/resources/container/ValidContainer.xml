@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrustOkToken xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <Issuer>
+        <ServiceProvider>Just Testing Inc.</ServiceProvider>
+        <Country>DE</Country>
+        <AdvancedElectronicSystem>Signature-based</AdvancedElectronicSystem>
+    </Issuer>
+    <Document>
+        <Filename>Test.pdf</Filename>
+        <Type>application/pdf</Type>
+        <ds:DigestMethod Algorithm="SHA-256"/>
+        <ds:DigestValue>NmFLVUdOSFZrM1RWWmVwWjFOUllKdUFMYVdTSmNaOWo2OUsvQ1U5MGpBZz0=</ds:DigestValue>
+    </Document>
+    <Validation>
+        <VerificationTime>2017-11-15T13:31:49.091+01:00</VerificationTime>
+        <VerificationData>
+            <SignatureData>
+                <SigningTime>2017-10-05T11:08:08.000+02:00</SigningTime>
+                <SignatureInformation>
+                    <SignatureVerification>true</SignatureVerification>
+                    <StructureVerification>true</StructureVerification>
+                    <SignatureFormat>XAdES-BASELINE-B</SignatureFormat>
+                    <SignatureLevel>NA</SignatureLevel>
+                </SignatureInformation>
+                <CertificateInformation>
+                    <Subject>CN=Trusted List 5, O=Rundfunk und Telekom Regulierungs-GmbH, C=AT</Subject>
+                    <Issuer>CN=Trusted List CA 1, O=Rundfunk und Telekom Regulierungs-GmbH, C=AT</Issuer>
+                    <CertificateVerification>true</CertificateVerification>
+                    <ValidityAtSigningTime>true</ValidityAtSigningTime>
+                </CertificateInformation>
+                <TechnicalResult>
+                    <TrustLevel>SUCCESSFUL</TrustLevel>
+                    <Comments>The signature is valid.</Comments>
+                </TechnicalResult>
+            </SignatureData>
+        </VerificationData>
+        <TechnicalResult>
+            <TrustLevel>SUCCESSFUL</TrustLevel>
+            <Comments>The signature is valid.</Comments>
+        </TechnicalResult>
+        <LegalResult>
+            <TrustLevel>SUCCESSFUL</TrustLevel>
+            <Disclaimer>e-CODEX approves the validity of the document. It is attested that it fulfils the requirements
+                to be legally valid in the sending country.
+            </Disclaimer>
+        </LegalResult>
+        <OriginalValidationReport>
+
+            <SimpleReport xmlns="http://dss.esig.europa.eu/validation/simple-report">
+                <Policy>
+                    <PolicyName>ECodex-based</PolicyName>
+                    <PolicyDescription>eCODEX validation policy</PolicyDescription>
+                </Policy>
+                <ValidationTime>2017-11-15T12:31:49</ValidationTime>
+                <DocumentName>Test.pdf</DocumentName>
+                <ValidSignaturesCount>1</ValidSignaturesCount>
+                <SignaturesCount>1</SignaturesCount>
+                <Signature Id="Signature-33de45b-1" SignatureFormat="XAdES-BASELINE-B">
+                    <SigningTime>2017-10-05T09:08:08</SigningTime>
+                    <SignedBy>Trusted List 5</SignedBy>
+                    <CertificateChain>
+                        <Certificate>
+                            <id>DFB818A07DC65A07BF67EBBF389E2D88728AE907BD60DE5710D91CF031DF518E</id>
+                            <qualifiedName>Trusted List 5</qualifiedName>
+                        </Certificate>
+                        <Certificate>
+                            <id>D94E8D63A4E500DB102328DF7B5E90BF779AEC17093B0FBBEAD58504EE787C5B</id>
+                            <qualifiedName>Trusted List CA 1</qualifiedName>
+                        </Certificate>
+                    </CertificateChain>
+                    <SignatureLevel description="Not applicable">N/A</SignatureLevel>
+                    <Indication>TOTAL_PASSED</Indication>
+                    <Errors>No CA/QC Trust service found</Errors>
+                    <Warnings>The signer's certificate has not expected key-usage!</Warnings>
+                    <SignatureScope name="Full XML File" scope="XmlRootSignatureScope">The full XML file with
+                        transformations: Exclusive Canonical XML (omits comments).
+                    </SignatureScope>
+                </Signature>
+            </SimpleReport>
+        </OriginalValidationReport>
+
+    </Validation>
+    <ds:Signature Id="id-23ac915e15a6846725732c886a16279c" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <ds:Reference Id="r-id-1" Type="" URI="">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+                        <ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath>
+                    </ds:Transform>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>sNp0VAPggCRjiBRM8AihKP5kmGc=</ds:DigestValue>
+            </ds:Reference>
+            <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
+                          URI="#xades-id-23ac915e15a6846725732c886a16279c">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>ur5pHWtGLh5/QCOu7dcu2E7R6M8=</ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue Id="value-id-23ac915e15a6846725732c886a16279c">
+            eJeDNhexA/rwdl2p0NNh2ajo7bkIk4EbkZ3TcjAl4bEyPfICQw9jtHhYssxPbHxpf5kg8ukjLcb/NAJIOrM0QqwBXvpp2ncyL3nvEZslQJ+ujohgTbbsDH60LXzSmVTa6H5RASAVdgztjwTqGchByYGJU0k/KLxUlkjJ/d6fqT0IFfQIzFGU6+5+C4HjuL+SqWjb9zejFUBglyQEL1CGDxvEcrOCV/NpVP4KjLyZIg1VkbDhAB403DfJEFHnRc6SItIW2Vi7PVXlF+JUOvAH/0tBfruIYlNDnZlFoZ69pcc5WdQCloUO0GkxTYlJzqVihtxQF8ekadAUWOAfLUZ8aw==
+        </ds:SignatureValue>
+        <ds:KeyInfo>
+            <ds:X509Data>
+                <ds:X509Certificate>
+                    MIIDpTCCAo2gAwIBAgIEZRtt3zANBgkqhkiG9w0BAQsFADCBgTELMAkGA1UEBhMCREUxDDAKBgNVBAgTA05SVzEUMBIGA1UEBxMLRHVlc3NlbGRvcmYxGTAXBgNVBAoTEFdpc2hmdWwgVGhpbmtpbmcxHjAcBgNVBAsTFURyZWFtcyBhbmQgTGFuZHNjYXBlczETMBEGA1UEAxMKVG9tIFRlc3RlcjAgFw0xNzExMTUwOTQzMjdaGA8yMTE0MTAxODA5NDMyN1owgYExCzAJBgNVBAYTAkRFMQwwCgYDVQQIEwNOUlcxFDASBgNVBAcTC0R1ZXNzZWxkb3JmMRkwFwYDVQQKExBXaXNoZnVsIFRoaW5raW5nMR4wHAYDVQQLExVEcmVhbXMgYW5kIExhbmRzY2FwZXMxEzARBgNVBAMTClRvbSBUZXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDRFQfygdsePjVFfdSMziJuCny3dxAhPz/HPLfRPg8UnfioIO15tnyOMNJ2T7UPDZCwpY07sb3vd+G4XGpqpOQIz9Bqm6QHtm5O0OWDjZuA9ZPhpU83Eay74plxO7Mows7ChfhtTCt+gADravEMIofX3VuYfD4iC0ilhHOOPG4Bl2TJCrlgyBYR6RjRgvSksHDQsVTMJo9JU8dhCPWimKCEsKUk3KOjjLi7rhhTGPkkElr4XyIoIhHU08L5Q+0S2pfsN9bbdjW3nkRUAGlH/zupEX1iGlm1PhRcK4G0/1imoUsGucKFQUZVtZJv1liAx+GVqTDYMQTA0eSnyLgd8zevAgMBAAGjITAfMB0GA1UdDgQWBBQ0WSW7C3rD0JhJoNdD0tbk471D8zANBgkqhkiG9w0BAQsFAAOCAQEAfn4AOPJb6HDG7JF1uRfePqw2IuUpYeFhpdEcUgG0mpUKxoq1YP9Ui8tp3uXEeZgyPJuMtki9n68AKKi1aqQItSJsouG9lOSvj14Lr1G0cFKiWZi2e/u03co+UjrxoS2YQI+8iZlQFoUzXnrJu5dt4IcwSU6302XscS5b7kgY2GRdT26+637odx+xndURJ1SIXbM/BLELHWmHZoUnW+Tk1zl1086uVlywYItQcpwyyZGBn5+1l0uO4e4Z96js/CTOR0Yx3K9WM7SRZy1KSk8Gm3uvSM0YZytbVPmCLFgKUB3vjh6HhszbiQyW1wFlZ2VSMuwrAOrLh3PrRhGzl+UgDA==
+                </ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+        <ds:Object>
+            <xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+                                        Target="#id-23ac915e15a6846725732c886a16279c">
+                <xades:SignedProperties Id="xades-id-23ac915e15a6846725732c886a16279c">
+                    <xades:SignedSignatureProperties>
+                        <xades:SigningTime>2017-11-15T12:31:49Z</xades:SigningTime>
+                        <xades:SigningCertificateV2>
+                            <xades:Cert>
+                                <xades:CertDigest>
+                                    <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                                    <ds:DigestValue>ybW5Zcg5MRy31T6Mm3e08WLfGng=</ds:DigestValue>
+                                </xades:CertDigest>
+                                <xades:IssuerSerialV2>
+                                    MIGQMIGHpIGEMIGBMQswCQYDVQQGEwJERTEMMAoGA1UECBMDTlJXMRQwEgYDVQQHEwtEdWVzc2VsZG9yZjEZMBcGA1UEChMQV2lzaGZ1bCBUaGlua2luZzEeMBwGA1UECxMVRHJlYW1zIGFuZCBMYW5kc2NhcGVzMRMwEQYDVQQDEwpUb20gVGVzdGVyAgRlG23f
+                                </xades:IssuerSerialV2>
+                            </xades:Cert>
+                        </xades:SigningCertificateV2>
+                    </xades:SignedSignatureProperties>
+                    <xades:SignedDataObjectProperties>
+                        <xades:DataObjectFormat ObjectReference="#r-id-1">
+                            <xades:MimeType>text/xml</xades:MimeType>
+                        </xades:DataObjectFormat>
+                    </xades:SignedDataObjectProperties>
+                </xades:SignedProperties>
+            </xades:QualifyingProperties>
+        </ds:Object>
+    </ds:Signature>
+</TrustOkToken>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="StephanSpindler" id="init-quartz-1">
+        <createTable tableName="DCON_QRTZ_JOB_DETAILS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="JOB_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="JOB_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(250)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="JOB_CLASS_NAME" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_DURABLE" type="VARCHAR(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_NONCONCURRENT" type="VARCHAR(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_UPDATE_DATA" type="VARCHAR(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REQUESTS_RECOVERY" type="VARCHAR(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="JOB_DATA" type="BLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-2">
+        <createTable tableName="DCON_QRTZ_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="JOB_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="JOB_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(250)"/>
+            <column name="NEXT_FIRE_TIME" type="BIGINT"/>
+            <column name="PREV_FIRE_TIME" type="BIGINT"/>
+            <column name="PRIORITY" type="INT"/>
+            <column name="TRIGGER_STATE" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_TYPE" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="START_TIME" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="END_TIME" type="BIGINT"/>
+            <column name="CALENDAR_NAME" type="VARCHAR(200)"/>
+            <column name="MISFIRE_INSTR" type="SMALLINT"/>
+            <column name="JOB_DATA" type="BLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-2.1">
+        <addPrimaryKey columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP" tableName="DCON_QRTZ_TRIGGERS"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-2.2">
+        <addForeignKeyConstraint baseTableName="DCON_QRTZ_TRIGGERS" baseColumnNames="SCHED_NAME,JOB_NAME,JOB_GROUP" constraintName="fk_sched_to_job_details" referencedTableName="DCON_QRTZ_JOB_DETAILS" referencedColumnNames="SCHED_NAME,JOB_NAME,JOB_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-3">
+        <createTable tableName="DCON_QRTZ_SIMPLE_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REPEAT_COUNT" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REPEAT_INTERVAL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMES_TRIGGERED" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-3.1">
+        <addPrimaryKey tableName="DCON_QRTZ_SIMPLE_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-3.2">
+        <addForeignKeyConstraint baseTableName="DCON_QRTZ_SIMPLE_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP" constraintName="fk_schedtrigger_to_qrtz_triggers" referencedTableName="DCON_QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-4">
+        <createTable tableName="DCON_QRTZ_CRON_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CRON_EXPRESSION" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIME_ZONE_ID" type="VARCHAR(80)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-4.1">
+        <addPrimaryKey tableName="DCON_QRTZ_CRON_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-4.2">
+        <addForeignKeyConstraint baseTableName="DCON_QRTZ_CRON_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP" constraintName="fk_qrtzcrontriggers_to_qrtztriggers" referencedTableName="DCON_QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-5">
+        <createTable tableName="DCON_QRTZ_SIMPROP_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STR_PROP_1" type="VARCHAR(512)"/>
+            <column name="STR_PROP_2" type="VARCHAR(512)"/>
+            <column name="STR_PROP_3" type="VARCHAR(512)"/>
+            <column name="INT_PROP_1" type="INT"/>
+            <column name="INT_PROP_2" type="INT"/>
+            <column name="LONG_PROP_1" type="BIGINT"/>
+            <column name="LONG_PROP_2" type="BIGINT"/>
+            <column name="DEC_PROP_1" type="DECIMAL(13,4)"/>
+            <column name="DEC_PROP_2" type="DECIMAL(13,4)"/>
+            <column name="BOOL_PROP_1" type="VARCHAR(5)"/>
+            <column name="BOOL_PROP_2" type="VARCHAR(5)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-5.1">
+        <addPrimaryKey tableName="DCON_QRTZ_SIMPROP_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-5.2">
+        <addForeignKeyConstraint baseTableName="DCON_QRTZ_SIMPROP_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP" constraintName="fk_qrtzsimproptriggers_to_qrtztriggers" referencedTableName="DCON_QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-6">
+        <createTable tableName="DCON_QRTZ_BLOB_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BLOB_DATA" type="BLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-6.1">
+        <addPrimaryKey tableName="DCON_QRTZ_BLOB_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-6.2">
+        <addForeignKeyConstraint baseTableName="DCON_QRTZ_BLOB_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP" constraintName="fk_qrtzblobtriggers_to_qrtztriggers" referencedTableName="DCON_QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-7">
+        <createTable tableName="DCON_QRTZ_CALENDARS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CALENDAR_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CALENDAR" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-7.1">
+        <addPrimaryKey tableName="DCON_QRTZ_CALENDARS" columnNames="SCHED_NAME,CALENDAR_NAME"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-8">
+        <createTable tableName="DCON_QRTZ_PAUSED_TRIGGER_GRPS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-8.1">
+        <addPrimaryKey tableName="DCON_QRTZ_PAUSED_TRIGGER_GRPS" columnNames="SCHED_NAME,TRIGGER_GROUP"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-9">
+        <createTable tableName="DCON_QRTZ_FIRED_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENTRY_ID" type="VARCHAR(95)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INSTANCE_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRED_TIME" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRIORITY" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATE" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="JOB_NAME" type="VARCHAR(200)"/>
+            <column name="JOB_GROUP" type="VARCHAR(200)"/>
+            <column name="IS_NONCONCURRENT" type="VARCHAR(5)"/>
+            <column name="REQUESTS_RECOVERY" type="VARCHAR(5)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-9.1">
+        <addPrimaryKey tableName="DCON_QRTZ_FIRED_TRIGGERS" columnNames="SCHED_NAME,ENTRY_ID"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-10">
+        <createTable tableName="DCON_QRTZ_SCHEDULER_STATE">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INSTANCE_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_CHECKIN_TIME" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CHECKIN_INTERVAL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-10.1">
+        <addPrimaryKey tableName="DCON_QRTZ_SCHEDULER_STATE" columnNames="SCHED_NAME,INSTANCE_NAME"/>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-11">
+        <createTable tableName="DCON_QRTZ_LOCKS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOCK_NAME" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="StephanSpindler" id="init-quartz-11.1">
+        <addPrimaryKey tableName="DCON_QRTZ_LOCKS" columnNames="SCHED_NAME,LOCK_NAME"/>
+    </changeSet>
+</databaseChangeLog>

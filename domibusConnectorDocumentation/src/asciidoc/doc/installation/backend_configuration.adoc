@@ -1,0 +1,235 @@
+
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Backend Configuration
+
+:description: The connector backend configuration manual
+:library: Asciidoctor
+
+WARNING: With connector 4.3.0 this document is not valid anymore. See link:../doc/link_doc.adoc[Link Configuration]
+
+== Backend Configuration or how to configure a connector client?
+
+As you can see at the link:../architecture_overview/[architectural overview] the connector can communicate with different connector clients. The decision
+which client the incoming message is routed to is made by the service.
+
+The messages between the connectorClient and the connectorBackend are encrypted and signed. For this purpose the setup
+needs cryptographic keys and certificates. The certificates are also used to authenticate the connectorClient and determine
+which connectorClient is talking to the connector.
+
+
+== Configure a additional backend
+
+Configuring a additional backend contains two steps:
+
+* Creating the certificates and keys
+* Configuring the backend at the connector database
+
+
+=== What do I need?
+
+* Access to the connector database.
+* A tool to generate key pairs and store them into a java key store (like [KeyStore Explorer](http://keystore-explorer.org/)
+or the keytool which is distributed with the jdk)
+
+=== Configuring Certificates and Keys
+
+
+==== Creating the key pair for the connector
+
+. Open your connector backend key store or create a new one
+You can read [here](certificates.html) how the connector backend key
+store path can be configured.
+
+. Create a new RSA key pair which will be valid for 3 years:
+
+    keytool -genkey -alias connector -keyalg RSA -keysize 2048 -dname CN=connector -validity 1095 \
+    -keystore ${keystorePath} -storepass ${keystorePassword}
+
+> Note: choose the keysize according to your organisational security guidelines
+> also the validity time (1095 days are 3 years)
+
+. export the public key certificate of this key pair and store it in the file named connector.cer
+
+    keytool -export -alias connector -file connector.cer \
+    -keystore ${keystorePath} -storepass ${keystorePassword}
+
+
+
+=== Adding a backend to the connector
+
+==== Creating the keys for the backend
+
+1) Open your connectorClient key store or create a new one
+
+Consult the client lib documentation how the keystores are configured.
+
+2) Create a RSA key pair:
+
+
+    keytool -genkey -alias ${connectorClientName} -keyalg RSA -keysize 2048 \
+     -dname CN=${connectorClientName} -validity 1095 \
+     -keystore ${connectorClientKeystorePath} -storepass ${keystorePassword}
+
+>**Important!**: The whole dname is later used as the backend name!
+
+3) Export the public key as certificate, to import it later into the connector key store
+
+    keytool -export -alias ${connectorClientName} -file ${connectorClientName}.cer \
+    -keystore ${connectorClientKeystorePath} -storepass ${keystorePassword}
+
+The exported certificate will later imported into the connector key store. So the connector will trust messages received from
+this connector client.
+
+4) Establish the trust to the connector by importing the connector certificate
+
+    keytool -importcert -alias connector -file connector.cer \
+    -keystore ${connectorClientKeystorePath} -storepass ${keystorePassword}
+
+In the following dialog answer with yes, to trust the imported certificate. So the connectorClient will trust the signed
+messages received from the connector.
+
+5) Import the connectorClient certificate into the connector key store
+
+    keytool -importcert -alias ${connectorClientName} -file ${connectorClientName}.cer \
+    -keystore ${connectorKeystorePath} -storepass ${keystorePassword}
+
+
+==== Resulting key stores
+
+After you created and imported the keys into the keystores. Your keystores should look similar:
+
+The client name is bob here:
+After this your connector keystore should look like this (opened in keyStoreExplorer):
+
+image:screenshot_connector_backend_keystore.png[]
+
+After this your connectorClient keystore should look like this:
+
+image:screenshot_connector_client_keystore.png[]
+
+
+=== Configuring the backend at the admin UI
+
+Since connector 4.1 the configuration of the backend can be done mostly over the UI. The following
+description leads through the necessary steps:
+
+. First open the connector admin UI
+. Go to Image Screenshot Backend Configuration
+. Open the new Backend Client configuration window by clicking on 'Add new Backend Client Info'
+
+//.Image Screenshot Backend Configuration
+//image:screenshot_connector_backend_configuration_marked_add_new_backend_client.png[Screenshot Backend Configuration]
+
+==== Adding new Backend Client Field description
+
+IMPORTANT: The Field Backend Name must match the fully distinguished name of the certificate. So a
+certificate with the name
+
+CN=backend_alice,DC=example,DC=com
+
+leads to the backend name of
+
+'CN=backend_alice,DC=example,DC=com'.
+
+The letter case is ignored so CN=backend_alice,DC=example,DC=com and
+CN=backend_alice,DC=EXAmple,DC=com are equivalent. For further information consult the
+link:../../development/backend_message_routing/[Backend Message Routing] page.
+'
+
+//.Image Screenshot Create new Backend
+//image:screenshot_connector_backend_configuration_create_new.png[Screenshot Create new Backend]
+
+
+=== Configuring the backend at the database **DEPRECATED**
+
+This method is outdated, since the connector admin UI supports the backend configuration.
+
+The backend information are stored in two tables:
+
+.Table DOMIBUS_CONNECTOR_BACKEND_INFO
+|===
+| Name | Description
+
+| ID
+| a unique technical id
+
+| BACKEND_NAME
+| The name of the backend **this name must match the whole dname of the certificate (eg: CN=name,DC=example,dc=com)** field of the assigned certifcate
+
+| BACKEND_KEY_ALIAS
+| The key alias in the connector backend keystore for the certificate to use to encrypt messages for the connectorClient
+
+| BACKEND_KEY_PASS
+| Not used yet, public keys are not encrypted!
+
+| BACKEND_SERVICE_TYPE
+| Not used yet, will later define the type of the backend, is it push/pull, push/push over webservices, push/push over jms
+
+| BACKEND_ENABLED
+| Is the backend enabled, must be true if the connector should send messages to this backend
+
+| BACKEND_DEFAULT
+| The default backend will receive all messages which aren't delivered to another backend first
+
+| BACKEND_DESCRIPTION
+| A description of the backend, can be used by the admin to store information
+
+| BACKEND_PUSH_ADDRESS
+| If the backend is a push backend, push publishAddress must be defined here. If a push-address
+is defined the backend is considered a push-backend (4.0, 4.1)
+|===
+
+
+
+Contains the routing information, which backend will receive the message. The [routing](../development/backend_message_routing.md)
+decision is based on the service name.
+
+.Table DOMIBUS_CONNECTOR_BACK_2_S
+|===
+| Name | Description
+
+| DOMIBUS_CONNECTOR_SERVICE_ID
+| References the service
+
+| DOMIBUS_CONNECTOR_BACKEND_ID
+| References the backend
+|===
+
+==== Add example connectorClient bob
+
+The following SQL statement will add an connectorClient named bob with the key alias bob and expects that the common name of the certificate is bob.
+Bob will also be the default backend!
+
+```SQL
+INSERT INTO domibus_connector_backend_info
+(ID, BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_ENABLED, BACKEND_DEFAULT)
+VALUES ('11', 'bob', 'bob', TRUE, TRUE);
+```
+
+==== Adding an example connectorClient with specific service
+
+The following SQL statement will add an connectorClient named alice.
+
+```SQL
+INSERT INTO domibus_connector_backend_info
+(ID, BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_ENABLED, BACKEND_DEFAULT)
+VALUES ('12', 'alice', 'alice', TRUE, FALSE);
+```
+
+This statement will assign the epo messages to the connectorClient with the id 12 in the database. In this case this will be the connectorClient alice.
+
+```SQL
+INSERT INTO domibus_connector_back_2_s 
+(DOMIBUS_CONNECTOR_SERVICE_ID, DOMIBUS_CONNECTOR_BACKEND_ID) 
+VALUES ('EPO', '12');
+```

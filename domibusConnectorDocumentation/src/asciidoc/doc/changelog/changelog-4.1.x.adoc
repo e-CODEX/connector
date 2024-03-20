@@ -1,0 +1,64 @@
+== Changelog for domibusConnector-4.1.x
+
+=== 4.1.0-RELEASE
+
+Feature: Filesystem handling for streaming of attachments.
+Feature: WS-Security at gateway webservice side
+Bugfix: Cleanup of Message Contents after successfull submission.
+Feature: Connector properties can be loaded from database
+Feature: The logging of the domibusConnector will be improved.
+Logging of message related operations will be driven by connectorId (connectorId is put into the MDC (Mapped Diagnostik Context) of the logging engine). Filtering possibilities.
+Warning in logging if messages are not confirmed by evidencs within configurable period.
+Warning in case of a red TrustOKToken.
+Seperation between technical and message logging.
+
+Feature: Enhancements of the administration console:
+New design
+Further imports from PModes
+Configuration of properties over administration console if properties are loaded from database
+User/role concept introduction
+Monitoring of messages
+domibus-connector-plugin:
+
+Adaptions for domibus gateway 4.0.
+Feature: Configuration improvements - seperate properties file for plugin.
+Feature: WS-Security on webservices to connector.
+
+=== 4.1.1-RELEASE
+
+
+Bugfix:
+Security problems with fileupload-commons
+Compatibility problems with cxf
+
+=== 4.1.2-RELEASE
+Bugfix
+Fix errors in evidence timeout processor
+
+=== 4.1.3
+Bugfix:
+Fix difference between documented property for connector2connector Test
+Fix NON_DELIVERY creation if pushing to backend fails: The connector will now immediately create a NON_DELIVERY if the push to a push backend fails
+Fix File resources not released causes "too many open files" error.
+Fix Empty folders of deprecated messages not deleted.
+
+=== 4.1.4
+Bugfix:
+Fix Folder not deleted Problem
+Fix Resource not released problem
+
+=== 4.1.5
+Bugfix
+Internal Bugfix for automatic Mysql DB initialization (solves Problem key too long on mysql inno db)
+
+=== 4.1.6
+Bugfix
+Fixed failing tests during CI Build because of outdated certificate
+
+=== 4.1.7
+Bugfix:
+Fixed Issue JUEUSW-114, related to Key too long Problem
+
+=== 4.1.8
+Bugfix
+Upgraded to latest e-Codex Security Library 1.12.2 (this includes the DSS Update to 5.2) This enables the usage of newer Algorithms

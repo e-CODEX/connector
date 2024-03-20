@@ -1,0 +1,73 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Upgrade to 4.3.0
+
+== Upgrade Manual
+
+=== Configuration Properties
+
+The connections connector-gateway and connector-backend are configured differently. For details see the
+link:../doc/link_doc.html[Connector Link Manual]
+The following properties are with 4.3.x not in use anymore.
+
+==== connector.gatewaylink.ws.*
+
+* connector.gatewaylink.ws.submissionEndpointAddress=
+* connector.gatewaylink.ws.keyStore.path=
+* connector.gatewaylink.ws.keyStore.password=
+* connector.gatewaylink.ws.private-key.alias=
+* connector.gatewaylink.ws.private-key.password=
+* connector.gatewaylink.ws.trustStore.path=
+* connector.gatewaylink.ws.trustStore.password=
+* connector.gatewaylink.ws.encryptAlias=
+
+==== connector.backend.ws.*
+
+* connector.backend.ws.key.key-store.path=
+* connector.backend.ws.key.key-store.password=
+* connector.backend.ws.key.private-key.alias=
+* connector.backend.ws.key.private-key.password=
+* connector.backend.ws.trust.trust-store.path=
+* connector.backend.ws.trust.trust-store.password=
+
+=== Backend Routing
+
+The backend routing is configured within the properties. Database configuration
+will be supported again with future releases.
+For details see: link:../doc/backend_message_routing.html[Backend Message Routing]
+
+
+=== JTA
+
+If you are not planning to use JTA please disable it, by setting:
+
+* spring.jta.enabled=false
+
+If you are planning to use JTA, which is recommended please add the following properties:
+
+* spring.jta.atomikos.connectionfactory.max-pool-size=10
+* spring.jta.atomikos.datasource.max-pool-size=10
+* spring.activemq.broker-url=vm://broker1?brokerConfig=xbean:config/activemq.xml
+
+If you are using oracle, please use a JDBC driver which is XA complient, this means
+for oracle a driver change to:
+
+* spring.datasource.driver-class-name=oracle.jdbc.xa.client.OracleXADataSource
+
+
+=== Connector Test Service:
+
+The connector test properties are changed to the following:
+
+* connector.test.enabled=true
+* connector.test.service.name=Connector-TEST
+* connector.test.service.serviceType=urn:e-codex:services:
+* connector.test.action=Connector-TEST

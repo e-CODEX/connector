@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <id>wsdl</id>
+    <formats>
+        <format>zip</format>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <!-- ==================== Copying TransitionModel.xsd AND wsdl ================= -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/wsdl/</directory>
+            <outputDirectory>/wsdl/</outputDirectory>
+            <includes>
+                <include>**/*.wsdl</include>
+                <include>**/*.xsd</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/wsdl/</directory>
+            <outputDirectory>/policy/</outputDirectory>
+            <includes>
+                <include>**/*.policy.xml</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

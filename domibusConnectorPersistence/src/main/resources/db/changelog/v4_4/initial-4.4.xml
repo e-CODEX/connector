@@ -1,0 +1,1197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+
+    <!-- TODO Quartz -->
+
+    <changeSet id="create_domibus_connector_seq_store" author="sks">
+        <createTable tableName="DOMIBUS_CONNECTOR_SEQ_STORE">
+            <column name="SEQ_NAME" type="java.sql.Types.VARCHAR(256)"><constraints nullable="false"/></column>
+            <column name="SEQ_VALUE" type="java.sql.Types.BIGINT" defaultValue="1000"><constraints nullable="false"/></column>
+        </createTable>
+    </changeSet>
+
+    <!-- PMODES -->
+    <changeSet id="create_dc_pmode_set_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_PMODE_SET">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_MESSAGE_LANE" type="${id.type}"/>
+            <column name="CREATED" type="java.sql.Types.TIMESTAMP" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="${text.type}"/>
+            <column name="ACTIVE" type="${boolean.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PMODES" type="${blob}"/>
+            <column name="FK_CONNECTORSTORE" type="${id.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_pmode_set_primary_key" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_PMODE_SET" columnNames="ID" constraintName="PK_DC_PMODE_SET"/>
+    </changeSet>
+
+
+    <!-- action -->
+    <changeSet id="create_domibus_connector_action_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_ACTION">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PMODE_SET" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACTION" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_action_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_ACTION"
+                       columnNames="ID"
+                       constraintName="PK_DC_ACTION"
+        />
+    </changeSet>
+    <changeSet id="create_domibus_connector_action_fk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_ACTION"
+                                 baseColumnNames="FK_PMODE_SET"
+                                 constraintName="FK_ACTION_PMODE_SET_01"
+                                 referencedTableName="DC_PMODE_SET"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- service -->
+    <changeSet id="create_domibus_connector_service_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_SERVICE">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PMODE_SET" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVICE" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVICE_TYPE" type="${varchar255.type}">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_service_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey
+                tableName="DOMIBUS_CONNECTOR_SERVICE"
+                columnNames="ID"
+                constraintName="PK_DC_SERVICE"
+        />
+    </changeSet>
+    <changeSet id="create_domibus_connector_service_fk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_SERVICE"
+                                 baseColumnNames="FK_PMODE_SET"
+                                 constraintName="FK_DC_SERVICE_PMODE_SET_01"
+                                 referencedTableName="DC_PMODE_SET"
+                                 referencedColumnNames="ID"
+        />
+    </changeSet>
+
+
+    <!-- party -->
+    <changeSet id="create_domibus_connector_party_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_PARTY">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PMODE_SET" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IDENTIFIER" type="${varchar255.type}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="PARTY_ID" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE_TYPE" type="java.sql.Types.VARCHAR(50)"/>
+            <column name="PARTY_ID_TYPE" type="${varchar512.type}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_party" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey
+                tableName="DOMIBUS_CONNECTOR_PARTY"
+                columnNames="ID"
+                constraintName="PK_DC_PARTY"
+        />
+    </changeSet>
+    <changeSet id="create_domibus_connector_party_fk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_PARTY"
+                                 baseColumnNames="FK_PMODE_SET"
+                                 constraintName="FK_DC_PARTY_PMODE_SET_01"
+                                 referencedTableName="DC_PMODE_SET"
+                                 referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <!-- DOMIBUS_CONNECTOR_MSG_ERROR -->
+    <changeSet id="create_domibus_connector_msg_error_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_MSG_ERROR">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSAGE_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ERROR_MESSAGE" type="java.sql.Types.VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DETAILED_TEXT" type="${text.type}"/>
+            <column name="ERROR_SROUCE" type="${text.type}"/>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_msg_error_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MSG_ERROR"
+                       columnNames="ID"
+                       constraintName="PK_DC_MSG_ERROR"
+        />
+    </changeSet>
+
+
+    <changeSet id="create_domibus_connector_msg_cont_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_MSG_CONT">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSAGE_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTENT_TYPE" type="${varchar255.type}"/>
+            <column name="CONTENT" type="${blob}"/>
+            <column name="CHECKSUM" type="${text.type}"/>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STORAGE_PROVIDER_NAME" type="${varchar255.type}"/>
+            <column name="STORAGE_REFERENCE_ID" type="${varchar512.type}"/>
+            <column name="DIGEST" type="${varchar512.type}"/>
+            <column name="PAYLOAD_NAME" type="${varchar512.type}"/>
+            <column name="PAYLOAD_IDENTIFIER" type="${varchar512.type}"/>
+            <column name="PAYLOAD_DESCRIPTION" type="${text.type}"/>
+            <column name="PAYLOAD_MIMETYPE" type="${varchar255.type}"/>
+            <column name="PAYLOAD_SIZE" type="bigint"/>
+            <column name="DETACHED_SIGNATURE_ID" type="bigint"/>
+            <column name="DELETED" type="${timestamp.type}"/>
+            <column name="CONNECTOR_MESSAGE_ID" type="${connector_message_id.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_msg_cont_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MSG_CONT"
+                       columnNames="ID"
+                       constraintName="PK_DC_MSG_CONT"
+        />
+    </changeSet>
+
+
+    <changeSet id="create_domibus_connector_bigdata" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_BIGDATA">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CHECKSUM" type="${text.type}"/>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}"/>
+            <column name="MESSAGE_ID" type="${id.type}"/>
+            <column name="CONNECTOR_MESSAGE_ID" type="${connector_message_id.type}"/>
+            <column name="LAST_ACCESS" type="${timestamp.type}"/>
+            <column name="CONTENT" type="${blob}"/>
+            <column name="MIMETYPE" type="${varchar255.type}"/>
+            <column name="NAME" type="${varchar512.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_bigdata_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey
+                tableName="DOMIBUS_CONNECTOR_BIGDATA"
+                columnNames="ID"
+                constraintName="PK_DC_BIGDATA"
+        />
+    </changeSet>
+
+    <changeSet id="create_domibus_connector_message_info_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSAGE_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_FROM_PARTY_ID" type="${id.type}"/>
+            <column name="FK_TO_PARTY_ID" type="${id.type}"/>
+            <column name="ORIGINAL_SENDER" type="${varchar512.type}"/>
+            <column name="FINAL_RECIPIENT" type="${varchar512.type}"/>
+            <column name="FK_SERVICE" type="${id.type}"/>
+            <column name="FK_ACTION" type="${id.type}"/>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}"/>
+            <column name="UPDATED" type="${timestamp.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_message_info_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                       columnNames="ID"
+                       constraintName="PK_DC_MSG_INFO"/>
+    </changeSet>
+
+    <changeSet id="create_domibus_connector_message_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_MESSAGE">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EBMS_MESSAGE_ID" type="${varchar512.type}"/>
+            <column name="BACKEND_MESSAGE_ID" type="${varchar512.type}"/>
+            <column name="BACKEND_NAME" type="${varchar255.type}"/>
+            <column name="CONNECTOR_MESSAGE_ID" type="${connector_message_id.type}"/>
+            <column name="CONVERSATION_ID" type="${varchar512.type}"/>
+            <column name="HASH_VALUE" type="${varchar512.type}"/>
+            <column name="CONFIRMED" type="${timestamp.type}"/>
+            <column name="REJECTED" type="${timestamp.type}"/>
+            <column name="DELIVERED_BACKEND" type="${timestamp.type}"/>
+            <column name="DELIVERED_GW" type="${timestamp.type}"/>
+            <column name="UPDATED" type="${timestamp.type}"/>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}"/>
+            <column name="DIRECTION_SOURCE" type="java.sql.Types.VARCHAR(20)"/>
+            <column name="DIRECTION_TARGET" type="java.sql.Types.VARCHAR(20)"/>
+            <column name="GATEWAY_NAME" type="${varchar255.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_message_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey
+                tableName="DOMIBUS_CONNECTOR_MESSAGE"
+                columnNames="ID"
+                constraintName="PK_DC_MESSAGE"/>
+    </changeSet>
+
+    <changeSet id="create_domibus_connector_message_table_unique_constraints" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="CONNECTOR_MESSAGE_ID"
+                             constraintName="UN_DC_MSG_ID"/>
+
+<!--        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="BACKEND_MESSAGE_ID,BACKEND_NAME"-->
+<!--                             constraintName="UN_DC_MSG_NAT_MSG_01"/>-->
+    </changeSet>
+
+
+    <changeSet id="create_domibus_connector_evidence_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+
+        <createTable tableName="DOMIBUS_CONNECTOR_EVIDENCE">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSAGE_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONNECTOR_MESSAGE_ID" type="${connector_message_id.type}"/>
+            <column name="TYPE" type="${varchar255.type}"/>
+            <column name="EVIDENCE" type="${text.type}"> <constraints nullable="true" /></column>
+            <column name="DELIVERED_NAT" type="${timestamp.type}"/>
+            <column name="DELIVERED_GW" type="${timestamp.type}"/>
+            <column name="UPDATED" type="${timestamp.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_evidence_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_EVIDENCE" columnNames="ID" constraintName="PK_DC_EVIDENCE"/>
+    </changeSet>
+
+    <changeSet id="create_domibus_connector_cont_type_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_CONT_TYPE">
+            <column name="MESSAGE_CONTENT_TYPE" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_cont_type_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_CONT_TYPE" columnNames="MESSAGE_CONTENT_TYPE"
+                       constraintName="PK_DC_CONT_TYPE"/>
+    </changeSet>
+
+
+    <changeSet id="add_fk_dc_msg_error_to_dc_message" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_ERROR"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DC_MSG_ERROR_01"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="add_fk_dc_msg_cont_to_dc_message" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DC_CON_01"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="add_foreign_keys_message_info" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="FK_FROM_PARTY_ID"
+                                 constraintName="FK_DC_MSG_INFO_F_PARTY"
+                                 referencedTableName="DOMIBUS_CONNECTOR_PARTY"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="FK_TO_PARTY_ID"
+                                 constraintName="FK_DC_MSG_INFO_T_PARTY"
+                                 referencedTableName="DOMIBUS_CONNECTOR_PARTY"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="FK_SERVICE"
+                                 constraintName="FK_DC_MSG_INFO_SERVICE"
+                                 referencedTableName="DOMIBUS_CONNECTOR_SERVICE"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="FK_ACTION"
+                                 constraintName="FK_DC_MSG_INFO_ACTION"
+                                 referencedTableName="DOMIBUS_CONNECTOR_ACTION"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DC_MSG_INFO_I"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+
+    </changeSet>
+
+    <changeSet id="create_domibus_connector_evidence_foreign_keys" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_EVIDENCE"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DC_EVIDENCES_01"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="create_foreign_key_constraints_bigdata" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BIGDATA"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DC_BIGDATA_01"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="create_keystore_table" author="BR">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <comment>Create the table which holds keystores for the domibusConnector</comment>
+        <createTable tableName="DC_KEYSTORE">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UUID" type="java.sql.Types.VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="KEYSTORE" type="${blob}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="java.sql.Types.VARCHAR(1024)"/>
+            <column name="UPLOADED" type="TIMESTAMP"/>
+            <column name="DESCRIPTION" type="java.sql.Types.VARCHAR(512)"/>
+            <column name="TYPE" type="java.sql.Types.VARCHAR(50)"/>
+
+
+        </createTable>
+    </changeSet>
+    <changeSet id="create_keystore_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_KEYSTORE" columnNames="ID" constraintName="PK_DC_KEYSTORE"/>
+    </changeSet>
+
+
+    <changeSet id="create_dc_pmode_set_fk_to_connectorstore" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DC_PMODE_SET"
+                                 baseColumnNames="FK_CONNECTORSTORE"
+                                 constraintName="FK_DC_PMODE_SET_02"
+                                 referencedTableName="DC_KEYSTORE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <!-- DOMIBUS CONNECTOR PROPERTY TABLE -->
+    <changeSet id="create_domibus_connector_property_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_PROPERTY">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_NAME" type="java.sql.Types.VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_VALUE" type="java.sql.Types.VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_property_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_PROPERTY" columnNames="ID"
+                       constraintName="PK_DC_CONNECTOR_PROPERTY"/>
+    </changeSet>
+
+    <!-- DOMIBUS CONNECTOR USER TABLE -->
+    <changeSet id="create_domibus_connector_user" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_USER">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GRACE_LOGINS_USED" type="java.sql.Types.BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOCKED" type="${boolean.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NUMBER_OF_GRACE_LOGINS" type="java.sql.Types.INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE" type="java.sql.Types.VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERNAME" type="java.sql.Types.VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_user_primary_key" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_USER" columnNames="ID" constraintName="DC_USER_PK"/>
+    </changeSet>
+
+    <!-- DOMIBUS CONNECTOR USER PWD TABLE -->
+    <changeSet id="create_domibus_connector_user_password" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DOMIBUS_CONNECTOR_USER_PWD">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CURRENT_PWD" type="${boolean.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INITIAL_PWD" type="${boolean.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="java.sql.Types.VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salt" type="java.sql.Types.VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_domibus_connector_user_password_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_USER_PWD" columnNames="ID" constraintName="DC_USER_PWD"/>
+    </changeSet>
+    <changeSet id="create_domibus_connector_user_password_fks" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_USER_PWD"
+                                 baseColumnNames="USER_ID"
+                                 constraintName="FK_USER_USER_ID"
+                                 referencedTableName="DOMIBUS_CONNECTOR_USER"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="create_dc_transport_step_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_TRANSPORT_STEP">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ATTEMPT" type="java.sql.Types.INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONNECTOR_MESSAGE_ID" type="${connector_message_id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FINAL_STATE_REACHED" type="${timestamp.type}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="LINK_PARTNER_NAME" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REMOTE_MESSAGE_ID" type="${connector_message_id.type}"/>
+            <column name="TRANSPORT_ID" type="${connector_message_id.type}"/>
+            <column name="TRANSPORT_SYSTEM_MESSAGE_ID" type="${connector_message_id.type}"/>
+            <column name="TRANSPORTED_MESSAGE" type="${text.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_transport_step_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_TRANSPORT_STEP" columnNames="ID" constraintName="PK_DC_TRANSPORT_STEP"/>
+    </changeSet>
+
+    <changeSet id="create_dc_transport_step_status_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_TRANSPORT_STEP_STATUS">
+            <column name="STATE" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRANSPORT_STEP_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED" type="${timestamp.type}" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TEXT" type="${text.type}">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_transport_step_Status_table_primary_key" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_TRANSPORT_STEP_STATUS" columnNames="STATE, TRANSPORT_STEP_ID"
+                       constraintName="PK_DC_TRNSPT_STEP_STATUS"/>
+    </changeSet>
+    <changeSet id="create_dc_transport_step_Status_table_foreign_keys" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DC_TRANSPORT_STEP_STATUS"
+                                 baseColumnNames="TRANSPORT_STEP_ID"
+                                 constraintName="FK_TRNSP_STEP"
+                                 referencedTableName="DC_TRANSPORT_STEP"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="create_dc_link_configuration_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_LINK_CONFIGURATION">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIG_NAME" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LINK_IMPL" type="${varchar255.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_link_configuration_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="dc_link_configuration" columnNames="ID" constraintName="PK_DC_LNK_CONFIG"/>
+    </changeSet>
+    <changeSet id="create_dc_link_configuration_table_fk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addUniqueConstraint tableName="DC_LINK_CONFIGURATION" columnNames="CONFIG_NAME"
+                             constraintName="UNQ_CONFIG_NAME"/>
+    </changeSet>
+
+    <changeSet id="create_dc_link_configuration_property_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_LINK_CONFIG_PROPERTY">
+            <column name="DC_LINK_CONFIGURATION_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_NAME" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_VALUE" type="${varchar255.type}">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_link_configuration_property_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_LINK_CONFIG_PROPERTY" columnNames="DC_LINK_CONFIGURATION_ID, PROPERTY_NAME"
+                       constraintName="PK_DC_LINK_CONFIG_PROPERTY"/>
+    </changeSet>
+    <changeSet id="create_dc_link_configuration_property_table_fk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DC_LINK_CONFIG_PROPERTY"
+                                 baseColumnNames="DC_LINK_CONFIGURATION_ID"
+                                 constraintName="FK_DC_LINK_CONFIG_PROPERTY"
+                                 referencedTableName="DC_LINK_CONFIGURATION"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="create_dc_link_partner" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_LINK_PARTNER">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="${text.type}"/>
+            <column name="ENABLED" type="${boolean.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LINK_TYPE" type="java.sql.Types.VARCHAR(20)"/>
+            <column name="LINK_CONFIG_ID" type="${id.type}"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_link_partner_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_LINK_PARTNER" columnNames="ID" constraintName="DC_LINK_PARTNER_PK"/>
+    </changeSet>
+    <changeSet id="create_dc_link_partner_uniques" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addUniqueConstraint tableName="DC_LINK_PARTNER" columnNames="NAME" constraintName="UNQ_DC_LINK_PARTNER_NAME"/>
+    </changeSet>
+    <changeSet id="create_dc_link_partner_foreign_keys" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DC_LINK_PARTNER"
+                                 baseColumnNames="LINK_CONFIG_ID"
+                                 constraintName="LINK_CONFIG_ID_FK"
+                                 referencedTableName="DC_LINK_CONFIGURATION"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="create_dc_link_partner_property" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_LINK_PARTNER_PROPERTY">
+            <column name="DC_LINK_PARTNER_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_NAME" type="java.sql.Types.VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_VALUE" type="java.sql.Types.VARCHAR(2048)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_link_partner_property_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_LINK_PARTNER_PROPERTY" columnNames="DC_LINK_PARTNER_ID,PROPERTY_NAME"
+                       constraintName="DC_LINK_PRTN_PROP_PK"/>
+    </changeSet>
+    <changeSet id="create_dc_link_partner_property_foreign_keys" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DC_LINK_PARTNER_PROPERTY"
+                                 baseColumnNames="DC_LINK_PARTNER_ID"
+                                 constraintName="DC_LINK_PRTN_ID_PK"
+                                 referencedTableName="DC_LINK_PARTNER"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="create_dc_message_lane" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_MESSAGE_LANE">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="${text.type}"/>
+            <column name="NAME" type="${varchar255.type}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_message_lane_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_MESSAGE_LANE" columnNames="ID" constraintName="DC_MSG_LANE_PK"/>
+    </changeSet>
+    <changeSet id="create_dc_message_lane_unq_constraint" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addUniqueConstraint tableName="DC_MESSAGE_LANE" columnNames="NAME" constraintName="UNQ_MSG_LANE_NAME"/>
+    </changeSet>
+
+
+    <changeSet id="create_dc_message_lane_property_table" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_MESSAGE_LANE_PROPERTY">
+            <column name="DC_MESSAGE_LANE_ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_NAME" type="java.sql.Types.VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROPERTY_VALUE" type="java.sql.Types.VARCHAR(2048)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create_dc_message_lane_property_table_pk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addPrimaryKey tableName="DC_MESSAGE_LANE_PROPERTY" columnNames="DC_MESSAGE_LANE_ID, PROPERTY_NAME"
+                       constraintName="DC_MSG_LANE_PROP_PK"/>
+    </changeSet>
+    <changeSet id="create_dc_message_lane_property_table_fk" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DC_MESSAGE_LANE_PROPERTY"
+                                 baseColumnNames="DC_MESSAGE_LANE_ID"
+                                 constraintName="FK_DC_MSG_LANE_ID"
+                                 referencedTableName="DC_MESSAGE_LANE"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet id="create_dc_msgcnt_detsig" author="sks">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.5';
+                ]]></sqlCheck>
+        </preConditions>
+        <createTable tableName="DC_MSGCNT_DETSIG">
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SIGNATURE" type="${blob}"/>
+            <column name="SIGNATURE_NAME" type="java.sql.Types.VARCHAR(255)"/>
+            <column name="SIGNATURE_TYPE" type="java.sql.Types.VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="4.4_002_pre_setup_tag" author="BR" onValidationFail="MARK_RAN" failOnError="false">
+        <insert tableName="DC_DB_VERSION">
+            <column name="TAG" value="V4.4.0"/>
+        </insert>
+    </changeSet>
+    <changeSet id="tag-db-domibus-4.4" author="SKS">
+        <tagDatabase tag="DOMIBUS_DB_V4.4"/>
+    </changeSet>
+
+</databaseChangeLog>

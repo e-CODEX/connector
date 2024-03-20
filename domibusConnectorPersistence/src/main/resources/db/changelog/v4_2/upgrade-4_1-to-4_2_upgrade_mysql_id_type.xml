@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+    <changeSet id="update_mysql_table_drop_fk_on_transport_step" author="SKS" dbms="mysql" onValidationFail="MARK_RAN"
+               failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DC_TRANSPORT_STEP_STATUS"
+                                  constraintName="FK_transportstepstatus_transportstep"/>
+    </changeSet>
+
+    <changeSet id="update_mysql_table_drop_fk_on_transport_step_status" author="SKS" dbms="mysql"
+               onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DC_TRANSPORT_STEP_STATUS"
+                                  constraintName="FK_transportstepstatus_transportstep"/>
+    </changeSet>
+
+
+    <changeSet id="update_mysql_table_drop_fk_on_msginfo" author="SKS" dbms="mysql" onValidationFail="MARK_RAN"
+               failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="FK_MSGI_MSGID"/>
+    </changeSet>
+
+
+    <changeSet id="update_mysql_table_drop_fk_on_DOMIBUS_CONNECTOR_EVIDENCE" author="SKS" dbms="mysql"
+               onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_EVIDENCE"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_EVIDENCES"/>
+    </changeSet>
+
+    <changeSet id="update_mysql_table_drop_fk_on_DOMIBUS_CONNECTOR_MSG_ERROR" author="SKS" dbms="mysql"
+               onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_ERROR"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_MSG_ERROR"/>
+    </changeSet>
+
+    <changeSet id="update_mysql_table_drop_fk_on_DOMIBUS_CONNECTOR_MSG_CONT" author="SKS" dbms="mysql"
+               onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT"
+                                  constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_04"/>
+    </changeSet>
+
+    <changeSet id="update_mysql_table_drop_fk_on_DOMIBUS_CONNECTOR_BIGDATA" author="SKS" dbms="mysql"
+               onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BIGDATA"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_BIGDATA"/>
+    </changeSet>
+
+    <changeSet id="update_mysql_table_drop_fk_on_DOMIBUS_CONNECTOR_USER_PWD" author="SKS" dbms="mysql"
+               onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_USER_PWD"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_USER_PWD_DOMIBUS_CONNECTOR_USER"/>
+    </changeSet>
+
+
+    <changeSet id="update_mysql_table_drop_fk_on_DOMIBUS_CONNECTOR_BACK_2_S" author="SKS" dbms="mysql"
+               onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S"
+                                  constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_01" />
+    </changeSet>
+
+
+
+
+
+    <changeSet id="update_mysql_table_change_fk_transport_step" author="SKS" dbms="mysql" onValidationFail="MARK_RAN"
+               failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <tableExists tableName="DC_TRANSPORT_STEP"/>
+        </preConditions>
+        <modifyDataType tableName="DC_TRANSPORT_STEP" columnName="MESSAGE_ID" newDataType="${id.type}"/>
+        <modifyDataType tableName="DC_TRANSPORT_STEP" columnName="ID" newDataType="${id.type}"/>
+        <modifyDataType tableName="DC_TRANSPORT_STEP_STATUS" columnName="TRANSPORT_STEP_ID" newDataType="${id.type}"/>
+    </changeSet>
+
+
+    <changeSet id="update_mysql_id_types_to_bigint" author="SKS" dbms="mysql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+        <comment>upgrade id type on mysql tables to BIGINT if not</comment>
+
+        <sql>set foreign_key_checks=0;</sql>
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_SEQ_STORE" columnName="SEQ_VALUE" newDataType="${id.type}"/>
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MESSAGE" columnName="ID" newDataType="${id.type}"/>
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnName="ID" newDataType="${id.type}"/>
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnName="MESSAGE_ID" newDataType="${id.type}"/>
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnName="ID" newDataType="${id.type}"/>
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnName="MESSAGE_ID" newDataType="${id.type}"/>
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_EVIDENCE" columnName="ID" newDataType="${id.type}"/>
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_EVIDENCE" columnName="MESSAGE_ID" newDataType="${id.type}"/>
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MSG_ERROR" columnName="ID" newDataType="${id.type}"/>
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MSG_ERROR" columnName="MESSAGE_ID" newDataType="${id.type}"/>
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_BIGDATA" columnName="ID" newDataType="${id.type}"/>
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_BIGDATA" columnName="MESSAGE_ID" newDataType="${id.type}"/>
+
+
+
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" columnName="ID" newDataType="${id.type}" />
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_USER" columnName="ID" newDataType="${id.type}" />
+
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_USER_PWD" columnName="ID" newDataType="${id.type}" />
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_USER_PWD" columnName="USER_ID" newDataType="${id.type}" />
+
+        <sql>set foreign_key_checks=1;</sql>
+    </changeSet>
+
+    <changeSet id="update_mysql_table_change_add_fks" author="SKS" dbms="mysql" onValidationFail="MARK_RAN" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+        </preConditions>
+
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_MSGI_MSGID"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_EVIDENCE"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONNECTOR_EVIDENCES"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_ERROR"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONNECTOR_MSG_ERROR"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_04"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BIGDATA"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONNECTOR_BIGDATA"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID" />
+
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S"
+                                 baseColumnNames="DOMIBUS_CONNECTOR_BACKEND_ID"
+                                 constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_01"
+                                 referencedTableName="DOMIBUS_CONNECTOR_BACKEND_INFO"
+                                 referencedColumnNames="ID" />
+
+    </changeSet>
+
+
+    <changeSet id="update_mysql_table_readd_fk_on_transport_step" author="SKS" dbms="mysql" onValidationFail="MARK_RAN"
+               failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <tableExists tableName="DC_TRANSPORT_STEP"/>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="DC_TRANSPORT_STEP"
+                                 baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_messagestep_message"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="DC_TRANSPORT_STEP_STATUS"
+                                 baseColumnNames="TRANSPORT_STEP_ID"
+                                 constraintName="FK_transportstepstatus_transportstep"
+                                 referencedTableName="DC_TRANSPORT_STEP"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+</databaseChangeLog>

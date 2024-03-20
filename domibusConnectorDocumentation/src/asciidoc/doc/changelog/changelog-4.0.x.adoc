@@ -1,0 +1,27 @@
+
+== Changelog for domibusConnector-4.0.x
+
+=== 4.0.1
+Bugfix: Reading and respecting of property "connector.backend.ws.trust.store.path" to correctly address the backend's truststore.
+
+=== 4.0.2
+
+Bugfix: The truststore for the security library to verify documents signatures and received ASIC-S containers initializes default values that load an invalid truststore if properties "connector.security.truststore.path" and "connector.security.truststore.password" are not set properly.
+Bugfix: When submission to the gateway fails no further message processing is executed and no stacktrace is logged. A "RELAY_REMMD_REJECTION" should be produced and sent back to the backend.
+Bugfix: Example property "gateway.endpoint.address" should document that this is used for the creation of the evidences. So the external known address of the gateway should be entered.
+Bugfix: Property "connector.gatewaylink.ws.submissionEndpointAddress" is used for transmission to the gateway. This is not documented in the example properties.
+The property "gateway.name" is only used for evidence generation. Therefore it's place and documentation within the example properties changed.
+The property "gateway.role" is not used within the domibusConnector. Therefore it is deleted from the example properties.
+
+Bigfix: The WSDL definitions of the gateway webservices were adapted to initialize the web services correctly.
+Bugfix: The web service endpoint definition within the domibusConnectorGatewayLink was adopted to initialize the DomibusConnectorGatewayDeliveryWebService correctly.
+Bugfix: Message Content handling with Oracle - SQL-Error 17226.
+domibusConnectorClient:
+
+The new domibusConnectorAPI referenced.
+windows line ending replaced with unix lineending in unix startscripts
+domibus-connector-plugin:
+
+Bugfix: The property "connector.delivery.service.endpoint.address" has to be set in the "domibus.properties". Documentation in the example configuration added. Property within example configuration removed.
+Bugfix: To initialize the DomibusConnectorGatewaySubmissionWebService accoringly the endpoint configuration in the example configuration was adapted.
+Update of the domibusConnectorAPI to have corrected version of the WSDL definitions.

@@ -1,0 +1,13 @@
+ifndef::rootpath[]
+:rootpath: ../
+endif::rootpath[]
+
+//ifndef::imagesdir[]
+//:imagesdir: {rootpath}/resources/images/
+//endif::imagesdir[]
+
+:doctype: book
+:title: domibusConnector - Changelog : domibusConnector-{project-version}
+:title-logo-image: ../resources/images/logo_ecodex_0.png
+
+include::../doc/changelog/changelog.adoc[]

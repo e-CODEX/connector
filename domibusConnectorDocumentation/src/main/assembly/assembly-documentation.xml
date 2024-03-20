@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <id>documentation</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>**</include>
+            </includes>
+            <directory>${html.docu.output.directory}</directory>
+            <outputDirectory>online-documentation/documentation</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <includes>
+                <include>**</include>
+            </includes>
+            <directory>${html.docu.output.directory}/../images</directory>
+            <outputDirectory>online-documentation/images</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <includes>
+                <include>**</include>
+            </includes>
+            <directory>${project.basedir}/src/main/config</directory>
+            <outputDirectory>config</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <includes>
+                <include>*.pdf</include>
+            </includes>
+            <directory>${project.basedir}/target/generated-pdfs</directory>
+            <outputDirectory>pdf-documentation/</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

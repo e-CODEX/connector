@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db:configuration xmlns:db="http://domibus.eu/configuration"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://domibus.eu/configuration file:/C:/development/git-repos/domibus/Domibus-MSH/domibus-configuration.xsd" party="service_ctp">
+    <mpcs>
+        <mpc name="defaultMpc"
+             qualifiedName="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultMPC"
+             enabled="true"
+             default="true"
+             retention_downloaded="0"
+             retention_undownloaded="60"/>
+    </mpcs>
+    <businessProcesses>
+        <roles>
+            <role name="eCODEXRole"
+                  value="GW"/>
+        </roles>
+        <parties>
+            <partyIdTypes>
+                <partyIdType name="eCODEXPartyIdType" value="urn:oasis:names:tc:ebcore:partyid-type:iso3166-1"/>
+            </partyIdTypes>
+            <party name="service_at"
+                   endpoint="https://at.example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="AT" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_ctp"
+                   endpoint="https://ctpo.example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="CTP" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_cz"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="CZ" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_de"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="DE" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_ec"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="EC" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_ec2"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="EC2" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_ec_ext1"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="EC_EXT1" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_ee"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="EE" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_gr"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="GR" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_pl"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="PL" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_mt"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="MT" partyIdType="eCODEXPartyIdType"/>
+            </party>
+            <party name="service_arhs"
+                   endpoint="https://example.com/domibus/services/msh"
+                   allowChunking="false"
+            >
+                <identifier partyId="ARHS" partyIdType="eCODEXPartyIdType"/>
+            </party>
+        </parties>
+        <meps>
+            <mep name="twoway" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/twoWay"/>
+            <binding name="pushAndPush" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push-and-push"/>
+        </meps>
+        <properties>
+            <property name="originalSenderProperty"
+                      key="originalSender"
+                      datatype="string"
+                      required="true"/>
+            <property name="finalRecipientProperty"
+                      key="finalRecipient"
+                      datatype="string"
+                      required="true"/>
+            <propertySet name="ecodexPropertySet">
+                <propertyRef property="finalRecipientProperty"/>
+                <propertyRef property="originalSenderProperty"/>
+            </propertySet>
+        </properties>
+        <payloadProfiles>
+        </payloadProfiles>
+        <securities>
+            <security name="signBodyHeader"
+                      policy="policy-sign-body-header.xml"
+                      signatureMethod="RSA_SHA1" />
+            <security name="signEncryptMessage"
+                      policy="signEncryptPolicy.xml"
+                      signatureMethod="RSA_SHA256" />
+        </securities>
+        <errorHandlings>
+            <errorHandling name="eCODEXErrorHandling"
+                           errorAsResponse="true"
+                           businessErrorNotifyProducer="false"
+                           businessErrorNotifyConsumer="false"
+                           deliveryFailureNotifyProducer="false"/>
+        </errorHandlings>
+        <agreements>
+            <agreement name="agreementEmpty" value="" type=""/>
+        </agreements>
+        <services>
+            <service name="EPOService" value="EPO" type="urn:e-codex:services:"/>
+            <service name="GWTESTService" value="GW-TEST" type="urn:e-codex:services:"/>
+            <service name="ConTESTService" value="Connector-TEST" type="urn:e-codex:services:"/>
+            <service name="SCService" value="SmallClaims" type="urn:e-codex:services:"/>
+        </services>
+        <actions>
+            <action name="eCODEXEvidenceSubmissionAcceptanceRejection" value="SubmissionAcceptanceRejection"/>
+            <action name="eCODEXEvidenceRelayREMMDAcceptanceRejection" value="RelayREMMDAcceptanceRejection"/>
+            <action name="eCODEXEvidenceDeliveryNonDeliveryToRecipient" value="DeliveryNonDeliveryToRecipient"/>
+            <action name="eCODEXEvidenceRetrievalNonRetrievalToRecipient" value="RetrievalNonRetrievalToRecipient"/>
+            <action name="ActionFormA" value="Form_A"/>
+            <action name="ActionFormB" value="Form_B"/>
+            <action name="ActionFormC" value="Form_C"/>
+            <action name="ActionFormD" value="Form_D"/>
+            <action name="ActionFormE" value="Form_E"/>
+            <action name="ActionFormF" value="Form_F"/>
+            <action name="ActionFormG" value="Form_G"/>
+            <action name="ActionFreeFormLetterIn" value="FreeFormLetterIn"/>
+            <action name="ActionFreeFormLetterOut" value="FreeFormLetterOut"/>
+            <action name="GWTESTActionTestForm" value="Test_Form"/>
+            <action name="ConTESTActionTestForm" value="ConTest_Form"/>
+            <action name="ActionFreeFormLetter" value="FreeFormLetter"/>
+            <action name="ActionWithdraw" value="Withdraw"/>
+        </actions>
+        <as4>
+            <receptionAwareness name="receptionAwareness" retry="600;12;CONSTANT" duplicateDetection="true"/>
+            <reliability name="AS4Reliability" nonRepudiation="true" replyPattern="response"/>
+        </as4>
+        <legConfigurations>
+            <legConfiguration name="EPOLegActionFormA"
+                              service="EPOService"
+                              action="ActionFormA"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFormB"
+                              service="EPOService"
+                              action="ActionFormB"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFormC"
+                              service="EPOService"
+                              action="ActionFormC"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFormD"
+                              service="EPOService"
+                              action="ActionFormD"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFormE"
+                              service="EPOService"
+                              action="ActionFormE"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFormF"
+                              service="EPOService"
+                              action="ActionFormF"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFormG"
+                              service="EPOService"
+                              action="ActionFormG"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFreeFormLetterIn"
+                              service="EPOService"
+                              action="ActionFreeFormLetterIn"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionFreeFormLetterOut"
+                              service="EPOService"
+                              action="ActionFreeFormLetterOut"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegActionWithdraw"
+                              service="EPOService"
+                              action="ActionWithdraw"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegeCODEXEvidenceSubmissionAcceptanceRejection"
+                              service="EPOService"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegeCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              service="EPOService"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              service="EPOService"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="EPOLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              service="EPOService"
+                              action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="GWTESTLegGWTESTActionTestForm"
+                              service="GWTESTService"
+                              action="GWTESTActionTestForm"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="GWTESTLegeCODEXEvidenceSubmissionAcceptanceRejection"
+                              service="GWTESTService"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="GWTESTLegeCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              service="GWTESTService"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="GWTESTLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              service="GWTESTService"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="GWTESTLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              service="GWTESTService"
+                              action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegConTESTActionTestForm"
+                              service="ConTESTService"
+                              action="ConTESTActionTestForm"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceSubmissionAcceptanceRejection"
+                              service="ConTESTService"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              service="ConTESTService"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              service="ConTESTService"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              service="ConTESTService"
+                              action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegActionFormA"
+                              service="SCService"
+                              action="ActionFormA"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegActionFormB"
+                              service="SCService"
+                              action="ActionFormB"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegActionFormC"
+                              service="SCService"
+                              action="ActionFormC"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegActionFormD"
+                              service="SCService"
+                              action="ActionFormD"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegActionWithdraw"
+                              service="SCService"
+                              action="ActionWithdraw"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegActionFreeFormLetter"
+                              service="SCService"
+                              action="ActionFreeFormLetter"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegeCODEXEvidenceSubmissionAcceptanceRejection"
+                              service="SCService"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegeCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              service="SCService"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              service="SCService"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+            <legConfiguration name="SCLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              service="SCService"
+                              action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              defaultMpc="defaultMpc"
+                              reliability="AS4Reliability"
+                              security="signEncryptMessage"
+                              receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"/>
+        </legConfigurations>
+        <process name="EPOProcess"
+                 agreement="agreementEmpty"
+                 mep="twoway"
+                 binding="pushAndPush"
+                 initiatorRole="eCODEXRole"
+                 responderRole="eCODEXRole">
+            <initiatorParties>
+                <initiatorParty name="service_de"/>
+                <initiatorParty name="service_at"/>
+                <initiatorParty name="service_ee"/>
+                <initiatorParty name="service_ec"/>
+                <initiatorParty name="service_gr"/>
+                <initiatorParty name="service_cz"/>
+                <initiatorParty name="service_pl"/>
+                <initiatorParty name="service_ctp"/>
+                <initiatorParty name="service_mt"/>
+                <initiatorParty name="service_ec2"/>
+                <initiatorParty name="service_ec_ext1"/>
+            </initiatorParties>
+            <responderParties>
+                <responderParty name="service_de"/>
+                <responderParty name="service_at"/>
+                <responderParty name="service_ee"/>
+                <responderParty name="service_ec"/>
+                <responderParty name="service_gr"/>
+                <responderParty name="service_cz"/>
+                <responderParty name="service_pl"/>
+                <responderParty name="service_ctp"/>
+                <responderParty name="service_mt"/>
+                <responderParty name="service_ec2"/>
+                <responderParty name="service_ec_ext1"/>
+            </responderParties>
+            <legs>
+                <leg name="EPOLegActionFormA"/>
+                <leg name="EPOLegActionFormB"/>
+                <leg name="EPOLegActionFormC"/>
+                <leg name="EPOLegActionFormD"/>
+                <leg name="EPOLegActionFormE"/>
+                <leg name="EPOLegActionFormF"/>
+                <leg name="EPOLegActionFormG"/>
+                <leg name="EPOLegActionFreeFormLetterIn"/>
+                <leg name="EPOLegActionFreeFormLetterOut"/>
+                <leg name="EPOLegActionWithdraw"/>
+                <leg name="EPOLegeCODEXEvidenceSubmissionAcceptanceRejection"/>
+                <leg name="EPOLegeCODEXEvidenceRelayREMMDAcceptanceRejection"/>
+                <leg name="EPOLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"/>
+                <leg name="EPOLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
+            </legs>
+        </process>
+        <process name="GWTESTProcess"
+                 agreement="agreementEmpty"
+                 mep="twoway"
+                 binding="pushAndPush"
+                 initiatorRole="eCODEXRole"
+                 responderRole="eCODEXRole">
+            <initiatorParties>
+                <initiatorParty name="service_de"/>
+                <initiatorParty name="service_at"/>
+                <initiatorParty name="service_ee"/>
+                <initiatorParty name="service_ec"/>
+                <initiatorParty name="service_gr"/>
+                <initiatorParty name="service_cz"/>
+                <initiatorParty name="service_pl"/>
+                <initiatorParty name="service_ctp"/>
+                <initiatorParty name="service_mt"/>
+                <initiatorParty name="service_arhs"/>
+                <initiatorParty name="service_ec2"/>
+                <initiatorParty name="service_ec_ext1"/>
+            </initiatorParties>
+            <responderParties>
+                <responderParty name="service_de"/>
+                <responderParty name="service_at"/>
+                <responderParty name="service_ee"/>
+                <responderParty name="service_ec"/>
+                <responderParty name="service_gr"/>
+                <responderParty name="service_cz"/>
+                <responderParty name="service_pl"/>
+                <responderParty name="service_ctp"/>
+                <responderParty name="service_mt"/>
+                <responderParty name="service_arhs"/>
+                <responderParty name="service_ec2"/>
+                <responderParty name="service_ec_ext1"/>
+            </responderParties>
+            <legs>
+                <leg name="GWTESTLegGWTESTActionTestForm"/>
+                <leg name="GWTESTLegeCODEXEvidenceSubmissionAcceptanceRejection"/>
+                <leg name="GWTESTLegeCODEXEvidenceRelayREMMDAcceptanceRejection"/>
+                <leg name="GWTESTLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"/>
+                <leg name="GWTESTLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
+            </legs>
+        </process>
+        <process name="ConTESTProcess"
+                 agreement="agreementEmpty"
+                 mep="twoway"
+                 binding="pushAndPush"
+                 initiatorRole="eCODEXRole"
+                 responderRole="eCODEXRole">
+            <initiatorParties>
+                <initiatorParty name="service_de"/>
+                <initiatorParty name="service_at"/>
+                <initiatorParty name="service_ee"/>
+                <initiatorParty name="service_ec"/>
+                <initiatorParty name="service_gr"/>
+                <initiatorParty name="service_cz"/>
+                <initiatorParty name="service_pl"/>
+                <initiatorParty name="service_ctp"/>
+                <initiatorParty name="service_mt"/>
+                <initiatorParty name="service_arhs"/>
+                <initiatorParty name="service_ec2"/>
+                <initiatorParty name="service_ec_ext1"/>
+            </initiatorParties>
+            <responderParties>
+                <responderParty name="service_de"/>
+                <responderParty name="service_at"/>
+                <responderParty name="service_ee"/>
+                <responderParty name="service_ec"/>
+                <responderParty name="service_gr"/>
+                <responderParty name="service_cz"/>
+                <responderParty name="service_pl"/>
+                <responderParty name="service_ctp"/>
+                <responderParty name="service_mt"/>
+                <responderParty name="service_arhs"/>
+                <responderParty name="service_ec2"/>
+                <responderParty name="service_ec_ext1"/>
+            </responderParties>
+            <legs>
+                <leg name="ConTESTLegConTESTActionTestForm"/>
+                <leg name="ConTESTLegeCODEXEvidenceSubmissionAcceptanceRejection"/>
+                <leg name="ConTESTLegeCODEXEvidenceRelayREMMDAcceptanceRejection"/>
+                <leg name="ConTESTLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"/>
+                <leg name="ConTESTLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
+            </legs>
+        </process>
+        <process name="SCProcess"
+                 agreement="agreementEmpty"
+                 mep="twoway"
+                 binding="pushAndPush"
+                 initiatorRole="eCODEXRole"
+                 responderRole="eCODEXRole">
+            <initiatorParties>
+                <initiatorParty name="service_de"/>
+                <initiatorParty name="service_at"/>
+                <initiatorParty name="service_ec"/>
+                <initiatorParty name="service_cz"/>
+                <initiatorParty name="service_pl"/>
+                <initiatorParty name="service_ctp"/>
+                <initiatorParty name="service_mt"/>
+                <initiatorParty name="service_ec2"/>
+                <initiatorParty name="service_gr"/>
+                <initiatorParty name="service_ec_ext1"/>
+            </initiatorParties>
+            <responderParties>
+                <responderParty name="service_de"/>
+                <responderParty name="service_at"/>
+                <responderParty name="service_ec"/>
+                <responderParty name="service_cz"/>
+                <responderParty name="service_pl"/>
+                <responderParty name="service_ctp"/>
+                <responderParty name="service_mt"/>
+                <responderParty name="service_ec2"/>
+                <responderParty name="service_gr"/>
+                <responderParty name="service_ec_ext1"/>
+            </responderParties>
+            <legs>
+                <leg name="SCLegActionFormA"/>
+                <leg name="SCLegActionFormB"/>
+                <leg name="SCLegActionFormC"/>
+                <leg name="SCLegActionFormD"/>
+                <leg name="SCLegActionWithdraw"/>
+                <leg name="SCLegActionFreeFormLetter"/>
+                <leg name="SCLegeCODEXEvidenceSubmissionAcceptanceRejection"/>
+                <leg name="SCLegeCODEXEvidenceRelayREMMDAcceptanceRejection"/>
+                <leg name="SCLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"/>
+                <leg name="SCLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
+            </legs>
+        </process>
+    </businessProcesses>
+</db:configuration>

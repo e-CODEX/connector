@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <property name="id.type" value="BIGINT" dbms="postgresql"/>
+    <property name="id.type" value="BIGINT" dbms="h2,mysql,mariadb"/>
+    <property name="id.type" value="NUMBER(10)" dbms="oracle"/>
+    <property name="now" value="sysdate" dbms="oracle"/>
+    <property name="now" value="now()" dbms="mysql,mariadb"/>
+    <property name="now" value="now()" dbms="postgresql,h2"/>
+    <property name="varchar.type" value="VARCHAR" dbms="h2,mysql,postgresql,mariadb"/>
+    <property name="varchar.type" value="VARCHAR2" dbms="oracle"/>
+    <property name="varchar.length.type" value="" dbms="h2,mysql,postgresql,mariadb"/>
+    <property name="varchar.length.type" value="CHAR" dbms="oracle"/>
+    <property name="varchar255.type" value="VARCHAR(255)"/>
+    <property name="varchar255.type" value="VARCHAR2(255 CHAR)" dbms="oracle"/>
+    <property name="varchar512.type" value="VARCHAR(512)"/>
+    <property name="varchar512.type" value="VARCHAR2(512 CHAR)" dbms="oracle"/>
+    <property name="text.type" value="TEXT" dbms="h2,postgresql"/>
+    <property name="text.type" value="CLOB" dbms="oracle"/>
+    <property name="text.type" value="longtext" dbms="mysql,mariadb"/>
+    <property name="blob" value="BLOB" dbms="oracle,h2,postgresql"/>
+    <property name="blob" value="longblob" dbms="mysql,mariadb"/>
+    <property name="timestamp.type" value="java.sql.types.TIMESTAMP(6)" dbms="mysql,mariadb" />
+    <property name="timestamp.type" value="java.sql.types.TIMESTAMP" dbms="h2,oracle,postgresql" />
+    <property name="connector_message_id.type" value="java.sql.types.VARCHAR(255)" />
+    <property name="boolean.type" value="java.sql.types.BOOLEAN" dbms="oracle,postgresql,mysql,mariadb"/>
+    <property name="boolean.type" value="TINYINT" dbms="h2" />
+
+</databaseChangeLog>

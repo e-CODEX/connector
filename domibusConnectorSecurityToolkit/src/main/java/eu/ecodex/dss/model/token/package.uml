@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>eu.ecodex.dss.model.token</OriginalElement>
+  <nodes>
+    <node x="344.0" y="491.0">eu.ecodex.dss.model.token.SignatureCertificate</node>
+    <node x="0.0" y="803.0">eu.ecodex.dss.model.token.AuthenticationCertificate</node>
+    <node x="379.0" y="49.0">eu.ecodex.dss.model.token.TokenDocument</node>
+    <node x="-26.75" y="349.0">eu.ecodex.dss.model.token.AuthenticationInformation</node>
+    <node x="687.0" y="51.0">eu.ecodex.dss.model.token.TokenValidation</node>
+    <node x="577.0" y="468.5">eu.ecodex.dss.model.token.TechnicalTrustLevel</node>
+    <node x="389.5" y="-72.0">eu.ecodex.dss.model.token.Token</node>
+    <node x="16.0" y="487.0">eu.ecodex.dss.model.token.SignatureAttributes</node>
+    <node x="-33.31944444444446" y="49.0">eu.ecodex.dss.model.token.TokenIssuer</node>
+    <node x="850.0" y="359.5">eu.ecodex.dss.model.token.LegalValidationResult</node>
+    <node x="-36.81944444444446" y="171.0">eu.ecodex.dss.model.token.AdvancedSystemType</node>
+    <node x="269.25" y="353.0">eu.ecodex.dss.model.token.Signature</node>
+    <node x="915.1805555555555" y="216.0">eu.ecodex.dss.model.token.OriginalValidationReportContainer</node>
+    <node x="587.0" y="358.5">eu.ecodex.dss.model.token.TechnicalValidationResult</node>
+    <node x="349.18055555555554" y="222.0">eu.ecodex.dss.model.token.ValidationVerification</node>
+    <node x="838.0" y="472.5">eu.ecodex.dss.model.token.LegalTrustLevel</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.6111696522655427" x="595.5" y="392.5" />
+  <SelectedNodes>
+    <node>eu.ecodex.dss.model.token.LegalValidationResult</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

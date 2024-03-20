@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bd:EOPFormA xmlns:bd="http://data.justid.nl/epo/document/EOPFormA-1" xmlns:ec="http://data.justid.nl/ec/dictionary-0" xmlns:epo="http://data.justid.nl/epo/dictionary-0" xmlns:jus="http://data.justid.nl/jus/dictionary-0" xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://data.justid.nl/epo/document/EOPFormA-1 EOPFormA.xsd">
+    <sbdh:StandardBusinessDocumentHeader>
+        <sbdh:HeaderVersion>String</sbdh:HeaderVersion>
+        <sbdh:Sender>
+            <sbdh:Identifier Authority="String">String</sbdh:Identifier>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+        </sbdh:Sender>
+        <sbdh:Sender>
+            <sbdh:Identifier Authority="String">String</sbdh:Identifier>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+        </sbdh:Sender>
+        <sbdh:Receiver>
+            <sbdh:Identifier Authority="String">String</sbdh:Identifier>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+        </sbdh:Receiver>
+        <sbdh:Receiver>
+            <sbdh:Identifier Authority="String">String</sbdh:Identifier>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+            <sbdh:ContactInformation>
+                <sbdh:Contact>String</sbdh:Contact>
+                <sbdh:EmailAddress>String</sbdh:EmailAddress>
+                <sbdh:FaxNumber>String</sbdh:FaxNumber>
+                <sbdh:TelephoneNumber>String</sbdh:TelephoneNumber>
+                <sbdh:ContactTypeIdentifier>String</sbdh:ContactTypeIdentifier>
+            </sbdh:ContactInformation>
+        </sbdh:Receiver>
+        <sbdh:DocumentIdentification>
+            <sbdh:Standard>String</sbdh:Standard>
+            <sbdh:TypeVersion>String</sbdh:TypeVersion>
+            <sbdh:InstanceIdentifier>String</sbdh:InstanceIdentifier>
+            <sbdh:Type>String</sbdh:Type>
+            <sbdh:MultipleType>true</sbdh:MultipleType>
+            <sbdh:CreationDateAndTime>2001-12-17T09:30:47Z</sbdh:CreationDateAndTime>
+        </sbdh:DocumentIdentification>
+        <sbdh:Manifest>
+            <sbdh:NumberOfItems>0</sbdh:NumberOfItems>
+            <sbdh:ManifestItem>
+                <sbdh:MimeTypeQualifierCode>String</sbdh:MimeTypeQualifierCode>
+                <sbdh:UniformResourceIdentifier>http://www.altova.com</sbdh:UniformResourceIdentifier>
+                <sbdh:Description>String</sbdh:Description>
+                <sbdh:LanguageCode>String</sbdh:LanguageCode>
+            </sbdh:ManifestItem>
+            <sbdh:ManifestItem>
+                <sbdh:MimeTypeQualifierCode>String</sbdh:MimeTypeQualifierCode>
+                <sbdh:UniformResourceIdentifier>http://www.altova.com</sbdh:UniformResourceIdentifier>
+                <sbdh:Description>String</sbdh:Description>
+                <sbdh:LanguageCode>String</sbdh:LanguageCode>
+            </sbdh:ManifestItem>
+        </sbdh:Manifest>
+        <sbdh:BusinessScope>
+            <sbdh:Scope>
+                <sbdh:Type>String</sbdh:Type>
+                <sbdh:InstanceIdentifier>String</sbdh:InstanceIdentifier>
+                <sbdh:Identifier>String</sbdh:Identifier>
+                <sbdh:BusinessService>
+                    <sbdh:BusinessServiceName>String</sbdh:BusinessServiceName>
+                    <sbdh:ServiceTransaction IsApplicationErrorResponseRequested="String" IsAuthenticationRequired="String" IsIntelligibleCheckRequired="String" IsNonRepudiationOfReceiptRequired="String" IsNonRepudiationRequired="String" Recurrence="String" TimeToAcknowledgeAcceptance="String" TimeToAcknowledgeReceipt="String" TimeToPerform="String" TypeOfServiceTransaction="RespondingServiceTransaction"/>
+                </sbdh:BusinessService>
+                <sbdh:BusinessService>
+                    <sbdh:BusinessServiceName>String</sbdh:BusinessServiceName>
+                    <sbdh:ServiceTransaction IsApplicationErrorResponseRequested="String" IsAuthenticationRequired="String" IsIntelligibleCheckRequired="String" IsNonRepudiationOfReceiptRequired="String" IsNonRepudiationRequired="String" Recurrence="String" TimeToAcknowledgeAcceptance="String" TimeToAcknowledgeReceipt="String" TimeToPerform="String" TypeOfServiceTransaction="RequestingServiceTransaction"/>
+                </sbdh:BusinessService>
+            </sbdh:Scope>
+            <sbdh:Scope>
+                <sbdh:Type>String</sbdh:Type>
+                <sbdh:InstanceIdentifier>String</sbdh:InstanceIdentifier>
+                <sbdh:Identifier>String</sbdh:Identifier>
+                <sbdh:BusinessService>
+                    <sbdh:BusinessServiceName>String</sbdh:BusinessServiceName>
+                    <sbdh:ServiceTransaction IsApplicationErrorResponseRequested="String" IsAuthenticationRequired="String" IsIntelligibleCheckRequired="String" IsNonRepudiationOfReceiptRequired="String" IsNonRepudiationRequired="String" Recurrence="String" TimeToAcknowledgeAcceptance="String" TimeToAcknowledgeReceipt="String" TimeToPerform="String" TypeOfServiceTransaction="RespondingServiceTransaction"/>
+                </sbdh:BusinessService>
+                <sbdh:BusinessService>
+                    <sbdh:BusinessServiceName>String</sbdh:BusinessServiceName>
+                    <sbdh:ServiceTransaction IsApplicationErrorResponseRequested="String" IsAuthenticationRequired="String" IsIntelligibleCheckRequired="String" IsNonRepudiationOfReceiptRequired="String" IsNonRepudiationRequired="String" Recurrence="String" TimeToAcknowledgeAcceptance="String" TimeToAcknowledgeReceipt="String" TimeToPerform="String" TypeOfServiceTransaction="RequestingServiceTransaction"/>
+                </sbdh:BusinessService>
+            </sbdh:Scope>
+        </sbdh:BusinessScope>
+    </sbdh:StandardBusinessDocumentHeader>
+    <bd:Case>
+        <jus:Filing>
+            <jus:DateReceivedByCourtDate>1967-08-13</jus:DateReceivedByCourtDate>
+            <jus:Payment>
+                <jus:Account>
+                    <jus:IdentificationFinancialIdentification>
+                        <jus:NumberID>token</jus:NumberID>
+                        <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">03</jus:KindCode>
+                    </jus:IdentificationFinancialIdentification>
+                    <jus:IdentificationFinancialIdentification>
+                        <jus:NumberID>token</jus:NumberID>
+                        <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">01</jus:KindCode>
+                    </jus:IdentificationFinancialIdentification>
+                    <jus:AccountHolder>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:AccountHolder>
+                    <jus:BankCompanyLegalPerson>
+                        <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+                    </jus:BankCompanyLegalPerson>
+                    <jus:ExpiryDateSecurityNumber>aaaaaaaaaaaaaaaaaaaa</jus:ExpiryDateSecurityNumber>
+                </jus:Account>
+                <jus:WayOfPaymentCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">05</jus:WayOfPaymentCode>
+                <jus:OtherWayOfPayment>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:OtherWayOfPayment>
+            </jus:Payment>
+            <jus:LanguageCode listAgencyID="EU" listID="" listURI="" listVersionID="">fin</jus:LanguageCode>
+        </jus:Filing>
+        <jus:CourtAuthority>
+            <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+            <jus:Address>
+                <jus:PostalCode>aaaaaaaaaaaaaaaaaaaa</jus:PostalCode>
+                <jus:AddressLine>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    <jus:LineNumberNumeric>0.0</jus:LineNumberNumeric>
+                </jus:AddressLine>
+                <jus:UsageCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">02</jus:UsageCode>
+                <jus:City>
+                    <jus:NameName>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:NameName>
+                </jus:City>
+                <jus:Country>
+                    <jus:CountryCode listAgencyID="ISO" listID="" listURI="" listVersionID="">token</jus:CountryCode>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                </jus:Country>
+            </jus:Address>
+        </jus:CourtAuthority>
+        <jus:Jurisdiction>
+            <jus:GroundCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">01</jus:GroundCode>
+            <jus:GroundCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">08</jus:GroundCode>
+            <jus:Explanation>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Explanation>
+        </jus:Jurisdiction>
+        <jus:Claim>
+            <jus:NumberNumeric>0.0</jus:NumberNumeric>
+            <jus:TypeCode>token</jus:TypeCode>
+            <jus:SumClaimedSum>
+                <jus:Amount>0.0</jus:Amount>
+                <jus:CurrencyCode listAgencyID="ISO" listID="" listURI="" listVersionID="">token</jus:CurrencyCode>
+                <jus:SpecificationCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">04</jus:SpecificationCode>
+                <jus:Interest>
+                    <jus:RatePercent>0.0</jus:RatePercent>
+                    <jus:OverBaseECBRatePercent>0.0</jus:OverBaseECBRatePercent>
+                    <jus:TypeOfInterestCode listAgencyID="eCODEX" listID="" listURI="" listVersionID=""/>
+                    <jus:TextTypeOfInterest>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:TextTypeOfInterest>
+                    <jus:PeriodOfInterestPeriod>
+                        <jus:StartDate>1967-08-13</jus:StartDate>
+                        <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    </jus:PeriodOfInterestPeriod>
+                    <jus:PerPeriodCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">00</jus:PerPeriodCode>
+                    <jus:TextPerPeriod>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:TextPerPeriod>
+                    <jus:OnPartSum>
+                        <jus:Amount>0.0</jus:Amount>
+                        <jus:CurrencyCode>token</jus:CurrencyCode>
+                        <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    </jus:OnPartSum>
+                </jus:Interest>
+                <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+            </jus:SumClaimedSum>
+            <jus:Evidence>
+                <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                <jus:TypeOfEvidenceCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">02</jus:TypeOfEvidenceCode>
+                <jus:Date>1967-08-13</jus:Date>
+            </jus:Evidence>
+            <jus:Evidence>
+                <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                <jus:TypeOfEvidenceCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">05</jus:TypeOfEvidenceCode>
+                <jus:Date>1967-08-13</jus:Date>
+            </jus:Evidence>
+            <jus:WithRespectToAgreement>
+                <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">09</jus:KindCode>
+                <jus:ValidityPeriod>
+                    <jus:StartDate>1967-08-13</jus:StartDate>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                </jus:ValidityPeriod>
+            </jus:WithRespectToAgreement>
+            <jus:DescriptionOfClaim>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:DescriptionOfClaim>
+            <jus:Reason>
+                <jus:DescriptionCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">33</jus:DescriptionCode>
+                <jus:SpecificsCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">48</jus:SpecificsCode>
+            </jus:Reason>
+            <jus:AdditionalSpecifications>
+                <epo:ConsumerContractIndicator>true</epo:ConsumerContractIndicator>
+                <epo:DefendantIsConsumerIndicator>true</epo:DefendantIsConsumerIndicator>
+                <epo:DefendantDomiciledArt59Indicator>true</epo:DefendantDomiciledArt59Indicator>
+            </jus:AdditionalSpecifications>
+        </jus:Claim>
+        <jus:Claim>
+            <jus:NumberNumeric>0.0</jus:NumberNumeric>
+            <jus:TypeCode>token</jus:TypeCode>
+            <jus:SumClaimedSum>
+                <jus:Amount>0.0</jus:Amount>
+                <jus:CurrencyCode listAgencyID="ISO" listID="" listURI="" listVersionID="">token</jus:CurrencyCode>
+                <jus:SpecificationCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">03</jus:SpecificationCode>
+                <jus:Interest>
+                    <jus:RatePercent>0.0</jus:RatePercent>
+                    <jus:OverBaseECBRatePercent>0.0</jus:OverBaseECBRatePercent>
+                    <jus:TypeOfInterestCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">05</jus:TypeOfInterestCode>
+                    <jus:TextTypeOfInterest>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:TextTypeOfInterest>
+                    <jus:PeriodOfInterestPeriod>
+                        <jus:StartDate>1967-08-13</jus:StartDate>
+                        <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    </jus:PeriodOfInterestPeriod>
+                    <jus:PerPeriodCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">02</jus:PerPeriodCode>
+                    <jus:TextPerPeriod>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:TextPerPeriod>
+                    <jus:OnPartSum>
+                        <jus:Amount>0.0</jus:Amount>
+                        <jus:CurrencyCode>token</jus:CurrencyCode>
+                        <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    </jus:OnPartSum>
+                </jus:Interest>
+                <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+            </jus:SumClaimedSum>
+            <jus:Evidence>
+                <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                <jus:TypeOfEvidenceCode listAgencyID="eCODEX" listID="" listURI="" listVersionID=""/>
+                <jus:Date>1967-08-13</jus:Date>
+            </jus:Evidence>
+            <jus:Evidence>
+                <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                <jus:TypeOfEvidenceCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">03</jus:TypeOfEvidenceCode>
+                <jus:Date>1967-08-13</jus:Date>
+            </jus:Evidence>
+            <jus:WithRespectToAgreement>
+                <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">19</jus:KindCode>
+                <jus:ValidityPeriod>
+                    <jus:StartDate>1967-08-13</jus:StartDate>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                </jus:ValidityPeriod>
+            </jus:WithRespectToAgreement>
+            <jus:DescriptionOfClaim>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:DescriptionOfClaim>
+            <jus:Reason>
+                <jus:DescriptionCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">35</jus:DescriptionCode>
+                <jus:SpecificsCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">47</jus:SpecificsCode>
+            </jus:Reason>
+            <jus:AdditionalSpecifications>
+                <epo:ConsumerContractIndicator>true</epo:ConsumerContractIndicator>
+                <epo:DefendantIsConsumerIndicator>true</epo:DefendantIsConsumerIndicator>
+                <epo:DefendantDomiciledArt59Indicator>true</epo:DefendantDomiciledArt59Indicator>
+            </jus:AdditionalSpecifications>
+        </jus:Claim>
+        <jus:Decision>
+            <jus:Payment>
+                <jus:Account>
+                    <jus:IdentificationFinancialIdentification>
+                        <jus:NumberID>token</jus:NumberID>
+                        <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">01</jus:KindCode>
+                    </jus:IdentificationFinancialIdentification>
+                    <jus:IdentificationFinancialIdentification>
+                        <jus:NumberID>token</jus:NumberID>
+                        <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">01</jus:KindCode>
+                    </jus:IdentificationFinancialIdentification>
+                    <jus:AccountHolder>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:AccountHolder>
+                    <jus:BankCompanyLegalPerson>
+                        <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+                    </jus:BankCompanyLegalPerson>
+                    <jus:ExpiryDateSecurityNumber>aaaaaaaaaaaaaaaaaaaa</jus:ExpiryDateSecurityNumber>
+                </jus:Account>
+                <jus:WayOfPaymentCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">05</jus:WayOfPaymentCode>
+                <jus:OtherWayOfPayment>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:OtherWayOfPayment>
+            </jus:Payment>
+            <jus:Payment>
+                <jus:Account>
+                    <jus:IdentificationFinancialIdentification>
+                        <jus:NumberID>token</jus:NumberID>
+                        <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">03</jus:KindCode>
+                    </jus:IdentificationFinancialIdentification>
+                    <jus:IdentificationFinancialIdentification>
+                        <jus:NumberID>token</jus:NumberID>
+                        <jus:KindCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">04</jus:KindCode>
+                    </jus:IdentificationFinancialIdentification>
+                    <jus:AccountHolder>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:AccountHolder>
+                    <jus:BankCompanyLegalPerson>
+                        <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+                    </jus:BankCompanyLegalPerson>
+                    <jus:ExpiryDateSecurityNumber>aaaaaaaaaaaaaaaaaaaa</jus:ExpiryDateSecurityNumber>
+                </jus:Account>
+                <jus:WayOfPaymentCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">03</jus:WayOfPaymentCode>
+                <jus:OtherWayOfPayment>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:OtherWayOfPayment>
+            </jus:Payment>
+        </jus:Decision>
+        <jus:InvolvedParty>
+            <jus:Person>
+                <ec:FamilyNameName>String</ec:FamilyNameName>
+                <ec:GivenNameName>String</ec:GivenNameName>
+                <ec:Occupation>aaaaaaaaaaaaaaaaaaaa</ec:Occupation>
+            </jus:Person>
+            <jus:LegalPerson>
+                <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+            </jus:LegalPerson>
+            <jus:Communication>
+                <jus:ChannelCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">02</jus:ChannelCode>
+                <jus:CompleteNumber>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:CompleteNumber>
+                <jus:URIID>token</jus:URIID>
+            </jus:Communication>
+            <jus:Communication>
+                <jus:ChannelCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">03</jus:ChannelCode>
+                <jus:CompleteNumber>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:CompleteNumber>
+                <jus:URIID>token</jus:URIID>
+            </jus:Communication>
+            <jus:Involvement>
+                <jus:RoleCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">02</jus:RoleCode>
+            </jus:Involvement>
+            <jus:Identification>
+                <jus:NumberID>token</jus:NumberID>
+                <jus:KindCode listAgencyID="EU" listID="" listURI="" listVersionID="">12</jus:KindCode>
+            </jus:Identification>
+            <jus:Address>
+                <jus:PostalCode>aaaaaaaaaaaaaaaaaaaa</jus:PostalCode>
+                <jus:AddressLine>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    <jus:LineNumberNumeric>0.0</jus:LineNumberNumeric>
+                </jus:AddressLine>
+                <jus:UsageCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">01</jus:UsageCode>
+                <jus:City>
+                    <jus:NameName>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:NameName>
+                </jus:City>
+                <jus:Country>
+                    <jus:CountryCode listAgencyID="ISO" listID="" listURI="" listVersionID="">token</jus:CountryCode>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                </jus:Country>
+            </jus:Address>
+            <jus:Address>
+                <jus:PostalCode>aaaaaaaaaaaaaaaaaaaa</jus:PostalCode>
+                <jus:AddressLine>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    <jus:LineNumberNumeric>0.0</jus:LineNumberNumeric>
+                </jus:AddressLine>
+                <jus:UsageCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">01</jus:UsageCode>
+                <jus:City>
+                    <jus:NameName>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:NameName>
+                </jus:City>
+                <jus:Country>
+                    <jus:CountryCode listAgencyID="ISO" listID="" listURI="" listVersionID="">token</jus:CountryCode>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                </jus:Country>
+            </jus:Address>
+            <jus:OtherDetails>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:OtherDetails>
+        </jus:InvolvedParty>
+        <jus:InvolvedParty>
+            <jus:Person>
+                <ec:FamilyNameName>String</ec:FamilyNameName>
+                <ec:GivenNameName>String</ec:GivenNameName>
+                <ec:Occupation>aaaaaaaaaaaaaaaaaaaa</ec:Occupation>
+            </jus:Person>
+            <jus:LegalPerson>
+                <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+            </jus:LegalPerson>
+            <jus:Communication>
+                <jus:ChannelCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">04</jus:ChannelCode>
+                <jus:CompleteNumber>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:CompleteNumber>
+                <jus:URIID>token</jus:URIID>
+            </jus:Communication>
+            <jus:Communication>
+                <jus:ChannelCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">04</jus:ChannelCode>
+                <jus:CompleteNumber>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:CompleteNumber>
+                <jus:URIID>token</jus:URIID>
+            </jus:Communication>
+            <jus:Involvement>
+                <jus:RoleCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">02</jus:RoleCode>
+            </jus:Involvement>
+            <jus:Identification>
+                <jus:NumberID>token</jus:NumberID>
+                <jus:KindCode listAgencyID="EU" listID="" listURI="" listVersionID="">22</jus:KindCode>
+            </jus:Identification>
+            <jus:Address>
+                <jus:PostalCode>aaaaaaaaaaaaaaaaaaaa</jus:PostalCode>
+                <jus:AddressLine>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    <jus:LineNumberNumeric>0.0</jus:LineNumberNumeric>
+                </jus:AddressLine>
+                <jus:UsageCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">01</jus:UsageCode>
+                <jus:City>
+                    <jus:NameName>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:NameName>
+                </jus:City>
+                <jus:Country>
+                    <jus:CountryCode listAgencyID="ISO" listID="" listURI="" listVersionID="">token</jus:CountryCode>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                </jus:Country>
+            </jus:Address>
+            <jus:Address>
+                <jus:PostalCode>aaaaaaaaaaaaaaaaaaaa</jus:PostalCode>
+                <jus:AddressLine>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                    <jus:LineNumberNumeric>0.0</jus:LineNumberNumeric>
+                </jus:AddressLine>
+                <jus:UsageCode listAgencyID="eCODEX" listID="" listURI="" listVersionID="">02</jus:UsageCode>
+                <jus:City>
+                    <jus:NameName>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:NameName>
+                </jus:City>
+                <jus:Country>
+                    <jus:CountryCode listAgencyID="ISO" listID="" listURI="" listVersionID="">token</jus:CountryCode>
+                    <jus:Description>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Description>
+                </jus:Country>
+            </jus:Address>
+            <jus:OtherDetails>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:OtherDetails>
+        </jus:InvolvedParty>
+        <jus:IdentificationCaseIdentification>
+            <jus:NumberID>token</jus:NumberID>
+        </jus:IdentificationCaseIdentification>
+    </bd:Case>
+    <bd:Statement>
+        <jus:TypeCode listAgencyID="EU" listID="" listURI="" listVersionID="">04</jus:TypeCode>
+        <jus:Specification>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Specification>
+        <jus:Signature>
+            <jus:DateOfSigningDate>1967-08-13</jus:DateOfSigningDate>
+            <jus:NameOfPersonSigningName>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:NameOfPersonSigningName>
+            <jus:PlaceOfSigning>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:PlaceOfSigning>
+        </jus:Signature>
+        <jus:PartyReferencedParty>
+            <jus:Person>
+                <ec:FamilyNameName>String</ec:FamilyNameName>
+                <ec:GivenNameName>String</ec:GivenNameName>
+                <ec:Occupation>aaaaaaaaaaaaaaaaaaaa</ec:Occupation>
+            </jus:Person>
+            <jus:LegalPerson>
+                <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+            </jus:LegalPerson>
+        </jus:PartyReferencedParty>
+    </bd:Statement>
+    <bd:Statement>
+        <jus:TypeCode listAgencyID="EU" listID="" listURI="" listVersionID="">02</jus:TypeCode>
+        <jus:Specification>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Specification>
+        <jus:Signature>
+            <jus:DateOfSigningDate>1967-08-13</jus:DateOfSigningDate>
+            <jus:NameOfPersonSigningName>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:NameOfPersonSigningName>
+            <jus:PlaceOfSigning>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:PlaceOfSigning>
+        </jus:Signature>
+        <jus:PartyReferencedParty>
+            <jus:Person>
+                <ec:FamilyNameName>String</ec:FamilyNameName>
+                <ec:GivenNameName>String</ec:GivenNameName>
+                <ec:Occupation>aaaaaaaaaaaaaaaaaaaa</ec:Occupation>
+            </jus:Person>
+            <jus:LegalPerson>
+                <jus:Name>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:Name>
+            </jus:LegalPerson>
+        </jus:PartyReferencedParty>
+    </bd:Statement>
+    <bd:Attachment>
+        <jus:ContentID>token</jus:ContentID>
+        <jus:ContentTypeCode listAgencyID="IANA" listID="" listURI="" listVersionID="">token</jus:ContentTypeCode>
+        <jus:ContentDescription>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:ContentDescription>
+    </bd:Attachment>
+    <bd:Attachment>
+        <jus:ContentID>token</jus:ContentID>
+        <jus:ContentTypeCode listAgencyID="IANA" listID="" listURI="" listVersionID="">token</jus:ContentTypeCode>
+        <jus:ContentDescription>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</jus:ContentDescription>
+    </bd:Attachment>
+</bd:EOPFormA>

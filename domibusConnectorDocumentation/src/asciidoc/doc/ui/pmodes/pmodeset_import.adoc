@@ -1,0 +1,58 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+
+= Import PMode-Set
+
+Since version 4.4.0 of domibusConnector not only the PModes file itself is imported, but instead, a PMode-Set is imported with every new version of PModes.
+
+IMPORTANT: *With every PMode-Set import the active PMode-Set is replaced with the imported one.*
+
+IMPORTANT: *It is very important for the domibusConnector to be able to process messages that, as part of the configuration, an active PModes-Set is imported!*
+
+== Upload new PMode file
+
+In this section the PModes XML downloaded from the CMT can be uploaded to the domibusConnector.
+This can be done by either selecting the PModes XML file from the file system, or by dragging the PModes XML file to the file upload box on the page.
+The upload box will display the result of the upload immediately.
+
+IMPORTANT: The result of the upload (File "filename" uploaded) is not a confirmation for the import. It just means that the file itself could be transferred to the connector!
+
+=== Description
+
+The description is mandatory when uploading new PModes. It has not business meaning but will be displayed when other new PMOdes replace this one in the future as active
+PMode-Set. So it can be used to identify this set of PModes in the future.
+
+== Upload new Connectorstore file
+
+In this section the PModes XML downloaded from the CMT can be uploaded to the domibusConnector.
+This can be done by either selecting the PModes XML file from the file system, or by dragging the PModes XML file to the file upload box on the page.
+The upload box will display the result of the upload immediately.
+
+IMPORTANT: The result of the upload (File "filename" uploaded) is not a confirmation for the import. It just means that the file itself could be transferred to the connector!
+
+=== Connectorstore password
+
+If the truststore uploaded is secured with a password, this password has to be entered here. In case the connectorstore comes
+with a CMT package, the password can be taken from the CMT.
+
+=== Connectorstore type
+
+It is the type of the truststore to be selected. Currently only JKS is supported.
+
+== Import PMode-Set
+
+IMPORTANT: The import of a new PMode-Set takes immediate effect. Please be sure that the go-live date of the PModes is reached!
+
+This button starts the actual import of the PModes and Connectorstore.
+First, the mandatory data is validated, then the Connectorstore is imported into the DC_KEYSTORE table of the domibusConnector.
+The data from the PModes XML file is extracted and imported into the database of the domibusConnector.
+The import takes immediate effect. The previous PMode-Set is flagged inactive and the imported one becomes the active PMode-Set.
+Results of data import can then be seen in the "PMode-Set Data" View.

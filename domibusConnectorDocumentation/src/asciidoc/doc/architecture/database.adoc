@@ -1,0 +1,33 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Database
+
+== Notes on Database
+
+
+image:database_diagram.svg[Database Diagram]
+
+=== Tables used by external frameworks
+
+==== Liquibase
+
+Liquibase is a framework to keep track of database schema changes and add some kind of versioning on it.
+It enables the connetor to automatically apply any database changes. Liquibase uses the following tables:
+
+* DATABASECHANGELOG:
+    Contains a List of all scripts which has been run by liquibase to update/change database strucuture
+* DATABASECHANGELOGLOCK
+
+
+==== Quartz
+
+Quartz is used to manage timer jobs within the connector. All tables with the prefix "QRTZ_" are used by quartz.

@@ -1,0 +1,173 @@
+
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Processing of an outgoing evidence message
+
+This chapter describes how an outgoing evidence message is processed by the domibusConnector.
+Starting point is a trigger message from the backend to the domibusConnector. 
+
+== Message from backend to the domibusConnectorController message queue
+
+The following diagram shows how a message that is sent to the domibusConnector is transported to the domibusConnectorController message queue.
+
+[plantuml,message_proc_out_evidence_1,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+package domibusConnectorAPI{
+	interface DomibusConnectorBackendWebService
+}
+
+package domibusConnectorLink{
+	component WsBackendServiceEndpoint
+	interface SubmitToConnector
+	
+}
+
+queue toConnectorControllerQueue
+
+DomibusConnectorBackendWebService --> WsBackendServiceEndpoint : submitMessage
+WsBackendServiceEndpoint --> SubmitToConnector
+
+SubmitToConnector --> toConnectorControllerQueue
+
+@enduml
+----
+
+Within the domibusConnectorLink, the message is transformed from the transition model of the API to the domibusConnector internal domain model.
+Also, a connector_message_id is generated with which the message is now identified.
+
+Diagram: domibusConnectorLink message transformation
+
+image:msg_transf_out_evidence_1.png[msg_transf_out_evidence_1]
+
+== Message processing in domibusConnectorController
+
+The following diagram shows how a message that is put on the toConnectorController queue is processed
+
+[plantuml,message_proc_out_evidence_2,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+
+queue toConnectorControllerQueue
+queue DLQ.toConnectorControllerQueue
+
+queue submitToLinkQueue
+
+queue cleanUpQueue
+
+package domibusConnectorController {
+	package JTATransaction_Connector {
+	    component ToConnectorControllerListener
+	    component EvidenceMessageProcessor
+	    component EvidenceTriggerStep
+	    component FindBusinessMessageByMsgId
+	    component ValidateMessageConfirmationStep
+	    component MessageConfirmationStep
+	    component SubmitConfirmationAsEvidenceMessageStep
+	}
+	
+}
+
+
+toConnectorControllerQueue --> ToConnectorControllerListener
+ToConnectorControllerListener --> EvidenceMessageProcessor : For any evidence message or trigger
+EvidenceMessageProcessor --> EvidenceTriggerStep : create triggered evidence
+EvidenceMessageProcessor --> FindBusinessMessageByMsgId : refToMessageId
+EvidenceMessageProcessor --> ValidateMessageConfirmationStep : all previous evidences
+EvidenceMessageProcessor --> MessageConfirmationStep : build evidence message
+EvidenceMessageProcessor --> cleanUpQueue : evidence type confirms/rejects business message
+EvidenceMessageProcessor --> SubmitConfirmationAsEvidenceMessageStep : send evidence back
+SubmitConfirmationAsEvidenceMessageStep -d-> submitToLinkQueue : back to backend
+EvidenceMessageProcessor --> SubmitConfirmationAsEvidenceMessageStep : send evidence msg
+SubmitConfirmationAsEvidenceMessageStep -d-> submitToLinkQueue : to gateway
+JTATransaction_Connector -d-> DLQ.toConnectorControllerQueue : on failure
+
+@enduml
+----
+
+During processing in EvidenceMessageProcessor, the original incoming business message is loaded via the refToMessageId which must be the ebmsMessageId of the original message. 
+The ETSI-REM evidence is generated of type "ConfirmationType" and added to the message.
+After the message is successfully put on the submitToLinkQueue, the evidence is sent back to the backend (can be deactivated by configuration).
+
+Diagram: EvidenceMessageProcessor process message
+
+image:msg_transf_out_evidence_2.png[msg_transf_out_evidence_2]
+
+
+== Message send from the domibusConnector to the gateway
+
+The following diagram shows how a message that is put on the submitToLink queue is processed
+
+The following diagram shows how a message that is put on the submitToLink queue is processed
+
+[plantuml,message_proc_out_business_3,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+package domibusConnectorAPI{
+	interface DomibusConnectorGatewaySubmissionWebService
+	interface DomibusConnectorGatewayWebService
+}
+
+package domibusConnectorLink{
+	
+	package JTATransaction_ToLink {
+	  component ToLinkPartnerListener
+	  component SubmitToLinkService
+		component DCGatewayWebServiceClient
+		component WSGatewayPluginWebServiceClient
+	}
+}
+
+
+queue submitToLinkQueue
+queue DLQ.submitToLinkQueue
+
+
+JTATransaction_ToLink -d-> DLQ.submitToLinkQueue : on failure
+submitToLinkQueue -d-> ToLinkPartnerListener
+ToLinkPartnerListener -d-> SubmitToLinkService
+SubmitToLinkService --> DCGatewayWebServiceClient : link.gwwspullplugin profile
+SubmitToLinkService --> WSGatewayPluginWebServiceClient : link.wsgatewayplugin profile
+DCGatewayWebServiceClient --> DomibusConnectorGatewaySubmissionWebService : submitMessage
+WSGatewayPluginWebServiceClient --> DomibusConnectorGatewayWebService : submitMessage
+
+@enduml
+----
+
+At the domibusConnectorLink, before the message is submitted to the gateway, it is transformed back to transition model of the API.
+
+Diagram: domibusConnectorLink message transformation
+
+image:msg_transf_out_evidence_3.png[msg_transf_out_evidence_3]

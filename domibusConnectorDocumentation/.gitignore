@@ -1,0 +1,6 @@
+/target/
+
+/src/asciidoc/resources/images/multicase*
+/src/asciidoc/resources/images/multiusecase*.png
+/src/asciidoc/resources/images/message_proc*.svg
+/src/asciidoc/resources/images/link config.png

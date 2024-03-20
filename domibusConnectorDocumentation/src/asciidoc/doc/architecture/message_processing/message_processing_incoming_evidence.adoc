@@ -1,0 +1,147 @@
+
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Processing of an incoming evidence message
+
+This chapter shows the example of an incoming evidence message. That means, that a evidence message is delivered
+by the gateway.
+
+== Message from gateway to the domibusConnectorController message queue
+
+The following diagram shows how a message that is sent to the domibusConnector is transported to the domibusConnectorController message queue.
+
+[plantuml,message_proc_in_business_1,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+package domibusConnectorAPI{
+	interface DomibusConnectorGatewayDeliveryWebService
+	interface DomibusConnectorGatewayWebService
+}
+
+package domibusConnectorLink{
+	component DCGatewayWebServiceClient
+	component WsGatewayPluginDeliveryServiceEndpoint
+	interface SubmitToConnector
+	
+}
+
+queue toConnectorControllerQueue
+
+DomibusConnectorGatewayWebService --> DCGatewayWebServiceClient : link.gwwspullplugin profile
+DCGatewayWebServiceClient --> SubmitToConnector
+
+DomibusConnectorGatewayDeliveryWebService --> WsGatewayPluginDeliveryServiceEndpoint : link.wsgatewayplugin profile
+WsGatewayPluginDeliveryServiceEndpoint --> SubmitToConnector
+SubmitToConnector --> toConnectorControllerQueue
+
+@enduml
+----
+
+== Message processing in domibusConnectorController
+
+The following diagram shows how a message that is put on the toConnectorController queue is processed
+
+[plantuml,message_proc_in_evidence_2,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+
+queue toConnectorControllerQueue
+queue DLQ.toConnectorControllerQueue
+
+queue submitToLinkQueue
+
+queue cleanUpQueue
+
+package domibusConnectorController {
+	package JTATransaction_Connector {
+	    component ToConnectorControllerListener
+	    component EvidenceMessageProcessor
+	    component FindBusinessMessageByMsgId
+	    component ValidateMessageConfirmationStep
+	    component MessageConfirmationStep
+	    component SubmitConfirmationAsEvidenceMessageStep
+	}
+	
+}
+
+
+toConnectorControllerQueue --> ToConnectorControllerListener
+ToConnectorControllerListener --> EvidenceMessageProcessor : For any evidence message or trigger
+EvidenceMessageProcessor --> FindBusinessMessageByMsgId : refToMessageId
+EvidenceMessageProcessor --> ValidateMessageConfirmationStep : all previous evidences
+EvidenceMessageProcessor --> MessageConfirmationStep : persist evidence
+EvidenceMessageProcessor --> cleanUpQueue : evidence type confirms/rejects business message
+EvidenceMessageProcessor --> SubmitConfirmationAsEvidenceMessageStep : send evidence msg
+SubmitConfirmationAsEvidenceMessageStep -d-> submitToLinkQueue : to backend
+JTATransaction_Connector -d-> DLQ.toConnectorControllerQueue : on failure
+
+@enduml
+----
+
+== Message send from the domibusConnector to the backend
+
+The following diagram shows how a message that is put on the submitToLink queue is processed
+
+[plantuml,message_proc_in_business_3,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+package domibusConnectorAPI{
+	interface DomibusConnectorBackendDeliveryWebService
+}
+
+package domibusConnectorLink{
+	
+	package JTATransaction_ToLink {
+	  component ToLinkPartnerListener
+	  component SubmitToLinkService
+		component WsBackendSubmitTo
+	}
+}
+
+
+queue submitToLinkQueue
+queue DLQ.submitToLinkQueue
+
+
+JTATransaction_ToLink -d-> DLQ.submitToLinkQueue : on failure
+submitToLinkQueue -d-> ToLinkPartnerListener
+ToLinkPartnerListener -d-> SubmitToLinkService
+SubmitToLinkService --> WsBackendSubmitTo : to backend
+WsBackendSubmitTo --> DomibusConnectorBackendDeliveryWebService : LinkMode.PUSH
+WsBackendSubmitTo -d-> exit : makeMessageReadyForPull
+
+@enduml
+----
+

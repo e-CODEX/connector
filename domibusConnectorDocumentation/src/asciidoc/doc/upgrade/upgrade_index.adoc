@@ -1,0 +1,26 @@
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Upgrade Manual
+
+Here you can find a description of the steps that have to be made when upgrading an existing installation of domibusConnector.
+
+== Principles
+
+Upgrades, in principle, do contain of the following steps:
+
+* Migration the database of the domibusConnector
+* Upgrading the configuration
+* Upgrading the binary. Can be WAR file in case of deployable, or the JAR in bin of the standalone application.
+
+IMPORTANT: We strictly recommend to create a backup of all the parts to be upgraded before doing the actual upgrade. Especially for database migration! 
+
+include::{basepath}/doc/upgrade/upgrade-4.2.0.adoc[leveloffset=+1]
+include::{basepath}/doc/upgrade/upgrade-4.3.0.adoc[leveloffset=+1]
+include::{basepath}/doc/upgrade/upgrade-4.4.0.adoc[leveloffset=+1]

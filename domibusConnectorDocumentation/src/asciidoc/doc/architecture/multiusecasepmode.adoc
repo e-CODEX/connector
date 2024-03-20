@@ -1,0 +1,267 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Multiusecase/Multitenancy
+
+== Definitions
+
+For better understanding the following definitions are introduced.
+
+=== Components
+
+The eCodex Access Point contains in its default installation the following
+components:
+
+|===
+| Component | Default Implementation | Protocol | Responsible for
+
+| Webserver | Apache | HTTPS/TLS | TLS-Termination, TLS-Client Authentication
+
+| AS4-Gateway | Domibus | eDelivery | AS4 message creation, signing AS4-Message, fullfilling eDelivery Policy
+
+| eCodexConnector | DomibusConnector | eCodex | ASIC-S container creation and validation, ETSI-REM evidence generation
+
+|===
+
+=== P-Mode Set
+
+The p-Mode set contains a configuration with
+
+* Access-Point Addresses (URL)
+* Certificates of all Access Points
+* Own certificates (shared) and corresponding private keys (not shared!)
+* Parties
+* Services
+* ServiceLegs
+* Actions
+
+These items will be referenced in this document as p-Mode item.
+
+CAUTION: Within a p-Modes set every Action, Party, Service, ServiceLeg must be unique! A p-mode set can only have one private key of a kind for e-Codex Container creation and evidence creation
+
+== Multi Backend / AS4 Service based Routing [already implemented]
+
+* Every UseCase is within the same P-Mode set. This meanst that the merged usecases must not use the same name for a p-Mode item.
+* Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name]
+
+
+[plantuml,multiusecase_1]
+----
+@startuml
+
+rectangle pmode as "P Mode Set" {
+  component AS4_Gateway as "AS4-Gateway"
+
+  component connector as "Connector"
+
+  component backend1
+
+  component backend2
+}
+
+AS4_Gateway -down-> connector
+
+connector -down-> backend1
+
+connector -down-> backend2
+
+backend2 -[hidden]- backend1
+
+
+@enduml
+----
+
+== Multi Backend / FinalRecipient based Routing [already implemented]
+
+* Every Routable Use Case is within the same P-Mode set
+* Interferes with the national addressing attributes originalSender, finalRecipient
+** The OriginalSender, FinalRecipient has to follow a pattern eg.: {{appid}::{{nationalpart}
+** This address must be published into Authority Database (CCDB,CDB,...)
+
+This can be done by using the startswith match pattern within the backend routing rules (introduced with connector 4.4.x).
+
+[plantuml,multiusecase_2]
+----
+@startuml
+
+rectangle pmode as "P Mode Set" {
+
+  component AS4_Gateway as "AS4-Gateway"
+
+  component connector as "Connector"
+
+  component backend1
+
+  component backend2
+}
+
+AS4_Gateway -down-> connector
+
+connector -down-> backend1
+
+connector -down-> backend2
+
+backend2 -[hidden]- backend1
+
+
+@enduml
+----
+
+
+
+== Multi Tenancy Based Routing [implementation in progress]
+
+* Different p-Mode sets
+* Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name] and the p-Mode set (domain name of Gateway)
+
+Currently the domibus connector plugin has no support for this setup.
+
+[plantuml,multiusecase_3]
+----
+@startuml
+
+component AS4_Gateway as "AS4-Gateway" {
+  rectangle AS4_Gateway_Tenant1 as "Tenant 1" {
+    rectangle pmode_set1
+  }
+  rectangle AS4_Gateway_Tenant2 as "Tenant 2" {
+    rectangle pmode_set2
+  }
+}
+
+component connector as "Connector"
+
+component backend1
+
+component backend2
+
+AS4_Gateway_Tenant1 -down-> connector
+AS4_Gateway_Tenant2 -down-> connector
+
+connector -down-> backend1
+
+connector -down-> backend2
+
+backend2 -[hidden]- backend1
+
+
+@enduml
+----
+
+WARNING: As all P-Modes have to be merged together into one set to import it into the connector. The used names within the different p-Mode sets must be unique. This can be achieved by encoding the service into the service type and party id type.
+
+== Multi Tenancy, Multiple Connectors
+
+* Different p-Mode sets
+* Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name] and the p-Mode set (domain name of Gateway)
+
+
+[plantuml,multiusecase_4]
+----
+@startuml
+
+component AS4_Gateway as "AS4-Gateway" {
+  rectangle AS4_Gateway_Tenant1 as "Tenant 1" {
+    rectangle pmode_set1 as "P-Mode Set 1"
+  }
+  rectangle AS4_Gateway_Tenant2 as "Tenant 2" {
+    rectangle pmode_set2 as "P-Mode Set 2"
+  }
+}
+
+component connector1 as "Connector1" {
+  rectangle pmode_set1_ as "P-Mode Set 1"
+}
+component connector2 as "Connector2" {
+  rectangle pmode_set2_ as "P-Mode Set 2"
+}
+
+component backend1
+
+component backend2
+
+AS4_Gateway_Tenant1 -down-> connector1
+AS4_Gateway_Tenant2 -down-> connector2
+
+connector1 -down-> backend1
+
+connector2 -down-> backend2
+
+
+
+@enduml
+----
+
+CAUTION: The domibusConnectorPlugin 4.2.x comes with limited support for this environment. Only PULL-Mode on the plugin side is supported. For more details consult the domibusConnectorPlugin documentation.
+
+== Multi Tenancy, Multi Use Case [not implemented yet]
+
+* Different p-Mode sets
+* The different GW tenants are sending the message to the same connector
+* The messages are split up into different Service Domains by a set of rules
+* Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name] and the p-Mode set (domain name of Gateway)
+* For every service domain a backend routing is in place
+* For outgoing messages also a router is in place which assigns the message to a service domain
+
+[plantuml,multiusecase_5]
+----
+@startuml
+
+component AS4_Gateway as "AS4-Gateway" {
+  rectangle AS4_Gateway_Tenant1 as "Tenant 1" {
+    rectangle pmode_set1 as "P-Mode Set 1"
+  }
+  rectangle AS4_Gateway_Tenant2 as "Tenant 2" {
+    rectangle pmode_set2 as "P-Mode Set 2"
+  }
+}
+
+component connector as "Connector" {
+  rectangle service_domain_router as "Incoming Router"
+
+  rectangle service_domain1 as "Service Domain 1" {
+    rectangle pmode_set1_ as "P-Mode Set 1"
+  }
+  rectangle service_domain2 as "Service Domain 2"{
+    rectangle pmode_set2_ as "P-Mode Set 2"
+  }
+'  rectangle service_domain_out_router as "Outgoing Router"
+}
+
+component backend1
+component backend2
+component backend3
+component backend4
+
+AS4_Gateway_Tenant1 -down-> service_domain_router
+AS4_Gateway_Tenant2 -down-> service_domain_router
+
+service_domain_router -down-> service_domain1
+service_domain_router -down-> service_domain2
+'service_domain1 -[hidden]d- service_domain_out_router
+
+
+service_domain1 -down-> backend1
+service_domain1 -down-> backend4
+
+service_domain2 -down-> backend2
+service_domain2 -down-> backend3
+service_domain2 -down-> backend4
+
+'backend1 -up-> service_domain_out_router
+'backend2 -up-> service_domain_out_router
+'backend3 -up-> service_domain_out_router
+'backend4 -up-> service_domain_out_router
+
+
+
+@enduml
+----

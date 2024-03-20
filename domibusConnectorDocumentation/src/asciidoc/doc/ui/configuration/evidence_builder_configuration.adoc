@@ -1,0 +1,87 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: {path}
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Evidence Builder Configuration
+
+Here the configuration for the building of ETSI-REM evidences can be set.
+
+The ETSI-REM evidences created by the domibusConnector are electronically signed.
+Also, there is general information on the issuer of the ETSI-REM evidences.
+
+== Import old config
+
+This button gives the opportunity to import from your old configuration used for domibusConnector-4.2.x and domibusConnector-4.3.x.
+
+It opens a dialog where the old configuration file (usually "connector.properties") can be uploaded.
+
+After successful upload of the old configuration file, a read-only dialog is shown with the properties imported from the old config.
+
+When the Button "Save Imported Config" is hit, a new Dialog shows the actual properties that get imported into the domibusConnector database. Their database target is the table DC_MESSAGE_LANE_PROPERTY.
+
+This dialog has to be confirmed by hitting the "Check" Button.
+
+Once approved, the imported configuration takes immediate effect.
+
+The whole process can be interrupted any time by closing the dialog or by "Cancel" Button.
+
+== Save/Reset Changes
+
+The Configuration edited within this mask can be reset at any time hitting the "Reset Changes" Button.
+This causes the configuration being reloaded and the mask being refreshed with the loaded configuration.
+
+"Save Changes" causes the configuration to be stored into the domibusConnector database. Their database target is the table DC_MESSAGE_LANE_PROPERTY.
+
+Once approved, the saved configuration takes immediate effect.
+
+== Configuration properties
+
+The used certificates, private keys and settings are here.
+
+.ETSI-REM Evidences Signature Configuration Properties
+|===
+| property | description | field type | example values
+
+| Encryption Algorithm
+| Which Encryption Algorithm should be used for signatures.
+| Single-Select-Box
+| Any supported algorithm.
+
+| Digest Algorithm
+| Which Digest Algorithm should be used for digests during signature creation.
+| Single-Select-Box
+| Any supported algorithm.
+
+| Key Store Configuration
+| The configuration of the keyStore holding the private key for signing.
+| Multiple fields
+| Path or database reference of the keyStore, its password and type.
+
+| Private Key Configuration
+| Private key configuration with key alias (must exist within the keystore) and a key password to open the private key. This key is used to sign the ASIC-S container, TrustTokenPDF, TrustTokenXML. The public key of this keypair must be shared with your communication partners.
+| Multiple fields
+| The alias and the password.
+
+|===
+
+.Issuer Configuration Properties
+|===
+| property | description | field type | example values
+
+| postal address
+| The address of the issuer is mandatory for the building process of ETSI-REM evidences.
+| Multiple fields
+| Any values
+
+| AS4 Party Info
+| Information of the gateway over which the ETSI-REM evidences are sent. This is the "Home Party" configuration in the PModes.
+| Multiple fields
+| Values taken from the PMode-Set Import.
+
+|===

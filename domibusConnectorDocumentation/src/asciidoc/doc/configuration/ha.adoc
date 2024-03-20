@@ -1,0 +1,85 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+= HA Support
+
+== HA Manual
+
+=== Introduction
+
+The recommendation is to use a active/passive service environment. For an active/active environment read the following:
+
+* HA support is still experimental and mostly untested
+* UI configuration does not work with HA!
+** Configuration changes can only be done in property files, this means after a change every instance must be restarted
+* Link communication requires load balancer
+** Link Pull mode will NOT work with HA
+
+Shared Components:
+
+==== Message Server
+
+The connector internally uses a queuing system do decouple the message handling processes. As this queuing process
+is started by the connector internally running more than one connector requires this connector to be clustered.
+So this queuing system has to be configured externally.
+
+==== Filesystem
+
+The connector is also storing payloads on the filesystem. If more than one connector is running at the same time,
+every connector needs access to the same storage location.
+
+==== Timer Jobs
+
+Within the connector multiple timer-jobs are triggered by the quartz framework. To avoid triggering it
+on every connector node, quartz must also be aware of running within a cluster.
+
+=== Configuration
+
+
+==== Configure Message Server
+
+The JMS Server is configured by the spring-framework so the default spring-properties can be uses:
+A detail overview of the used queues is provided by this document: xref:../architecture/connector_message_flow.adoc[Connector Message Flow]
+
+Example for Artemis-Configuration (also see link:https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/boot-features-messaging.html#boot-features-artemis[]):
+----
+spring.artemis.mode=native
+spring.artemis.host=192.168.1.210
+spring.artemis.port=9876
+spring.artemis.user=admin
+spring.artemis.password=secret
+----
+
+Other JMS-providers are also supported as long as they have a spring-support and the required libraries
+are on the java-classpath.
+
+==== Configure Quartz
+
+Example config:
+
+----
+spring.quartz.properties.org.quartz.jobStore.isClustered=true
+spring.quartz.properties.org.quartz.scheduler.instanceName = DomibusConnectorClusteredScheduler
+spring.quartz.properties.org.quartz.scheduler.instanceId = AUTO
+----
+
+Also see: link:http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/ConfigJDBCJobStoreClustering.html[]
+
+=== Backend and Gateway Connection
+
+As the connector exposes webservices to gateway and the backends, this
+services should be made fault-tolerant with an load-balancer.
+
+

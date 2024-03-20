@@ -1,0 +1,68 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= e-Codex Container Creation
+
+== e-Codex Container Format
+
+The e-Codex container is basically a zip container following the link:https://en.wikipedia.org/wiki/Associated_Signature_Containers[ASIC-S] standard (Currently the use of ASIC-E within e-Codex is not standardized. The e-Codex container holds the
+
+* Business Document as PDF
+* TrustOK Token as PDF
+* Any additional attachments of any file type
+
+NOTE: The container itself is signed by the sending connector with the provided key. The TrustTokenXML, BusinessDocumentXML is not put into the ASIC-S container.
+
+== Limitations
+
+Depending on the underlying zip implementation of the JVM the maximum file limit of the e-Codex Container / ASIC-S container is between 2 and 4 GB. The next limit would be 4 GB for the link:https://en.wikipedia.org/wiki/ZIP_(file_format)[zip format] itself (zip64 could be a solution).
+
+== Creation Workflow
+
+. The business document is validated
+.. The existence of a business document is validated
+.. Depending on the authentication System (AUTHENTICATION_BASED, SIGNATURE_BASED) the signature of the document is validated
+.. Dependent on the checkes a Trust Token is created both in PDF Form (human readable) and strucutered as XML. Both documents are signed by the connector
+. The BusinessDocumentPDF, TrustTokenPDF and all attachments are put into the  ASIC-S container
+
+The message now contains the ASIC-S container, the BusinessDocumentXML and the TrustTokenXML.
+
+image:msg_transf_out_business_2.png[msg_transf_out_business_2]
+
+=== Signature Based Validation
+
+The signature based validation uses DSS library to validate the document signature according to the provided rules. This rules can be configured by the link:../ui/configuration/business_document_verification.adoc[Business Document Verification] configuration. The connector supports setting:
+
+* A custom certificate validation policy.
+* A trust store (which holds all certificates considered as trusted for signing a document)
+* Including a trusted list source
+* Using a ignore store (a keystore which holds all certificates considered as non trusted)
+
+Based on this informations the signature is checked technical. If the check is successfull and the legal check of document and signature to. The document is considered legally valid in the sending country.
+
+=== Authentication Based Validation
+
+The authentication based approach has been invented by the e-Codex project to also support countries which are using enclosed systems to generate the documents. Or which are using other sources of trust as signing (blockchain approaches, non X509 certificates, central audit logs, ...).
+
+In this case the Authentication Based System assumes that only a valid document can be handed over to the connector. The connector uses in this case the originalSender as authenticated document issuer. The identity provider system is set by configuration.
+
+NOTE: Since the eIDAS regulation this approach seems a little bit odd, but still this enables also older systems to particiapte in international digital data exchange. For more information see link:www.e-codex.eu[]
+
+==== Discussion on Authentication Based System
+
+This approach most likely needs som adaptions to national systems. Like passing on authenticatoin tokens to the connector for valdiation (eg. SAML-Token, JWT-Token, ...). There are plenty of use cases for that. Please contact the ME-Codex consortium if you need adaptions/extensions on this part.
+
+Still the recommendation is if possible use eIDAS conformant signatures.
+
+
+
+
+

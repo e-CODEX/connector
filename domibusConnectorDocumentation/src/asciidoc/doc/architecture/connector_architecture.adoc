@@ -1,0 +1,70 @@
+:description: The connector architecture overview
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= domibusConnector architecture
+
+This page describes the architectural principles the domibusConnector is build upon.
+
+== Modules
+
+The domibusConnector is built as a Maven multi-module project.
+All the modules are connected via dependencies.
+
+.Overview domibusConnector module dependencies
+image:domibusConnector-module-dependencies.png[domibusConnector module dependencies]
+
+== Decoupled asynchronous workflow
+
+The processing of the domibusConnector works that way, that all external communication is
+decoupled from the processing modules.
+
+That means that between the module responsible for communication, the domibusConnectorLink,
+only exchanges messages with the domibusConnectorController over API. Between those components are 
+JMS message queues. 
+Messages arriving at the 
+
+=== domibusConnectorLinkCommon
+
+The LinkModule is responsible for:
+
+* Receiving messages from LinkPartners
+* Transforming this messages to the domain model
+* Initial Storage of the message
+* Handing message over to ConnectorController
+
+=== domibusConnectorController
+
+Is responsible for
+
+* Message Evidence/Flow
+* Evidence Generation via EvidenceToolkit
+* Extraction/Generation of ASIC-S container via SecurityToolkit
+* XML/PDF-Token generation via SecurityToolkit
+* Assigning Message to correct backend
+* Timer Jobs for Evidences
+
+Is not responsible for:
+
+* Connection to Link Partners
+
+==== Interface between connector and link module
+
+The connector and the link module are sharing the following interfaces:
+
+* SubmitToConnector - for handing over the message to the connectorController
+* SubmitToLink - for handing over the message to LinkModule
+* MessagePersistenceService - for loading/storing messages from/to Storage
+* TransportStateService - to mark the current transport state of the message
+
+=== domibusConnectorControllerAPI
+
+* Holds all interfaces for the connector modules to communicate with each other

@@ -1,0 +1,34 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Loopback Message Sending
+
+With connector version 4.2 the connector supports loopback sending of messages.
+This means that a connector can handle a message going from backend to gateway
+and back from gateway to backend with the same EBMS-Message id.
+
+== Database Changes
+
+For this purpose the database model was extended in a way that not only the
+ebms is considered unique anymore. The new unique pair for a message is
+the ebms id and the message target (gateway, backend). With this approach
+the connector can differentiate a message between incoming and outgoing
+and create and manage the created ETSI-REM evidences accordingly.
+The specific database changes are provided with the database migration scripts.
+
+== Domibus Gateway specific changes
+
+The domibus gateway supports loopback message sending according to the
+documentation only for testing purposes. The domibus gateway also
+is appending on an loop backed message (sender=receiver) a _1 to the EBMS id.
+This behaviour does break the EBMS standard so the connector is removing this
+_1 from any EBMS id. In future implementations this workaround will be moved
+into the domibusConnectorPlugin.

@@ -1,0 +1,46 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: {path}
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Message Transport to Link Partners
+
+The domibus connector communicates with different other components (gateway, connector-client) this is done over the link module. But sometimes the messages are failing during this transport. A overview of this transports is provided by the link:/monitoring/linktransport[Monitoring - Message Transport] UI.
+
+For details see link:../../architecture/link_partners.html[Link Module Architecture Doc]
+
+== Overview
+
+The table contains the following items:
+
+* A Envelope Button, which is a link to the business message (is only enabled if the transport is a business message)
+* A circle arrow button which will trigger the resend of the message. This button is only enabled if the resend is possible.
+* A Attempt column: Shows how many transports have been made
+* Last Transport State: The last transport state
+* Connector Message Id: The connector message id of the message being transported
+* Link Partner Name: To which link partner is the message transported
+* Created: When did the transport initially started
+* Remote Message Id: If the link partner responds to the message with an Message Id it will be shown in this column. For the gateway this is usually the EBMS ID for the connector client it will be the national message id or client message id.
+* Transport Id: The id assigned to the specific transport.
+
+image::screenshot_msg_transport.png[]
+
+
+=== When is a resend possible?
+
+* The business content must still be available.
+* The business message must not be in REJECTED or CONFIRMED state
+* The link partner must be available
+
+=== Is it possible to change the link partner
+
+No, that is not possible. Since this would also interfer with the
+routing logic and other components.
+
+
+

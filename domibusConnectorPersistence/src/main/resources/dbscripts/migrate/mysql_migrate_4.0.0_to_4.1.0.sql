@@ -1,0 +1,146 @@
+-- *********************************************************************
+-- Update Database Script - from domibusConnector 4.0 to 4.1
+-- *********************************************************************
+-- updates the connector database from an 4.0 connector version to 4.1
+
+SET FOREIGN_KEY_CHECKS=0;
+-- requires MySQL >= 5.6.6, default since MySQL 8.0.2
+SET EXPLICIT_DEFAULTS_FOR_TIMESTAMP = ON;
+-- fixes UUID bug: https://bugs.mysql.com/bug.php?id=101820es UUID bug
+-- also see: https://stackoverflow.com/questions/36296558/mysql-generating-duplicate-uuid
+SET names utf8;
+
+-- #################### 1/6 RENAME tables that need to be recreated ####################
+-- #################### 2/6 CREATE tables, structural changes ####################
+CREATE TABLE DOMIBUS_CONNECTOR_PROPERTY
+(
+    PROPERTY_NAME  VARCHAR(512)  NOT NULL,
+    PROPERTY_VALUE VARCHAR(1024) NULL
+);
+
+CREATE TABLE DOMIBUS_CONNECTOR_USER
+(
+    ID                      BIGINT NOT NULL,
+    USERNAME               VARCHAR(50)    NOT NULL,
+    ROLE                   VARCHAR(50)    NOT NULL,
+    LOCKED                 BOOLEAN            NOT NULL DEFAULT FALSE,
+    NUMBER_OF_GRACE_LOGINS SMALLINT NOT NULL DEFAULT 5,
+    GRACE_LOGINS_USED      SMALLINT NOT NULL DEFAULT 0,
+    CREATED                DATETIME       NOT NULL
+);
+
+CREATE TABLE DOMIBUS_CONNECTOR_USER_PWD
+(
+    ID           BIGINT NOT NULL,
+    USER_ID      BIGINT NOT NULL,
+    PASSWORD    VARCHAR(1024)  NOT NULL,
+    SALT        VARCHAR(512)   NOT NULL,
+    CURRENT_PWD SMALLINT            NOT NULL DEFAULT 0,
+    INITIAL_PWD SMALLINT            NOT NULL DEFAULT 0,
+    CREATED     DATETIME       NOT NULL
+);
+
+CREATE TABLE DC_DB_VERSION
+(
+    TAG VARCHAR(255) PRIMARY KEY
+);
+
+ALTER TABLE DOMIBUS_CONNECTOR_MSG_ERROR
+    MODIFY ERROR_MESSAGE VARCHAR(2048);
+
+ALTER TABLE DOMIBUS_CONNECTOR_EVIDENCE
+    ADD CONNECTOR_MESSAGE_ID VARCHAR(255);
+
+CREATE INDEX IXFK_DC_EV_01 ON DOMIBUS_CONNECTOR_EVIDENCE (CONNECTOR_MESSAGE_ID);
+CREATE INDEX IXFK_DC_USER_PWD_01 ON DOMIBUS_CONNECTOR_USER_PWD (USER_ID);
+
+DROP TABLE IF EXISTS DOMIBUS_WEBADMIN_PROPERTY;
+DROP TABLE IF EXISTS DOMIBUS_WEBADMIN_USER;
+
+-- #################### 3/6 TRANSFER data ####################
+
+-- create default values for party, action and service if they do not already exist
+INSERT INTO DOMIBUS_CONNECTOR_SERVICE
+SELECT 'n.a.', 'n.a.'
+FROM dual -- because oracle
+WHERE NOT EXISTS(SELECT NULL -- whatever not used by exists
+                 FROM DOMIBUS_CONNECTOR_SERVICE
+                 WHERE SERVICE = 'n.a.'
+    );
+
+-- see above
+INSERT INTO DOMIBUS_CONNECTOR_ACTION
+SELECT 'n.a.', 0
+FROM dual -- because oracle
+WHERE NOT EXISTS(SELECT NULL -- whatever not used by exists
+                 FROM DOMIBUS_CONNECTOR_ACTION
+                 WHERE ACTION = 'n.a.'
+    );
+
+
+-- see above
+INSERT INTO DOMIBUS_CONNECTOR_PARTY
+SELECT 'n.a.', 'n.a.', 'n.a.'
+FROM dual -- because oracle
+WHERE NOT EXISTS(SELECT NULL -- whatever not used by exists
+                 FROM DOMIBUS_CONNECTOR_PARTY
+                 WHERE PARTY_ID = 'n.a.'
+    );
+
+update DOMIBUS_CONNECTOR_MESSAGE_INFO
+set FROM_PARTY_ID='n.a.',
+    FROM_PARTY_ROLE='n.a.'
+where FROM_PARTY_ID is null;
+
+UPDATE DOMIBUS_CONNECTOR_MESSAGE
+SET CONNECTOR_MESSAGE_ID=CONCAT('_migrate_', UUID())
+where CONNECTOR_MESSAGE_ID is null;
+
+INSERT INTO DOMIBUS_CONNECTOR_SEQ_STORE
+VALUES ('DOMIBUS_CONNECTOR_PROPERTY.ID', 1000);
+
+INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED, CREATED)
+VALUES (1000, 'admin', 'ADMIN', 0, 5, 0, NOW());
+INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED, CREATED)
+VALUES (1001, 'user', 'USER', 0, 5, 0, NOW());
+
+INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED)
+VALUES (1000, 1000,
+        '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306',
+        '5b424031616564356639', 1, 1, NOW());
+INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED)
+VALUES (1001, 1001,
+        '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306',
+        '5b424031616564356639', 1, 1, NOW());
+
+-- update the seq_store
+INSERT INTO DOMIBUS_CONNECTOR_SEQ_STORE
+VALUES ('DOMIBUS_CONNECTOR_USER.ID', 1002);
+INSERT INTO DOMIBUS_CONNECTOR_SEQ_STORE
+VALUES ('DOMIBUS_CONNECTOR_USER_PWD.ID', 1002);
+
+-- #################### 4/6 DELETE temporary tables, frees fk names ####################
+-- #################### 5/6 ADD the constraints ####################
+
+ALTER TABLE DOMIBUS_CONNECTOR_PROPERTY
+    ADD CONSTRAINT PK_DC_PROPERTY
+        PRIMARY KEY (PROPERTY_NAME);
+
+ALTER TABLE DOMIBUS_CONNECTOR_USER
+    ADD CONSTRAINT PK_DC_USER
+        PRIMARY KEY (ID ASC);
+
+ALTER TABLE DOMIBUS_CONNECTOR_USER_PWD
+    ADD CONSTRAINT PK_DC_USER_PW
+        PRIMARY KEY (ID ASC);
+
+ALTER TABLE DOMIBUS_CONNECTOR_USER_PWD
+    ADD CONSTRAINT FK_DC_USER_PWD_01
+        FOREIGN KEY (USER_ID) REFERENCES DOMIBUS_CONNECTOR_USER (ID) ON DELETE Restrict ON UPDATE Restrict;
+
+-- #################### 6/6 UPDATE Version ####################
+
+INSERT INTO DC_DB_VERSION (TAG)
+VALUES ('V4.1.5');
+
+SET FOREIGN_KEY_CHECKS = 1;

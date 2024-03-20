@@ -1,0 +1,115 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Upgrade to 4.4.0
+
+== Upgrade Manual
+
+=== Configuration Properties
+
+==== Evidences Toolkit Configuration
+
+===== Rename the following properties:
+
+* connector.evidences.key-store.path => connector.evidences.signature.key-store.path
+* connector.evidences.key-store.password => connector.evidences.key-store.password
+* connector.evidences.private-key.alias => connector.evidences.signature.private-key.alias
+* connector.evidences.private-key.password => connector.evidences.signature.private-key.password
+
+* postal.address.street => connector.evidences.issuer-info.postal-address.street
+* postal.address.locality => connector.evidences.issuer-info.postal-address.locality
+* postal.address.zip-code => connector.evidences.issuer-info.postal-address.zip-code
+* postal.address.country => connector.evidences.issuer-info.postal-address.country
+
+==== Remove the following properties
+
+* connector.evidences.hash-algorithm (is replaced by connector.evidences.signature.digest-algorithm default value SHA512)
+* gateway.endpoint.address (replaced by connector.evidences.issuer.as4-party.endpoint-address will be updated by p-Mode import)
+* gateway.name (replaced by connector.evidences.issuer.as4-party.name, will be updated by p-Mode import)
+
+==== Security Configuration
+
+As the security lib configuration has been splitted into the eCodexContainer and BusinessDocumentVerification configuration the following properties have changed:
+
+More details are available here:
+
+* link:../ui/business_document_verification.html[Business Document UI configuration]
+
+* link:../ui/ecodex_container_configuration.html[eCodex Container UI configuration]
+
+* link:../architecture/ecodex_container_creation.html[eCodex container creation]
+
+===== Rename the following properties:
+
+* token.issuer.country => connector.business-document-sent.country
+* token.issuer.service-provider => connector.business-document-sent.service-provider
+* token.issuer.advanced-electronic-system-type => connector.business-document-sent.default-advanced-system-type
+* token.issuer.identity-provider => connector.business-document-sent.authentication-validation.identity-provider
+* connector.security.keystore.path => connector.ecodex-container.signature.key-store.path
+* connector.security.keystore.password => connector.ecodex-container.signature.key-store.password
+* connector.security.private-key.alias => connector.ecodex-container.signature.private-key.alias
+* connector.security.private-key.password => connector.ecodex-container.signature.private-key.password
+
+===== Rename and duplicate the following properties:
+
+* connector.security.trust-store.path =>
+** connector.business-document-sent.signature-validation.trust-store.path
+** connector.ecodex-container.signature-validation.trust-store.path
+
+* connector.security.trust-store.password =>
+** connector.business-document-sent.signature-validation.trust-store.password
+** connector.ecodex-container.signature-validation.trust-store.password
+
+
+
+==== The following properties are not used anymore
+
+* replaced by dss configuration
+** security.lotl.scheme.uri
+** security.lotl.url
+** security.oj.url
+
+
+
+==== Other configuration
+
+Add the following configuration properties:
+
+|===
+| property | value
+
+| spring.artemis.embedded.data-directory
+| use here a writeable directory if you intend to use the embedded message broker. eg: ./data/artemis (the broker db will be created relative to the working directory)
+
+|===
+
+Change the following properties:
+
+* spring.jta.enabled=true
+
+
+
+Delete or comment the following properties
+
+* spring.activemq.broker-url=vm://broker1?brokerConfig=xbean:config/activemq.xml
+
+
+=== Database scripts
+
+Apply the provided migration scripts
+
+=== P-Modes
+
+* Reupload p-Modes and trusted connectors keystore.
+
+
+
+
+

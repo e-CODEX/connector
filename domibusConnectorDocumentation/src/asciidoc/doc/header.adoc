@@ -1,0 +1,42 @@
+ifndef::basepath[]
+:basepath: ../
+endif::basepath[]
+
+ifndef::header[]
+
+//# tag::header[]
+
+//TODO: insert html header with navigation here..
+
+:toc: left
+:toc-title: Table of Content
+:toclevels: 4
+:sectnums:
+
+
+:header: header
+
+//# end::header[]
+
+endif::header[]
+
+ifndef::imgdir[]
+:imgdir: ../resources/images/
+endif::imgdir[]
+
+ifndef::imagesdir[]
+:imagesdir: {basepath}/{imgdir}
+endif::imagesdir[]
+
+ifdef::webimagedir[]
+:imagesdir: {path}{webimagedir}
+endif::webimagedir[]
+
+
+//ifdef::rootpath[]
+//:imagesdir: {rootpath}{path}{imagesdir}
+//endif::rootpath[]
+//
+//ifndef::rootpath[]
+//:rootpath: ./../../
+//endif::rootpath[]

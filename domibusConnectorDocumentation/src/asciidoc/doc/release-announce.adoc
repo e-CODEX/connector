@@ -1,0 +1,27 @@
+= New domibusConnector release published
+
+Dear all,
+
+we are happy to announce a new major release of the
+domibusConnector. The upgrade is not mandatory.
+Compatibility with other versions of domibusConnector of the same major version is given.
+
+== Version
+
+The new version is domibusConnector-{project-version}.
+
+== Download location
+
+It is available under https://secure.e-codex.eu/nexus/content/groups/public/eu/domibus/connector/domibusConnectorDistribution/{project-version}/domibusConnectorDistribution-{project-version}.zip
+
+Username and password will by provided via e-mail request.
+
+== Changelog
+
+The changelog of this version is available within the zip folder under 'documentation/pdf-documentation/changelog.pdf'.
+
+Please also visit the domibusConnector roadmap on the e-Codex website link:https://www.e-codex.eu/node/45[here].
+
+Best regards,
+
+e-codex connector Team

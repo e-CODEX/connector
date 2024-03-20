@@ -1,0 +1,169 @@
+== Changelog for domibusConnector-4.4.x
+
+=== 4.4.0
+
+==== API changes
+
+* New API web-service methods to support backend pull mechanism with technical message acknowledgement.
+* The "role" of parties in message transition model is set to "optional".
+* Additional field to give backends the possibility to add the informaiton if the business document of one message is either SIGNATURE_BASED or AUTHENTICATION_BASED. 
+
+For further details see the following chapters of the domibusConnector-Architecture.pdf:
+
+* Chapter 6. Backend message routing
+* Chapter 4. domibusConnectorAPI
+
+If the domibusConnectorClient-Libraries are in place, those also need to be upgraded to version 4.4 if this feature should be used. 
+
+==== Backend implementations/features
+
+* Moving a message into a DLQ in case of an error.
+* Integrated eCodex security library into domibusConnector sources.
+* Integrated evidenceBuilder library into domibusConnector sources.
+* JavaKeyStore handling can now be done within database.
+* Connector trust store is now seperated from document validation trust-store.
+* Support for JTA transactions
+* Default backend plugin for connector test messages allows to receive and send connector test messages.
+* The ebMS property "role" as part of the ebMS party definition will be set by the connector. 
+* Flag PDF_REQUIRED in table DOMIBUS_CONNECTOR_ACTION removed as it is obsolete.
+
+For further details see the following chapters of the domibusConnector-Architecture.pdf:
+
+* Chapter 5. Message Processing
+
+
+==== UI implementations/features
+
+* New PMode-Set handling.
+* UI Configuration support for Link Partners
+* UI Configuration support for message routing to the backends.
+* UI support to retry messages to link partner.
+* UI Support for JMS Monitoring.
+* UI Support to see and send Connector Test Messages.
+
+For all new features in the UI online help pages are integrated.
+
+==== Documentation
+
+The maven-site documentation has been replaced by static html documentation.
+The documentation can be fully accessed via the UI of the domibusConnector.
+
+Also, some PDF files are generated with content from the static html documentation.
+Those PDF documents are shipped in the distribution package.
+They are:
+
+* installation_guide.pdf
+* Upgrade-Manual.pdf
+* domibusConnectorAPI.pdf
+* domibusConnector-Architecture.pdf
+* Changelog.pdf
+
+
+=== 4.4.1
+
+* Multiple Fixes within UI
+
+=== 4.4.2
+
+* Fix related to log4j2 security issue  (upgrade to 2.15.0)
+
+=== 4.4.3
+
+* Fix related to log4j2 security issue (upgrade to 2.17.0)
+
+=== 4.4.4
+
+* Fix problems with certificate verification: The CommonCertificateVerifier has ignored any
+configured restrictions on AIA checking. This has lead to a very long message processing
+if the AIA source was not reachable.
+
+
+=== 4.4.5
+
+==== Fixes
+
+* Multiple updates of dependentant libraries
+* Fix for issues related to pull for web service backends
+* UI fix for enable change of message process settings
+** EBMS generation
+** should generated evidences relayed back to backend
+* Fix for DOMIBUS_CONNECTOR_MSG_CONT entity: The created field was not filled by default with the current timestamp.
+* Fix for missing class issue [Ticket#55054]: Explicitly added dss-crl-parser-x509crl as dependency.
+* Fix issue with 4.4.x initial scripts at table DC_TRANSPORT_STEP => TRANSPORT_MESSAGE column should be TRANSPORTED_MESSAGE
+* Add prometheus metrics export interface dependency + documentation
+* Extend documentation
+* Additional work on slow certificate verification: Under some circumstances message processing is slow. Because the DSS-Tools try to lookup AIA or other certificate related information. This occurs because currently not all Lookup Classes from SecurityToolkit and EvidenceToolkit are using the connector configuration. This has been fixed by removing the DataLoader from CommonCertificateVerifier class (the common config is still not used in every certificate verifier!).
+* Removed deprecated parts from installation manual
+* Fixed -Dconnector.config.file property is ignored by connector
+
+=== 4.4.6
+
+==== Fixes
+
+* Fix issue with connector2connecter tests if Sender and Initiating Role are the same
+* Also fix issue when responding to a c2c test
+* commons-text update CVE-2022-42889
+
+=== 4.4.7
+
+==== Fixes
+
+* Fix issue with running out of entropy on some systems: The LargeFileProvider
+encryption uses SecureRandom.getStrong() which will use /dev/random on Unix-Systems. The /dev/random interface will block if there is not enough
+entropy available. With 4.4.7 the connector will use new SecureRandom() which
+will use /dev/urandom as entropy source by default.
+* Update minor version of dependencies
+* Update Testdata keystores
+
+
+=== 4.4.8
+
+With 4.4.8 the DSS Tools are upgraded to stay as compatible as possible with CXF. But
+the dss tools upgraded also changed the dss-API so this upgrade should be
+tested very carefully.
+
+==== Fixes
+
+* Fix for CVE-2022-46364. CXF is upgraded to 3.4.10. As therefore the xmlsec (org.apache.santuario:xmlsec) lib is also upgraded we had to override the class: eu.europa.esig.dss.xades.SantuarioInitializer from dss utils (eu.europa.ec.joinup.sd-dss:dss-xades)
+This is done by loading our class first.
+* Fix problem with selection of LinkPartner in MessageTransport View. The problem was that the selection only worked if no link partner has been selected. Also fix sorting Problem in View (https://github.com/spring-projects/spring-boot/issues/30867)
+* Update mysql dependency
+
+==== Upgrades
+
+* DSS-Tools => 5.11.1
+* CXF => 3.4.10
+* Santuario => 2.2.4
+* spring-data-bom => 2021.1.9
+* mysql => 8.0.32
+
+==== Notes
+* CVE-2022-46363 does not affect the connector because neither of the attributes are set by cxf-spring-boot-starter-jaxws
+
+=== 4.4.9
+
+==== Fixes
+
+
+* Improved Logging im Backend Link JQEUP-1979
+* Retry behaviour changed within Backend Link if push is used JUEUSW-734 (Some errors have not triggered in contrary to the intended behaviour a retry, this is the fix for it)
+
+=== Upgrades
+
+* Vaadin => 14.10.3
+
+=== 4.4.10
+
+==== Fixes
+
+* Fix incomplete build 4.4.9
+
+=== 4.4.11
+
+=== Fixes
+
+* Database scripts reorganised
+
+=== Upgrades
+
+* Upgrade DSS Utils to 5.12.1

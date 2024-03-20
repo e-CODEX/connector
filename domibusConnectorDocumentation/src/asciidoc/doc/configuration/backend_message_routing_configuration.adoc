@@ -1,0 +1,39 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+= Routing Rule Configuration
+
+Currently the routing rules can only be configured via the spring environment (connector.properties).
+
+Example of routing rules:
+
+[source,properties]
+----
+include::{mvnbasedir}/domibusConnectorController/src/test/resources-filtered/config/application-routing-rule-test.properties[]
+----
+
+== Routing Rule Expression
+
+[source]
+----
+include::{mvnbasedir}/domibusConnectorControllerAPI/src/main/java/eu/domibus/connector/controller/routing/RoutingRulePattern.java[tag=BNF]
+----
+
+
+
+
+
+
+

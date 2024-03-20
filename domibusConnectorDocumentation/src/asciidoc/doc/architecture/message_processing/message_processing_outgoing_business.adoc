@@ -1,0 +1,165 @@
+
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Processing of an outgoing business message
+
+This chapter shows the example of an outgoing business message. That means, that a business message is sent
+from the backend to the gateway to be submitted to another e-CODEX partner.
+
+== Message from backend to the domibusConnectorController message queue
+
+The following diagram shows how a message that is sent to the domibusConnector is transported to the domibusConnectorController message queue.
+
+[plantuml,message_proc_out_business_1,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+package domibusConnectorAPI{
+	interface DomibusConnectorBackendWebService
+}
+
+package domibusConnectorLink{
+	component WsBackendServiceEndpoint
+	interface SubmitToConnector
+	
+}
+
+queue toConnectorControllerQueue
+
+DomibusConnectorBackendWebService --> WsBackendServiceEndpoint : submitMessage
+WsBackendServiceEndpoint --> SubmitToConnector
+
+SubmitToConnector --> toConnectorControllerQueue
+
+@enduml
+----
+
+Within the domibusConnectorLink, the message is transformed from the transition model of the API to the domibusConnector internal domain model. During this transformation the payload is handled by the link:../payload_handling.html[Large File Persistence Service].
+Also, a connector_message_id is generated with which the message is now identified.
+
+Diagram: domibusConnectorLink message transformation
+
+image:msg_transf_out_business_1.png[msg_transf_out_business_1]
+
+== Message processing in domibusConnectorController
+
+The following diagram shows how a message that is put on the toConnectorController queue is processed
+
+[plantuml,message_proc_out_business_2,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+
+queue toConnectorControllerQueue
+queue DLQ.toConnectorControllerQueue
+
+queue submitToLinkQueue
+
+package domibusConnectorController {
+	package JTATransaction_Connector {
+	    component ToConnectorControllerListener
+	    component ToGatewayBusinessMessageProcessor
+	    component BuildECodexContainerStep
+	    component LookupGatewayNameStep
+	    component MessageConfirmationStep
+	    component SubmitMessageToLinkModuleQueueStep
+	    component SubmitConfirmationAsEvidenceMessageStep
+	}
+	
+}
+
+
+toConnectorControllerQueue --> ToConnectorControllerListener
+ToConnectorControllerListener --> ToGatewayBusinessMessageProcessor : identified as business message from backend to gateway
+ToGatewayBusinessMessageProcessor -d-> BuildECodexContainerStep : build ASIC-S
+ToGatewayBusinessMessageProcessor -d-> LookupGatewayNameStep : identify gateway
+ToGatewayBusinessMessageProcessor -d-> MessageConfirmationStep : create SUBMISSION_ACCEPTANCE
+ToGatewayBusinessMessageProcessor -d-> SubmitMessageToLinkModuleQueueStep : send to backend
+SubmitMessageToLinkModuleQueueStep -d-> submitToLinkQueue : to gateway link partner
+ToGatewayBusinessMessageProcessor -d-> SubmitConfirmationAsEvidenceMessageStep : send SUBMISSION_ACCEPTANCE back
+JTATransaction_Connector -d-> DLQ.toConnectorControllerQueue : on failure
+
+@enduml
+----
+
+During processing in ToGatewayBusinessMessageProcessor, the ASIC-S container ist built and the ETSI-REM evidence SUBMISSION_ACCEPTANCE is generated and added to the message.
+After the message is successfully put on the submitToLinkQueue, the SUBMISSIO_ACCEPTANCE evidence is sent back to the backend where the business message came from (can be deactivated by configuration).
+
+Diagram: ToGatewayBusinessMessageProcessor process message
+
+image:msg_transf_out_business_2.png[msg_transf_out_business_2]
+
+== Message send from the domibusConnector to the gateway
+
+The following diagram shows how a message that is put on the submitToLink queue is processed
+
+[plantuml,message_proc_out_business_3,format=svg]
+----
+@startuml
+
+
+top to bottom direction
+skinparam monochrome false
+skinparam linetype ortho
+
+
+
+package domibusConnectorAPI{
+	interface DomibusConnectorGatewaySubmissionWebService
+	interface DomibusConnectorGatewayWebService
+}
+
+package domibusConnectorLink{
+	
+	package JTATransaction_ToLink {
+	  component ToLinkPartnerListener
+	  component SubmitToLinkService
+		component DCGatewayWebServiceClient
+		component WSGatewayPluginWebServiceClient
+	}
+}
+
+
+queue submitToLinkQueue
+queue DLQ.submitToLinkQueue
+
+
+JTATransaction_ToLink -d-> DLQ.submitToLinkQueue : on failure
+submitToLinkQueue -d-> ToLinkPartnerListener
+ToLinkPartnerListener -d-> SubmitToLinkService
+SubmitToLinkService --> DCGatewayWebServiceClient : link.gwwspullplugin profile
+SubmitToLinkService --> WSGatewayPluginWebServiceClient : link.wsgatewayplugin profile
+DCGatewayWebServiceClient --> DomibusConnectorGatewaySubmissionWebService : submitMessage
+WSGatewayPluginWebServiceClient --> DomibusConnectorGatewayWebService : submitMessage
+
+@enduml
+----
+
+At the domibusConnectorLink, before the message is submitted to the gateway, it is transformed back to transition model of the API.
+
+Diagram: domibusConnectorLink message transformation
+
+image:msg_transf_out_business_3.png[msg_transf_out_business_3]
+

@@ -1,0 +1,62 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Upgrade to 4.2.0
+
+== Upgrade Manual
+
+=== Configuration Properties
+
+There has been the following changes within the configuration properties:
+
+* token.issuer.service.provider => renamed to => token.issuer.service-provider
+* token.issuer.aes.value => renamed to => token.issuer.advanced-electronic-system-type
+* identity.provider => renamed to => token.issuer.identity-provider
+* postal.address.postal.code => renamed to => postal.address.zip-code
+
+Also check the automatically generated properties report: link:../aggregated-spring-properties.html[Connector Properties]
+
+=== Database
+
+There has also been multiple changes to the database regarding the support for loopback message sending
+and first work on full support on multi usecase handling. For the database changes migration scripts are
+provided within the documentation folder.
+
+* dbscripts/migrate/oracle_migrate_4.1.x_to_4.2.0.sql
+* dbscripts/migrate/mysql_migrate_4.1.x_to_4.2.0.sql
+
+
+NOTE: For everyone who has used spring.liquibase.enabled=true during initial connector setup,
+the connector will apply the database schema changes automatically on first startup! So in this case
+do not use the provided migration scripts to avoid conflicts!
+
+
+==== Database changes overview:
+
+* The message table now contains a message source and a message target instead of a message direction
+The source and target could be GATEWAY, BACKEND, CONNECTOR
+* The EBMS id is now unique per target, so the connector can now fully support a loop backed message
+also the evidences get correctly assigned to the specific message
+* Additionally to the backend name of a message also a gateway name has been added to support multiple
+backends or the domibus gateway within multi tenancy mode. This feature is not complete yet!
+* A tracking table for message transport to backend or connector has been added, for the future
+messages delivered to a pull backend will be stored within the database instead a message queue,
+to prevent a queue overflow.
+* Quartz tables have been added
+
+=== Quartz
+The connector uses timer jobs for multiple jobs. Quartz is similar to cron. Quartz can also run in a clustered
+environment. For this purpose quartz uses database locks to ensure that jobs are not running at the same time.
+
+For operating within clustered mode which is currently considered experimental set the following property:
+
+* spring.quartz.properties.org.quartz.jobStore.isClustered=true
+
+Also make sure that the same database, JMS-Server and FileSystem is accessed!

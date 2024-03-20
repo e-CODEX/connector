@@ -1,0 +1,30 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+
+//disable section numbers in changelog
+:sectnums!:
+
+= Changelog
+
+include::{basepath}/doc/changelog/changelog-4.0.x.adoc[]
+
+include::{basepath}/doc/changelog/changelog-4.1.x.adoc[]
+
+include::{basepath}/doc/changelog/changelog-4.2.x.adoc[]
+
+include::{basepath}/doc/changelog/changelog-4.3.x.adoc[]
+
+include::{basepath}/doc/changelog/changelog-4.4.x.adoc[]
+
+
+
+

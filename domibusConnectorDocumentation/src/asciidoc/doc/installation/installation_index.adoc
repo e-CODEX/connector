@@ -1,0 +1,16 @@
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+include::{basepath}/doc/installation/installation_guide.adoc[leveloffset=+1]
+include::{basepath}/doc/installation/backend_configuration.adoc[leveloffset=+1]
+include::{basepath}/doc/installation/centos7_deploy.adoc[leveloffset=+1]
+include::{basepath}/doc/installation/certificates.adoc[leveloffset=+1]
+include::{basepath}/doc/installation/standalone_deployment.adoc[leveloffset=+1]
+include::{basepath}/doc/installation/startup_errors.adoc[leveloffset=+1]
+include::{basepath}/doc/installation/tomcat_deploy.adoc[leveloffset=+1]

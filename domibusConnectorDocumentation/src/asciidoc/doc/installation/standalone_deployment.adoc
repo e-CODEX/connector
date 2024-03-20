@@ -1,0 +1,66 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+= Standalone Deployment
+
+
+== Standalone Deployment Manual
+
+The recent connector comes also packaged as standalone runnable java application. The package itself
+is part of the domibusConnectorDistribution and located within the folder 'standalone'.
+
+
+=== Starting
+The standalone package is ready to run. Everything es preconfigured, even a embedded database is spinning up during startup.
+
+=== Customizing
+
+==== Database driver
+Since the embedded H2 database will not be sufficient for production you have to install your own database driver.
+Similar to the tomcat approach the database driver has to be placed into the lib folder.
+
+==== Database setup
+The standalone connector will automatically create and update the database schema. To prevent the connector from doing so just set
+within the connector.properties:
+
+....
+spring.liquibase.enabled=false
+....
+
+==== Configuration
+The configuration is located under config within the connector.properties file.
+
+=== Installing on Linux
+
+Currently systemd is the way to go. The recommendation is to put the connector under /opt/connector and
+create a own user for operating it.
+
+Example systemd unit file:
+
+----
+[Unit]
+Description=eCodex Domibus Connector
+After=network.target
+
+[Service]
+Type=idle
+User=ecodex-connector
+Group=ecodex-connector
+ExecStart=/opt/connector/start.sh
+
+[Install]
+WantedBy=multi-user.target
+----
+
+==== Possible Improvements
+Since environment variables take precedence over variables configured within the connector.properties
+it would be possible to put environment specific variables into a systemd environment file.
+A possible example would be the gateway address:
+
+connector.gatewaylink.ws.submissionEndpointAddress will become: CONNECTOR_GATEWAYLINK_WS_SUBMISSIONENDPOINTADDRESS

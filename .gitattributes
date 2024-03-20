@@ -1,0 +1,12 @@
+* text=auto
+
+*.jks binary
+*.png binary
+*.jpg binary
+
+*.zip binary
+*.asics binary
+*.asic-s binary
+*.pdf binary
+
+

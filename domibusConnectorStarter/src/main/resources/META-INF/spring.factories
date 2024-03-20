@@ -1,0 +1,4 @@
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+  eu.domibus.bootstrap.connector.DatabaseBackedPropertySourceConfiguration,\
+  eu.domibus.bootstrap.connector.BootstrapConfigValid,\
+  eu.domibus.bootstrap.connector.BootstrapDefaultConfiguration

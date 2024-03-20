@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <id>testdata-database-scripts</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>*.sql</include>
+            </includes>
+            <directory>${project.basedir}/src/main/resources/database-scripts</directory>
+            <outputDirectory>database-scripts</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

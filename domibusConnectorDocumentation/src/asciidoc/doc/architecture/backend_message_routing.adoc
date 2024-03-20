@@ -1,0 +1,33 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Backend message routing
+
+How are the messages distributed to the different connectorClients?
+
+The routing occures in the following priority:
+
+1. refToMessageId: If the transported message relates to an EBMS id of an already processed business message. The backend_name of this message is used.
+
+2. ConversationId: If the transported message contains a conversationId where a business message has already been processed. The backend_name of this message is used.
+
+3. Routing Rule: If the backend_name is still empty, the routing rules are processed.
+
+4. Default Backend: If the backend_name is still empty the default backend will be used.
+
+== Routing Rule
+
+A routing rule contains a
+
+* Backend Name, this name will be used if the rule matches
+* A matching expression.
+
+//For configuration see link:../configuration/backend_message_routing_configuration.adoc.html[Backend Message Routing Configuration Manual]

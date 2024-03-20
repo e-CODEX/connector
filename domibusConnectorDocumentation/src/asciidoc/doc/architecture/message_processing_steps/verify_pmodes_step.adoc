@@ -1,0 +1,76 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Verify p-Modes step
+
+The verify p-Modes step is checking the AS4 attributes of the message against the currently configured p-Modes.
+
+== The modes
+
+The check can be done in 3 modes:
+
+* STRICT (default for incoming business messages)
+* RELAXED (default for outgoing business messages)
+* CREATE
+
+=== Strict
+
+If strict is selected every p-Mode attribute must be configured.
+
+For service
+
+* service
+* serviceType
+
+must be set
+
+For Action
+
+* action
+
+must be set.
+
+For every party:
+
+* PartyId
+* PartyIdType
+* Role
+
+must be set.
+
+=== Relaxed
+
+Within the relaxed mode which is the default for outgoing messages, the connector tries to retrieve missing attributes from the configured p-Mode set. This means:
+
+For service
+
+* service
+
+must be set
+
+For Action
+
+* action
+
+must be set.
+
+For every party:
+
+* PartyId
+
+must be set at least.
+
+This only works if in the current p-Mode set the party or service is uniquely identified by the provided service name oder party id.
+
+=== Create [not implemented yet]
+
+In the create mode the connector will create any missing p-Mode information. So there are no checks at all. The connector fully relies on the provided AS4 properties.
+
+NOTE: In this mode the connector does not need any p-Modes but some features which are relying on valid p-Modes are also not working. (ConnectorTests, ConfigurationChecks, ...)

@@ -1,0 +1,142 @@
+
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Link Partners
+
+Also see:
+
+ * link:../configuration/link_doc.html[Link Configuration Manual]
+ * link:../ui/linkconfig/link_configuration.html[Link UI Configuration Manual]
+
+
+== Message Flow
+
+Any message to the Link Module is submitted by the SubmitToLink interface. For decoupling the connector controller puts the message into a queue. Messages from this queue are taken by the ToLinkQueueListener out of the queue and sent to the link module.
+
+== Different Links
+
+The links are implemented by plugins. A link is build by a link configuration and a link partner configuration.
+So a link configuration consists multiple link partners.
+
+[plantuml, link config, png]
+----
+@startuml
+
+
+package "Config" {
+  class DomibusConnectorLinkConfiguration {
+    Properties properties
+    String linkImpl
+    LinkConfigName configName
+  }
+
+
+  class DomibusConnectorLinkPartner {
+    LinkPartnerName linkPartnerName
+    LinkMode linkMode
+    LinkType linkType
+    Properties properties
+  }
+}
+
+package Active {
+
+  class ActiveLink {
+    LinkPlugin linkPlugin
+    ConfigurableApplicationContext childContext
+    SubmitToLink submitToLink
+  }
+
+  class ActiveLinkPartner {
+    LinkPlugin linkPlugin
+    ConfigurableApplicationContext childContext
+    SubmitToLink submitToLink
+  }
+
+}
+
+
+DomibusConnectorLinkConfiguration "*" <-- "1" DomibusConnectorLinkPartner
+
+ActiveLink "1" --> "*" ActiveLinkPartner
+
+ActiveLink "1" --> "*" DomibusConnectorLinkConfiguration
+ActiveLinkPartner "1" --> "*" DomibusConnectorLinkPartner
+
+
+
+@enduml
+----
+
+=== Spring Child Context - Link Context
+
+If a link configuration is started this is usually done within in a seperate spring application context (child context). This approach reduces the visible of controller beans to child context beans. It also helps to implement a start and stop logic  for link configurations and link partners.
+If a child context is used and when is in the responsibility of the plugin.
+
+== Transport
+
+The transport is managed in the DC_TRANSPORT_STEP table.
+The state of the transport is managed in the DC_TRANSPORT_STEP_STATUS_TABLE
+
+image:database_diagram.svg[Database Diagram]
+
+.Transport Step
+|===
+| Column    | Description
+
+| ID
+| A syntetic primary key
+
+| CONNECTOR_MESSAGE_ID
+| The connector message id as string
+
+| ATTEMPT
+| The number of the current attempt
+
+| TRANSPORT_ID
+| The id of the transport (unique)
+
+| TRANSPORT_SYSTEM_MESSAGE_ID
+| This column holds a id of a transport system like JMS, CXF, ...
+
+| REMOTE_MESSAGE_ID
+| The assigned message id on the remote system (EBMSID, NationalMessageId)
+
+| CREATED
+| Timestamp of creation
+
+| FINAL_STATE_REACHED
+| Timestamp when the final state has been reached
+
+| TRANSPORTED_MESSAGE
+| As json serialized domibus connector message object
+
+|===
+
+
+.Transport Step Status
+|===
+| Column    | Description
+
+| TRANSPORT_STEP_ID
+| FK reference to the corresponding TRANSPORT_STEP
+
+| STATE
+| The state of the transport
+
+| CREATED
+| Time of creation
+
+| TEXT
+| Any information, error message, ...
+
+|===

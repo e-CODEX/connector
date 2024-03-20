@@ -1,0 +1,46 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= STARTUP ERRORS
+
+
+The connector is build with the spring boot framework. During startup
+the framework initializes property classes from Property
+(see this list: link:../aggregated-spring-properties.html[Property List]).
+The properties are also checked during startup so it might happen, that you
+are going to see the following error:
+
+```
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Binding to target org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'token.issuer' to eu.domibus.connector.security.container.service.TokenIssuerFactoryProperties failed:
+
+    Property: token.issuer.advancedElectronicSystemType
+    Value: null
+    Reason: must not be null
+
+
+Action:
+
+Update your application's configuration
+```
+
+This error means that you should check the content of the following property:
+
+token.issuer.advancedElectronicSystemType
+
+NOTE: The property
+**token.issuer.advancedElectronicSystemType**
+is equevalent to
+**token.issuer.advanced-electronic-system-type**

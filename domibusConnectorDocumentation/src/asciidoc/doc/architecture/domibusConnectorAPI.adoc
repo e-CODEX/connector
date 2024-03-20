@@ -1,0 +1,516 @@
+
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= domibusConnectorAPI
+
+The domibusConnectorAPI module defines via *WSDL webservice definitions* the external interfaces for communicating with the domibusConnector.
+
+It also contains an *XSD schema* defining the contents transported via the webservices. This is the *transition model* of the domibusConnector.
+
+The WSDL and XSD definitions are generated into *JAVA stubs* for better implementation convenience.
+
+== Webservice Interfaces
+
+.Webservice Interface Description
+|===
+| Name | Description | since version
+
+| <<DomibusConnectorBackendWebService,DomibusConnectorBackendWebService>>
+| Is provided by the connector and is meant for the clients/connector backends to to retrieve and push messages.
+| 4.0
+
+| <<DomibusConnectorBackendDeliveryWebService,DomibusConnectorBackendDeliveryWebService>>
+| Must be provided by the client/backend. If push is enabled then the connector will push messages
+to this web interface.
+| 4.0
+
+| <<DomibusConnectorGatewayDeliveryWebService,DomibusConnectorGatewayDeliveryWebService>>
+| Is provided by the connector so the gateway can push messages to the connector.
+| 4.0
+
+| <<DomibusConnectorGatewaySubmissionWebService,DomibusConnectorGatewaySubmissionWebService>>
+| Must be provided by the AS4 Gateway (for domibus this is provided by the domibus-connector-plugin).
+| 4.0
+
+| <<DomibusConnectorGatewayWebService,DomibusConnectorGatewayWebService>>
+| Is provided by the AS4 Gateway (for domibus this is provided by the domibus-connector-plugin). This interface is an alternative to the interfaces DomibusConnectorGatewayDeliveryWebService and 
+DomibusConnectorGatewaySubmissionWebService. If a connector to gateway connection should only be single direction (from the connector to the gateway),
+this interface can be used.
+| 4.3
+
+|===
+
+For the message push in direction to the backend the verb deliver is used. For the opposite direction
+submit is used.
+
+=== Details on Webservice Interfaces
+==== DomibusConnectorBackendWebService
+
+.DomibusConnectorBackendWebService
+|===
+| Method Name | Input Parameter Type | Return Type | Description | since version
+
+|submitMessage
+|<<DomibusConnectorMessageType,DomibusConnectorMessageType>> 
+|<<DomibsConnectorAcknowledgementType,DomibsConnectorAcknowledgementType>>
+|submits a message to the domibusConnector
+|4.0
+
+|requestMessages
+|<<EmptyRequestType,EmptyRequestType>>
+|<<DomibusConnectorMessagesType,DomibusConnectorMessagesType>>
+|loads all pending messages for client and returns them in one request.
+|4.0
+
+|listPendingMessageIds
+|<<EmptyRequestType,EmptyRequestType>>
+|<<ListPendingMessageIdsResponse,ListPendingMessageIdsResponse>>
+|return the connector internal message transport ids of messages pending for requesting client/backend.
+|4.4
+
+|getMessageById
+|<<GetMessageByIdRequest,GetMessageByIdRequest>>
+|<<DomibusConnectorMessageType,DomibusConnectorMessageType>>
+|Given the connector internal message transport id, this request returns the message object.
+|4.4
+
+|acknowledgeMessage
+|<<DomibusConnectorMessageResponseType,DomibusConnectorMessageResponseType>>
+|<<EmptyRequestType,EmptyRequestType>>
+|Technically acknowledges message at the connector causing the message to be finished.
+|4.4
+
+|===
+
+===== Namespace Types
+
+====== EmptyRequestType
+Wrapping object containing literally nothing.
+
+====== GetMessageByIdRequest
+Wrapping object containing the message transport ID.
+
+====== ListPendingMessageIdsResponse
+Wrapping object containing a list of message transport ids pending for the requesting client/backend at the connector.
+
+
+==== DomibusConnectorBackendDeliveryWebService
+
+.DomibusConnectorBackendWebService
+|===
+| Method Name | Input Parameter Type | Return Type | Description | since version
+
+|deliverMessage
+|<<DomibusConnectorMessageType,DomibusConnectorMessageType>> 
+|<<DomibsConnectorAcknowledgementType,DomibsConnectorAcknowledgementType>>
+|used by the connector to push messages to the client/backend
+|4.0
+
+|===
+
+==== DomibusConnectorGatewayDeliveryWebService
+
+.DomibusConnectorGatewayDeliveryWebService
+|===
+| Method Name | Input Parameter Type | Return Type | Description | since version
+
+|deliverMessage
+|<<DomibusConnectorMessageType,DomibusConnectorMessageType>> 
+|<<DomibsConnectorAcknowledgementType,DomibsConnectorAcknowledgementType>>
+|used by the gateway to push messages to the connector
+|4.0
+
+|===
+
+==== DomibusConnectorGatewaySubmissionWebService
+
+.DomibusConnectorGatewaySubmissionWebService
+|===
+| Method Name | Input Parameter Type | Return Type | Description | since version
+
+|submitMessage
+|<<DomibusConnectorMessageType,DomibusConnectorMessageType>> 
+|<<DomibsConnectorAcknowledgementType,DomibsConnectorAcknowledgementType>>
+|used by the connector to push messages to the gateway
+|4.0
+
+|===
+
+==== DomibusConnectorGatewayWebService
+
+.DomibusConnectorGatewayWebService
+|===
+| Method Name | Input Parameter Type | Return Type | Description | since version
+
+|submitMessage
+|<<DomibusConnectorMessageType,DomibusConnectorMessageType>> 
+|<<DomibsConnectorAcknowledgementType,DomibsConnectorAcknowledgementType>>
+|submits a message from the domibusConnector to the gateway.
+|4.3
+
+|listPendingMessageIds
+|<<ListPendingMessageIdsRequest,ListPendingMessageIdsRequest>>
+|<<ListPendingMessageIdsResponse,ListPendingMessageIdsResponse>>
+|return the connector internal message transport ids of messages pending at the gateway.
+|4.3
+
+|getMessageById
+|<<GetMessageByIdRequest,GetMessageByIdRequest>>
+|<<DomibusConnectorMessageType,DomibusConnectorMessageType>>
+|Given the connector internal message transport id, this request returns the message object.
+|4.3
+
+|===
+
+===== Namespace Types
+
+====== ListPendingMessageIdsRequest
+Wrapping object containing literally nothing.
+
+====== ListPendingMessageIdsResponse
+Wrapping object containing a list of message transport ids pending for the requesting client/backend at the connector.
+
+====== GetMessageByIdRequest
+Wrapping object containing the message transport ID.
+
+
+== WS-Security
+
+As the communication is soap based multiple policies can be set on the connection to enforce security rules.
+The module contains already 2 polices:
+
+* backend.policy.xml (encrypts and signes messages)
+* no-security.policy.xml (does just nothing - will not work with backend, because no client
+identification is possible with this approach)
+
+Some additional information about the used implementation:
+
+link:http://coheigea.blogspot.com/2017/02/ws-security-with-mtom-support-in-apache.html
+link:https://ws.apache.org/wss4j/attachments.html
+
+== XML Types / Message Type
+
+=== DomibusConnectorMessagesType
+
+|===
+| field | type | description
+
+| messages | List<<<DomibusConnectorMessageType>>> | A List of messages.
+
+|===
+
+=== DomibusConnectorMessageType
+
+|===
+| field | type | description
+
+| messageContent | <<DomibusConnectorMessageContentType>> | Holds the message content, should only be used if the message is a business message
+
+| messageDetails | <<DomibusConnectorMessageDetailsType>> | Contains the message details. Especially the addressing attributes of AS4
+
+| messageConfirmations | DomibusConnectorMessageConfirmationType | Holds a list of confirmations (evidences). A business message can contain multiple evidences. If the messageContent is empty there must be exactly one messageConfirmation. In this case the message is a evidence message.
+
+| messageAttachments | DomibusConnectorMessageAttachmentType | Contains a list of attachments. Currently only business messages contain attachments
+
+| messageErrors | DomibusConnectorMessageErrorType | Currently not used
+
+|===
+
+=== DomibusConnectorMessageContentType
+|===
+| field | type | description
+
+| xmlContent | xs:base64Binary | The business XML document
+
+| document | <<DomibusConnectorMessageDocumentType>> | The business (PDF) document
+
+|===
+
+=== DomibusConnectorMessageDocumentType
+
+|===
+| field | type | description
+
+| document | xs:base64Binary | The document content as binary
+
+| documentName | xs:String | The name of the document
+
+| detachedSignature | <<DomibusConnectorDetachedSignatureType>> | If the document signature is not embedded but a detached signature is used it should be placed here.
+
+
+
+|===
+
+=== DomibusConnectorDetachedSignatureType
+|===
+| field | type | description
+
+| detachedSignature | xs:base64Binary | The detached signature in an eIDAS conforming format.
+
+| detachedSignatureName | xs:string | Name
+
+| mimeType | DomibusConnectorDetachedSignatureMimeType | List of valid signature types: BINARY, XML, PKCS7
+
+|===
+
+
+=== DomibusConnectorMessageDetailsType
+|===
+| field | type | description
+
+| backendMessageId | xs:string | The id of the message within the backend system/national message id
+| ebmsMessageId | xs:string | The EBMS id of the message
+| refToMessageId | xs:string | If the message is an evidence message, this attribute references the EBMSID or backendMessageId of the business message this evidence is meant for
+| conversationId | xs:string | Within AS4 multiple messages can be grouped together
+| originalSender | xs:string | The original sender is the national part of the ecodex sender address
+| finalRecipient | xs:string | The final recipient is the national part of the ecodex receiver address
+| service | DomibusConnectorServiceType | The AS4 service type
+| action | DomibusConnectorActionType | The AS4 action
+| fromParty | DomibusConnectorPartyType | The AS4 party type: sending party
+| toParty  | DomibusConnectorPartyType | The AS4 party type: recipient party
+
+|===
+
+
+=== DomibsConnectorAcknowledgementType
+
+If any component receives a message, this type is meant for responding. In future versions it will be replaced by <<DomibusConnectorMessageResponseType>>
+
+|===
+| field | type | description
+
+| messageId | xs:string | The by the receiving component assigned message id, in case of the Backend this would be the nationalMessageId or backendMessageId, in case of the Gateway this would be the EBMSID
+
+| result | xs:boolean | True if message has been accepted, False if message has been declined
+
+| resultMessage | xs:string | Freely choosen additional information. Should be used when result is false to return a meaningful error message.
+
+|===
+
+
+=== DomibusConnectorMessageResponseType
+
+|===
+| field | type | description
+
+| responseForMessageId | xs:string | This response should hold the by the sending component initially used message id in the following order: If provided the EBMS id, otherwhise the backendMessageId.
+
+| result | xs:boolean | True if message has been accepted, False if message has been declined
+
+| resultMessage | xs:string | Freely choosen additional information. Should be used when result is false to return a meaningful error message.
+
+| assignedMessageId | xs:string | The by the receiving component assigned message id, in case of the Backend this would be the nationalMessageId or backendMessageId, in case of the Gateway this would be the EBMSID
+
+| messageErrors | <<DomibusConnectorMessageErrorType>> | a list of occured message errros
+
+|===
+
+=== DomibusConnectorMessageErrorType
+
+Not implemented/Used yet
+
+== Flows
+
+
+
+
+
+=== Sending a Business Message
+
+To send/submit a business message the following fields have to be filled:
+
+
+|===
+| field | mandatory | description
+
+| messageContent/xmlContent | required | Business XML
+
+| messageContent/document/document | should be provided | The Business Document, usually a human readable representation of the BusinessXML
+It should be a PDF-A document, to always make it possible for a e-Codex receiver to have at least one document which
+can be read by a human. But this depends on the UseCase. For the e-Codex container every Format which is supported by the DSS-Tools
+is possible (PADES, XADES, ASIC-S).
+
+| messageContent/document/detachedSignature | optional | If the document is not signed inline, then the detached signature takes
+place here. If the document as an example origins from an asic-s container, the detached signature should be put here.
+
+| messageAttachments/ | optional | multiple attachments to the message, the message attachments should be referenced within
+the business doc or business xml
+
+| messageAttachments/identifier | required | This is the only name of the attachment which is transported to the ecodex receiver
+
+| messageAttachments/name | optional | will only be stored in the local connector database
+
+| messageAttachments/mimeType | optional | will only be stored in the local connector database
+
+| messageAttachments/name | optional | will only be stored in the local connector database
+
+| messageDetails/backendMessageId | must be set | the message id on the backend side. It must also as the EBMS ID
+a unique message id within the backend system
+
+| messageDetails/ebmsMessageId | might be set | The EBMS ID might be set by the backend, but then it must be assured, that
+the following AS4 Gateway Implementation is not changing this EBMS ID.
+
+| messageDetails/refToMessageId | must remain empty | the refToMessageId field within e-Codex is only used by evidences
+multiple business messages are grouped together by the conversationId
+
+| messageDetails/conversationId | optional | for grouping together multiple business messages to a conversation, this
+field is used. It depends on the usecase if this id might match the eg. casenumber of an case. This would be true
+if within a case there is only communication with one other party.
+Any value on this field has no implications on the connector
+
+| messageDetails/originalSender | required | The specific value here depends on the use case, but it must be filled
+at least with an empty string
+If the message comes from an national message system, this would be the senders (technical) national address.
+
+| messageDetails/finalRecipient | required | The specific value here depends on the use case, but it must be filled
+at least with an empty string. If a national messaging system is connected here, this would be the national recipients
+(technical) address
+
+| messageDetails/service | required | The AS4 service which is used by this message
+
+| messageDetails/service/service | most likely required | The AS4 service name which is used by this message, it can be an empty string.
+Then the connector will try to lookup any matching service. This would work if only one service is configured.
+
+| messageDetails/service/serviceType |  | The AS4 service type which is used by this message, it can be an empty string.
+Most likely it is an empty string, because the connector has the full service configuration within database.
+The connector will lookup the service by the name and fill out the serviceType, as long as the service name is
+sufficient to identify the service
+
+| messageDetails/action/action | required | The AS4 action which is used by this message.
+
+| messageDetails/fromParty | required | The AS4 sending party, for details see party lookup
+
+| messageDetails/toParty | required | The AS4 receiving party
+
+
+|===
+
+
+==== Party, Service lookup
+
+
+
+
+The connector has the AS4 configuration in place. So if a party or service is provided with insufficient informations.
+The connector will try to look it up within the configuration.
+For the party this means every empty string is ignored by looking up the party within the connector configuration.
+If only ONE matching party is found all other attributes are filled out by the found party. If more than one party
+was found an error will occur!
+For the sending application this means it is usually sufficient to only use the party name like (AT, DE, ...) because
+usually in e-Codex the PartyId matches the 2-letter country code. Note that, for some use-cases countries this might
+not be true.
+
+
+==== Signed Document
+
+If SIGNATURE_BASED is used the connector expects a signed PDF document. The document signature will be checked. It
+is also possible to use detached signatures. So if you are using ASIC-S container within your environment you have
+to put the PDF document and the detached Signature seperatly into the connector.
+
+See the following excerpt of the xsd:
+
+ <xs:complexType name="DomibusConnectorMessageDocumentType">
+        <xs:sequence>
+            <xs:element name="document" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"
+                        minOccurs="1" maxOccurs="1"/>
+            <xs:element name="documentName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="detachedSignature" type="tns:DomibusConnectorDetachedSignatureType" minOccurs="0"
+                        maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DomibusConnectorDetachedSignatureType">
+        <xs:sequence>
+            <xs:element name="detachedSignature" type="xs:base64Binary" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="detachedSignatureName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="mimeType" type="tns:DomibusConnectorDetachedSignatureMimeType" minOccurs="1"
+                        maxOccurs="1"/>
+        </xs:sequence>
+ </xs:complexType>
+
+So basically the detached signature for the PDF should be put into the detachedSignature. With this approach
+ASIC-S based documents can be put into the connector.
+
+
+
+=== Triggering an evidence message
+
+If the application has received an ecodex message from the connector, it should respond accordingly to the
+use case with an evidence message. This can be done by sending a evidence trigger to the connector. The
+trigger message is missing the actual cryptographic evidence, which is actually generated by the connector.
+
+
+
+
+|===
+| field | mandatory | description
+
+| messageContent | must be empty! | Business XML
+
+| messageAttachments/ | must be empty | attachments on an evidence message are ignored!
+
+| messageDetails/backendMessageId | must be set | the message id on the backend side. It must also as the EBMS ID
+a unique message id within the backend system. If there is a national system this would be the id of the national
+evidence message
+For the evidence message this is a NEW message id!
+
+| messageDetails/ebmsMessageId | might be set | The EBMS ID might be set by the backend, but then it must be assured, that
+the following AS4 Gateway Implementation is not changing this EBMS ID.
+For the evidence message this is a NEW message id!
+
+| messageDetails/refToMessageId | must be set| the refToMessageId must be set to the EBMS id of the message
+which should be confirmed. The backend message id works to, but only if the backend system is responding
+with an message id to a new delivered message
+
+| messageDetails/conversationId | empty | filled out by the connector, it will be taken from the original message
+
+| messageDetails/originalSender | empty | filled out by the connector, it will be taken from the original message (finalRecipient)
+
+| messageDetails/finalRecipient | empty | filled out by the connector, it will be taken from the original message (originalSender)
+
+| messageDetails/service | empty | filled out by the connector, it will be taken from the original business message
+
+| messageDetails/action/action | empty | filled out by the connector, it will be taken from configuration
+
+| messageDetails/fromParty | required | filled out by the connector, it will be taken from the original message (toParty)
+
+| messageDetails/toParty | required | filled out by the connector, it will be taken from the original message (fromParty)
+
+|===
+
+ NOTE: The "address attributes": FromParty, ToParty, OriginalSender, FinalRecipient are taken from the business message and are reverted for the to the outgoing (to the Gateway) evidence message.
+
+After the evidence was triggered the generated evidence message will not only submitted to the other party
+it will also be delivered to the backend system as a confirmation, that the trigger was successfully.
+
+
+=== Receiving a confirmation message
+
+When the backend receives a confirmation message, the refToMessageId field is filled in the following order:
+
+* If the connector is aware of a backendMessageId of the related message, then the refToMessageId will be
+set with the backendMessageId
+* In all other cases the refToMessageId will be set to the EBMS_ID
+
+This means if the backend always returns a backendMessageId for a received message, the EBMS ID will be
+completly transparent for the backend. The backendMessageId is mapped by the connector to the EBMS ID.
+
+==== Ordering of the confirmation messages
+
+* Ordering of the confirmation messages depends on the used transporting System. The connector itself,
+will always send/provide the confirmation messages in the correct order. Also the connector relies on
+the ordering of the confirmation messages because the confirmation messages are chained together
+and as an example a RELAY_REMMD_ACCEPTANCE can only be created if there is already a SUBMISSION_ACCEPTANCE.
+
+
+
+
+

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified"
+        >
+    <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/2000/09/xmldsig#"/>
+
+    <xsd:element name="TrustOkToken" type="TokenType"/>
+
+    <xsd:simpleType name="AdvancedSystemEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Signature-based"/>
+            <xsd:enumeration value="Authentication-based"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TechnicalTrustLevelEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="FAIL"/>
+            <xsd:enumeration value="SUFFICIENT"/>
+            <xsd:enumeration value="SUCCESSFUL"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="LegalTrustLevelEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="SUCCESSFUL"/>
+            <xsd:enumeration value="NOT_SUCCESSFUL"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="IssuerType">
+        <xsd:sequence>
+            <xsd:element name="ServiceProvider" type="xsd:string"/>
+            <xsd:element name="Country" type="xsd:string"/>
+            <xsd:element name="AdvancedElectronicSystem" type="AdvancedSystemEnum"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DocumentType">
+        <xsd:sequence>
+            <xsd:element name="Filename" type="xsd:string"/>
+            <xsd:element name="Type" type="xsd:string"/>
+            <xsd:element ref="ds:DigestMethod"/>
+            <xsd:element ref="ds:DigestValue"/>
+            <xsd:element name="SignatureFilename" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SignatureInformationType">
+        <xsd:sequence>
+            <xsd:element name="SignatureVerification" type="xsd:boolean"/>
+            <xsd:element name="StructureVerification" type="xsd:boolean"/>
+            <xsd:element name="SignatureFormat" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="SignatureLevel" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CertificateInformationType">
+        <xsd:sequence>
+            <xsd:element name="Issuer" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CertificateVerification" type="xsd:boolean"/>
+            <xsd:element name="ValidityAtSigningTime" type="xsd:boolean"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="AuthenticationInformationType">
+        <xsd:sequence>
+            <xsd:element name="IdentityProvider" type="xsd:string"/>
+            <xsd:element name="UsernameSynonym" type="xsd:string"/>
+            <xsd:element name="TimeOfAuthentication" type="xsd:dateTime"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SignatureDataType">
+        <xsd:sequence minOccurs="0">
+            <!--
+            // http://www.jira.e-codex.eu/browse/ECDX-45: unsigned
+            It was decided to add minOccurs="0" to the sequence above.
+            <xsd:element name="Unsigned" type="xsd:boolean" minOccurs="0" default="false"/>
+            -->
+            <xsd:element name="SigningTime" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="SignatureInformation" type="SignatureInformationType"/>
+            <xsd:element name="CertificateInformation" type="CertificateInformationType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="VerificationDataType">
+        <xsd:choice>
+            <xsd:element name="SignatureData" type="SignatureDataType"/>
+            <xsd:element name="AuthenticationData" type="AuthenticationInformationType"/>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <xsd:complexType name="TechnicalResultType">
+        <xsd:sequence>
+            <xsd:element name="TrustLevel" type="TechnicalTrustLevelEnum"/>
+            <xsd:element name="Comments" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="LegalResultType">
+        <xsd:sequence>
+            <xsd:element name="TrustLevel" type="LegalTrustLevelEnum"/>
+            <xsd:element name="Disclaimer" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SourceType">
+        <xsd:sequence>
+            <xsd:any minOccurs="0" namespace="##any" maxOccurs="unbounded" processContents="lax"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ValidationType">
+        <xsd:sequence>
+            <xsd:element name="VerificationTime" type="xsd:dateTime"/>
+            <xsd:element name="VerificationData" type="VerificationDataType"/>
+            <xsd:element name="TechnicalResult" type="TechnicalResultType"/>
+            <xsd:element name="LegalResult" type="LegalResultType"/>
+            <xsd:element name="OriginalValidationReport" type="SourceType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="TokenType">
+        <xsd:sequence>
+            <xsd:element name="Issuer" type="IssuerType"/>
+            <xsd:element name="Document" type="DocumentType"/>
+            <xsd:element name="Validation" type="ValidationType"/>
+            <xsd:element ref="ds:Signature" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

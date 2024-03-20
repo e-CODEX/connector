@@ -1,0 +1,25 @@
+= New connector release published
+
+Dear all,
+
+we are happy to inform you about a new minor release of the
+domibus connector. The upgrade is not mandatory but heavily recommended since the minor release may contain security related
+bugfixes. For details see the changelog.html.
+
+== Version
+
+The new version is {project-version}.
+
+== Download location
+
+It is available under https://secure.e-codex.eu/nexus/content/groups/public/eu/domibus/connector/domibusConnectorDistribution/{project-version}/domibusConnectorDistribution-{project-version}.zip
+
+Username and password will by provided via e-mail request.
+
+== Changelog
+
+The changelog of this version is available within the zip folder under 'documentation-site/changelog.html'
+
+Best regards,
+
+e-codex connector Team

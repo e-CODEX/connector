@@ -1,0 +1,29 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= JMS Monitoring
+
+Monitoring the internal queues of the domibusConnector.
+
+A description on how the internal message queues are used, see the description of link:../../architecture/message_processing/message_processing.html[message processing].
+
+== Use the UI to monitor jms messages
+
+The user can monitor the message count of any queue by navigating to Monitoring > JMS Queues.
+
+This view shows an overview of all three processing stages involved in connector message lifecycle.
+
+By clicking on a specific row in the table, the user is presented with two lists that correspond to the messages queue where messages wait to be processed and the error queue, where messages await manual restoration or deletion. If you revisit the diagram above you should have a clear picture where the message currently is in the processing lifecycle and where it came from. This should give you an actionable clue, what went wrong and where.
+
+== Permanently delete a message from the error queue
+
+If a failed message is no longer needed, it may and should be permanently deleted by clicking on the red "Delete" Button. *This can not be undone*.
+
+The error queue must be checked for messages as part of connector maintenance. Messages should not endlessly accumulate on the error queue.

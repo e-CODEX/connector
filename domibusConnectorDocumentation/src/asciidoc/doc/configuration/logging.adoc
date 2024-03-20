@@ -1,0 +1,109 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+
+= LOGGING
+
+
+== Logging Manual
+
+The connector uses the log4j2 logging framework to collect logging messages. The log4j2 logging framework already offers
+a collection of different logging appenders which can be used to write logging messages to different sinks like
+centralized logging collecting systems, files, ...
+
+For details consult the link:https://logging.apache.org/log4j/2.x/manual/configuration.html[log4j2] configuration manual.
+
+
+== Logging Marker
+
+The logging messages of the connector are categorized by markers. The Markers are configured within the
+LoggingMarker java class:
+
+[source,java]
+----
+package eu.domibus.connector.tools.logging;
+
+import org.apache.logging.log4j.MarkerManager;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
+/**
+* Class to manage logging Markers
+*/
+public class LoggingMarker {
+
+    public static final String CONFIG_MARKER_TEXT = "CONFIG";
+
+    public static final Marker CONFIG = MarkerFactory.getMarker(CONFIG_MARKER_TEXT);
+
+    public static final String BUSINESS_LOG_MARKER_TEXT = "BUSINESS";
+    public static final String BUSINESS_CERT_LOG_MARKER_TEXT = "BUSINESS_CERT";
+    public static final String BUSINESS_EVIDENCE_LOG_MARKER_TEXT = "BUSINESS_EVIDENCE";
+    public static final String BUSINESS_CONTENT_LOG_MARKER_TEXT = "BUSINESS_CONTENT";
+    public static final String UI_LOG_MARKER_TEXT = "UI";
+
+    public static final Marker BUSINESS_LOG = MarkerFactory.getMarker(BUSINESS_LOG_MARKER_TEXT);
+    public static final Marker BUSINESS_CERT_LOG = MarkerFactory.getMarker(BUSINESS_CERT_LOG_MARKER_TEXT);
+    public static final Marker BUSINESS_EVIDENCE_LOG = MarkerFactory.getMarker(BUSINESS_EVIDENCE_LOG_MARKER_TEXT);
+    public static final Marker BUSINESS_CONTENT_LOG = MarkerFactory.getMarker(BUSINESS_CONTENT_LOG_MARKER_TEXT);
+    public static final Marker UI_LOG = MarkerFactory.getMarker(UI_LOG_MARKER_TEXT);
+
+    public static class Log4jMarker {
+        public static final org.apache.logging.log4j.Marker UI_SEC_LOG = MarkerManager.getMarker(UI_LOG_MARKER_TEXT);
+    }
+
+    static {
+        BUSINESS_CERT_LOG.add(BUSINESS_LOG);
+        BUSINESS_EVIDENCE_LOG.add(BUSINESS_LOG);
+        BUSINESS_CONTENT_LOG.add(BUSINESS_LOG);
+    }
+
+}
+----
+
+The BUSINESS marker contains logging messages related to the Business and does not
+contain logging messages in detail. But collecting only the BUSINESS_LOG should be
+sufficient to get an overview of the running connector. If a problem is discovered
+there the other should offer more details.
+
+Also the BUSINESS Marker has the following children, to split the logging messages
+even more:
+
+    * BUSINESS_CERT (Certificate Logging messages)
+    * BUSINESS_EVIDENCE (Evidence related logging messages)
+    * BUSINESS_CONTENT (business message/content related logging messages)
+
+
+== Logging Context Values
+
+As the logging markers are set per logging message within log4j2 it is also supported to set any context information
+within the logging messages. The connector does set the connector message id at the message context.
+
+=== Spring Sleuth
+
+Additionally to the Logging Context value spring-sleuth is also setting the SpanID and TraceId into the logging context.
+For details see link:https://spring.io/projects/spring-cloud-sleuth[spring-sleuth documentation]. This should help
+in a distributed environment to group logging messages together.
+
+If the backend application supports spring-sleuth (or at least the approach of spring-sleuth), log messages
+can be grouped together over multiple systems.
+
+=== Logging to graylog or other log4j2 plugins like flume
+
+To enable logging to graylog, a additional library is required by logj42. This library is not part of the
+connector so it has to be added to the lib folder - next to the database driver jar. And of course graylog
+has to be configured within the log4j config to.
+
+

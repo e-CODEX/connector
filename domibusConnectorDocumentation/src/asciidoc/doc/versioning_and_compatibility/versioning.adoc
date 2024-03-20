@@ -1,0 +1,59 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Versioning
+
+== Version Number
+
+The project uses semantic versioning, this means for the version numbers the following:
+$[major].$[minor].$[patch]-[postfix]
+
+=== Major Version Number
+
+Will be upgraded when the message compatibility between connectors is not assured or the message interface between
+the components is not downwards compatible.
+
+This means a connector 4.x.x in one country can always exchange messages with an 4.x.x connector in another country.
+Always in respect to the e-Codex protocol.
+
+This also means a 4.x.x domibus-connector-plugin can work with every currently supported 4.x.x connector, BUT not
+all new features might work!
+
+This also means a 4.x.x domibusConnectorClient can work with every currently supported 4.x.x connector, BUT not
+all new features might work!
+
+=== Minor Version Number
+
+A minor version upgrade will occur if the connector upgrade requires database changes, configuration changes or
+comes with new features.
+
+=== Patch Version Number
+
+The patch version will be upgraded for security fixes or minor updates on libraries where no database changes,
+configuration changes are required. Except for the case the mistake/error relies within the database or configuration
+then also a patch number upgrade could make a database or configuration update necessary.
+
+=== Postfix
+
+The postfix is optionally used to mark a build with an alpha state, release candidate or with RELEASE as an release build.
+
+== Note on gateway compatibility
+
+The connector is intended to used with the domibus AS4 gateway from CEF. For this purpose the domibus-connector-plugin
+is created as an extra project. Any gateway specifics are put into this plugin, so there might also be other
+plugins for other AS4 gateways. So which plugin is required for a specific gateway version is part of the
+domibus-connector-plugin documentation.
+
+== Note on cross-border compatibility
+
+The domibusConnector implements the e-Codex protocol. Only a change within the e-Codex protocol would prevent any e-Codex Connector version from communication with any other domibusConnector.
+
+
+

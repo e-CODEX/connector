@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db:configuration xmlns:db="http://domibus.eu/configuration" party="${gw}">
+    <mpcs>
+        <mpc name="defaultMpc" qualifiedName="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultMPC" enabled="true" default="true" retention_downloaded="0" retention_undownloaded="14400"/>
+    </mpcs>
+    <businessProcesses>
+        <roles>
+            <role name="eCODEXRole" value="GW"/>
+        </roles>
+        <parties>
+            <partyIdTypes>
+                <partyIdType name="partyTypeUrn" value="urn:oasis:names:tc:ebcore:partyid-type:unregistered"/>
+            </partyIdTypes>
+            <party name="gw1" endpoint="http://gw1:8080/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw1" partyIdType="partyTypeUrn"/>
+            </party>
+            <party name="gw2" endpoint="http://gw2:8080/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw2" partyIdType="partyTypeUrn"/>
+            </party>
+            <party name="gw3" endpoint="http://gw3:8080/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw3" partyIdType="partyTypeUrn"/>
+            </party>
+            <party name="gw4" endpoint="http://gw4:8080/domibus/services/msh" allowChunking="false">
+                <identifier partyId="gw4" partyIdType="partyTypeUrn"/>
+            </party>
+        </parties>
+        <meps>
+            <mep name="oneway" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/oneWay"/>
+            <mep name="twoway" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/twoWay"/>
+            <binding name="push" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push"/>
+            <binding name="pushAndPush" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push-and-push"/>
+        </meps>
+        <properties>
+            <property name="originalSenderProperty" key="originalSender" datatype="string" required="true"/>
+            <property name="finalRecipientProperty" key="finalRecipient" datatype="string" required="true"/>
+            <propertySet name="ecodexPropertySet">
+                <propertyRef property="finalRecipientProperty"/>
+                <propertyRef property="originalSenderProperty"/>
+            </propertySet>
+        </properties>
+        <payloadProfiles></payloadProfiles>
+        <securities>
+            <security name="eDeliveryPolicy" policy="eDeliveryPolicy.xml" signatureMethod="RSA_SHA256"/>
+            <security name="noSigNoEnc" policy="doNothingPolicy.xml" signatureMethod="RSA_SHA256"/>
+            <security name="eSensPolicy" policy="eSensPolicy.v2.0.xml" signatureMethod="RSA_SHA256"/>
+        </securities>
+        <errorHandlings>
+            <errorHandling name="eCODEXErrorHandling" errorAsResponse="true" businessErrorNotifyProducer="false" businessErrorNotifyConsumer="false" deliveryFailureNotifyProducer="false"/>
+        </errorHandlings>
+        <agreements>
+            <agreement name="agreementEmpty" value="" type=""/>
+        </agreements>
+        <services>
+            <service name="SystemTest1" value="SystemTest"/>
+            <!--<service name="BRService" value="BR" type="urn:e-codex:services:"/>-->
+            <!--<service name="EPOService" value="EPO" type="urn:e-codex:services:"/>-->
+            <service name="GWTESTService" value="GW-TEST" type="urn:e-codex:services:"/>
+            <service name="ConTESTService" value="Connector-TEST" type="urn:e-codex:services:"/>
+            <service name="SystemTESTService" value="System-TEST" type="urn:e-codex:services:"/>
+            <!--<service name="SCService" value="SmallClaims" type="urn:e-codex:services:"/>-->
+        </services>
+        <actions>
+            <action name="eCODEXEvidenceSubmissionAcceptanceRejection" value="SubmissionAcceptanceRejection"/>
+            <action name="eCODEXEvidenceRelayREMMDAcceptanceRejection" value="RelayREMMDAcceptanceRejection"/>
+            <action name="eCODEXEvidenceDeliveryNonDeliveryToRecipient" value="DeliveryNonDeliveryToRecipient"/>
+            <action name="eCODEXEvidenceRetrievalNonRetrievalToRecipient" value="RetrievalNonRetrievalToRecipient"/>
+            <action name="GWTESTActionTestForm" value="Test_Form"/>
+            <action name="ConTESTActionTestForm" value="Connector-TEST"/>
+            <action name="SystemTestAction" value="System-TEST"/>
+        </actions>
+        <as4>
+            <receptionAwareness name="receptionAwareness" retry="600;3;CONSTANT" duplicateDetection="true"/>
+            <reliability name="AS4Reliability" nonRepudiation="false" replyPattern="response"/>
+        </as4>
+        <legConfigurations>
+            <!-- TODO: configure SystemTest legs -->
+            <legConfiguration name="GWTESTLegGWTESTActionTestForm" service="GWTESTService" action="GWTESTActionTestForm" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegConTESTActionTestForm" service="ConTESTService" action="ConTESTActionTestForm" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceSubmissionAcceptanceRejection" service="ConTESTService" action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceRelayREMMDAcceptanceRejection" service="ConTESTService" action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="ConTESTService" action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="ConTESTLegeCODEXEvidenceRetrievalNonRetrievalToRecipient" service="ConTESTService" action="eCODEXEvidenceRetrievalNonRetrievalToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="SystemTESTLegConTESTActionTestForm" service="SystemTESTService" action="SystemTestAction" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="SystemTESTLegeCODEXEvidenceSubmissionAcceptanceRejection" service="SystemTESTService" action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="SystemTESTLegeCODEXEvidenceRelayREMMDAcceptanceRejection" service="SystemTESTService" action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="SystemTESTLegeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="SystemTESTService" action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+            <legConfiguration name="SystemTESTLegeCODEXEvidenceRetrievalNonRetrievalToRecipient" service="SystemTESTService" action="eCODEXEvidenceRetrievalNonRetrievalToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="noSigNoEnc" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"/>
+        </legConfigurations>
+        <process name="GWTESTProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush" initiatorRole="eCODEXRole" responderRole="eCODEXRole">
+            <initiatorParties>
+                <initiatorParty name="gw1"/>
+                <initiatorParty name="gw2"/>
+                <initiatorParty name="gw3"/>
+                <initiatorParty name="gw4"/>
+            </initiatorParties>
+            <responderParties>
+                <responderParty name="gw1"/>
+                <responderParty name="gw2"/>
+                <responderParty name="gw3"/>
+                <responderParty name="gw4"/>
+            </responderParties>
+            <legs>
+                <leg name="GWTESTLegGWTESTActionTestForm"/>
+            </legs>
+        </process>
+        <process name="ConTESTProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush" initiatorRole="eCODEXRole" responderRole="eCODEXRole">
+            <initiatorParties>
+                <initiatorParty name="gw1"/>
+                <initiatorParty name="gw2"/>
+                <initiatorParty name="gw3"/>
+                <initiatorParty name="gw4"/>
+            </initiatorParties>
+            <responderParties>
+                <responderParty name="gw1"/>
+                <responderParty name="gw2"/>
+                <responderParty name="gw3"/>
+                <responderParty name="gw4"/>
+            </responderParties>
+            <legs>
+                <leg name="ConTESTLegConTESTActionTestForm"/>
+                <leg name="ConTESTLegeCODEXEvidenceSubmissionAcceptanceRejection"/>
+                <leg name="ConTESTLegeCODEXEvidenceRelayREMMDAcceptanceRejection"/>
+                <leg name="ConTESTLegeCODEXEvidenceDeliveryNonDeliveryToRecipient"/>
+                <leg name="ConTESTLegeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
+            </legs>
+        </process>
+    </businessProcesses>
+</db:configuration>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--SPOCS redefine of REM schema for SOAP body - last edited by Joerg Apitzsch/bos as of 2012-02-02-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:remsoap="http://uri.etsi.org/02640/soapbinding/v1#" xmlns:rem="http://uri.etsi.org/02640/v2#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" targetNamespace="http://uri.etsi.org/02640/soapbinding/v1#" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://uri.etsi.org/02640/v2#" schemaLocation="TS102640_v2.xsd"/>
+	<xs:redefine schemaLocation="ts102640_soap_body.xsd">
+		<xs:complexType name="REMMDEvidenceListType">
+			<xs:complexContent>
+				<xs:restriction base="remsoap:REMMDEvidenceListType">
+					<xs:sequence>
+						<xs:element ref="rem:SubmissionAcceptanceRejection" minOccurs="0"/>
+						<xs:element ref="rem:RelayREMMDAcceptanceRejection" minOccurs="0"/>
+						<xs:element ref="rem:RelayREMMDFailure" minOccurs="0"/>
+						<xs:element ref="rem:DeliveryNonDeliveryToRecipient" minOccurs="0"/>
+						<xs:element ref="rem:RetrievalNonRetrievalByRecipient" minOccurs="0"/>
+						<xs:element ref="rem:AcceptanceRejectionByRecipient" minOccurs="0"/>
+						</xs:sequence>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:redefine>
+	<xs:element name="REMEvidenceList" type="remsoap:REMMDEvidenceListType"/>
+</xs:schema>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions
+        xmlns:tns="http://connector.domibus.eu/jms/gateway/"
+        xmlns:dct="transition.domain.connector.domibus.eu"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:soapjms="http://www.w3.org/2010/soapjms/"
+        xmlns:wsdl11soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+        xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+        name="DomibusConnectorDeliveryService"
+        targetNamespace="http://connector.domibus.eu/jms/gateway/">
+    <wsdl:import
+            namespace="transition.domain.connector.domibus.eu"
+            location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
+
+    <wsdl:message name="message">
+        <wsdl:part name="message" type="dct:DomibusConnectorMessageType"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="response">
+        <wsdl:part name="response" type="dct:DomibusConnectorMessageResponseType"></wsdl:part>
+    </wsdl:message>
+
+
+    <wsdl:portType name="DomibusConnectorAsyncDeliverToConnectorService">
+        <wsdl:operation name="deliverMessage">
+            <wsdl:input message="tns:message"></wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="DomibusConnectorAsyncDeliverToConnectorReceiveResponseService" >
+        <wsdl:operation name="deliverResponse">
+            <wsdl:input message="tns:response"></wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:portType name="DomibusConnectorAsyncSubmitToGatewayService">
+        <wsdl:operation name="submitMessage">
+            <wsdl:input message="tns:message"></wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="DomibusConnectorAsyncSubmitToGatewayReceiveResponseService" >
+        <wsdl:operation name="submitResponse">
+            <wsdl:input message="tns:response"></wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+
+
+
+</wsdl:definitions>

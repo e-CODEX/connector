@@ -1,0 +1,62 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+
+= DSS Tools configuration
+
+The connector uses the link:../architecture/dss_tools.html[DSS library]. Which can be configured:
+
+== Trusted list configuration
+
+The connector supports the use of trusted lists as a trust source for certificate validation. Trusted lists can currently **only** be configured via the (spring environment) property file.
+
+=== Basic DSS configuration
+
+The basic dss configurtion includes the location of tl cache. This cache is used to store downloaded trusted lists informations.
+
+For every connection by the dss tools a proxy can be configured. This proxy is used to
+
+* validate crl
+* use ocsp
+* download trust lists
+* connect to time stamp servers
+
+[source,properties]
+----
+include::{mvnbasedir}/domibusConnectorDssToolkit/src/test/resources/config/application-dss-tl-test.properties[tag=dss-basic]
+----
+
+
+=== Example configuration of the EU-LOTL
+
+This configuration shows how the EU-LOTL is configured. Keep in mind that at this config **list1** is the name of the trust source: connector.dss.trust-list-sources.**list1**.lotl-sources[0]
+A trust source can contain multiple Lists of Trusted List (LOTL) or trusted lists (TL). The name of the trust source can be used within the link:../ui/configuration/business_document_verification.html[business document validation configuration].
+
+[source,properties]
+----
+include::{mvnbasedir}/domibusConnectorDssToolkit/src/test/resources/config/application-dss-tl-test.properties[tag=eu-lotl]
+----
+
+
+WARNING: Currently the connector only updates the Trusted Lists during startup!
+
+=== Example configuration of Time Stamp Servers
+
+[source,properties]
+----
+include::{mvnbasedir}/domibusConnectorDssToolkit/src/test/resources/config/application-dss-tl-test.properties[tag=example-timestamp-server]
+----
+
+NOTE: Currently timestamping is not used by the connector.

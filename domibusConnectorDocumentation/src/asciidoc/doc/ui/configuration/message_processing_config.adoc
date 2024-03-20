@@ -1,0 +1,46 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+
+= General Message Processing Configuration View
+
+This view enables the user to set properties related to
+general message processing.
+
+== Property overview
+
+|===
+
+| Name | Description
+
+| sendGeneratedEvidencesToBackend
+| If true is enabled, the connector sends every generated evidence back to the backend. Also the by the backend triggered evidences are sent back. This could be useful if the backend wants to archive the whole evidence chain.
+The default is true
+
+| ebmsIdGeneratorEnabled
+| If set, the connector generates the EBMS-ID before the message is handed over to the AS4 Gateway. If false, the connector gets the EBMS-ID from the AS4 Gateway.
+This has only an effect if the EBMS-ID has not been set by the backend!
+
+| ebmsIdSuffix
+| The suffix of the EBMS-ID. The EBMS-ID is created in the following format: UUID@ebmsIdSuffix.
+
+| PMode verification mode for outgoing business msg
+| How should the p-modes be checked. For details see link:../../architecture/message_processing_steps/verify_pmodes_step.html[Verify PModes Step]
+
+| PMode verification mode for incoming business msg
+| How should the p-modes be checked. For details see link:../../architecture/message_processing_steps/verify_pmodes_step.html[Verify PModes Step]
+
+|===
+
+

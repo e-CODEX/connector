@@ -1,0 +1,138 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Backend Link connection mechanisms
+
+This documents explains the possibilities of setting up a connection from a backend/connector-client to the domibusConnector.
+
+It focuses on the differences in using the domibusConnectorAPI and its web-services.
+
+For details on configuration of a backend/connector-client link, please see 
+link:../configuration/link_doc.html[Link Configuration Manual]
+
+For details on the domibusConnectorAPI, its web-services and transition model, please see
+ link:domibusConnectorAPI.html[domibusConnectorAPI documentation]
+ 
+To understand how the domibusConnector message processing works internally and how the communication (link) part works together with
+the core, please see link:connector_message_flow.html[message flow documentation]
+ 
+== Support for implementers
+
+There are different supporting tools and libraries that help to implement the connection between a
+backend and the domibusConnector:
+
+=== Accessing the domibusConnectorAPI directly 
+Mostly for non-JAVA backend clients. This way, the implementation communicates directly
+with the interfaces the domibusConnectorAPI provides. Also, the services where the domibusConnector pushes messages to the backend (if configured)
+must be implemented as web-service clients.
+
+=== Using the domibusConnectorAPI.jar library 
+This is basic support for JAVA implementers. The JAR comes with JAVA interfaces for the web-services, web-service client,
+and stubs of the DomibusConnectorTransitionModel.
+
+=== domibusConnectorClient-Libraries 
+The domibusConnectorClient is a different building block. Besides a full functioning application, it is also
+distributed as a library package to support JAVA implementers of backend software. It provides
+
+* Full support to set up the communication between the backend and the domibusConnector easily configurable.
+* Hooks to implement XML content mapping and schema validation. The backend software using the libraries just need to implement the interfaces
+provided for this.
+* Basic message building support. It is aware of the DomibusConnectorTransition model and offers easy to use interfaces to produce such messages.
+* Easy to use trigger for the domibusConnector to create and send ETSI-REM evidence messages.
+* Scheduler jobs implemented that help pulling pending messages from the backend to the connector, or, if configured, pulling messages
+pending at the domibusConnector to the backend.
+
+For details, please see the documentation of the domibusConnectorClient-Libraries that comes with its distribution package.
+ 
+== Push/Push connection
+
+This is the possibility to push messages between the domibusConnector and the backend.
+It means that incoming messages processed by the domibusConnector are pushed to the backend synchroniously,
+just like the backend pushes messages to the domibusConnector directly.
+
+=== Backend submitting messages to the domibusConnector
+
+For this direction, the backend must have a web-service client  implementing the interface *DomibusConnectorBackendWebService*.
+Its method "submitMessage" submits any message to the domibusConnector, either it is a new business message, or a trigger message to 
+produce ETSI-REM evidences.
+
+=== domibusConnector delivering messages to the backend
+
+If configured, the domibusConnector expects the backend to provide an implementation of the web-service *DomibusConnectorBackendDeliveryWebService*.
+The domibusConnector uses its web-service client implementation to call the configured backend.
+
+
+== Push/Pull connection without acknowledgement of pulled messages
+
+From version 4.0 on, the domibusConnector provides the possibility for backends to push message to the domibusConnector, but pull messages
+pending at the domibusConnector.
+
+IMPORTANT: This mechanism is also supported in domibusConnector-4.4 and does not need to be changed at backend level if already implemented!
+
+=== Backend submitting messages to the domibusConnector
+
+For this direction, the backend must have a web-service client  implementing the interface *DomibusConnectorBackendWebService*.
+Its method "submitMessage" submits any message to the domibusConnector, either it is a new business message, or a trigger message to 
+produce ETSI-REM evidences.
+
+=== Backend pulling messages from the domibusConnector
+
+The backend must have a web-service client  implementing the interface *DomibusConnectorBackendWebService*.
+The method "requestMessages" returns all messages pending for this backend at the domibusConnector at once.
+After the connection is closed by the client the messages are marked as "accepted by the client" and now the
+client is responsible for the messages.
+
+== Push/Pull connection with asynchronous acknowledgement of pulled messages
+
+Implemented in version 4.4 of domibusConnector.
+
+This pulling mechanism allows the backend to decide the number of messages pulled from the connector. It also requires the backend 
+to acknowledge the pulled messages in an additional asynchronous step.
+That way, the backend software may process the messages technically and if that fails, message can be re-pulled from the domibusConnector.
+
+IMPORTANT: If the domibusConnectorClient-Libraries are used by the backend and this way of pulling messages should be implemented, then an update of the domibusConnectorClient-Libraries to version 4.4 is also needed!
+
+TIP: This way of pulling messages is recommended. The risk of losing messages at the backend side is lower and the network traffic load can be managed more flexible by configuring a maximum of downloaded messages per session. 
+Also, every message is downloaded in a single web-service call instead of downloading all available messages in one call. 
+
+=== Backend submitting messages to the domibusConnector
+
+For this direction, the backend must have a web-service client  implementing the interface *DomibusConnectorBackendWebService*.
+Its method "submitMessage" submits any message to the domibusConnector, either it is a new business message, or a trigger message to 
+produce ETSI-REM evidences.
+
+=== Backend pulling messages from the domibusConnector
+
+Pulling a message is now split into three seperate web-service calls:
+
+* listPendingMessageIds	- it returns a list of message transport ids from the domibusConnector of message in state PENDING for this backend at the connector.
+* getMessageById		- each message must be downloaded seperately. The ids are received at the previous call. This allows the backend to control the number of pulled messages.
+This causes the downloaded message to get into state PENDING_DOWNLOADED at the domibusConnector. 
+* acknowledgeMessage 	- This method needs to be called for each message successfully downloaded after processing at the backend. According to the result sent with this method call, the message
+changes state at the domibusConnector to either FINISHED (is success) or FAILED (otherwise). 
+It is possible to inform the connector about the assigned backend message id (success case) or about any occured errors (otherwise).
+
+=== Monitor messages pulled by the backend
+
+IMPORTANT: This functionality is only available over the domibusConnector Administrator user-interface.
+
+Using this new way of pulling messages allows the administrator of the domibusConnector to re-send already pulled messages.
+The conditions for retrying already pulled messages are:
+
+* The message is still in state PENDING_DOWNLOADED.
+* The message is in state FAILED.
+* The message contents are still available.
+
+Besides the possibility of re-sending messages, the administrator can also finish messages not finished yet.
+
+Details on the UI view can be found in the documentation of that UI view.
+It can be either accessed via the UI view itself as online help, or via this link:
+link:../ui/message_transport_overview.html[Message Transport to Link Partners]

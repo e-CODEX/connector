@@ -1,0 +1,120 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Centos 7 deployment
+
+This contains a example deployment on an centos 7 system.
+
+== System preparation
+
+Install java, tomcat and mysql:
+
+____
+
+Note: mariadb is the opensource fork of mysql and in the standard centos repository available
+
+____
+
+----
+sudo yum install -y java-1.8.0-openjdk-headless mariadb tomcat mysql-connector-java
+----
+
+* java-1.8.0-openjdk-headless java runtime environment
+* mariadb (the database)
+* tomcat tomcat web application container
+* mysql-connector-java jdbc driver for accessing the database
+
+Make the database jdbc driver for tomcat available by linking it into the tomcat libs folder.
+By linking you get the benifit, that the driver is updated by the centos distribution.
+
+____
+
+Note: if you are using a different database like oracle, you have to copy the database jdbc driver jar
+by yourself into the tomcat lib folder.
+
+____
+
+----
+cp /usr/share/java/mysql-connector-java.jar /usr/share/tomcat/lib/
+----
+
+Start the database service and enable it as system service.
+
+----
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+----
+
+Create a database and a database user:
+
+If the database has started successfully log into the datbase with the following command
+
+----
+sudo mysql
+----
+
+Execute the following commands on the database:
+
+After that your database is ready to use. Continue configuring and deploying the connector war.
+
+Create a folder for the domibusConnector:
+
+----
+mkdir /opt/domibusConnector
+----
+
+After that copy the domibusConnector.war to /opt/domibusConnector/
+
+----
+cp ${domibusConnectorWar} /opt/domibusConnector
+----
+
+Create a domibusConnectorWebAppModule.xml at /etc/tomcat/Catalina/localhost
+
+----
+cp ${exampleContext}  /etc/tomcat/Catalina/localhost
+----
+
+
+____
+
+----
+   <Context docBase="/opt/domibusConnector/domibusConnector.war">
+        <Parameter  name="spring.config.location"
+                      value="/opt/domibusConnector/config"
+                      override="false" />
+
+    </Context>
+----
+
+____
+
+Copy the application example properties to /opt/domibusConnector/config
+----
+cp application.properties /opt/domibusConnector/config
+----
+and configure the properties. You might enabled liquibase for database initialisation by setting
+----
+    spring.liquibase.enabled=true
+----
+otherwise you have to apply the database scripts to the databse.
+
+
+Restart the tomcat
+----
+systemctl restart tomcat
+----
+
+Enable tomcat for startup on boot
+----
+systemctl enabled tomcat
+----
+
+NOTE: if you plan to also install domibus (AS4 Gateway) make surce that you are using a different tomcat!

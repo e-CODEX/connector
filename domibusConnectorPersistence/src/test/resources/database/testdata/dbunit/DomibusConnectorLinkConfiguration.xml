@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <DC_LINK_CONFIGURATION id="1" link_impl="testimpl" config_name="config2"/>
+    <DC_LINK_CONFIG_PROPERTY DC_LINK_CONFIGURATION_ID="1" PROPERTY_NAME="test" PROPERTY_VALUE="value"/>
+    <DC_LINK_CONFIGURATION id="1000" link_impl="testimpl" config_name="config1"/>
+    <DC_LINK_CONFIG_PROPERTY DC_LINK_CONFIGURATION_ID="1000" PROPERTY_NAME="p1" PROPERTY_VALUE="value"/>
+    <DC_LINK_CONFIG_PROPERTY DC_LINK_CONFIGURATION_ID="1000" PROPERTY_NAME="p2" PROPERTY_VALUE="value"/>
+</dataset>

@@ -1,0 +1,42 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: {path}
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= UI Documentation
+
+This documentation pages are also reachable through the corresponding pages.
+
+== PModes
+
+include::{basepath}/doc/ui/pmodes/pmodes_overview.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/pmodes/pmodeset_import.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/pmodes/pmodeset_data.adoc[leveloffset=+2]
+
+== Configuration
+
+include::{basepath}/doc/ui/configuration/link_configuration.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/configuration/backend_message_routing_ui.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/configuration/business_document_verification.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/configuration/ecodex_container_configuration.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/configuration/evidence_builder_configuration.adoc[leveloffset=+2]
+
+== Monitoring
+
+include::{basepath}/doc/ui/monitoring/jms_monitoring.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/monitoring/message_transport_overview.adoc[leveloffset=+2]
+
+== Connector-Tests
+
+include::{basepath}/doc/ui/c2ctests/connector_tests_overview.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/c2ctests/connector_test_messages_list.adoc[leveloffset=+2]
+include::{basepath}/doc/ui/c2ctests/send_connector_test_message.adoc[leveloffset=+2]
+
+== Tools
+
+include::{basepath}/doc/ui/tools/create_ecodex_container.adoc[leveloffset=+2]

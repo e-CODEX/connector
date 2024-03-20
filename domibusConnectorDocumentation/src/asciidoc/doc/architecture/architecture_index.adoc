@@ -1,0 +1,26 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= domibusConnector Architecture
+
+include::{basepath}/doc/architecture/architecture_overview.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/database.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/connector_architecture.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/domibusConnectorAPI.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/message_processing/message_processing.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/backend_message_routing.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/backend_link_mechanisms.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/ecodex_container_creation.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/link_partners.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/loopback_message_sending.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/multiusecasepmode.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/dss_tools.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/storage_encryption_of_data.adoc[leveloffset=+1]
+include::{basepath}/doc/architecture/payload_handling.adoc[leveloffset=+1]

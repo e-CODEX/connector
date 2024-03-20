@@ -1,0 +1,15 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Create eCodex Container
+
+This view offers the possibility to upload a Business Document (PDF, ASIC-Container, ...) which will then be processed as a regular business document.
+
+If the processing was successful the created Trust Token XML (XML-File) and eCodex Container (asics-File) can be downloaded.

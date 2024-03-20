@@ -1,0 +1,55 @@
+:path: ../../../
+
+ifndef::basepath[]
+:basepath: ../../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= PMode-Set data
+
+== Active PMode Set data
+
+Currently, only one PMode-Set can be active at a time. When a new set of PModes is imported, this one then replaces the previous one as the active one.
+
+=== Active PMode Set uploaded at
+
+Here, the server time is displayed when this PMode-Set has been imported.
+
+=== Download active PModes
+
+This is a link that starts a download of the originally imported PModes XML file.
+
+=== Description and Update PMode-Set Description
+
+The textfield "Description:" displays the actual description entered when the PMode-Set has been imported.
+This description can be changed and by hitting the Button "Update PMode-Set Description" the description is replaced.
+
+IMPORTANT: There is no history of descriptions. When updating the description, the previous description of this PMode-Set is replaced!
+
+=== Services within active PMode-Set
+
+This table displays the Services to this PMode-Set.
+
+=== Actions within active PMode-Set
+
+This table displays the Actions to this PMode-Set.
+
+=== Parties within active PMode-Set
+
+This table displays the Parties to this PMode-Set.
+
+=== Connectorstore contents
+
+This section displays a table that, if the connectorstore can be loaded properly, shows information on the certificates contained within the connectorstore.
+Here, also the password of the connectorstore can be changed.
+
+IMPORTANT: The password change does NOT change the password of the actual connectorstore. It only changes the password stored for this store if not correct.
+
+
+== Previous PMode Sets
+
+This section shows a table of PMode-Sets not active anymore (replaced by new imported PMode-Sets).
+It shows the date of creation (import), the last description stored and give a download link which immediately starts the download of that PModes XML.

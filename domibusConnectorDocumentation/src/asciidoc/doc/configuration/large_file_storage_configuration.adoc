@@ -1,0 +1,59 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+= Large File Storage configuration
+
+The large file storage can currently only be configured via the spring environment (connector.properties file).
+
+For more details about the payload handling see: link:../architecture/payload_handling.html[Payload Handling]
+
+== Changing the default LargeFilePersistenceProvider
+
+The used large file persistence provider can be configured in the following way:
+
+For Filesystem Storage:
+[code, YAML]
+----
+#is enabled by default
+#connector.persistence.provider-jpa.enabled=true
+#file provider is the recommended default
+connector.persistence.default-large-file-provider-class=eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceServiceFilesystemImpl
+----
+
+For DB storage:
+[code, properties]
+----
+#enabled by default
+#connector.persistence.provider-filesystem.enabled=true
+connector.persistence.default-large-file-provider-class=eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceServiceJpaImpl
+----
+
+CAUTION: The as default configured large file persistence provider must also be active!
+
+
+== Configuring the large file persistence provider filesystem
+
+The large file system provider offers some additional configuration:
+
+[code, properties]
+----
+#the storage location used by the provider
+connector.persistence.filesystem.storage-path=./data/fsstorage
+#should the directory be created if it does not exist, true by default
+connector.persistence.filesystem.create-dir=true
+#by default the stored content is encrypted, key is stored as part of DomibusConnectorMessage object in JMS and DB
+connector.persistence.filesystem.encryption-active=true
+----
+

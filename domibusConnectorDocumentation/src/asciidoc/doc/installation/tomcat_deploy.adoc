@@ -1,0 +1,88 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+
+= DEPLOY ON TOMCAT
+
+== Quick Start
+
+ 1. Copy the properties file (connector.properties) and the logging configuration (log4j2.xml)
+    from (documentation/config/) into
+    ${CATALINA_BASE}/conf/connector/connector.properties
+ 2. Set the correct base path within log4j2.xml (must be writeable!)
+ 3. Make your modifications to the connector.properties (GW-Address, eCodexSecurityLibSettings, ...)
+ 4. Copy the database jdbc driver .jar into the tomcat lib folder
+ 5. Put the domibusConnector.war into ${CATALINA_BASE}/webapps/connector.war
+    The connector will be served by tomcat under http://{HOST:PORT}/connector/
+
+
+
+=== War deployment
+
+The suggested way to deploy the application on tomcat is to drop the connector war into the
+webapps folder. It is also recommended that the connector is the only application which is deployed on
+the tomcat. With the default configuration tomcat will pick up that war and auto-deploy it.
+The connector will then look into the following places for the configuration:
+
+* ./config/connector.properties
+* ./conf/connector/connector.properties
+
+On tomcat this means the connector will look for the properties within
+
+* ${CATALINA_BASE}/config/connector.properties
+* ${CATALINA_BASE}/conf/connector/connector.properties
+
+==== Notes on CATALINA_BASE
+
+The variable CATALINA_BASE is set within the tomcat startup scripts, and points to
+the base directory of the tomcat instance. You can use this variable within
+connector.properties to reference paths/files.
+
+ eg. logging.config=${CATALINA_BASE}/conf/common/log4j2-common.xml
+
+
+=== Context Configuration Deployment
+
+If you want to pass more configuration or settings to the application. You can use the context descriptors provided by tomcat. With the context descriptor you can:
+
+* configure a datasource
+* load the application
+* set some parameters for the application
+
+For further information consult the tomcat documentation: https://tomcat.apache.org/tomcat-7.0-doc/config/context.html#Defining_a_context
+
+Copy the domibusConnectorTomcatStarter.war file to a location where the application server can read it. But *NOT* in the
+webapps folder (or any other folder where tomcat is auto deploying from). Because tomcat will automatically deploy it and you cannot
+define a custom context for this application anymore. Remember this path!
+
+Open your tomcat home directory. And put the domibusConnectorWebAppModule.xml into &lt;your tomcat root path&gt;/Catalina/localhost/.
+Edit the xml and change the data-source according to your needs. Don't forget to
+put the according jdbc driver jar into the tomcat libs folder.
+
+Restart your tomcat. During startup tomcat dedects the new context configuration and loads it. Tomcat initializes the datasource connection
+and also deploys the domibusConnectorTomcatStarter.war from the specified path (docBase). Als the specified parameters are put into the servlet
+context and are available to the starting application.
+
+==== Description of the example context
+
+----
+<Context docBase="<path to domibusConnectorWebAppModule.war>">  
+
+    <Parameter  name="spring.config.location" 
+                  value="<path to the folder containing the connector.properties"
+                  override="false" />  
+
+</Context>
+----
+
+The attribute 'docBase' contains the path of the war file, which should be deployed in this context.
+
+
+Configure the application properties according to your needs. Especially the security stores link:certificates.html[Configuring Trust- and Keystores].

@@ -1,0 +1,10 @@
+  -+osso/`     ---------.     `-+ossso/     ./ossso/-      .oooo++/:`      -oooooooo-   +o+`   .oo: 
+.sd+.`.:yd/    `````````     :hh/-``.--   `sdo-.`.-ody.    -dd----/ydo`    /dy------`   `ody- :hh:  
+yds`````:dd`                :dh`          sdo       odh    -dd      sdy    /dy`````       :hdsdy.   
+ddyooooooss.   ---------.   yds           dd/       :dd.   -dd      :dd`   /ddsssss`       /ddd:    
+ydo                         +dh`          yds       /dd`   -dd      +dy    /dy`````      `+dy:yd+`  
+.yd+-` `.:-    `````````    `ody:`   ..   .yd+`   `:hd/    -dd````-ody.    /dy```````   .ydo` `+dy. 
+  :osyyso+.    ---------.     .+syyyyso.    :oyyyyys/`     .yyyyyss+-      :yyyyyyyyo  -yy:     -yy-
+ 
+<<  DOMIBUS WEB CONNECTOR ${project.version} >>
+

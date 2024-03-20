@@ -1,0 +1,73 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+= Monitoring
+
+== Monitoring Manual
+
+The connector uses link:https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html[spring-boot-actuator] to expose a rest based monitoring interface.
+The actuator interface can be exposed over http and JMX.
+
+=== Actuator Security
+The actuator interface is located under <connectorURL>/acatuator and is password protected. To access the
+actuator interface a user with the ROLE actuator or admin is required!
+
+NOTE: The initial admin user has the role admin
+
+=== Exposed Actuator metrics
+
+Currently only the default metrics are exposed. For the future it is planned to expose at least the following metrics:
+
+* Certificates with expiration date
+* Processed messages (messages in/out)
+* Pending messages (messages with no DELIVERY or RETRIEVAL evidence)
+* ActiveMQ Queues
+
+==== Configuration of actuator endpoints
+
+----
+##############################################################################
+############################ MONITOR PROPERTIES###############################
+##############################################################################
+# see: https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html
+#
+management.endpoints.web.exposure.include=info,health,metrics,configprops,prometheus
+----
+
+=== Exposed Health Endpoints
+
+Currently no custom HealthEndpoint is created. For the future it is planned to expose the following health metrics:
+
+* Certificate health
+* ActiveMQ Queues
+
+
+NOTE: A preview on the health metrics is here link:https://secure.e-codex.eu/nexus/content/groups/public/eu/ecodex/utils/monitor/ecodex-monitor-app/0.0.12-RELEASE/[]
+available. It is a war deployable which can be deployed next to the domibusGateway or connector and can expose
+certificates and activeMQ queues over a spring actuator interface.
+
+
+=== Internal JMS Monitoring
+
+The connector uses an internal jms message broker. This can be monitored
+by using JMX. So the java application should be started with enabled jmx. See link:https://docs.oracle.com/javase/8/docs/technotes/guides/management/agent.html[]
+
+JMX has also to be enabled within the connector.properties.
+
+----
+spring.jmx.enabled=true
+----
+
+For the Artemis JMX Beans see: link:https://activemq.apache.org/components/artemis/documentation/latest/management.html[]

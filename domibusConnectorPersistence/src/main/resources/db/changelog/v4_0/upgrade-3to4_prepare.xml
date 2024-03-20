@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- 
+        Changelog to upgrade from 3.0 database to 4.0 database
+    -->
+
+
+
+
+
+    <!--
+        create temp tables to move data
+    -->
+    <changeSet id="up1_3to4_upgrade_001_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_ACTION"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_ACTION</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_ACTION" newTableName="DOMIBUS_CONNECTOR_ACTION_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_002_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_EVIDENCES"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_EVIDENCES</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_EVIDENCES" newTableName="DC_EVIDENCES_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_003_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_MESSAGE_INFO</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" newTableName="DC_MSG_INFO_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_004_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_MESSAGES"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_MESSAGES</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_MESSAGES" newTableName="DOMIBUS_CONNECTOR_MESSAGES_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_005_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_MSG_ERROR"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_MSG_ERROR</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_MSG_ERROR" newTableName="MSG_ERROR_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_006_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_PARTY"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_PARTY</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_PARTY" newTableName="DOMIBUS_CONNECTOR_PARTY_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_007_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_SEQ_STORE"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_SEQ_STORE</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_SEQ_STORE" newTableName="SEQ_STORE_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_008_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_SERVICE"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_SERVICE</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_SERVICE" newTableName="DOMIBUS_CONNECTOR_SERVICE_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_009_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_CONNECTOR_ACTION"/>
+        </preConditions>
+        <comment>Create temp table of DOMIBUS_CONNECTOR_ACTION</comment>
+        <renameTable oldTableName="DOMIBUS_CONNECTOR_ACTION" newTableName="DOMIBUS_CONNECTOR_ACTION_OLD"/>
+    </changeSet>
+    <changeSet id="up1_3to4_upgrade_010_pre_setup" author="StephanSpindler">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_WEBADMIN_USER"/>
+        </preConditions>
+        <comment>Rename table for historic purpose</comment>
+        <renameTable oldTableName="DOMIBUS_WEBADMIN_USER" newTableName="DOMIBUS_WEBADMIN_USER_OLD"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--REM schema for SOAP body - last edited by Joerg Apitzsch/bos as of 2012-02-02-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:rem="http://uri.etsi.org/02640/v2#" xmlns:remsoap="http://uri.etsi.org/02640/soapbinding/v1#" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:tsl="http://uri.etsi.org/02231/v2#" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" targetNamespace="http://uri.etsi.org/02640/soapbinding/v1#" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xs:import namespace="http://www.w3.org/2005/05/xmlmime" schemaLocation="xmlmime.xsd"/>
+	<xs:import namespace="http://uri.etsi.org/02231/v2#" schemaLocation="ts_102231v030102_xsd.xsd"/>
+	<xs:import namespace="http://uri.etsi.org/01903/v1.3.2#" schemaLocation="XAdES132.xsd"/>
+	<xs:import namespace="http://uri.etsi.org/02640/v2#" schemaLocation="TS102640_v2.xsd"/>
+	<xs:complexType name="KeywordType">
+		<xs:simpleContent>
+			<xs:extension base="tsl:NonEmptyString">
+				<xs:attribute name="scheme" type="tsl:NonEmptyString"/>
+				<xs:attribute name="meaning"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:element name="DeliveryConstraints">
+		<xs:annotation>
+			<xs:documentation>Message time instants</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Origin" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="InitialSend" type="xs:dateTime"/>
+				<xs:element name="ObsoleteAfter" type="xs:date" minOccurs="0"/>
+				<xs:element ref="xades:Any" minOccurs="0"/>
+				<!--Extension point may be used for other contraints, based on schema - e.g. to express message priority-->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Originators">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="From" type="rem:EntityDetailsType"/>
+				<xs:element name="Sender" type="rem:EntityDetailsType" minOccurs="0"/>
+				<xs:element name="ReplyTo" type="rem:EntityDetailsType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Recipient" type="rem:EntityDetailsType"/>
+	<xs:element name="Destinations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="remsoap:Recipient"/>
+				<xs:element name="OtherRecipients">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="To" type="rem:EntityDetailsType" maxOccurs="unbounded"/>
+							<xs:element name="Cc" type="rem:EntityDetailsType" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MsgIdentification">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Message-ID" type="xs:string"/>
+				<xs:element name="In-Reply-To" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="References" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MsgMetaData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="remsoap:DeliveryConstraints"/>
+				<xs:element ref="remsoap:Originators"/>
+				<xs:element ref="remsoap:Destinations"/>
+				<xs:element ref="remsoap:MsgIdentification"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="AttachmentType">
+		<xs:choice>
+			<xs:element name="Content-ID-Ref" type="xs:string"/>
+			<xs:element name="Embedded" type="xs:base64Binary"/>
+		</xs:choice>
+		<xs:attribute name="Id" type="xs:ID"/>
+		<xs:attribute name="Size" type="xs:positiveInteger" use="required">
+			<xs:annotation>
+				<xs:documentation>Size in bytes</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute ref="xmime:contentType" use="required"/>
+		<xs:attribute name="Filename" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Content_Description">
+			<xs:annotation>
+				<xs:documentation>i.e. offer, billl</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Encoding">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:length value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute ref="xml:lang"/>
+	</xs:complexType>
+	<xs:element name="Attachment" type="remsoap:AttachmentType"/>
+	<xs:element name="Informational">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Subject" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Message subject text</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Comments" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Comments like "message correlates to" text</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Keywords" type="remsoap:KeywordType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>keyword, sep. bei comma</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NormalizedMsg">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="remsoap:Informational" minOccurs="0"/>
+				<xs:element name="Text" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>
+							The message text
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="format" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="text"/>
+											<xs:enumeration value="html"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="xades:Any" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="remsoap:Attachment" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="OriginalMsg" type="remsoap:OriginalMsgType"/>
+	<xs:complexType name="OriginalMsgType">
+		<xs:simpleContent>
+			<xs:extension base="xs:base64Binary">
+				<xs:attribute name="ContentType" type="tsl:NonEmptyString" use="required"/>
+				<xs:attribute name="Size" type="xs:positiveInteger" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="REMDispatchType">
+		<xs:sequence>
+			<xs:element ref="remsoap:MsgMetaData"/>
+			<xs:element ref="remsoap:OriginalMsg"/>
+			<xs:element ref="remsoap:NormalizedMsg" minOccurs="0"/>
+			<xs:element ref="remsoap:REMMDEvidenceList" minOccurs="0"/>
+			<xs:element ref="ds:Signature" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Id" type="xs:ID"/>
+	</xs:complexType>
+	<xs:element name="REMDispatch" type="remsoap:REMDispatchType"/>
+	<xs:complexType name="REMMDMessageType">
+		<xs:sequence>
+			<xs:element ref="remsoap:REMMDEvidenceList"/>
+			<xs:element ref="ds:Signature" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Id" type="xs:ID"/>
+	</xs:complexType>
+	<xs:element name="REMMDMessage" type="remsoap:REMMDMessageType"/>
+	<xs:complexType name="REMMDEvidenceListType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element ref="rem:SubmissionAcceptanceRejection" minOccurs="0"/>
+			<xs:element ref="rem:RelayREMMDAcceptanceRejection" minOccurs="0"/>
+			<xs:element ref="rem:RelayREMMDFailure" minOccurs="0"/>
+			<xs:element ref="rem:DeliveryNonDeliveryToRecipient" minOccurs="0"/>
+			<xs:element ref="rem:RetrievalNonRetrievalByRecipient" minOccurs="0"/>
+			<xs:element ref="rem:AcceptanceRejectionByRecipient" minOccurs="0"/>
+			<xs:element ref="rem:DownloadNonDownloadByRecipient" minOccurs="0"/>
+			<xs:element ref="rem:RelayToNonREMSystem" minOccurs="0"/>
+			<xs:element ref="rem:ReceivedFromNonREMSystem" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Id" type="xs:ID"/>
+	</xs:complexType>
+	<xs:element name="REMMDEvidenceList" type="remsoap:REMMDEvidenceListType"/>
+</xs:schema>

@@ -1,0 +1,56 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../
+endif::mvnbasedir[]
+
+
+= Digital Signature Service - DSS library
+
+The connector uses within the security toolkit and the evidence toolkit modules the link:https://ec.europa.eu/cefdigital/wiki/display/CEFDIGITAL/Digital+Signature+Service+-++DSS[Digital Signature Service - DSS library].
+
+The DSS library is provided by CEF and is used for certificate verification and signing. It also supports the concept of Trusted Lists.
+
+== Trusted Lists
+
+The trust list (TL) is basically a list of certificates. The list of trusted lists (LTOL) is a list of trust list. Both can be downloaded by the dss library, which also handles updating and caching.
+
+An example of a LOTL (List of trusted lists) is the EU-LOTL - which contains all trusted certificates within the EU (see: link: https://esignature.ec.europa.eu/efda/tl-browser[EU Trust Services Dashboard]).
+
+The connector supports the usage of trust lists for certificate validation with some limitations:
+
+* The trusted list sources are only updated during startup (it is planned to use a timer job which will updated the tl and lotls)
+
+== Certificate Validation / Signed Document Validation
+
+link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#signedDocumentValidator[Certificate Validation / Signed Document validation] is used for the following tasks:
+
+* Validating the incoming ASIC-S container
+* Validating the outgoing Business Document (hence it depends on the used AES-System) for details see: link:../architecture/ecodex_container_creation.html[e-Codex Container Creation]
+* Validating evidences [not implemented yet!]
+
+For certificate validation a ETSI conformant validation policy can be provided. As an example the validation policy can be used to exclude algorithms. For details see: link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#_etsi_validation_report[DSS ETSI]
+
+== Signature Creation
+
+Signature Creation is used for the following tasks:
+
+* Signing the TrustToken (see: link:ecodex_container_creation.html[eCodex container creation])
+* Signing the outgoing ASIC-S container (see: link:ecodex_container_creation.html[eCodex container creation])
+* Signing the evidences
+
+== Time Stamps
+
+The DSS library also supports time stamp servers. Currently it is possible to configure time stamp servers but they are not used yet. It is planned to support more link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#_signatures_profile_simplification[signature profiles].
+
+
+

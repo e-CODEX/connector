@@ -1,0 +1,22 @@
+
+:path: ../../
+
+ifndef::basepath[]
+:basepath: {path}
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+ifndef::mvnbasedir[]
+:mvnbasedir: {basepath}/../../../../../
+endif::mvnbasedir[]
+
+include::{basepath}/doc/configuration/dss_tools_configuration.adoc[leveloffset=+1]
+include::{basepath}/doc/configuration/large_file_storage_configuration.adoc[leveloffset=+1]
+include::{basepath}/doc/configuration/backend_message_routing_configuration.adoc[leveloffset=+1]
+include::{basepath}/doc/configuration/ha.adoc[leveloffset=+1]
+include::{basepath}/doc/configuration/link_doc.adoc[leveloffset=+1]
+include::{basepath}/doc/configuration/logging.adoc[leveloffset=+1]
+include::{basepath}/doc/configuration/monitoring.adoc[leveloffset=+1]

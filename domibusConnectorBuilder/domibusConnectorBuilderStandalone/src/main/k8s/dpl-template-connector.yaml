@@ -1,131 +1,131 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: ${lab.id}-connector-pvc
+    name: ${lab.id}-connector-pvc
 spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: netapp-trident-brz-retain
-  volumeMode: Filesystem
+    accessModes:
+        - ReadWriteMany
+    resources:
+        requests:
+            storage: 1Gi
+    storageClassName: netapp-trident-brz-retain
+    volumeMode: Filesystem
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dpl-${lab.id}-connector
+    name: dpl-${lab.id}-connector
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: ${lab.id}-connector
-  template:
-    metadata:
-      labels:
-        app: ${lab.id}-connector
-        pod.cp.cna.at/ingress: allow
-    spec:
-      volumes:
-        - name: ecx-keystores
-          configMap:
-            name: ecx-keystores
-            defaultMode: 420
-        - name: temp
-          emptyDir: {}
-        - name: storage
-          persistentVolumeClaim:
-            claimName: ${lab.id}-connector-pvc
-      containers:
-        - name: ${lab.id}-connector
-          image: centralrepo.apps.a3.cp.cna.at/brz-ju-images-poc-docker/jueu/dc-connector:${project.version}_${git.commit.id.abbrev}
-          ports:
-            - containerPort: 8080
-              protocol: TCP
-          resources:
-            limits:
-              cpu: 100m
-              memory: 1024Mi
-            requests:
-              cpu: 50m
-              memory: 512Mi
-          env:
-            - name: SPRING_DATASOURCE_URL
-              value: "jdbc:h2:file:/app/data/connector.db"
-            - name: SPRING_DATASOURCE_USERNAME
-              value: connector
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: connector
-            - name: SPRING_LIQUIBASE_URL
-              value: "jdbc:h2:file:/app/data/connector.db"
-            - name: SPRING_LIQUIBASE_USER
-              value: connector
-            - name: SPRING_LIQUIBASE_PASSWORD
-              value: connector
-            - name: CONNECTOR_INIT_USER_INITIAL_USER_PASSWORD
-              value: admin
-            - name: CONNECTOR_INIT_USER_INITIAL_CHANGE_REQUIRED
-              value: "false"
-            - name: LOGGING_LEVEL_ROOT
-              value: "INFO"
-            - name: SERVER_PORT
-              value: "8080"
-            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
-              value: file:/app/config/labenv02/config/
-            - name: CONNECTOR_LINK_GATEWAY_LINK_CONFIG_PROPERTIES_GW_ADDRESS
-              value: http://${lab.id}-gw-svc:8080/domibus/services/dcplugin
-          volumeMounts:
-            - name: storage
-              mountPath: /app/data
-              subPath: ${lab.id}/connector
-            # - name: ecx-keystores
-            #   mountPath: /app/config/keystores
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          imagePullPolicy: Always
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
-      dnsPolicy: ClusterFirst
-      securityContext: {}
-      schedulerName: default-scheduler
-  strategy:
-    type: Recreate
-  revisionHistoryLimit: 10
+    replicas: 1
+    selector:
+        matchLabels:
+            app: ${lab.id}-connector
+    template:
+        metadata:
+            labels:
+                app: ${lab.id}-connector
+                pod.cp.cna.at/ingress: allow
+        spec:
+            volumes:
+                -   name: ecx-keystores
+                    configMap:
+                        name: ecx-keystores
+                        defaultMode: 420
+                -   name: temp
+                    emptyDir: { }
+                -   name: storage
+                    persistentVolumeClaim:
+                        claimName: ${lab.id}-connector-pvc
+            containers:
+                -   name: ${lab.id}-connector
+                    image: centralrepo.apps.a3.cp.cna.at/brz-ju-images-poc-docker/jueu/dc-connector:${project.version}_${git.commit.id.abbrev}
+                    ports:
+                        -   containerPort: 8080
+                            protocol: TCP
+                    resources:
+                        limits:
+                            cpu: 100m
+                            memory: 1024Mi
+                        requests:
+                            cpu: 50m
+                            memory: 512Mi
+                    env:
+                        -   name: SPRING_DATASOURCE_URL
+                            value: "jdbc:h2:file:/app/data/connector.db"
+                        -   name: SPRING_DATASOURCE_USERNAME
+                            value: connector
+                        -   name: SPRING_DATASOURCE_PASSWORD
+                            value: connector
+                        -   name: SPRING_LIQUIBASE_URL
+                            value: "jdbc:h2:file:/app/data/connector.db"
+                        -   name: SPRING_LIQUIBASE_USER
+                            value: connector
+                        -   name: SPRING_LIQUIBASE_PASSWORD
+                            value: connector
+                        -   name: CONNECTOR_INIT_USER_INITIAL_USER_PASSWORD
+                            value: admin
+                        -   name: CONNECTOR_INIT_USER_INITIAL_CHANGE_REQUIRED
+                            value: "false"
+                        -   name: LOGGING_LEVEL_ROOT
+                            value: "INFO"
+                        -   name: SERVER_PORT
+                            value: "8080"
+                        -   name: SPRING_CONFIG_ADDITIONAL_LOCATION
+                            value: file:/app/config/labenv02/config/
+                        -   name: CONNECTOR_LINK_GATEWAY_LINK_CONFIG_PROPERTIES_GW_ADDRESS
+                            value: http://${lab.id}-gw-svc:8080/domibus/services/dcplugin
+                    volumeMounts:
+                        -   name: storage
+                            mountPath: /app/data
+                            subPath: ${lab.id}/connector
+                        # - name: ecx-keystores
+                        #   mountPath: /app/config/keystores
+                    terminationMessagePath: /dev/termination-log
+                    terminationMessagePolicy: File
+                    imagePullPolicy: Always
+            restartPolicy: Always
+            terminationGracePeriodSeconds: 30
+            dnsPolicy: ClusterFirst
+            securityContext: { }
+            schedulerName: default-scheduler
+    strategy:
+        type: Recreate
+    revisionHistoryLimit: 10
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: ${lab.id}-connector-svc
-  labels:
-    app: ${lab.id}-connector
+    name: ${lab.id}-connector-svc
+    labels:
+        app: ${lab.id}-connector
 spec:
-  ipFamilies:
-    - IPv4
-  ports:
-    - name: ${lab.id}-connector-service-port
-      protocol: TCP
-      port: 8080
-      targetPort: 8080
-  internalTrafficPolicy: Cluster
-  selector:
-    app: ${lab.id}-connector
+    ipFamilies:
+        - IPv4
+    ports:
+        -   name: ${lab.id}-connector-service-port
+            protocol: TCP
+            port: 8080
+            targetPort: 8080
+    internalTrafficPolicy: Cluster
+    selector:
+        app: ${lab.id}-connector
 ---
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: ${lab.id}-connector-route
-  labels:
-    app: ${lab.id}-connector
+    name: ${lab.id}-connector-route
+    labels:
+        app: ${lab.id}-connector
 spec:
-  host: ${lab.id}-connector-ju-eu-ejustice-eqs.apps.a2.cp.cna.at
-  path: /
-  to:
-    kind: Service
-    name: ${lab.id}-connector-svc
-    weight: 100
-  port:
-    targetPort: ${lab.id}-connector-service-port
-  tls:
-    termination: edge
-    insecureEdgeTerminationPolicy: Redirect
-  wildcardPolicy: None
+    host: ${lab.id}-connector-ju-eu-ejustice-eqs.apps.a2.cp.cna.at
+    path: /
+    to:
+        kind: Service
+        name: ${lab.id}-connector-svc
+        weight: 100
+    port:
+        targetPort: ${lab.id}-connector-service-port
+    tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+    wildcardPolicy: None

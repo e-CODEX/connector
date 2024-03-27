@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>eu.domibus.connector</groupId>
@@ -228,7 +229,9 @@
                                             <id>connector-jar</id>
                                             <files>
                                                 <file>
-                                                    <source>${project.basedir}/target/${project.artifactId}-${project.version}.jar</source>
+                                                    <source>
+                                                        ${project.basedir}/target/${project.artifactId}-${project.version}.jar
+                                                    </source>
                                                     <outputDirectory>./</outputDirectory>
                                                     <destName>connector.jar</destName>
                                                 </file>
@@ -363,7 +366,8 @@
                                 <jvmFlags>
                                     <!--                                    <jvmFlag>-Dspring.config.additional-location=/app/config/labenv01/config/</jvmFlag>-->
                                     <jvmFlag>-Dspring.config.name=connector</jvmFlag>
-                                    <jvmFlag>-Dloader.main=eu.domibus.connector.starter.DomibusConnectorStarter</jvmFlag>
+                                    <jvmFlag>-Dloader.main=eu.domibus.connector.starter.DomibusConnectorStarter
+                                    </jvmFlag>
                                 </jvmFlags>
                                 <ports>
                                     <port>8080</port>
@@ -372,7 +376,9 @@
                                 <workingDirectory>/app</workingDirectory>
                             </container>
                             <from>
-                                <image>centralrepo.apps.a3.cp.cna.at/brz-cp-a2-docker/cp-baseimages/brz-cp-ubi8-openjdk11:latest</image>
+                                <image>
+                                    centralrepo.apps.a3.cp.cna.at/brz-cp-a2-docker/cp-baseimages/brz-cp-ubi8-openjdk11:latest
+                                </image>
                             </from>
                             <to>
                                 <image>centralrepo.apps.a3.cp.cna.at/brz-ju-images-poc-docker/jueu/dc-connector</image>

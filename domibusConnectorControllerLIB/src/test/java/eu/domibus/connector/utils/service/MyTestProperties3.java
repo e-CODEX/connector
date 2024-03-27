@@ -1,9 +1,6 @@
 package eu.domibus.connector.utils.service;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 public class MyTestProperties3 {
-
     private String prop1;
     private String prop2;
 

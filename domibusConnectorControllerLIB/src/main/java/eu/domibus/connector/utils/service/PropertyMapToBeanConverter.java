@@ -9,15 +9,14 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 @Component
 public class PropertyMapToBeanConverter {
-
     private static final Logger LOGGER = LogManager.getLogger(PropertyMapToBeanConverter.class);
 
     private final ConversionService conversionService;
@@ -47,5 +46,4 @@ public class PropertyMapToBeanConverter {
 
         return t;
     }
-
 }

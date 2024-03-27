@@ -3,8 +3,8 @@ package eu.domibus.connector.common.configuration;
 import eu.domibus.connector.common.annotations.ConnectorConversationService;
 import eu.domibus.connector.common.annotations.ConnectorPropertyConverter;
 import eu.domibus.connector.tools.logging.LoggingMarker;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
@@ -20,9 +20,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 @Configuration
 public class ConnectorConversionServiceAutoConfiguration {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectorConversionServiceAutoConfiguration.class);
 
     @Autowired(required = false)
@@ -36,9 +36,15 @@ public class ConnectorConversionServiceAutoConfiguration {
     @Bean
     @ConnectorConversationService
     public ConversionService connectorConversionService() {
-        LOGGER.debug(LoggingMarker.CONFIG, "Creating connectorConversionService with connectorConverters [{}] and springConfigurationConverters [{}]",
-                connectorConverters, converters);
-        Set<Converter<?, ?>> mergedConverters = Stream.of(connectorConverters.stream(), converters.stream())
+        LOGGER.debug(
+                LoggingMarker.CONFIG,
+                "Creating connectorConversionService with connectorConverters [{}] and " +
+                        "springConfigurationConverters [{}]",
+                connectorConverters,
+                converters
+        );
+        Set<Converter<?, ?>> mergedConverters = Stream
+                .of(connectorConverters.stream(), converters.stream())
                 .flatMap(Function.identity())
                 .distinct()
                 .collect(Collectors.toSet());
@@ -49,6 +55,5 @@ public class ConnectorConversionServiceAutoConfiguration {
         ConversionService object = bean.getObject();
         return object;
     }
-
 }
 

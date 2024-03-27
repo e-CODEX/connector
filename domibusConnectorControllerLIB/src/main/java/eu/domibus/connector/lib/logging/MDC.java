@@ -9,16 +9,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MDC {
-
     /**
      * name of the mdc key
      */
-    public String name();
+    String name();
 
     /**
      * value of the mdc key
      */
-    public String value();
-
-
+    String value();
 }

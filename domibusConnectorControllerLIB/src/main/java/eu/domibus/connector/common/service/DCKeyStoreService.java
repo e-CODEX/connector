@@ -13,17 +13,15 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+
 /**
  * Handles loading and storing of keystores
  * centrally
- *
- *  so any extensions for HSM support, ... should be put here
- *
- *
+ * <p>
+ * so any extensions for HSM support, ... should be put here
  */
 @Service
 public class DCKeyStoreService {
-
     private static final Logger LOGGER = LogManager.getLogger(DCKeyStoreService.class);
 
     private final ApplicationContext ctx;
@@ -52,7 +50,7 @@ public class DCKeyStoreService {
             throw new IllegalArgumentException("storeConfigurationProperties are not allowed to be null!");
         }
         String password = storeConfigurationProperties.getPassword();
-//        validatePathReadable();
+        // validatePathReadable();
         if (password == null) {
             password = "";
         }
@@ -62,15 +60,21 @@ public class DCKeyStoreService {
             keyStore.load(inputStream, pwdArray);
             return keyStore;
         } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException e) {
-            throw new CannotLoadKeyStoreException(String.format("Cannot load key store from location %s", storeConfigurationProperties.getPath()), e);
+            throw new CannotLoadKeyStoreException(String.format(
+                    "Cannot load key store from location %s",
+                    storeConfigurationProperties.getPath()
+            ), e);
         }
     }
 
     public void saveKeyStore(StoreConfigurationProperties storeConfigurationProperties, KeyStore keyStore) {
-        throw new UnsupportedOperationException(); //not yet supported
+        throw new UnsupportedOperationException(); // not yet supported
     }
 
-    public void validateKeyExists(StoreConfigurationProperties storeConfigurationProperties, String alias, String password) {
+    public void validateKeyExists(
+            StoreConfigurationProperties storeConfigurationProperties,
+            String alias,
+            String password) {
         KeyStore keyStore;
         keyStore = loadKeyStore(storeConfigurationProperties);
 
@@ -80,11 +84,20 @@ public class DCKeyStoreService {
                 throw new DCKeyStoreService.ValidationException(String.format("No key found for alias [%s]"));
             }
         } catch (KeyStoreException e) {
-            throw new DCKeyStoreService.ValidationException(String.format("Key Store exception when retrieving key alias [%s]", alias), e);
+            throw new DCKeyStoreService.ValidationException(String.format(
+                    "Key Store exception when retrieving key alias [%s]",
+                    alias
+            ), e);
         } catch (NoSuchAlgorithmException e) {
-            throw new DCKeyStoreService.ValidationException(String.format("No such key exception when retrieving key alias [%s]", alias), e);
+            throw new DCKeyStoreService.ValidationException(String.format(
+                    "No such key exception when retrieving key alias [%s]",
+                    alias
+            ), e);
         } catch (UnrecoverableKeyException e) {
-            throw new DCKeyStoreService.ValidationException(String.format("Validation exception when retrieving key alias [%s]", alias), e);
+            throw new DCKeyStoreService.ValidationException(String.format(
+                    "Validation exception when retrieving key alias [%s]",
+                    alias
+            ), e);
         }
     }
 
@@ -94,10 +107,16 @@ public class DCKeyStoreService {
         try {
             Certificate certificate = keyStore.getCertificate(alias);
             if (certificate == null) {
-                throw new DCKeyStoreService.ValidationException(String.format("No certificate found for alias [%s]", alias));
+                throw new DCKeyStoreService.ValidationException(String.format(
+                        "No certificate found for alias [%s]",
+                        alias
+                ));
             }
         } catch (KeyStoreException e) {
-            throw new DCKeyStoreService.ValidationException(String.format("Key store exception occured while loading certificate with alias [%s] from key store", alias), e);
+            throw new DCKeyStoreService.ValidationException(String.format(
+                    "Key store exception occured while loading certificate with alias [%s] from key store",
+                    alias
+            ), e);
         }
     }
 
@@ -117,7 +136,11 @@ public class DCKeyStoreService {
             super(cause);
         }
 
-        public CannotLoadKeyStoreException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        public CannotLoadKeyStoreException(
+                String message,
+                Throwable cause,
+                boolean enableSuppression,
+                boolean writableStackTrace) {
             super(message, cause, enableSuppression, writableStackTrace);
         }
     }
@@ -138,7 +161,11 @@ public class DCKeyStoreService {
             super(cause);
         }
 
-        public ValidationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        public ValidationException(
+                String message,
+                Throwable cause,
+                boolean enableSuppression,
+                boolean writableStackTrace) {
             super(message, cause, enableSuppression, writableStackTrace);
         }
     }

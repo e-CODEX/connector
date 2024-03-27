@@ -2,12 +2,11 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FolderWriteableValidator implements ConstraintValidator<CheckFolderWriteable, Path> {
 
+public class FolderWriteableValidator implements ConstraintValidator<CheckFolderWriteable, Path> {
     @Override
     public boolean isValid(Path file, ConstraintValidatorContext context) {
         if (file == null) {
@@ -15,7 +14,10 @@ public class FolderWriteableValidator implements ConstraintValidator<CheckFolder
         }
 
         if (Files.notExists(file)) {
-            String message = String.format("Provided file path [%s] does not exist! Check if the path is correct and exists!", file);
+            String message = String.format(
+                    "Provided file path [%s] does not exist! Check if the path is correct and exists!",
+                    file
+            );
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }

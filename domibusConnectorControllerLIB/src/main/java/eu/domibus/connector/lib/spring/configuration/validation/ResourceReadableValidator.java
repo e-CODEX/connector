@@ -2,15 +2,14 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
-public class ResourceReadableValidator implements ConstraintValidator<CheckResourceIsReadable, String> {
 
+public class ResourceReadableValidator implements ConstraintValidator<CheckResourceIsReadable, String> {
     private final ApplicationContext ctx;
 
     public ResourceReadableValidator(ApplicationContext ctx) {
@@ -32,16 +31,23 @@ public class ResourceReadableValidator implements ConstraintValidator<CheckResou
             Resource r = ctx.getResource(value);
 
             if (!r.exists()) {
-//                context.buildConstraintViolationWithTemplate("eu.domibus.connector.lib.spring.configuration.validation.resource_input_stream_valid")
-//                        .addConstraintViolation();
-                String message = String.format("Cannot open provided resource [%s]! Check if the path is correct and exists!", value);
+                // context.buildConstraintViolationWithTemplate("eu.domibus.connector.lib.spring.configuration
+                // .validation.resource_input_stream_valid")
+                //  .addConstraintViolation();
+                String message = String.format(
+                        "Cannot open provided resource [%s]! Check if the path is correct and exists!",
+                        value
+                );
                 context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
                 return false;
             }
             r.getInputStream().close();
-//            inputStream.close();
+            // inputStream.close();
         } catch (IOException e) {
-            String message = String.format("Cannot open provided resource [%s]! Check if the path is correct and exists!", value);
+            String message = String.format(
+                    "Cannot open provided resource [%s]! Check if the path is correct and exists!",
+                    value
+            );
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }

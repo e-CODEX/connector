@@ -11,36 +11,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest(classes = {DCBusinessDomainManagerImpl.class, ConnectorConfigurationProperties.class})
 class DCBusinessDomainManagerImplTest {
-
     @Autowired
     DCBusinessDomainManagerImpl dcBusinessDomainManager;
-
     @MockBean
     DCBusinessDomainPersistenceService dcBusinessDomainPersistenceService;
 
     @Test
-    public void testUpdateProperties() {
+    void testUpdateProperties() {
         Map<String, String> currentProperties = new HashMap<>();
         currentProperties.put("prop1", "value1");
         currentProperties.put("prop2", "value2");
         currentProperties.put("prop3", "value3");
 
         Map<String, String> changedProperties = new HashMap<>();
-        changedProperties.put("prop1", null); //should be removed
-        changedProperties.put("prop2", "value_changed"); //should be changed
+        changedProperties.put("prop1", null); // should be removed
+        changedProperties.put("prop2", "value_changed"); // should be changed
 
-        Map<String, String> stringStringMap = dcBusinessDomainManager.updateChangedProperties(currentProperties, changedProperties);
+        Map<String, String> stringStringMap =
+                dcBusinessDomainManager.updateChangedProperties(currentProperties, changedProperties);
 
         Map<String, String> expectedResultMap = new HashMap<>();
         expectedResultMap.put("prop2", "value_changed");
         expectedResultMap.put("prop3", "value3");
 
         assertThat(stringStringMap).containsExactlyEntriesOf(expectedResultMap);
-
     }
-
 }

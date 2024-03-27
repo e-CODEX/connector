@@ -1,12 +1,10 @@
 package eu.domibus.connector.utils.service;
 
-import eu.domibus.connector.common.configuration.ConnectorConfigurationProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 
@@ -16,24 +14,18 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @SpringBootTest(
         classes = {BeanToPropertyMapConverterTest.TestContext.class}
 )
 class BeanToPropertyMapConverterTest {
-
     private static final Logger LOGGER = LogManager.getLogger(BeanToPropertyMapConverterTest.class);
-
-    @SpringBootApplication(scanBasePackages = "eu.domibus.connector.utils")
-    public static class TestContext {
-
-    }
 
     @Autowired
     BeanToPropertyMapConverter beanToPropertyMapConverter;
 
     @Test
     void readBeanPropertiesToMap() {
-
         MyTestProperties myTestProperties = new MyTestProperties();
         myTestProperties.setProp1("prop1");
         myTestProperties.setProp2(23);
@@ -48,7 +40,8 @@ class BeanToPropertyMapConverterTest {
         myTestProperties.getNestedPropList().add(n1);
         myTestProperties.getNestedPropMap().put("n1", n1);
 
-        Map<String, String> propertyMap = beanToPropertyMapConverter.readBeanPropertiesToMap(myTestProperties, "test.example");
+        Map<String, String> propertyMap =
+                beanToPropertyMapConverter.readBeanPropertiesToMap(myTestProperties, "test.example");
 
         Map<String, String> expectedMap = new HashMap<>();
         expectedMap.put("test.example.prop1", "prop1");
@@ -67,7 +60,7 @@ class BeanToPropertyMapConverterTest {
     }
 
     @Test
-    public void readInheritedPropertiesToMap() {
+    void readInheritedPropertiesToMap() {
         ExtendsMyTestProperties3 p = new ExtendsMyTestProperties3();
         p.setProp1("prop1");
         p.setProp3("prop3");
@@ -82,7 +75,7 @@ class BeanToPropertyMapConverterTest {
     }
 
     @Test
-    public void testMapOfResource() {
+    void testMapOfResource() {
         MyTestPropertiesWithResource r = new MyTestPropertiesWithResource();
         r.setR(new ClassPathResource("/testfile"));
 
@@ -94,4 +87,7 @@ class BeanToPropertyMapConverterTest {
         assertThat(propertyMap).containsExactlyInAnyOrderEntriesOf(expectedMap);
     }
 
+    @SpringBootApplication(scanBasePackages = "eu.domibus.connector.utils")
+    public static class TestContext {
+    }
 }

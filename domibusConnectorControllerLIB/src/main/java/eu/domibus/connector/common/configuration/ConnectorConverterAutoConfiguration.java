@@ -5,9 +5,9 @@ import eu.domibus.connector.common.converters.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 public class ConnectorConverterAutoConfiguration {
-
     @Bean
     @ConnectorPropertyConverter
     public EvidenceActionConverter stringToEvidenceActionConverter() {
@@ -16,7 +16,9 @@ public class ConnectorConverterAutoConfiguration {
 
     @Bean
     @ConnectorPropertyConverter
-    public BusinessDomainIdConverter stringToBusinessDomainId() { return new BusinessDomainIdConverter(); }
+    public BusinessDomainIdConverter stringToBusinessDomainId() {
+        return new BusinessDomainIdConverter();
+    }
 
     @Bean
     @ConnectorPropertyConverter
@@ -32,6 +34,7 @@ public class ConnectorConverterAutoConfiguration {
 
     @Bean
     @ConnectorPropertyConverter
-    public ClassToStringConverter classToStringConverter() { return new ClassToStringConverter(); }
-
+    public ClassToStringConverter classToStringConverter() {
+        return new ClassToStringConverter();
+    }
 }

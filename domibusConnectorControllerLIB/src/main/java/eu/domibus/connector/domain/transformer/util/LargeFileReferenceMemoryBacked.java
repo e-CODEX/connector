@@ -1,19 +1,14 @@
-
 package eu.domibus.connector.domain.transformer.util;
 
 import eu.domibus.connector.domain.model.LargeFileReference;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+
+import java.io.*;
+
 
 /**
- *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public class LargeFileReferenceMemoryBacked extends LargeFileReference {
-
     private transient byte[] bytes;
     private boolean read = false;
     private boolean write = false;
@@ -22,11 +17,11 @@ public class LargeFileReferenceMemoryBacked extends LargeFileReference {
         this.read = true;
         this.bytes = bytes;
     }
-    
+
     public LargeFileReferenceMemoryBacked() {
         this.write = true;
     }
-    
+
     @Override
     public InputStream getInputStream() throws IOException {
         return new ByteArrayInputStream(bytes);
@@ -46,5 +41,4 @@ public class LargeFileReferenceMemoryBacked extends LargeFileReference {
     public boolean isWriteable() {
         return this.write;
     }
-
 }

@@ -7,15 +7,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
-
 @CheckKeyIsLoadableFromKeyStore
 public class KeyAndKeyStoreAndTrustStoreConfigurationProperties extends KeyAndKeyStoreConfigurationProperties {
-
-
-    public KeyAndKeyStoreAndTrustStoreConfigurationProperties() {
-    }
-
-
     /**
      * Configuration of the TrustStore
      */
@@ -24,6 +17,8 @@ public class KeyAndKeyStoreAndTrustStoreConfigurationProperties extends KeyAndKe
     @NotNull
     private StoreConfigurationProperties trustStore;
 
+    public KeyAndKeyStoreAndTrustStoreConfigurationProperties() {
+    }
 
     public StoreConfigurationProperties getTrustStore() {
         return trustStore;

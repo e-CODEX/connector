@@ -3,7 +3,6 @@ package eu.domibus.connector.common.service;
 import eu.domibus.connector.common.configuration.ConnectorConfigurationProperties;
 import eu.domibus.connector.domain.configuration.EvidenceActionServiceConfigurationProperties;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
-import eu.domibus.connector.utils.service.BeanToPropertyMapConverter;
 import eu.domibus.connector.utils.service.MyTestProperties;
 import eu.domibus.connector.utils.service.MyTestProperties2;
 import org.apache.logging.log4j.LogManager;
@@ -29,77 +28,66 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 
-@SpringBootTest(properties = {
-        "connector.confirmation-messages.retrieval.service.service-type=serviceType",
-        "connector.confirmation-messages.retrieval.service.name=aService",
-        "connector.confirmation-messages.retrieval.action=retrievalAction",
-        "test.example2.prop1=abc",
-        "test.example2.prop2=123",
-        "test.example2.list[0]=abc",
-        "test.example2.list[1]=def"
-},
+
+@SpringBootTest(
+        properties = {
+                "connector.confirmation-messages.retrieval.service.service-type=serviceType",
+                "connector.confirmation-messages.retrieval.service.name=aService",
+                "connector.confirmation-messages.retrieval.action=retrievalAction",
+                "test.example2.prop1=abc",
+                "test.example2.prop2=123",
+                "test.example2.list[0]=abc",
+                "test.example2.list[1]=def"
+        },
         classes = ConfigurationPropertyLoaderServiceImplTest.TestContext.class
 )
-
-public class ConfigurationPropertyLoaderServiceImplTest {
-
+class ConfigurationPropertyLoaderServiceImplTest {
     private static final Logger LOGGER = LogManager.getLogger(ConfigurationPropertyLoaderServiceImplTest.class);
 
-
-    @EnableConfigurationProperties({ConnectorConfigurationProperties.class})
-    @SpringBootApplication(scanBasePackages = {"eu.domibus.connector.utils", "eu.domibus.connector.common"})
-    public static class TestContext {
-
-        @Bean
-        public ApplicationListener<BusinessDomainConfigurationChange> eventListener() {
-            return (e) -> {lastChange = e;};
-        }
-    }
-
+    private static BusinessDomainConfigurationChange lastChange;
     @Autowired
     ConfigurationPropertyLoaderServiceImpl propertyLoaderService;
-
     @Autowired
     ApplicationContext ctx;
-
     @Autowired
     MyTestProperties2 myTestProperties2;
-
     @MockBean
     DCBusinessDomainManagerImpl dcBusinessDomainManagerImpl;
 
-    private static BusinessDomainConfigurationChange lastChange;
-
-
-
     @BeforeEach
     public void beforeEach() {
-        Mockito.when(dcBusinessDomainManagerImpl.getBusinessDomain(eq(DomibusConnectorBusinessDomain.getDefaultMessageLaneId())))
+        Mockito
+                .when(dcBusinessDomainManagerImpl.getBusinessDomain(eq(DomibusConnectorBusinessDomain.getDefaultMessageLaneId())))
                 .thenReturn(Optional.of(DomibusConnectorBusinessDomain.getDefaultMessageLane()));
-
     }
 
     @Test
     void loadConfiguration() {
-        EvidenceActionServiceConfigurationProperties evidenceActionServiceConfigurationProperties = propertyLoaderService.loadConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), EvidenceActionServiceConfigurationProperties.class);
+        EvidenceActionServiceConfigurationProperties evidenceActionServiceConfigurationProperties =
+                propertyLoaderService.loadConfiguration(
+                        DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                        EvidenceActionServiceConfigurationProperties.class
+                );
 
         assertThat(evidenceActionServiceConfigurationProperties).isNotNull();
 
-        EvidenceActionServiceConfigurationProperties.AS4Action action = evidenceActionServiceConfigurationProperties.getRetrieval().getAction();
+        EvidenceActionServiceConfigurationProperties.AS4Action action =
+                evidenceActionServiceConfigurationProperties.getRetrieval().getAction();
         assertThat(action.getAction()).isEqualTo("retrievalAction");
 
-        EvidenceActionServiceConfigurationProperties.AS4Service service = evidenceActionServiceConfigurationProperties.getRetrieval().getService();
+        EvidenceActionServiceConfigurationProperties.AS4Service service =
+                evidenceActionServiceConfigurationProperties.getRetrieval().getService();
         assertThat(service).isNotNull();
         assertThat(service.getName()).as("service is aService").isEqualTo("aService");
         assertThat(service.getConnectorService().getService()).as("Connector Service must be").isEqualTo("aService");
-        assertThat(service.getConnectorService().getServiceType()).as("Connector serviceType must be").isEqualTo("serviceType");
-
+        assertThat(service.getConnectorService().getServiceType())
+                .as("Connector serviceType must be")
+                .isEqualTo("serviceType");
     }
 
-
     @Test
-    @Disabled //TODO: repair Test!
-    public void testGetPropertyMap() {
+    @Disabled // TODO: repair Test!
+    void testGetPropertyMap() {
         MyTestProperties myTestProperties = new MyTestProperties();
         myTestProperties.setProp1("prop1");
         myTestProperties.setProp2(23);
@@ -114,8 +102,8 @@ public class ConfigurationPropertyLoaderServiceImplTest {
         myTestProperties.getNestedPropList().add(n1);
 
         Map<String, String> propertyMap = new HashMap<>();
-                propertyLoaderService.createPropertyMap(myTestProperties)
-                        .forEach((key, value) -> propertyMap.put(key.toString(), value));
+        propertyLoaderService.createPropertyMap(myTestProperties)
+                             .forEach((key, value) -> propertyMap.put(key.toString(), value));
 
         Map<String, String> expectedMap = new HashMap<>();
         expectedMap.put("test.example.nested-prop-list[0].a-very-long-property-name", "verylongprop");
@@ -131,4 +119,15 @@ public class ConfigurationPropertyLoaderServiceImplTest {
         LOGGER.info("Mapped properties are: [{}]", propertyMap);
     }
 
+    @EnableConfigurationProperties({ConnectorConfigurationProperties.class})
+    @SpringBootApplication(scanBasePackages = {"eu.domibus.connector.utils", "eu.domibus.connector.common"})
+    public static class TestContext {
+
+        @Bean
+        public ApplicationListener<BusinessDomainConfigurationChange> eventListener() {
+            return (e) -> {
+                lastChange = e;
+            };
+        }
+    }
 }

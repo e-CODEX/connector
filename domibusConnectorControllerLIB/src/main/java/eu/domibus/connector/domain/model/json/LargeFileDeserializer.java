@@ -7,11 +7,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
-import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import eu.domibus.connector.domain.model.LargeFileReference;
 
 import java.io.IOException;
+
 
 public class LargeFileDeserializer extends StdDeserializer<LargeFileReference> {
 
@@ -28,15 +28,16 @@ public class LargeFileDeserializer extends StdDeserializer<LargeFileReference> {
     }
 
     @Override
-    public LargeFileReference deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public LargeFileReference deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
+            JsonProcessingException {
         LargeFileReference largeFileReference = new LargeFileReference();
         TreeNode treeNode = p.getCodec().readTree(p);
-        largeFileReference.setStorageIdReference(((TextNode)treeNode.get(LargeFileReferenceSerializer.STORAGE_ID_REFERENCE_FIELD_NAME)).asText());
-        largeFileReference.setStorageProviderName(((TextNode)treeNode.get(LargeFileReferenceSerializer.STORAGE_PROVIDER_FIELD_NAME)).asText());
+        largeFileReference.setStorageIdReference(((TextNode) treeNode.get(LargeFileReferenceSerializer.STORAGE_ID_REFERENCE_FIELD_NAME)).asText());
+        largeFileReference.setStorageProviderName(((TextNode) treeNode.get(LargeFileReferenceSerializer.STORAGE_PROVIDER_FIELD_NAME)).asText());
         largeFileReference.setMimetype(getStringOrNull(LargeFileReferenceSerializer.MIME_TYPE_FIELD_NAME, treeNode));
         largeFileReference.setName(getStringOrNull(LargeFileReferenceSerializer.NAME_FIELD_NAME, treeNode));
         largeFileReference.setText(getStringOrNull(LargeFileReferenceSerializer.TEXT_FIELD_NAME, treeNode));
-        largeFileReference.setSize(((IntNode)treeNode.get(LargeFileReferenceSerializer.SIZE_FIELD_NAME)).asLong());
+        largeFileReference.setSize(((IntNode) treeNode.get(LargeFileReferenceSerializer.SIZE_FIELD_NAME)).asLong());
         return largeFileReference;
     }
 
@@ -44,9 +45,8 @@ public class LargeFileDeserializer extends StdDeserializer<LargeFileReference> {
         String val = null;
         TreeNode treeNode1 = treeNode.get(fieldName);
         if (treeNode1 instanceof TextNode) {
-            val = ((TextNode)treeNode1).asText();
+            val = ((TextNode) treeNode1).asText();
         }
         return val;
     }
-
 }

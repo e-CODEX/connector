@@ -2,11 +2,15 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreAndTrustStoreConfigurationProperties;
 
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.Set;
 
-public class KeyFromKeyAndTrustStoreLoadable implements ConstraintValidator<CheckKeyIsLoadableFromKeyStore, KeyAndKeyStoreAndTrustStoreConfigurationProperties> {
 
+public class KeyFromKeyAndTrustStoreLoadable implements
+        ConstraintValidator<CheckKeyIsLoadableFromKeyStore, KeyAndKeyStoreAndTrustStoreConfigurationProperties> {
     private final Validator validator;
     private final HelperMethods helperMethods;
 
@@ -16,7 +20,9 @@ public class KeyFromKeyAndTrustStoreLoadable implements ConstraintValidator<Chec
     }
 
     @Override
-    public boolean isValid(KeyAndKeyStoreAndTrustStoreConfigurationProperties value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            KeyAndKeyStoreAndTrustStoreConfigurationProperties value,
+            ConstraintValidatorContext context) {
         if (value == null) {
             return true;
         }
@@ -24,15 +30,11 @@ public class KeyFromKeyAndTrustStoreLoadable implements ConstraintValidator<Chec
         constraintViolations = validator.validateProperty(value, "privateKey");
         constraintViolations.addAll(validator.validateProperty(value, "keyStore"));
 
-
         if (!constraintViolations.isEmpty()) {
             return false;
         }
-
-//        context.disableDefaultConstraintViolation();
+        // context.disableDefaultConstraintViolation();
 
         return helperMethods.checkKeyIsLoadable(context, value.getKeyStore(), value.getPrivateKey());
-
-
     }
 }

@@ -7,21 +7,21 @@ import eu.domibus.connector.persistence.service.DCBusinessDomainPersistenceServi
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @Service
 public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
-
     private static final Logger LOGGER = LogManager.getLogger(DCBusinessDomainManagerImpl.class);
 
     private final ConnectorConfigurationProperties businessDomainConfigurationProperties;
     private final DCBusinessDomainPersistenceService businessDomainPersistenceService;
 
-    public DCBusinessDomainManagerImpl(ConnectorConfigurationProperties businessDomainConfigurationProperties,
-                                       DCBusinessDomainPersistenceService businessDomainPersistenceService) {
+    public DCBusinessDomainManagerImpl(
+            ConnectorConfigurationProperties businessDomainConfigurationProperties,
+            DCBusinessDomainPersistenceService businessDomainPersistenceService) {
         this.businessDomainConfigurationProperties = businessDomainConfigurationProperties;
         this.businessDomainPersistenceService = businessDomainPersistenceService;
     }
@@ -39,11 +39,20 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
         }
 
         businessDomainConfigurationProperties.getBusinessDomain()
-                .entrySet().stream().map(this::mapBusinessConfigToBusinessDomain)
-                .map(DomibusConnectorBusinessDomain::getId)
-                .forEach(b -> {if(!collect.add(b)) {
-                    LOGGER.warn("Database has already provided a business domain with id [{}]. The domain will not be added from environment. DB takes precedence!", b);
-                }});
+                                             .entrySet()
+                                             .stream()
+                                             .map(this::mapBusinessConfigToBusinessDomain)
+                                             .map(DomibusConnectorBusinessDomain::getId)
+                                             .forEach(b -> {
+                                                 if (!collect.add(b)) {
+                                                     LOGGER.warn(
+                                                             "Database has already provided a business domain with id" +
+                                                                     " [{}]. The domain will not be added from " +
+                                                                     "environment. DB takes precedence!",
+                                                             b
+                                                     );
+                                                 }
+                                             });
 
         return new ArrayList<>(collect);
     }
@@ -55,7 +64,8 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
             db = businessDomainPersistenceService.findById(id);
         }
         if (!db.isPresent()) {
-            db = businessDomainConfigurationProperties.getBusinessDomain()
+            db = businessDomainConfigurationProperties
+                    .getBusinessDomain()
                     .entrySet().stream().map(this::mapBusinessConfigToBusinessDomain)
                     .filter(b -> b.getId().equals(id))
                     .findAny();
@@ -73,14 +83,14 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
                 return;
             }
 
-            Map<String, String> updatedProperties = updateChangedProperties(domibusConnectorBusinessDomain.getMessageLaneProperties(), properties);
+            Map<String, String> updatedProperties =
+                    updateChangedProperties(domibusConnectorBusinessDomain.getMessageLaneProperties(), properties);
             domibusConnectorBusinessDomain.setMessageLaneProperties(updatedProperties);
 
             businessDomainPersistenceService.update(domibusConnectorBusinessDomain);
         } else {
             throw new RuntimeException("no business domain found for update config!");
         }
-
     }
 
     @Override
@@ -90,11 +100,11 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
 
     Map<String, String> updateChangedProperties(Map<String, String> currentProperties, Map<String, String> properties) {
         currentProperties.putAll(properties);
-        Map<String, String> collect = currentProperties.entrySet()
+        return currentProperties
+                .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue() != null)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        return collect;
     }
 
     private DomibusConnectorBusinessDomain mapBusinessConfigToBusinessDomain(Map.Entry<DomibusConnectorBusinessDomain.BusinessDomainId, ConnectorConfigurationProperties.BusinessDomainConfig> messageLaneIdBusinessDomainConfigEntry) {
@@ -106,5 +116,4 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
         lane.setMessageLaneProperties(p);
         return lane;
     }
-
 }

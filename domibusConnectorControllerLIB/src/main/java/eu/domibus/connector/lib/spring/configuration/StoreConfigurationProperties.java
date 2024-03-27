@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @CheckStoreIsLoadable
 @MapNested
 public class StoreConfigurationProperties {
-
     private static final Logger LOGGER = LogManager.getLogger(StoreConfigurationProperties.class);
 
     /**
@@ -76,9 +75,5 @@ public class StoreConfigurationProperties {
         }
 
         return append.toString();
-
-
     }
-
-
 }

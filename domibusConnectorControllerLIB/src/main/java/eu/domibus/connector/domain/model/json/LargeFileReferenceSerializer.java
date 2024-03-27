@@ -8,8 +8,8 @@ import eu.domibus.connector.domain.model.LargeFileReference;
 
 import java.io.IOException;
 
-public class LargeFileReferenceSerializer extends StdSerializer<LargeFileReference> {
 
+public class LargeFileReferenceSerializer extends StdSerializer<LargeFileReference> {
     public static final String STORAGE_ID_REFERENCE_FIELD_NAME = "reference";
     public static final String STORAGE_PROVIDER_FIELD_NAME = "provider";
     public static final String NAME_FIELD_NAME = "name";
@@ -30,7 +30,8 @@ public class LargeFileReferenceSerializer extends StdSerializer<LargeFileReferen
     }
 
     @Override
-    public void serialize(LargeFileReference value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(LargeFileReference value, JsonGenerator jgen, SerializerProvider provider) throws
+            IOException {
         jgen.writeStartObject();
         jgen.writeStringField(STORAGE_ID_REFERENCE_FIELD_NAME, value.getStorageIdReference());
         jgen.writeStringField(STORAGE_PROVIDER_FIELD_NAME, value.getStorageProviderName());
@@ -40,6 +41,5 @@ public class LargeFileReferenceSerializer extends StdSerializer<LargeFileReferen
         jgen.writeNumberField(SIZE_FIELD_NAME, value.getSize());
         jgen.writeEndObject();
     }
-
 }
 

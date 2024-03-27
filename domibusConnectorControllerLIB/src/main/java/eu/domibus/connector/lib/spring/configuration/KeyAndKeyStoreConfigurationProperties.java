@@ -1,35 +1,27 @@
 package eu.domibus.connector.lib.spring.configuration;
 
 import eu.domibus.connector.lib.spring.configuration.validation.CheckKeyIsLoadableFromKeyStore;
-import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+
 /**
  * A Property class to map properties for an
  * keystore with path and password
  * and an key with alias and password
- *
- *  .store.path=keystore path
- *  .store.password=keystore password
- *
- *  .key.alias=alias for a private key in the configured key store
- *  .key.password=password for this key
- *
- *
+ * <p>
+ * .store.path=keystore path
+ * .store.password=keystore password
+ * <p>
+ * .key.alias=alias for a private key in the configured key store
+ * .key.password=password for this key
  */
 @CheckKeyIsLoadableFromKeyStore
 @Validated
 public class KeyAndKeyStoreConfigurationProperties {
-
-
-    public KeyAndKeyStoreConfigurationProperties() {
-    }
-
-
     /**
      * Configuration of the (Key/Certificate)Store
      */
@@ -46,6 +38,8 @@ public class KeyAndKeyStoreConfigurationProperties {
     @NotNull
     private KeyConfigurationProperties privateKey;
 
+    public KeyAndKeyStoreConfigurationProperties() {
+    }
 
     public StoreConfigurationProperties getKeyStore() {
         return keyStore;
@@ -62,5 +56,4 @@ public class KeyAndKeyStoreConfigurationProperties {
     public void setPrivateKey(KeyConfigurationProperties privateKey) {
         this.privateKey = privateKey;
     }
-
 }

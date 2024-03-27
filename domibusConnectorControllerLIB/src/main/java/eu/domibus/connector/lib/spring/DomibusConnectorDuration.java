@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DomibusConnectorDuration {
-
     private static final Map<String, TimeUnit> UNITS = new HashMap<String, TimeUnit>() {
         {
             put("ms", TimeUnit.MILLISECONDS);
@@ -30,7 +29,6 @@ public class DomibusConnectorDuration {
         this.duration = value;
         this.unit = unit;
     }
-
 
     public DomibusConnectorDuration(long milliseconds) {
         this(milliseconds, TimeUnit.MILLISECONDS);
@@ -66,6 +64,4 @@ public class DomibusConnectorDuration {
 
         return new DomibusConnectorDuration(value, UNITS.get(unit));
     }
-
-
 }

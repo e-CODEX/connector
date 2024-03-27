@@ -4,12 +4,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+
 @Component
 @ConfigurationProperties(prefix = CommonProperties.COMMON_PROPERTIES_CONFIG_PREFIX)
 //@PropertySource("classpath:/eu/domibus/connector/security/spring/security-default-configuration.properties")
 @Validated
 public class CommonProperties {
-
     public static final String COMMON_PROPERTIES_CONFIG_PREFIX = "connector.common";
 
     /**

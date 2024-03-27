@@ -5,15 +5,13 @@ import eu.domibus.connector.lib.spring.configuration.validation.CheckKeyIsLoadab
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+
 @CheckKeyIsLoadableFromKeyStore
 @Valid
 public class CxfTrustKeyStoreConfigurationProperties extends KeyAndKeyStoreAndTrustStoreConfigurationProperties {
-
-
     @Valid
     @NotNull
     private String encryptAlias;
-
     private boolean loadCaCerts = true;
 
     public String getEncryptAlias() {

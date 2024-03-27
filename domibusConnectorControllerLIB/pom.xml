@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>eu.domibus.connector</groupId>
@@ -7,7 +8,9 @@
         <version>4.4.12-SNAPSHOT</version>
     </parent>
     <artifactId>domibusConnectorControllerLIB</artifactId>
-    <description>Contains common code of all connector modules, like property configuration checkers, helper, ...</description>
+    <description>
+        Contains common code of all connector modules, like property configuration checkers, helper, ...
+    </description>
     <dependencies>
         <dependency>
             <groupId>eu.domibus.connector</groupId>
@@ -94,6 +97,12 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.domibus.connector.plugin</groupId>
+            <artifactId>domibus-connector-plugin</artifactId>
+            <version>4.4.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

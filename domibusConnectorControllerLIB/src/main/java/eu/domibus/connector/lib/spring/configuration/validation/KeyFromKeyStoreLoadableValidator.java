@@ -2,12 +2,16 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreConfigurationProperties;
 
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.HashSet;
 import java.util.Set;
 
-public class KeyFromKeyStoreLoadableValidator  implements ConstraintValidator<CheckKeyIsLoadableFromKeyStore, KeyAndKeyStoreConfigurationProperties> {
 
+public class KeyFromKeyStoreLoadableValidator
+        implements ConstraintValidator<CheckKeyIsLoadableFromKeyStore, KeyAndKeyStoreConfigurationProperties> {
     private final Validator validator;
     private final HelperMethods helperMethods;
 
@@ -18,8 +22,8 @@ public class KeyFromKeyStoreLoadableValidator  implements ConstraintValidator<Ch
 
     @Override
     public void initialize(CheckKeyIsLoadableFromKeyStore constraintAnnotation) {
-//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//        validator = factory.getValidator();
+        // ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        // validator = factory.getValidator();
     }
 
     @Override
@@ -28,23 +32,20 @@ public class KeyFromKeyStoreLoadableValidator  implements ConstraintValidator<Ch
             return true;
         }
         Set<ConstraintViolation<KeyAndKeyStoreConfigurationProperties>> path = new HashSet<>();
-        Set<ConstraintViolation<KeyAndKeyStoreConfigurationProperties>> path1 = validator.validateProperty(value, "privateKey");
-//        path.addAll(validator.validateProperty(value, "keyStore"));
-        Set<ConstraintViolation<KeyAndKeyStoreConfigurationProperties>> path2 = validator.validateProperty(value, "keyStore");
+        Set<ConstraintViolation<KeyAndKeyStoreConfigurationProperties>> path1 =
+                validator.validateProperty(value, "privateKey");
+        // path.addAll(validator.validateProperty(value, "keyStore"));
+        Set<ConstraintViolation<KeyAndKeyStoreConfigurationProperties>> path2 =
+                validator.validateProperty(value, "keyStore");
         path.addAll(path1);
         path.addAll(path2);
+
         if (!path.isEmpty()) {
             return false;
         }
 
         context.disableDefaultConstraintViolation();
 
-
         return helperMethods.checkKeyIsLoadable(context, value.getKeyStore(), value.getPrivateKey());
     }
-
-
-
-
-
 }

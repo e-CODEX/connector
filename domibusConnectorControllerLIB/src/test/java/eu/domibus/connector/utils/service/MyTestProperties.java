@@ -12,53 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Component
 @BusinessDomainScoped
 @ConfigurationProperties(prefix = "test.example")
 public class MyTestProperties {
-
     private String prop1;
-
     private Integer prop2;
-
     @NestedConfigurationProperty
     @MapNested
     private NestedProp nested = new NestedProp();
-
     private List<@MapNested NestedProp> nestedPropList = new ArrayList<>();
-
     private Map<String, @MapNested NestedProp> nestedPropMap = new HashMap<>();
-
-    @MapNested
-    public static class NestedProp {
-        private String abc;
-        private Duration duration;
-        private String aVeryLongPropertyName;
-
-        public String getAbc() {
-            return abc;
-        }
-
-        public void setAbc(String abc) {
-            this.abc = abc;
-        }
-
-        public Duration getDuration() {
-            return duration;
-        }
-
-        public void setDuration(Duration duration) {
-            this.duration = duration;
-        }
-
-        public String getaVeryLongPropertyName() {
-            return aVeryLongPropertyName;
-        }
-
-        public void setaVeryLongPropertyName(String aVeryLongPropertyName) {
-            this.aVeryLongPropertyName = aVeryLongPropertyName;
-        }
-    }
 
     public String getProp1() {
         return prop1;
@@ -102,5 +67,36 @@ public class MyTestProperties {
 
     public void setNestedPropMap(Map<String, NestedProp> nestedPropMap) {
         this.nestedPropMap = nestedPropMap;
+    }
+
+    @MapNested
+    public static class NestedProp {
+        private String abc;
+        private Duration duration;
+        private String aVeryLongPropertyName;
+
+        public String getAbc() {
+            return abc;
+        }
+
+        public void setAbc(String abc) {
+            this.abc = abc;
+        }
+
+        public Duration getDuration() {
+            return duration;
+        }
+
+        public void setDuration(Duration duration) {
+            this.duration = duration;
+        }
+
+        public String getaVeryLongPropertyName() {
+            return aVeryLongPropertyName;
+        }
+
+        public void setaVeryLongPropertyName(String aVeryLongPropertyName) {
+            this.aVeryLongPropertyName = aVeryLongPropertyName;
+        }
     }
 }

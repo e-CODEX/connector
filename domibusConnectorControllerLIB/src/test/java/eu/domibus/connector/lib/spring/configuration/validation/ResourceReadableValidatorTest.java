@@ -11,15 +11,14 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @SpringBootTest(classes = ValidationTestContext.class)
-public class ResourceReadableValidatorTest {
-
-
+class ResourceReadableValidatorTest {
     @Autowired
     Validator validator;
 
     @Test
-    public void testResource() {
+    void testResource() {
         String res = "testfile";
         TestEntity t = new TestEntity();
         t.setLocation(res);
@@ -29,9 +28,8 @@ public class ResourceReadableValidatorTest {
         assertThat(validate).isEmpty();
     }
 
-
     @Test
-    public void testResourceIsNull_shouldNotValidate() {
+    void testResourceIsNull_shouldNotValidate() {
         TestEntity t = new TestEntity();
 
         Set<ConstraintViolation<TestEntity>> validate = validator.validate(t);
@@ -40,11 +38,10 @@ public class ResourceReadableValidatorTest {
                 a -> System.out.println(a.getMessage())
         );
         assertThat(validate).hasSize(1);
-
     }
 
     @Test
-    public void testResourceConfiguredPathDoesNotExist_shouldNotValidate() {
+    void testResourceConfiguredPathDoesNotExist_shouldNotValidate() {
         String res = "/dsafdsadffds";
         TestEntity t = new TestEntity();
         t.setLocation(res);
@@ -55,11 +52,9 @@ public class ResourceReadableValidatorTest {
                 a -> System.out.println(a.getMessage())
         );
         assertThat(validate).hasSize(1);
-
     }
 
     public static class TestEntity {
-
         @CheckResourceIsReadable
         String location;
 
@@ -71,8 +66,4 @@ public class ResourceReadableValidatorTest {
             this.location = location;
         }
     }
-
-
-
-
 }

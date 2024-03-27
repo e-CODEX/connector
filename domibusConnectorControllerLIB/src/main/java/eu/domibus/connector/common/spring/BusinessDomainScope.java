@@ -12,7 +12,6 @@ import java.util.Map;
 
 
 public class BusinessDomainScope implements Scope, ApplicationListener<BusinessDomainConfigurationChange> {
-
     private Map<DomibusConnectorBusinessDomain.BusinessDomainId, BeanStore> businessDomainToBeanStore = new HashMap<>();
 
     @Override
@@ -42,7 +41,8 @@ public class BusinessDomainScope implements Scope, ApplicationListener<BusinessD
     }
 
     private synchronized BeanStore getBeanStore() {
-        DomibusConnectorBusinessDomain.BusinessDomainId currentBusinessDomain = CurrentBusinessDomain.getCurrentBusinessDomain();
+        DomibusConnectorBusinessDomain.BusinessDomainId currentBusinessDomain =
+                CurrentBusinessDomain.getCurrentBusinessDomain();
         if (currentBusinessDomain == null) {
             throw new IllegalStateException("There is currently no business domain scope active!");
         }
@@ -60,7 +60,8 @@ public class BusinessDomainScope implements Scope, ApplicationListener<BusinessD
         destroyBeanStoreForBusinessScope(businessDomainId);
     }
 
-    private synchronized void destroyBeanStoreForBusinessScope(DomibusConnectorBusinessDomain.BusinessDomainId businessDomainId) {
+    private synchronized void destroyBeanStoreForBusinessScope(
+            DomibusConnectorBusinessDomain.BusinessDomainId businessDomainId) {
         BeanStore beanStore = businessDomainToBeanStore.get(businessDomainId);
         if (beanStore != null) {
             beanStore.destroy();

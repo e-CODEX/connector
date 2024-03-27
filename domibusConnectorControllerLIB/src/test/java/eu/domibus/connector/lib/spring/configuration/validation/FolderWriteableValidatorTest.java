@@ -8,7 +8,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
@@ -16,10 +15,9 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @Disabled
 public class FolderWriteableValidatorTest {
-
-
     private static Validator validator;
 
     @BeforeAll
@@ -28,9 +26,8 @@ public class FolderWriteableValidatorTest {
         validator = factory.getValidator();
     }
 
-
     @Test
-    public void testDirectoryExists() {
+    void testDirectoryExists() {
         FilePathTestClass pathTestClass = new FilePathTestClass(Paths.get("./" + UUID.randomUUID()));
         Set<ConstraintViolation<FilePathTestClass>> validate = validator.validate(pathTestClass);
 
@@ -38,7 +35,6 @@ public class FolderWriteableValidatorTest {
     }
 
     private static class FilePathTestClass {
-
         @CheckFolderWriteable
         private Path filePath;
 
@@ -54,6 +50,4 @@ public class FolderWriteableValidatorTest {
             this.filePath = filePath;
         }
     }
-
-
 }

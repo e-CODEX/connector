@@ -11,20 +11,20 @@
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="DomibusConnectorMessageDocumentType">
-    	<xs:sequence>
+        <xs:sequence>
             <xs:element name="document" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"
                         minOccurs="1" maxOccurs="1"/>
             <xs:element name="documentName" type="xs:string" minOccurs="1" maxOccurs="1"/>
-           
+
             <xs:element name="aesType" type="tns:DomibusConnectorDocumentAESType" minOccurs="0"
                         maxOccurs="1"/>
            <xs:element name="detachedSignature" type="tns:DomibusConnectorDetachedSignatureType" minOccurs="0"
                         maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
-    
+
     <xs:simpleType name="DomibusConnectorDocumentAESType">
-    	<xs:restriction base="xs:string">
+        <xs:restriction base="xs:string">
             <xs:enumeration value="AUTHENTICATION_BASED"/>
             <xs:enumeration value="SIGNATURE_BASED"/>
         </xs:restriction>

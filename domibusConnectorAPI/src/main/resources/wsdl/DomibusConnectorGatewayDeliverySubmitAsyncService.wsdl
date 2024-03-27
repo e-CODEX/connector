@@ -28,7 +28,7 @@
             <wsdl:input message="tns:message"></wsdl:input>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:portType name="DomibusConnectorAsyncDeliverToConnectorReceiveResponseService" >
+    <wsdl:portType name="DomibusConnectorAsyncDeliverToConnectorReceiveResponseService">
         <wsdl:operation name="deliverResponse">
             <wsdl:input message="tns:response"></wsdl:input>
         </wsdl:operation>
@@ -39,12 +39,9 @@
             <wsdl:input message="tns:message"></wsdl:input>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:portType name="DomibusConnectorAsyncSubmitToGatewayReceiveResponseService" >
+    <wsdl:portType name="DomibusConnectorAsyncSubmitToGatewayReceiveResponseService">
         <wsdl:operation name="submitResponse">
             <wsdl:input message="tns:response"></wsdl:input>
         </wsdl:operation>
     </wsdl:portType>
-
-
-
 </wsdl:definitions>

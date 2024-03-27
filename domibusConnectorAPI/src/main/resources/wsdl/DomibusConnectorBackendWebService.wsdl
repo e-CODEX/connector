@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions
-    xmlns:tns="http://connector.domibus.eu/ws/backend/webservice"
-    xmlns:dct="transition.domain.connector.domibus.eu"
-    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorBackendWebService"
-    targetNamespace="http://connector.domibus.eu/ws/backend/webservice">
+        xmlns:tns="http://connector.domibus.eu/ws/backend/webservice"
+        xmlns:dct="transition.domain.connector.domibus.eu"
+        xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        name="DomibusConnectorBackendWebService"
+        targetNamespace="http://connector.domibus.eu/ws/backend/webservice">
     <wsdl:import
-        namespace="transition.domain.connector.domibus.eu"
-        location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd" />
+            namespace="transition.domain.connector.domibus.eu"
+            location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
     <wsdl:types>
         <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
                     xmlns:tns="http://connector.domibus.eu/ws/backend/webservice"
                     attributeFormDefault="unqualified" elementFormDefault="unqualified"
                     targetNamespace="http://connector.domibus.eu/ws/backend/webservice">
             <xsd:complexType name="EmptyRequestType">
-                <xsd:sequence>
-                </xsd:sequence>
+                <xsd:sequence></xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="ListPendingMessageIdsResponse">
-					<xsd:sequence>
-						<xsd:element name="messageTransportIds" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
-					</xsd:sequence>
-			</xsd:complexType>
-			<xsd:complexType name="GetMessageByIdRequest">
-				<xsd:sequence>
-					<xsd:element name="messageTransportId" type="xsd:string" minOccurs="1" maxOccurs="1" />
-				</xsd:sequence>
-			</xsd:complexType>
-		</xsd:schema>
+                <xsd:sequence>
+                    <xsd:element name="messageTransportIds" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="GetMessageByIdRequest">
+                <xsd:sequence>
+                    <xsd:element name="messageTransportId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
     </wsdl:types>
 
     <wsdl:message name="submitMessageRequest">
@@ -40,29 +39,29 @@
     <wsdl:message name="requestMessagesRequest">
         <wsdl:part name="requestMessagesRequest" type="tns:EmptyRequestType">
         </wsdl:part>
-	</wsdl:message>
+    </wsdl:message>
     <wsdl:message name="requestMessagesResponse">
         <wsdl:part name="requestMessagesResponse" type="dct:DomibusConnectorMessagesType"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="listPendingMessageIdsRequest">
-		<wsdl:part name="listPendingMessageIdsRequest" type="tns:EmptyRequestType"/>
-	</wsdl:message>
-	<wsdl:message name="listPendingMessageIdsResponse">
-		<wsdl:part name="listPendingMessageIdsResponse" type="tns:ListPendingMessageIdsResponse"/>
-	</wsdl:message>
-	<wsdl:message name="getMessageByIdRequest">
-		<wsdl:part name="getMessageByIdRequest" type="tns:GetMessageByIdRequest"/>
-	</wsdl:message>
-	<wsdl:message name="getMessageByIdResponse">
-		<wsdl:part name="getMessageByIdResponse" type="dct:DomibusConnectorMessageType"/>
-	</wsdl:message>
-	<wsdl:message name="acknowledgeMessageRequest">
+        <wsdl:part name="listPendingMessageIdsRequest" type="tns:EmptyRequestType"/>
+    </wsdl:message>
+    <wsdl:message name="listPendingMessageIdsResponse">
+        <wsdl:part name="listPendingMessageIdsResponse" type="tns:ListPendingMessageIdsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getMessageByIdRequest">
+        <wsdl:part name="getMessageByIdRequest" type="tns:GetMessageByIdRequest"/>
+    </wsdl:message>
+    <wsdl:message name="getMessageByIdResponse">
+        <wsdl:part name="getMessageByIdResponse" type="dct:DomibusConnectorMessageType"/>
+    </wsdl:message>
+    <wsdl:message name="acknowledgeMessageRequest">
         <wsdl:part name="acknowledgeMessageRequest" type="dct:DomibusConnectorMessageResponseType"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="acknowledgeMessageResponse">
         <wsdl:part name="acknowledgeMessageResponse" type="tns:EmptyRequestType"></wsdl:part>
     </wsdl:message>
-	
+
     <wsdl:portType name="DomibusConnectorBackendWebService">
         <wsdl:operation name="submitMessage">
             <wsdl:input message="tns:submitMessageRequest"></wsdl:input>
@@ -73,79 +72,71 @@
             <wsdl:output message="tns:requestMessagesResponse"></wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="listPendingMessageIds">
-			<wsdl:input message="tns:listPendingMessageIdsRequest"/>
-			<wsdl:output message="tns:listPendingMessageIdsResponse"/>
-		</wsdl:operation>
-		<wsdl:operation name="getMessageById">
-			<wsdl:input message="tns:getMessageByIdRequest"/>
-			<wsdl:output message="tns:getMessageByIdResponse"/>
-		</wsdl:operation>
-		<wsdl:operation name="acknowledgeMessage">
-			<wsdl:input message="tns:acknowledgeMessageRequest"/>
-			<wsdl:output message="tns:acknowledgeMessageResponse"/>
-		</wsdl:operation>
+            <wsdl:input message="tns:listPendingMessageIdsRequest"/>
+            <wsdl:output message="tns:listPendingMessageIdsResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getMessageById">
+            <wsdl:input message="tns:getMessageByIdRequest"/>
+            <wsdl:output message="tns:getMessageByIdResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="acknowledgeMessage">
+            <wsdl:input message="tns:acknowledgeMessageRequest"/>
+            <wsdl:output message="tns:acknowledgeMessageResponse"/>
+        </wsdl:operation>
     </wsdl:portType>
 
-    <wsdl:binding name="DomibusConnectorBackendWSBinding"
-                  type="tns:DomibusConnectorBackendWebService">
-        <soap12:binding style="document"
-                        transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:binding name="DomibusConnectorBackendWSBinding" type="tns:DomibusConnectorBackendWebService">
+        <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="submitMessage">
-            <soap12:operation soapAction="" style="document" />
+            <soap12:operation soapAction="" style="document"/>
             <wsdl:input>
-                <soap12:body use="literal" />
+                <soap12:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
-                <soap12:body use="literal" />
+                <soap12:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="requestMessages">
-            <soap12:operation soapAction="" style="document" />
+            <soap12:operation soapAction="" style="document"/>
             <wsdl:input>
-                <soap12:body use="literal" />
+                <soap12:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
-                <soap12:body use="literal" />
+                <soap12:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="listPendingMessageIds">
-			<soap12:operation soapAction="" style="document" />
-			<wsdl:input>
-				<soap12:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap12:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-		<wsdl:operation name="getMessageById">
-			<soap12:operation soapAction="" style="document" />
-			<wsdl:input>
-				<soap12:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap12:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-        <wsdl:operation name="acknowledgeMessage">
-            <soap12:operation soapAction="" style="document" />
+            <soap12:operation soapAction="" style="document"/>
             <wsdl:input>
-                <soap12:body use="literal" />
+                <soap12:body use="literal"/>
             </wsdl:input>
             <wsdl:output>
-                <soap12:body use="literal" />
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMessageById">
+            <soap12:operation soapAction="" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="acknowledgeMessage">
+            <soap12:operation soapAction="" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
 
-
-
     <wsdl:service name="DomibusConnectorBackendWSService">
-        <wsdl:port binding="tns:DomibusConnectorBackendWSBinding"
-                   name="DomibusConnectorBackendWebService">
-            <soap12:backendPublishAddress
-                location="http://connector.domibus.eu/ws/backend/webservice" />
+        <wsdl:port binding="tns:DomibusConnectorBackendWSBinding" name="DomibusConnectorBackendWebService">
+            <soap12:backendPublishAddress location="http://connector.domibus.eu/ws/backend/webservice"/>
         </wsdl:port>
     </wsdl:service>
-
-
 </wsdl:definitions>

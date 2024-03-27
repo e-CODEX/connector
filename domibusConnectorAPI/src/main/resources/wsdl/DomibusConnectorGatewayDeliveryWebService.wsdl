@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions
-	xmlns:tns="http://connector.domibus.eu/ws/gateway/delivery/webservice"
-	xmlns:dct="transition.domain.connector.domibus.eu"
-	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorGatewayDeliveryWebService"
-	targetNamespace="http://connector.domibus.eu/ws/gateway/delivery/webservice">
-	<wsdl:import
-		namespace="transition.domain.connector.domibus.eu"
-		location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd" />
+        xmlns:tns="http://connector.domibus.eu/ws/gateway/delivery/webservice"
+        xmlns:dct="transition.domain.connector.domibus.eu"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorGatewayDeliveryWebService"
+        targetNamespace="http://connector.domibus.eu/ws/gateway/delivery/webservice">
+    <wsdl:import
+            namespace="transition.domain.connector.domibus.eu"
+            location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
 
-	<wsdl:message name="deliverMessageRequest">
-		<wsdl:part name="deliverMessageRequest" type="dct:DomibusConnectorMessageType"></wsdl:part>
-	</wsdl:message>
-	<wsdl:message name="deliverMessageResponse">
-		<wsdl:part name="deliverMessageResponse" type="dct:DomibsConnectorAcknowledgementType"></wsdl:part>
-	</wsdl:message>
-	
-	<wsdl:portType name="DomibusConnectorGatewayDeliveryWebService">
-		<wsdl:operation name="deliverMessage">
-			<wsdl:input message="tns:deliverMessageRequest"></wsdl:input>
-			<wsdl:output message="tns:deliverMessageResponse"></wsdl:output>
-		</wsdl:operation>
-	</wsdl:portType>
+    <wsdl:message name="deliverMessageRequest">
+        <wsdl:part name="deliverMessageRequest" type="dct:DomibusConnectorMessageType"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deliverMessageResponse">
+        <wsdl:part name="deliverMessageResponse" type="dct:DomibsConnectorAcknowledgementType"></wsdl:part>
+    </wsdl:message>
 
-	<wsdl:binding name="DomibusConnectorGatewayDeliveryWSBinding"
-		type="tns:DomibusConnectorGatewayDeliveryWebService">
-		<soap12:binding style="document"
-			transport="http://schemas.xmlsoap.org/soap/http" />
-		<wsdl:operation name="deliverMessage">
-			<soap12:operation soapAction="" style="document" />
-			<wsdl:input>
-				<soap12:body use="literal" />
-			</wsdl:input>
-			<wsdl:output>
-				<soap12:body use="literal" />
-			</wsdl:output>
-		</wsdl:operation>
-	</wsdl:binding>
+    <wsdl:portType name="DomibusConnectorGatewayDeliveryWebService">
+        <wsdl:operation name="deliverMessage">
+            <wsdl:input message="tns:deliverMessageRequest"></wsdl:input>
+            <wsdl:output message="tns:deliverMessageResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
 
+    <wsdl:binding name="DomibusConnectorGatewayDeliveryWSBinding"
+                  type="tns:DomibusConnectorGatewayDeliveryWebService">
+        <soap12:binding style="document"
+                        transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="deliverMessage">
+            <soap12:operation soapAction="" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
 
-
-	<wsdl:service name="DomibusConnectorGatewayDeliveryWSService">
-		<wsdl:port binding="tns:DomibusConnectorGatewayDeliveryWSBinding"
-			name="DomibusConnectorGatewayDeliveryWebService">
-			<soap12:backendPublishAddress
-				location="http://connector.domibus.eu/ws/gateway/delivery/webservice" />
-		</wsdl:port>
-	</wsdl:service>
+    <wsdl:service name="DomibusConnectorGatewayDeliveryWSService">
+        <wsdl:port binding="tns:DomibusConnectorGatewayDeliveryWSBinding"
+                   name="DomibusConnectorGatewayDeliveryWebService">
+            <soap12:backendPublishAddress
+                    location="http://connector.domibus.eu/ws/gateway/delivery/webservice"/>
+        </wsdl:port>
+    </wsdl:service>
 </wsdl:definitions>

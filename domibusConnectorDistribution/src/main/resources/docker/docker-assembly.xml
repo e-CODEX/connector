@@ -9,7 +9,7 @@
         <file>
             <source>${project.basedir}/src/main/docker/Dockerfile</source>
             <destName>Dockerfile</destName>
-<!--            <outputDirectory>/dockerfile</outputDirectory>-->
+            <!--outputDirectory>/dockerfile</outputDirectory-->
         </file>
         <file>
             <source>${project.basedir}/target/${project.artifactId}-${project.version}-standalone.jar</source>
@@ -18,13 +18,13 @@
         </file>
         <file>
             <source>${project.basedir}/src/main/bash/start.sh</source>
-            <!--<outputDirectory>/</outputDirectory>-->
+            <!--outputDirectory>/</outputDirectory-->
             <fileMode>0777</fileMode>
             <lineEnding>unix</lineEnding>
         </file>
         <file>
             <source>${project.basedir}/src/main/bash/wait-for-it.sh</source>
-            <!--<outputDirectory>/</outputDirectory>-->
+            <!--outputDirectory>/</outputDirectory-->
             <fileMode>0777</fileMode>
             <lineEnding>unix</lineEnding>
         </file>

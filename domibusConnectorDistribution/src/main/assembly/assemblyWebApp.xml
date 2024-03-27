@@ -14,13 +14,13 @@
                 <include>*/**</include>
             </includes>
         </fileSet>
-      <!--   <fileSet>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <directory>${project.basedir}/../domibusConnectorDocumentation/src/main/resources/config</directory>
-            <outputDirectory>documentation/example-config</outputDirectory>
-        </fileSet> -->
+        <!--fileSet>
+              <includes>
+                  <include>**/*</include>
+              </includes>
+              <directory>${project.basedir}/../domibusConnectorDocumentation/src/main/resources/config</directory>
+              <outputDirectory>documentation/example-config</outputDirectory>
+          </fileSet-->
         <fileSet>
             <directory>${project.basedir}/src/main/resources/config</directory>
             <includes>
@@ -34,6 +34,7 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            |
             <outputDirectory>/standalone/lib</outputDirectory>
         </fileSet>
         <fileSet>

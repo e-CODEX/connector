@@ -2,8 +2,8 @@ package eu.domibus.connector.domain.model;
 
 import eu.domibus.connector.domain.enums.AdvancedElectronicSystemType;
 
-public class DCMessageProcessSettings {
 
+public class DCMessageProcessSettings {
     private AdvancedElectronicSystemType validationServiceName;
 
     public AdvancedElectronicSystemType getValidationServiceName() {

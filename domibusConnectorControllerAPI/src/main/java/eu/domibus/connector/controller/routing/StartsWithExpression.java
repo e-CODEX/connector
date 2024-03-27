@@ -2,8 +2,8 @@ package eu.domibus.connector.controller.routing;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 
-public class StartsWithExpression extends MatchExpression {
 
+public class StartsWithExpression extends MatchExpression {
     private final TokenType as4Attribute;
     private final String startsWithString;
 
@@ -16,7 +16,6 @@ public class StartsWithExpression extends MatchExpression {
     boolean evaluate(DomibusConnectorMessage message) {
         return RoutingRulePattern.extractAs4Value(message, as4Attribute).startsWith(startsWithString);
     }
-
 
     @Override
     public TokenType getMatchOperator() {

@@ -2,14 +2,14 @@ package eu.domibus.connector.persistence.service;
 
 import eu.domibus.connector.domain.model.DomibusConnectorKeystore;
 
+
 public interface DomibusConnectorKeystorePersistenceService {
-	
-//	DomibusConnectorKeystore persistNewKeystore(String uuid, byte[] keystoreBytes, String password, String description, DomibusConnectorKeystore.KeystoreType type);
-	
-	DomibusConnectorKeystore getKeystoreByUUID(String uuid);
+    // DomibusConnectorKeystore persistNewKeystore(String uuid, byte[] keystoreBytes, String password,
+    // String description, DomibusConnectorKeystore.KeystoreType type);
 
-	DomibusConnectorKeystore persistNewKeystore(DomibusConnectorKeystore pKeystore);
+    DomibusConnectorKeystore getKeystoreByUUID(String uuid);
 
-	void updateKeystorePassword(DomibusConnectorKeystore pKeystore, String newKeystorePassword);
-	
+    DomibusConnectorKeystore persistNewKeystore(DomibusConnectorKeystore pKeystore);
+
+    void updateKeystorePassword(DomibusConnectorKeystore pKeystore, String newKeystorePassword);
 }

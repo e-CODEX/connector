@@ -9,22 +9,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 public class ExpressionParser {
-
-    private final String pattern;
-    private Expression parsedExpression;
-    private List<ParsingException> parsingExceptions = new ArrayList<>();
-    private Token lastConsumedToken;
-    private LinkedList<Token> tokens;
-    //TODO: list with parsing errors...
-
     private static Token START_TOKEN_VALUE = new Token();
+
     static {
         START_TOKEN_VALUE.tokenType = TokenType.START_TOKEN;
         START_TOKEN_VALUE.value = "";
         START_TOKEN_VALUE.start = 0;
         START_TOKEN_VALUE.end = 0;
     }
+
+    private final String pattern;
+    private Expression parsedExpression;
+    private List<ParsingException> parsingExceptions = new ArrayList<>();
+    // TODO: list with parsing errors...
+    private Token lastConsumedToken;
+    private LinkedList<Token> tokens;
 
     public ExpressionParser(String pattern) {
         this.pattern = pattern;
@@ -41,7 +42,7 @@ public class ExpressionParser {
 
         tokens = new LinkedList<>();
         Token t = getToken(parsing, 0);
-//            TokenAndValue t = START_TOKEN_VALUE;
+        // TokenAndValue t = START_TOKEN_VALUE;
         while (t.tokenType != TokenType.END_TOKEN && t.tokenType != TokenType.ILLEGAL_TOKEN) {
             if (t.tokenType != TokenType.WHITESPACE) {
                 tokens.add(t);
@@ -49,7 +50,7 @@ public class ExpressionParser {
             t = getToken(parsing, t.end);
         }
 
-        //convert list of tokens into matchers
+        // convert list of tokens into matchers
         lastConsumedToken = START_TOKEN_VALUE;
 
         try {
@@ -80,7 +81,7 @@ public class ExpressionParser {
                 return tv;
             }
         }
-        //when no valid token could be parsed, illegal token is used as placeholder
+        // when no valid token could be parsed, illegal token is used as placeholder
         Token tv = new Token();
         tv.tokenType = TokenType.ILLEGAL_TOKEN;
         tv.start = offset;
@@ -99,19 +100,24 @@ public class ExpressionParser {
         lastConsumedToken = tv;
 
         if (t == TokenType.OR || t == TokenType.AND) {
-            //parsing BOOLEAN_EXPRESSION
+            // parsing BOOLEAN_EXPRESSION
             exp = processBooleanToken(tv);
         } else if (t == TokenType.EQUALS || t == TokenType.STARTSWITH) {
-            //parsing matching expression
+            // parsing matching expression
             exp = processCompareToken(tv);
         } else if (t == TokenType.NOT) {
             exp = processNotToken(tv);
         } else {
-            throw new ParsingException(lastConsumedToken, tv, String.format("Parsing error at %d: I would expect one of these: %s", tv.end + 1,
-                    TokenType.ALL_OPERATOR_TOKEN_TYPES
-                            .stream()
-                            .map(Enum::toString)
-                            .collect(Collectors.joining(","))));
+            throw new ParsingException(
+                    lastConsumedToken,
+                    tv,
+                    String.format("Parsing error at %d: I would expect one of these: %s", tv.end + 1,
+                                  TokenType.ALL_OPERATOR_TOKEN_TYPES
+                                          .stream()
+                                          .map(Enum::toString)
+                                          .collect(Collectors.joining(","))
+                    )
+            );
         }
 
         return exp;
@@ -127,7 +133,6 @@ public class ExpressionParser {
         return new NotExpression(exp, notToken);
     }
 
-
     private Expression processCompareToken(Token operatorToken) {
 
         Token bracketOpenToken = getOneOfExpectedTokenFromListOrThrow(TokenType.BRACKET_OPEN);
@@ -141,7 +146,8 @@ public class ExpressionParser {
 
         Token compareString = getOneOfExpectedTokenFromListOrThrow(TokenType.VALUE);
         lastConsumedToken = compareString;
-        String valueString = compareString.value.substring(1, compareString.value.length() - 1); //remove leading ' and trailing '
+        String valueString =
+                compareString.value.substring(1, compareString.value.length() - 1); // remove leading ' and trailing '
         Expression exp;
 
         if (operatorToken.tokenType == TokenType.EQUALS) {
@@ -162,18 +168,43 @@ public class ExpressionParser {
     }
 
     private Token getOneOfExpectedTokenFromListOrThrow(List<TokenType> expectedTokenTypes) {
-        String expectedTokensString = expectedTokenTypes.stream()
+        String expectedTokensString = expectedTokenTypes
+                .stream()
                 .map(TokenType::toString).collect(Collectors.joining(","));
         if (tokens.isEmpty()) {
-            throw new ParsingException(lastConsumedToken, String.format("Parsing error at %d: I would expect one of these: %s", this.lastConsumedToken.end + 1, expectedTokensString));
+            throw new ParsingException(
+                    lastConsumedToken,
+                    String.format(
+                            "Parsing error at %d: I would expect one of these: %s",
+                            this.lastConsumedToken.end + 1,
+                            expectedTokensString
+                    )
+            );
         }
         Token token = tokens.removeFirst();
         if (token.tokenType == TokenType.ILLEGAL_TOKEN) {
-            throw new ParsingException(lastConsumedToken, token, String.format("Parsing error at %d: Invalid Token found. I would expect one of these: %s", this.lastConsumedToken.end + 1, expectedTokensString));
+            throw new ParsingException(
+                    lastConsumedToken,
+                    token,
+                    String.format(
+                            "Parsing error at %d: Invalid Token found. I would expect one of these: %s",
+                            this.lastConsumedToken.end + 1,
+                            expectedTokensString
+                    )
+            );
         }
         if (isNotToken(token, expectedTokenTypes)) {
             if (tokens.isEmpty()) {
-                throw new ParsingException(lastConsumedToken, token, String.format("Parsing error at %d: I would expect one of these: %s, but i got %s", this.lastConsumedToken.end + 1, expectedTokensString, token));
+                throw new ParsingException(
+                        lastConsumedToken,
+                        token,
+                        String.format(
+                                "Parsing error at %d: I would expect one of these: %s, but i got %s",
+                                this.lastConsumedToken.end + 1,
+                                expectedTokensString,
+                                token
+                        )
+                );
             }
         }
         this.lastConsumedToken = token;
@@ -181,7 +212,6 @@ public class ExpressionParser {
     }
 
     private Expression processBooleanToken(Token operatorToken) {
-
         Token bracketOpen = getOneOfExpectedTokenFromListOrThrow(TokenType.BRACKET_OPEN);
         lastConsumedToken = bracketOpen;
 
@@ -197,13 +227,12 @@ public class ExpressionParser {
         return new BinaryOperatorExpression(operatorToken.tokenType, exp1, exp2);
     }
 
-
     private boolean isNotToken(Token tv, List<TokenType> t) {
-        return !(isToken(tv, t)); //tv == null || tv.t != t;
+        return !(isToken(tv, t)); // tv == null || tv.t != t;
     }
 
     private boolean isNotToken(Token tv, TokenType t) {
-        return !(isToken(tv, t)); //tv == null || tv.t != t;
+        return !(isToken(tv, t)); // tv == null || tv.t != t;
     }
 
     private boolean isToken(Token tv, TokenType t) {
@@ -279,6 +308,5 @@ public class ExpressionParser {
         public Token getLastConsumedToken() {
             return lastConsumedToken;
         }
-
     }
 }

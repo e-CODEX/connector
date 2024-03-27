@@ -4,15 +4,18 @@ import eu.domibus.connector.domain.enums.DomibusConnectorEvidenceType;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageConfirmation;
 import org.apache.commons.lang3.ArrayUtils;
 
+
 public final class DomibusConnectorMessageConfirmationBuilder {
 
-    public static DomibusConnectorMessageConfirmationBuilder createBuilder() { return new DomibusConnectorMessageConfirmationBuilder(); };
-
     private DomibusConnectorEvidenceType evidenceType;
-    private byte evidence[];
+    private byte[] evidence;
 
-    private DomibusConnectorMessageConfirmationBuilder() {}
+    private DomibusConnectorMessageConfirmationBuilder() {
+    }
 
+    public static DomibusConnectorMessageConfirmationBuilder createBuilder() {
+        return new DomibusConnectorMessageConfirmationBuilder();
+    }
 
     public DomibusConnectorMessageConfirmationBuilder setEvidenceType(DomibusConnectorEvidenceType evidenceType) {
         this.evidenceType = evidenceType;
@@ -27,7 +30,7 @@ public final class DomibusConnectorMessageConfirmationBuilder {
     public DomibusConnectorMessageConfirmation build() {
         if (evidence == null) {
             evidence = new byte[0];
-            //throw new IllegalArgumentException("Evidence is not allowed to be null!");
+            // throw new IllegalArgumentException("Evidence is not allowed to be null!");
         }
         if (evidenceType == null) {
             throw new IllegalArgumentException("Evidence type must be set!");

@@ -2,8 +2,8 @@ package eu.domibus.connector.persistence.service.exceptions;
 
 import eu.domibus.connector.domain.model.LargeFileReference;
 
-public class LargeFileDeletionException extends LargeFileException {
 
+public class LargeFileDeletionException extends LargeFileException {
     private LargeFileReference referenceFailedToDelete;
 
     public LargeFileDeletionException(String arg0, Throwable arg1) {

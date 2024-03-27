@@ -2,23 +2,23 @@ package eu.domibus.connector.domain.model.builder;
 
 import eu.domibus.connector.domain.model.DomibusConnectorParty;
 
+
 /**
- *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public final class DomibusConnectorPartyBuilder {
-
     private String partyId;
-	private String partyIdType;
-	private String role;
-    
-	private DomibusConnectorParty.PartyRoleType roleType;
-	
+    private String partyIdType;
+    private String role;
+
+    private DomibusConnectorParty.PartyRoleType roleType;
+
+    private DomibusConnectorPartyBuilder() {
+    }
+
     public static DomibusConnectorPartyBuilder createBuilder() {
         return new DomibusConnectorPartyBuilder();
     }
-    
-    private DomibusConnectorPartyBuilder() {}
 
     public DomibusConnectorPartyBuilder setPartyId(String partyId) {
         this.partyId = partyId;
@@ -34,12 +34,12 @@ public final class DomibusConnectorPartyBuilder {
         this.role = role;
         return this;
     }
-    
+
     public DomibusConnectorPartyBuilder setRoleType(DomibusConnectorParty.PartyRoleType role) {
         this.roleType = role;
         return this;
     }
-    
+
     public DomibusConnectorParty build() {
         if (partyId == null) {
             throw new IllegalArgumentException("PartyId is not allowed to be null!");
@@ -57,5 +57,4 @@ public final class DomibusConnectorPartyBuilder {
         this.roleType = party.getRoleType();
         return this;
     }
-        
 }

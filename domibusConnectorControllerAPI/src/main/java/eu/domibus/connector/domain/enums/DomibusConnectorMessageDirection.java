@@ -2,7 +2,9 @@ package eu.domibus.connector.domain.enums;
 
 import java.util.stream.Stream;
 
-import static eu.domibus.connector.domain.enums.MessageTargetSource.*;
+import static eu.domibus.connector.domain.enums.MessageTargetSource.BACKEND;
+import static eu.domibus.connector.domain.enums.MessageTargetSource.GATEWAY;
+
 
 public enum DomibusConnectorMessageDirection {
     /**
@@ -16,15 +18,17 @@ public enum DomibusConnectorMessageDirection {
      */
     GATEWAY_TO_BACKEND(GATEWAY, BACKEND);
 
-    private DomibusConnectorMessageDirection(MessageTargetSource source, MessageTargetSource target) {
+    private final MessageTargetSource source;
+    private final MessageTargetSource target;
+
+    DomibusConnectorMessageDirection(MessageTargetSource source, MessageTargetSource target) {
         this.source = source;
         this.target = target;
     }
 
-    private MessageTargetSource source;
-    private MessageTargetSource target;
-
-    public static DomibusConnectorMessageDirection fromMessageTargetSource(MessageTargetSource directionSource, MessageTargetSource directionTarget) {
+    public static DomibusConnectorMessageDirection fromMessageTargetSource(
+            MessageTargetSource directionSource,
+            MessageTargetSource directionTarget) {
         if (directionSource == null) {
             throw new IllegalArgumentException("Direction Source is not allowed to be null!");
         }
@@ -32,9 +36,9 @@ public enum DomibusConnectorMessageDirection {
             throw new IllegalArgumentException("Direction target is not allowed to be null!");
         }
         return Stream.of(DomibusConnectorMessageDirection.values())
-                .filter(d -> d.getSource() == directionSource && d.getTarget() == directionTarget)
-                .findFirst()
-                .get();
+                     .filter(d -> d.getSource() == directionSource && d.getTarget() == directionTarget)
+                     .findFirst()
+                     .get();
     }
 
     public static DomibusConnectorMessageDirection revert(DomibusConnectorMessageDirection direction) {

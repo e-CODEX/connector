@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class DomibusConnectorTransportStep {
 
+public class DomibusConnectorTransportStep {
     private TransportStateService.TransportId transportId;
     @Nullable
     private DomibusConnectorMessage transportedMessage = null;
@@ -18,7 +18,8 @@ public class DomibusConnectorTransportStep {
     private java.lang.String transportSystemMessageId;
     private java.lang.String remoteMessageId;
     private LocalDateTime created;
-    private PriorityQueue<DomibusConnectorTransportStepStatusUpdate> statusUpdates = new PriorityQueue<>(new TransportStepComparator());
+    private PriorityQueue<DomibusConnectorTransportStepStatusUpdate> statusUpdates =
+            new PriorityQueue<>(new TransportStepComparator());
     private LocalDateTime finalStateReached;
 
     public Optional<DomibusConnectorMessage> getTransportedMessage() {
@@ -34,7 +35,6 @@ public class DomibusConnectorTransportStep {
         }
         this.transportedMessage = transportedMessage;
         this.connectorMessageIdOfTransportedMsg = transportedMessage.getConnectorMessageId();
-
     }
 
     public TransportStateService.TransportId getTransportId() {
@@ -93,6 +93,15 @@ public class DomibusConnectorTransportStep {
         return this.connectorMessageIdOfTransportedMsg;
     }
 
+    public void setConnectorMessageId(DomibusConnectorMessageId transportedMessageConnectorMessageId) {
+        this.connectorMessageIdOfTransportedMsg = transportedMessageConnectorMessageId;
+        if (this.transportedMessage != null
+                && this.transportedMessage.getConnectorMessageId() != null
+                && !this.transportedMessage.getConnectorMessageId().equals(transportedMessageConnectorMessageId)) {
+            throw new IllegalArgumentException("Cannot set a different connector message id here!");
+        }
+    }
+
     public List<DomibusConnectorTransportStepStatusUpdate> getStatusUpdates() {
         return new ArrayList<>(statusUpdates);
     }
@@ -115,10 +124,14 @@ public class DomibusConnectorTransportStep {
         if (stepStatusUpdate.getTransportState().getPriority() > lastPriority) {
             this.statusUpdates.add(stepStatusUpdate);
         } else {
-            java.lang.String error = java.lang.String.format("Cannot add stepStatusUpdate with state [%s] because there is already a state with higher or equal priority of [%s]!", stepStatusUpdate.getTransportState(), lastPriority);
+            java.lang.String error = java.lang.String.format(
+                    "Cannot add stepStatusUpdate with state [%s] because there is already a state with higher or " +
+                            "equal priority of [%s]!",
+                    stepStatusUpdate.getTransportState(),
+                    lastPriority
+            );
             throw new IllegalArgumentException(error);
         }
-
     }
 
     public LocalDateTime getFinalStateReached() {
@@ -153,21 +166,11 @@ public class DomibusConnectorTransportStep {
         return this.statusUpdates.peek();
     }
 
-    public void setConnectorMessageId(DomibusConnectorMessageId transportedMessageConnectorMessageId) {
-        this.connectorMessageIdOfTransportedMsg = transportedMessageConnectorMessageId;
-        if (this.transportedMessage != null
-                && this.transportedMessage.getConnectorMessageId() != null
-                && !this.transportedMessage.getConnectorMessageId().equals(transportedMessageConnectorMessageId)) {
-            throw new IllegalArgumentException("Cannot set a different connector message id here!");
-        }
-    }
-
     /**
      * Compares first by created time
      * and then by priority
      */
     private static class TransportStepComparator implements Comparator<DomibusConnectorTransportStepStatusUpdate> {
-
         @Override
         public int compare(DomibusConnectorTransportStepStatusUpdate o1, DomibusConnectorTransportStepStatusUpdate o2) {
             LocalDateTime time1 = LocalDateTime.MIN;
@@ -180,7 +183,7 @@ public class DomibusConnectorTransportStep {
             }
             int comp = time2.compareTo(time1);
             if (comp != 0) {
-                return comp;    //if timestamp is enough return comparision
+                return comp;    // if timestamp is enough return comparision
             }
             TransportState state1 = TransportState.PENDING;
             TransportState state2 = TransportState.PENDING;
@@ -195,7 +198,6 @@ public class DomibusConnectorTransportStep {
     }
 
     public static class DomibusConnectorTransportStepStatusUpdate {
-
         private TransportState transportState;
 
         private LocalDateTime created;
@@ -225,7 +227,5 @@ public class DomibusConnectorTransportStep {
         public void setText(java.lang.String text) {
             this.text = text;
         }
-
     }
-
 }

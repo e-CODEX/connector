@@ -12,29 +12,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class DomibusConnectorLinkPartner {
 
+public class DomibusConnectorLinkPartner {
     @Valid
     private LinkPartnerName linkPartnerName;
-
     private String description;
-
     private boolean enabled;
-
-    //allowed LinkMode.PASSIVE or LinkMode.PULL
+    // allowed LinkMode.PASSIVE or LinkMode.PULL
     private LinkMode rcvLinkMode = LinkMode.PASSIVE;
-
-    //allowed LinkMode.PASSIVE or LinkMode.PUSH
+    // allowed LinkMode.PASSIVE or LinkMode.PUSH
     private LinkMode sendLinkMode = LinkMode.PASSIVE;
-
     private LinkType linkType;
-
     private Duration pullInterval = Duration.ofMinutes(5l);
-
-    private Map<String,String> properties = new HashMap<>();
-
+    private Map<String, String> properties = new HashMap<>();
     private DomibusConnectorLinkConfiguration linkConfiguration;
-
     private ConfigurationSource configurationSource;
 
     public LinkPartnerName getLinkPartnerName() {
@@ -73,6 +64,10 @@ public class DomibusConnectorLinkPartner {
         return linkConfiguration;
     }
 
+    public void setLinkConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
+        this.linkConfiguration = linkConfiguration;
+    }
+
     public ConfigurationSource getConfigurationSource() {
         return configurationSource;
     }
@@ -97,16 +92,26 @@ public class DomibusConnectorLinkPartner {
         this.sendLinkMode = sendLinkMode;
     }
 
-    public void setLinkConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
-        this.linkConfiguration = linkConfiguration;
-    }
-
-    public Map<String,String> getProperties() {
+    public Map<String, String> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String,String> properties) {
+    public void setProperties(Map<String, String> properties) {
         this.properties = properties;
+    }
+
+    public Duration getPullInterval() {
+        return pullInterval;
+    }
+
+    public void setPullInterval(Duration pullInterval) {
+        this.pullInterval = pullInterval;
+    }
+
+    public String toString() {
+        return new ToStringCreator(this)
+                .append("linkName", this.linkPartnerName)
+                .toString();
     }
 
     public static class LinkPartnerName {
@@ -126,6 +131,11 @@ public class DomibusConnectorLinkPartner {
         }
 
         @Override
+        public int hashCode() {
+            return Objects.hash(linkName);
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -134,27 +144,8 @@ public class DomibusConnectorLinkPartner {
         }
 
         @Override
-        public int hashCode() {
-            return Objects.hash(linkName);
-        }
-
-        @Override
         public String toString() {
             return this.linkName;
         }
-    }
-
-    public Duration getPullInterval() {
-        return pullInterval;
-    }
-
-    public void setPullInterval(Duration pullInterval) {
-        this.pullInterval = pullInterval;
-    }
-
-    public String toString() {
-        return new ToStringCreator(this)
-                .append("linkName", this.linkPartnerName)
-                .toString();
     }
 }

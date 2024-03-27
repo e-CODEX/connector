@@ -1,7 +1,6 @@
 package eu.domibus.connector.controller.exception;
 
 public class DCEvidenceProcessingException extends RuntimeException {
-
     private final ErrorCode errorCode;
 
     public DCEvidenceProcessingException(ErrorCode errorCode) {

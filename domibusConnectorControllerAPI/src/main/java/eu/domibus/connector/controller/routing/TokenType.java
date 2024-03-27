@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 public enum TokenType {
     AS4_SERVICE_TYPE("ServiceType"),
     AS4_SERVICE_NAME("ServiceName"),
@@ -25,9 +26,9 @@ public enum TokenType {
     BRACKET_CLOSE("\\)", ")"),
     WHITESPACE("\\p{javaWhitespace}"),
     VALUE("'[\\w:_\\-~\\./#\\?]+'"),
-    ILLEGAL_TOKEN("", "Illegal Token"), //special token for illegal none parseable tokens
-    START_TOKEN("", "Start Token"), //the start token, a placeholder to mark the start of processing
-    END_TOKEN("", "End Token") //the last token length 0, a placeholder to mark the end of processing
+    ILLEGAL_TOKEN("", "Illegal Token"), // special token for illegal none parseable tokens
+    START_TOKEN("", "Start Token"), // the start token, a placeholder to mark the start of processing
+    END_TOKEN("", "End Token") // the last token length 0, a placeholder to mark the end of processing
     ;
     public static final List<TokenType> AS_4_ATTRIBUTE_TOKEN_TYPES = Stream.of(
             AS4_SERVICE_TYPE,
@@ -37,7 +38,7 @@ public enum TokenType {
             AS4_FROM_PARTY_ID,
             AS4_FROM_PARTY_ID_TYPE,
             AS4_FROM_PARTY_ROLE
-            ).collect(Collectors.toList());
+    ).collect(Collectors.toList());
 
     public static final List<TokenType> COMPARE_OPERATOR_TOKEN_TYPES =
             Stream.of(STARTSWITH, EQUALS).collect(Collectors.toList());
@@ -46,11 +47,13 @@ public enum TokenType {
             Stream.of(AND, OR).collect(Collectors.toList());
 
     public static final List<TokenType> ALL_OPERATOR_TOKEN_TYPES =
-            Stream.of(BOOLEAN_OPERATOR_TOKEN_TYPES,
-                            COMPARE_OPERATOR_TOKEN_TYPES,
-                            Stream.of(NOT).collect(Collectors.toList()))
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+            Stream.of(
+                          BOOLEAN_OPERATOR_TOKEN_TYPES,
+                          COMPARE_OPERATOR_TOKEN_TYPES,
+                          Stream.of(NOT).collect(Collectors.toList())
+                  )
+                  .flatMap(Collection::stream)
+                  .collect(Collectors.toList());
 
     private final Pattern pattern;
     private final String string;
@@ -58,14 +61,14 @@ public enum TokenType {
 
     private TokenType(String regex) {
         this.string = regex;
-        this.pattern = Pattern.compile("^" + regex); //match from beginning
+        this.pattern = Pattern.compile("^" + regex); // match from beginning
         this.humanString = regex;
     }
 
     private TokenType(String regex, String v) {
         this.string = regex;
         this.humanString = v;
-        this.pattern = Pattern.compile("^" + regex); //match from beginning
+        this.pattern = Pattern.compile("^" + regex); // match from beginning
     }
 
     public String toString() {
@@ -92,5 +95,4 @@ public enum TokenType {
         }
         return -1;
     }
-
 }

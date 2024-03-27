@@ -1,22 +1,21 @@
-
 package eu.domibus.connector.domain.model.builder;
 
 import eu.domibus.connector.domain.model.DomibusConnectorService;
 
+
 /**
- *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public final class DomibusConnectorServiceBuilder {
-    
     private String service;
-	private String serviceType;
-    
+    private String serviceType;
+
+    private DomibusConnectorServiceBuilder() {
+    }
+
     public static DomibusConnectorServiceBuilder createBuilder() {
         return new DomibusConnectorServiceBuilder();
     }
-    
-    private DomibusConnectorServiceBuilder() {}
 
     public DomibusConnectorServiceBuilder setService(String service) {
         this.service = service;
@@ -27,7 +26,7 @@ public final class DomibusConnectorServiceBuilder {
         this.serviceType = serviceType;
         return this;
     }
-    
+
     public DomibusConnectorService build() {
         if (service == null) {
             throw new IllegalArgumentException("Service must be set!");
@@ -40,5 +39,4 @@ public final class DomibusConnectorServiceBuilder {
         this.serviceType = service.getServiceType();
         return this;
     }
-
 }

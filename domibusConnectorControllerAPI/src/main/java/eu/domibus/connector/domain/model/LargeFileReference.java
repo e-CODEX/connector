@@ -1,36 +1,32 @@
 package eu.domibus.connector.domain.model;
 
-import java.io.*;
-import java.time.ZonedDateTime;
-import java.util.Objects;
-
-import javax.activation.DataSource;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.lang.Nullable;
 
+import javax.activation.DataSource;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+
+
 /**
  * Represents a reference to a storage system for big files
- *
  */
 public class LargeFileReference implements DataSource, Serializable {
-
     private String storageProviderName = "";
-
     private String storageIdReference = "";
-
     private String name = "";
-
     private String mimetype = "";
-
     private Long size = -1l;
-
     private String text = "";
-
     private ZonedDateTime creationDate;
 
-    public LargeFileReference() {}
+    public LargeFileReference() {
+    }
 
     public LargeFileReference(@NotNull String storageIdReference) {
         if (storageIdReference == null) {
@@ -57,29 +53,17 @@ public class LargeFileReference implements DataSource, Serializable {
     public void setStorageIdReference(String storageIdReference) {
         this.storageIdReference = storageIdReference;
     }
-  
+
     @Override
     public InputStream getInputStream() throws IOException {
         throw new IOException("not initialized yet!");
     }
-    
-    
+
     @Override
     public OutputStream getOutputStream() throws IOException {
         throw new IOException("not initialized yet!");
     }
 
-    /**
-     * Is readable if a valid input stream can be returned
-     * @return - if it's readable
-     */
-    public boolean isReadable() { return false; }
-    
-    /**
-     * @return is true if a writeable output stream can be returned!
-     */
-    public boolean isWriteable() { return false; }
-    
     @Override
     public String getContentType() {
         return this.mimetype;
@@ -90,12 +74,28 @@ public class LargeFileReference implements DataSource, Serializable {
         return this.name;
     }
 
-    public void setMimetype(String contentType) {
-        this.mimetype = contentType;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Is readable if a valid input stream can be returned
+     *
+     * @return - if it's readable
+     */
+    public boolean isReadable() {
+        return false;
+    }
+
+    /**
+     * @return is true if a writeable output stream can be returned!
+     */
+    public boolean isWriteable() {
+        return false;
+    }
+
+    public void setMimetype(String contentType) {
+        this.mimetype = contentType;
     }
 
     public String getStorageProviderName() {
@@ -131,14 +131,6 @@ public class LargeFileReference implements DataSource, Serializable {
     }
 
     @Override
-    public String toString() {
-        ToStringCreator builder = new ToStringCreator(this);
-        builder.append("storageReference", this.getStorageIdReference());
-        builder.append("provider", this.getStorageProviderName());
-        return builder.toString();        
-    }
-
-    @Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(this.storageIdReference);
@@ -163,6 +155,11 @@ public class LargeFileReference implements DataSource, Serializable {
         return true;
     }
 
-
-
+    @Override
+    public String toString() {
+        ToStringCreator builder = new ToStringCreator(this);
+        builder.append("storageReference", this.getStorageIdReference());
+        builder.append("provider", this.getStorageProviderName());
+        return builder.toString();
+    }
 }

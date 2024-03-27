@@ -5,17 +5,19 @@ import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 
+
 /**
  * Generic interface to submit a message to the connector
  * from any link modules (gwjmsplugin, ...)
  */
 public interface SubmitToConnector {
-
-    default public void submitToConnector(DomibusConnectorMessage message, DomibusConnectorLinkPartner linkPartner) throws DomibusConnectorSubmitToLinkException {
+    default void submitToConnector(
+            DomibusConnectorMessage message,
+            DomibusConnectorLinkPartner linkPartner) throws DomibusConnectorSubmitToLinkException {
         submitToConnector(message, linkPartner.getLinkPartnerName(), linkPartner.getLinkType());
     }
 
-    public void submitToConnector(DomibusConnectorMessage message, DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName
+    void submitToConnector(
+            DomibusConnectorMessage message, DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName
             , LinkType linkType) throws DomibusConnectorSubmitToLinkException;
-
 }

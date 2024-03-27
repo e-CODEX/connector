@@ -1,4 +1,5 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.w3.org/2004/08/xop/include" targetNamespace="http://www.w3.org/2004/08/xop/include">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.w3.org/2004/08/xop/include"
+            targetNamespace="http://www.w3.org/2004/08/xop/include">
     <xsd:element name="Include" type="tns:Include"/>
     <xsd:complexType name="Include">
         <xsd:sequence>

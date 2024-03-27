@@ -2,8 +2,8 @@ package eu.domibus.connector.controller.routing;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 
-public class NotExpression extends Expression {
 
+public class NotExpression extends Expression {
     private final Expression exp1;
     private final Token tokenTypeAndValue;
 
@@ -28,5 +28,4 @@ public class NotExpression extends Expression {
     public String toString() {
         return tokenTypeAndValue.tokenType.getHumanString() + "(" + exp1.toString() + ")";
     }
-
 }

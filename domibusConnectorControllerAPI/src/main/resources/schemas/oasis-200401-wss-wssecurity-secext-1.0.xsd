@@ -13,7 +13,8 @@
                 schemaLocation="http://www.w3.org/2001/xml.xsd"/>
     <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#"
                 schemaLocation="http://www.w3.org/TR/xmldsig-core/xmldsig-core-schema.xsd"/>
-    <xsd:import namespace="http://www.w3.org/2004/08/xop/include" schemaLocation="http://www.w3.org/2004/08/xop/include" />
+    <xsd:import namespace="http://www.w3.org/2004/08/xop/include"
+                schemaLocation="http://www.w3.org/2004/08/xop/include"/>
     <xsd:complexType name="AttributedString">
         <xsd:annotation>
             <xsd:documentation>
@@ -93,7 +94,8 @@
     <xsd:attribute name="Usage" type="tUsage">
         <xsd:annotation>
             <xsd:documentation>
-                This global attribute is used to indicate the usage of a referenced or indicated token within the containing context
+                This global attribute is used to indicate the usage of a referenced or indicated token within the
+                containing context
             </xsd:documentation>
         </xsd:annotation>
     </xsd:attribute>
@@ -133,7 +135,8 @@
     <xsd:complexType name="SecurityHeaderType">
         <xsd:annotation>
             <xsd:documentation>
-                This complexType defines header block to use for security-relevant data directed at a specific SOAP actor.
+                This complexType defines header block to use for security-relevant data directed at a specific SOAP
+                actor.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -150,7 +153,8 @@
     <xsd:complexType name="TransformationParametersType">
         <xsd:annotation>
             <xsd:documentation>
-                This complexType defines a container for elements to be specified from any namespace as properties/parameters of a DSIG transformation.
+                This complexType defines a container for elements to be specified from any namespace as
+                properties/parameters of a DSIG transformation.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>

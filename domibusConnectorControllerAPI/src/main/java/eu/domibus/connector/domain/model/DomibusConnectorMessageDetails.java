@@ -4,7 +4,6 @@ import eu.domibus.connector.domain.enums.DomibusConnectorMessageDirection;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.lang.Nullable;
 
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -13,293 +12,269 @@ import java.util.Date;
 /**
  * Holds the routing information for the {@link DomibusConnectorMessage}. The data
  * represented is needed to be able to send the message to other participants.
+ *
  * @author riederb
  * @version 1.0
- *
- *
- *
  */
 public class DomibusConnectorMessageDetails implements Serializable {
+    @Nullable
+    private String backendMessageId;
+    @Nullable
+    private String refToBackendMessageId;
+    // AS4 properties:
+    @Nullable
+    private String ebmsMessageId;
+    @Nullable
+    private String refToMessageId;
+    @Nullable
+    private String conversationId;
+    private String originalSender;
+    private String finalRecipient;
+    private DomibusConnectorService service;
+    private DomibusConnectorAction action;
+    private DomibusConnectorParty fromParty;
+    private DomibusConnectorParty toParty;
+    // end of AS4 properties
 
-	@Nullable
-	private String backendMessageId;
+    // the backend client name the message is received from or should be delivered to
+    @Nullable
+    private String connectorBackendClientName;
+    // the gateway name the message is received from or should be submitted to
+    @Nullable
+    private String gatewayName;
+    // should be moved to the transportStateService
+    @Nullable
+    private Date deliveredToGateway;
+    // should be moved to the transportStateService
+    @Nullable
+    private Date deliveredToBackend;
+    @Nullable
+    private ZonedDateTime confirmed;
+    @Nullable
+    private ZonedDateTime rejected;
+    @Nullable
+    private DomibusConnectorMessageId causedBy;
+    @Nullable
+    private Date failed;
 
-	@Nullable
-	private String refToBackendMessageId;
+    // should be moved to domibusConnectorMessage
+    private DomibusConnectorMessageDirection direction;
 
-	//AS4 properties:
-	@Nullable
-	private String ebmsMessageId;
-	@Nullable
-	private String refToMessageId;
-	@Nullable
-	private String conversationId;
-	private String originalSender;
-	private String finalRecipient;
-	private DomibusConnectorService service;
-	private DomibusConnectorAction action;
-	private DomibusConnectorParty fromParty;
-	private DomibusConnectorParty toParty;
-	//end of AS4 properties
+    public DomibusConnectorMessageDetails() {
+    }
 
-	//the backend client name the message is received from or should be delivered to
-	@Nullable
-	private String connectorBackendClientName;
+    public String getBackendMessageId() {
+        return this.backendMessageId;
+    }
 
-	//the gateway name the message is received from or should be submitted to
-	@Nullable
-	private String gatewayName;
+    /**
+     * @param backendMessageId backendMessageId
+     */
+    public void setBackendMessageId(String backendMessageId) {
+        this.backendMessageId = backendMessageId;
+    }
 
-	//should be moved to the transportStateService
-	@Nullable
-	private Date deliveredToGateway;
+    public String getEbmsMessageId() {
+        return this.ebmsMessageId;
+    }
 
-	//should be moved to the transportStateService
-	@Nullable
-	private Date deliveredToBackend;
+    /**
+     * @param ebmsMessageId ebmsMessageId
+     */
+    public void setEbmsMessageId(String ebmsMessageId) {
+        this.ebmsMessageId = ebmsMessageId;
+    }
 
-	@Nullable
-	private ZonedDateTime confirmed;
+    public String getRefToMessageId() {
+        return this.refToMessageId;
+    }
 
-	@Nullable
-	private ZonedDateTime rejected;
+    /**
+     * @param refToMessageId refToMessageId
+     */
+    public void setRefToMessageId(String refToMessageId) {
+        this.refToMessageId = refToMessageId;
+    }
 
-	@Nullable
-	private DomibusConnectorMessageId causedBy;
+    public String getConversationId() {
+        return this.conversationId;
+    }
 
-	@Nullable
-	private Date failed;
+    /**
+     * @param conversationId conversationId
+     */
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
+    }
 
-	//should be moved to domibusConnnectorMessage
-	private DomibusConnectorMessageDirection direction;
+    public String getOriginalSender() {
+        return this.originalSender;
+    }
 
-	public DomibusConnectorMessageDetails(){
+    /**
+     * @param originalSender originalSender
+     */
+    public void setOriginalSender(String originalSender) {
+        this.originalSender = originalSender;
+    }
 
-	}
+    public String getFinalRecipient() {
+        return this.finalRecipient;
+    }
 
-	public String getBackendMessageId(){
-		return this.backendMessageId;
-	}
+    /**
+     * @param finalRecipient finalRecipient
+     */
+    public void setFinalRecipient(String finalRecipient) {
+        this.finalRecipient = finalRecipient;
+    }
 
-	/**
-	 * 
-	 * @param backendMessageId    backendMessageId
-	 */
-	public void setBackendMessageId(String backendMessageId){
-		this.backendMessageId = backendMessageId;
-	}
+    public DomibusConnectorService getService() {
+        return this.service;
+    }
 
-	public String getEbmsMessageId(){
-		return this.ebmsMessageId;
-	}
+    /**
+     * @param service service
+     */
+    public void setService(DomibusConnectorService service) {
+        this.service = service;
+    }
 
-	/**
-	 * 
-	 * @param ebmsMessageId    ebmsMessageId
-	 */
-	public void setEbmsMessageId(String ebmsMessageId){
-		this.ebmsMessageId = ebmsMessageId;
-	}
+    public DomibusConnectorAction getAction() {
+        return this.action;
+    }
 
-	public String getRefToMessageId(){
-		return this.refToMessageId;
-	}
+    /**
+     * @param action action
+     */
+    public void setAction(DomibusConnectorAction action) {
+        this.action = action;
+    }
 
-	/**
-	 * 
-	 * @param refToMessageId    refToMessageId
-	 */
-	public void setRefToMessageId(String refToMessageId){
-		this.refToMessageId = refToMessageId;
-	}
+    public DomibusConnectorParty getFromParty() {
+        return this.fromParty;
+    }
 
-	public String getConversationId(){
-		return this.conversationId;
-	}
+    /**
+     * @param fromParty fromParty
+     */
+    public void setFromParty(DomibusConnectorParty fromParty) {
+        this.fromParty = fromParty;
+    }
 
-	/**
-	 * 
-	 * @param conversationId    conversationId
-	 */
-	public void setConversationId(String conversationId){
-		this.conversationId = conversationId;
-	}
+    public DomibusConnectorParty getToParty() {
+        return this.toParty;
+    }
 
-	public String getOriginalSender(){
-		return this.originalSender;
-	}
+    /**
+     * @param toParty toParty
+     */
+    public void setToParty(DomibusConnectorParty toParty) {
+        this.toParty = toParty;
+    }
 
-	/**
-	 * 
-	 * @param originalSender    originalSender
-	 */
-	public void setOriginalSender(String originalSender){
-		this.originalSender = originalSender;
-	}
+    @Nullable
+    public String getConnectorBackendClientName() {
+        return connectorBackendClientName;
+    }
 
-	public String getFinalRecipient(){
-		return this.finalRecipient;
-	}
+    public void setConnectorBackendClientName(@Nullable String connectorBackendClientName) {
+        this.connectorBackendClientName = connectorBackendClientName;
+    }
 
-	/**
-	 * 
-	 * @param finalRecipient    finalRecipient
-	 */
-	public void setFinalRecipient(String finalRecipient){
-		this.finalRecipient = finalRecipient;
-	}
+    @Nullable
+    public Date getDeliveredToGateway() {
+        return deliveredToGateway;
+    }
 
-	public DomibusConnectorService getService(){
-		return this.service;
-	}
+    public void setDeliveredToGateway(@Nullable Date deliveredToGateway) {
+        this.deliveredToGateway = deliveredToGateway;
+    }
 
-	/**
-	 * 
-	 * @param service    service
-	 */
-	public void setService(DomibusConnectorService service){
-		this.service = service;
-	}
+    @Nullable
+    public Date getDeliveredToBackend() {
+        return deliveredToBackend;
+    }
 
-	public DomibusConnectorAction getAction(){
-		return this.action;
-	}
+    public void setDeliveredToBackend(@Nullable Date deliveredToBackend) {
+        this.deliveredToBackend = deliveredToBackend;
+    }
 
-	/**
-	 * 
-	 * @param action    action
-	 */
-	public void setAction(DomibusConnectorAction action){
-		this.action = action;
-	}
+    @Nullable
+    public DomibusConnectorMessageId getCausedBy() {
+        return causedBy;
+    }
 
-	public DomibusConnectorParty getFromParty(){
-		return this.fromParty;
-	}
+    public void setCausedBy(@Nullable DomibusConnectorMessageId causedBy) {
+        this.causedBy = causedBy;
+    }
 
-	/**
-	 * 
-	 * @param fromParty    fromParty
-	 */
-	public void setFromParty(DomibusConnectorParty fromParty){
-		this.fromParty = fromParty;
-	}
+    public DomibusConnectorMessageDirection getDirection() {
+        return direction;
+    }
 
-	public DomibusConnectorParty getToParty(){
-		return this.toParty;
-	}
+    public void setDirection(DomibusConnectorMessageDirection direction) {
+        this.direction = direction;
+    }
 
-	/**
-	 * 
-	 * @param toParty    toParty
-	 */
-	public void setToParty(DomibusConnectorParty toParty){
-		this.toParty = toParty;
-	}
+    @Nullable
+    public String getRefToBackendMessageId() {
+        return refToBackendMessageId;
+    }
 
-	@Nullable
-	public String getConnectorBackendClientName() {
-		return connectorBackendClientName;
-	}
+    public void setRefToBackendMessageId(@Nullable String refToBackendMessageId) {
+        this.refToBackendMessageId = refToBackendMessageId;
+    }
 
-	public void setConnectorBackendClientName(@Nullable String connectorBackendClientName) {
-		this.connectorBackendClientName = connectorBackendClientName;
-	}
+    @Nullable
+    public ZonedDateTime getConfirmed() {
+        return confirmed;
+    }
 
-	@Nullable
-	public Date getDeliveredToGateway() {
-		return deliveredToGateway;
-	}
+    public void setConfirmed(@Nullable ZonedDateTime confirmed) {
+        this.confirmed = confirmed;
+    }
 
-	public void setDeliveredToGateway(@Nullable Date deliveredToGateway) {
-		this.deliveredToGateway = deliveredToGateway;
-	}
+    @Nullable
+    public ZonedDateTime getRejected() {
+        return rejected;
+    }
 
-	@Nullable
-	public Date getDeliveredToBackend() {
-		return deliveredToBackend;
-	}
+    public void setRejected(@Nullable ZonedDateTime rejected) {
+        this.rejected = rejected;
+    }
 
-	public void setDeliveredToBackend(@Nullable Date deliveredToBackend) {
-		this.deliveredToBackend = deliveredToBackend;
-	}
+    @Nullable
+    public Date getFailed() {
+        return failed;
+    }
 
-	@Nullable
-	public DomibusConnectorMessageId getCausedBy() {
-		return causedBy;
-	}
+    public void setFailed(@Nullable Date failed) {
+        this.failed = failed;
+    }
 
-	public void setCausedBy(@Nullable DomibusConnectorMessageId causedBy) {
-		this.causedBy = causedBy;
-	}
+    @Nullable
+    public String getGatewayName() {
+        return gatewayName;
+    }
 
-	public DomibusConnectorMessageDirection getDirection() {
-		return direction;
-	}
+    public void setGatewayName(@Nullable String gatewayName) {
+        this.gatewayName = gatewayName;
+    }
 
-	public void setDirection(DomibusConnectorMessageDirection direction) {
-		this.direction = direction;
-	}
-
-	@Nullable
-	public String getRefToBackendMessageId() {
-		return refToBackendMessageId;
-	}
-
-	public void setRefToBackendMessageId(@Nullable String refToBackendMessageId) {
-		this.refToBackendMessageId = refToBackendMessageId;
-	}
-
-	@Nullable
-	public ZonedDateTime getConfirmed() {
-		return confirmed;
-	}
-
-	public void setConfirmed(@Nullable ZonedDateTime confirmed) {
-		this.confirmed = confirmed;
-	}
-
-	@Nullable
-	public ZonedDateTime getRejected() {
-		return rejected;
-	}
-
-	public void setRejected(@Nullable ZonedDateTime rejected) {
-		this.rejected = rejected;
-	}
-
-	@Nullable
-	public Date getFailed() {
-		return failed;
-	}
-
-	public void setFailed(@Nullable Date failed) {
-		this.failed = failed;
-	}
-
-	@Nullable
-	public String getGatewayName() {
-		return gatewayName;
-	}
-
-	public void setGatewayName(@Nullable String gatewayName) {
-		this.gatewayName = gatewayName;
-	}
-
-	@Override
+    @Override
     public String toString() {
         ToStringCreator builder = new ToStringCreator(this);
-		builder.append("direction", this.direction);
+        builder.append("direction", this.direction);
         builder.append("ebmsMessageId", this.ebmsMessageId);
         builder.append("backendMessageId", this.backendMessageId);
         builder.append("refToMessageId", this.refToMessageId);
         builder.append("originalSender", this.originalSender);
         builder.append("finalRecipient", this.finalRecipient);
         builder.append("conversationId", this.conversationId);
-		builder.append("fromParty", this.fromParty);
-		builder.append("toParty", this.toParty);
-        return builder.toString();        
+        builder.append("fromParty", this.fromParty);
+        builder.append("toParty", this.toParty);
+
+        return builder.toString();
     }
-
-
 }

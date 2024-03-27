@@ -6,12 +6,10 @@ import org.springframework.context.ApplicationEvent;
 import java.util.Map;
 
 public class BusinessDomainConfigurationChange extends ApplicationEvent {
-
     /**
      * The business domain where the configuration has changed
      */
     private final DomibusConnectorBusinessDomain.BusinessDomainId businessDomainId;
-
     private final Map<String, String> changedConfiguration;
 
     /**
@@ -21,9 +19,10 @@ public class BusinessDomainConfigurationChange extends ApplicationEvent {
      * @param businessDomainId the business domain, which has been changed
      * @param changedConfiguration the configuration changes itself
      */
-    public BusinessDomainConfigurationChange(Object source,
-                                             DomibusConnectorBusinessDomain.BusinessDomainId businessDomainId,
-                                             Map<String, String> changedConfiguration) {
+    public BusinessDomainConfigurationChange(
+            Object source,
+            DomibusConnectorBusinessDomain.BusinessDomainId businessDomainId,
+            Map<String, String> changedConfiguration) {
         super(source);
         this.businessDomainId = businessDomainId;
         this.changedConfiguration = changedConfiguration;

@@ -1,7 +1,8 @@
 package eu.domibus.connector.domain.model;
 
-import java.io.Serializable;
 import org.springframework.core.style.ToStringCreator;
+
+import java.io.Serializable;
 
 
 /**
@@ -11,87 +12,84 @@ import org.springframework.core.style.ToStringCreator;
  * itself in byte[]  name: The name of the attachment. Most usefull usage is the
  * file name of the attachment.  mimeType: The type of the attachment. Example:
  * "text/xml", "application/pdf"  description:
+ *
  * @author riederb
  * @version 1.0
  */
 public class DomibusConnectorMessageAttachment implements Serializable {
+    private String identifier;
+    private LargeFileReference attachment;
+    private String name;
+    private String mimeType;
+    private String description;
 
-	private String identifier;
-	private LargeFileReference attachment;
-	private String name;
-	private String mimeType;
-	private String description;
-
-	public DomibusConnectorMessageAttachment() {}
-
-	/**
-	 * Constructor filling the two mandatory attributes
-	 * 
-	 * @param attachment    The data
-	 * @param identifier    Identifies the attachment for transformation and
-	 * transportation
-	 */
-	public DomibusConnectorMessageAttachment(final LargeFileReference attachment, final String identifier){
-	   this.attachment = attachment;
-	   this.identifier = identifier;
-	}
-
-	public String getIdentifier(){
-		return this.identifier;
-	}
-
-	public LargeFileReference getAttachment(){
-		return this.attachment;
-	}
-    
-    public void setAttachment(LargeFileReference attachment) {
-       this.attachment = attachment;
+    public DomibusConnectorMessageAttachment() {
     }
 
-	public String getName(){
-		return this.name;
-	}
+    /**
+     * Constructor filling the two mandatory attributes
+     *
+     * @param attachment The data
+     * @param identifier Identifies the attachment for transformation and
+     *                   transportation
+     */
+    public DomibusConnectorMessageAttachment(final LargeFileReference attachment, final String identifier) {
+        this.attachment = attachment;
+        this.identifier = identifier;
+    }
 
-	/**
-	 * 
-	 * @param name    name
-	 */
-	public void setName(String name){
-		this.name = name;
-	}
+    public String getIdentifier() {
+        return this.identifier;
+    }
 
-	public String getMimeType(){
-		return this.mimeType;
-	}
+    public LargeFileReference getAttachment() {
+        return this.attachment;
+    }
 
-	/**
-	 * 
-	 * @param mimeType    mimeType
-	 */
-	public void setMimeType(String mimeType){
-		this.mimeType = mimeType;
-	}
+    public void setAttachment(LargeFileReference attachment) {
+        this.attachment = attachment;
+    }
 
-	public String getDescription(){
-		return this.description;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 * 
-	 * @param description    description
-	 */
-	public void setDescription(String description){
-		this.description = description;
-	}
+    /**
+     * @param name name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMimeType() {
+        return this.mimeType;
+    }
+
+    /**
+     * @param mimeType mimeType
+     */
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * @param description description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {
         ToStringCreator builder = new ToStringCreator(this);
         builder.append("identifier", this.identifier);
         builder.append("name", this.name);
-        builder.append("mimeType", this.mimeType);     
+        builder.append("mimeType", this.mimeType);
         builder.append("dataReference", this.attachment);
-        return builder.toString();        
+        return builder.toString();
     }
-    
 }

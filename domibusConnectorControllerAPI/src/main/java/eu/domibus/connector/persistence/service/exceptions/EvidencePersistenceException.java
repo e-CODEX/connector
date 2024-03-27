@@ -1,7 +1,6 @@
 package eu.domibus.connector.persistence.service.exceptions;
 
 public class EvidencePersistenceException extends PersistenceException {
-
     public EvidencePersistenceException() {
     }
 

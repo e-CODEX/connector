@@ -2,8 +2,8 @@ package eu.domibus.connector.controller.exception;
 
 import eu.domibus.connector.persistence.service.exceptions.DuplicateEvidencePersistenceException;
 
-public class DCEvidenceNotRelevantException extends DCEvidenceProcessingException {
 
+public class DCEvidenceNotRelevantException extends DCEvidenceProcessingException {
     public DCEvidenceNotRelevantException(ErrorCode errorCode) {
         super(errorCode);
     }

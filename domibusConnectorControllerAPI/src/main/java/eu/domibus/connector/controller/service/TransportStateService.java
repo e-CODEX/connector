@@ -11,42 +11,47 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+
 /**
  * This service handles the technical transport state of a message
- *  between the connector and a link partner (gw, client)
- *
+ * between the connector and a link partner (gw, client)
  */
 public interface TransportStateService {
-
     /**
      * Sets the transport status for transports to GW
+     *
      * @param transportState the transport status to set
-     * @param transportId contains the transportId
+     * @param transportId    contains the transportId
      */
-    public void updateTransportToGatewayStatus(TransportId transportId, DomibusConnectorTransportState transportState);
+    void updateTransportToGatewayStatus(TransportId transportId, DomibusConnectorTransportState transportState);
 
     /**
      * Sets the transport status for transport to backendClient
+     *
      * @param transportState the transport status to set, contains also the transport id / connector message id
-     * @param transportId contains the transportId
+     * @param transportId    contains the transportId
      */
-    public void updateTransportToBackendClientStatus(TransportId transportId, DomibusConnectorTransportState transportState);
+    void updateTransportToBackendClientStatus(TransportId transportId, DomibusConnectorTransportState transportState);
 
 
-    public void updateTransportStatus(DomibusConnectorTransportState transportState);
+    void updateTransportStatus(DomibusConnectorTransportState transportState);
 
     /**
-     * Creates a new transport for the message
+     * Creates new transport for the message
+     *
      * @param message
      * @return
      */
-    public TransportId createTransportFor(DomibusConnectorMessage message, DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
+    TransportId createTransportFor(
+            DomibusConnectorMessage message,
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
 
-    public List<DomibusConnectorTransportStep> getPendingTransportsForLinkPartner(DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
+    List<DomibusConnectorTransportStep> getPendingTransportsForLinkPartner(
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
 
-    public Optional<DomibusConnectorTransportStep> getTransportStepById(TransportId transportId);
+    Optional<DomibusConnectorTransportStep> getTransportStepById(TransportId transportId);
 
-    public static class TransportId {
+    class TransportId {
         private java.lang.String transportId;
 
         public TransportId(java.lang.String transportId) {
@@ -65,16 +70,16 @@ public interface TransportStateService {
         }
 
         @Override
+        public int hashCode() {
+            return Objects.hash(transportId);
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             TransportId that = (TransportId) o;
             return Objects.equals(transportId, that.transportId);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(transportId);
         }
 
         @Override
@@ -86,10 +91,11 @@ public interface TransportStateService {
     }
 
     public static class DomibusConnectorTransportState {
-        private TransportId connectorTransportId; //may be the same as the connectorMessageId but must not...
+        private TransportId connectorTransportId; // may be the same as the connectorMessageId but must not...
         private DomibusConnectorMessageId connectorMessageId;
         private java.lang.String transportImplId; // the id of the transport attempt itself, can be null, eg. a jms id
-        private java.lang.String remoteMessageId; //in case of GW ebms id, in case of backend national id/backend id, only filled if
+        private java.lang.String remoteMessageId;
+                // in case of GW ebms id, in case of backend national id/backend id, only filled if
         private TransportState status;
         private List<DomibusConnectorMessageError> messageErrorList = new ArrayList<>();
         private java.lang.String text;
@@ -139,6 +145,10 @@ public interface TransportStateService {
             return messageErrorList;
         }
 
+        public void setMessageErrorList(List<DomibusConnectorMessageError> messageErrorList) {
+            this.messageErrorList = messageErrorList;
+        }
+
         public java.lang.String getTransportImplId() {
             return transportImplId;
         }
@@ -147,14 +157,9 @@ public interface TransportStateService {
             this.transportImplId = transportImplId;
         }
 
-        public void setMessageErrorList(List<DomibusConnectorMessageError> messageErrorList) {
-            this.messageErrorList = messageErrorList;
-        }
-
         public void addMessageError(DomibusConnectorMessageError error) {
             this.messageErrorList.add(error);
         }
-
 
         @Override
         public java.lang.String toString() {
@@ -165,14 +170,12 @@ public interface TransportStateService {
                     .toString();
         }
 
-        public void setText(java.lang.String text) {
-            this.text = text;
-        }
-
         public java.lang.String getText() {
             return text;
         }
+
+        public void setText(java.lang.String text) {
+            this.text = text;
+        }
     }
-
-
 }

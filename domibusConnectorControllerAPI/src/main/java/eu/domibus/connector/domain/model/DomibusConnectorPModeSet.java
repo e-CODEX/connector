@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DomibusConnectorPModeSet {
 
+public class DomibusConnectorPModeSet {
     private DomibusConnectorBusinessDomain.BusinessDomainId businessDomainId;
     private String description;
     private Date createDate;
     private byte[] pModes;
-
     private List<DomibusConnectorParty> parties = new ArrayList<>();
     private List<DomibusConnectorAction> actions = new ArrayList<>();
     private List<DomibusConnectorService> services = new ArrayList<>();
-    
     private DomibusConnectorKeystore connectorstore;
     private DomibusConnectorParty homeParty;
-
 
     public List<DomibusConnectorParty> getParties() {
         return parties;
@@ -76,12 +73,12 @@ public class DomibusConnectorPModeSet {
     }
 
     public byte[] getpModes() {
-		return pModes;
-	}
+        return pModes;
+    }
 
-	public void setpModes(byte[] pModes) {
-		this.pModes = pModes;
-	}
+    public void setpModes(byte[] pModes) {
+        this.pModes = pModes;
+    }
 
     public DomibusConnectorParty getHomeParty() {
         return homeParty;

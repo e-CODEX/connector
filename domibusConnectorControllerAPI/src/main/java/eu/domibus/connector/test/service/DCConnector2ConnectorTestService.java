@@ -6,13 +6,12 @@ import eu.domibus.connector.domain.configuration.EvidenceActionServiceConfigurat
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain.BusinessDomainId;
 import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
 
+
 public interface DCConnector2ConnectorTestService {
-
-
     /**
      * @param testMessage - a test message
      */
-    public void submitTestMessage(DomibusConnectorMessageType testMessage);
+    void submitTestMessage(DomibusConnectorMessageType testMessage);
 
     /**
      * returns the configured name of the test backend, every message sent to this
@@ -21,11 +20,10 @@ public interface DCConnector2ConnectorTestService {
      * @return the backend name
      */
     default String getTestBackendName() {
-    	return DomibusConnectorDefaults.DEFAULT_TEST_BACKEND;
+        return DomibusConnectorDefaults.DEFAULT_TEST_BACKEND;
     }
 
-	AS4Service getTestService(BusinessDomainId laneId);
+    AS4Service getTestService(BusinessDomainId laneId);
 
-	AS4Action getTestAction(BusinessDomainId laneId);
-
+    AS4Action getTestAction(BusinessDomainId laneId);
 }

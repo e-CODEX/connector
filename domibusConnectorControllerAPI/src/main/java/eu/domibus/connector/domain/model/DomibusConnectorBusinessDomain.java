@@ -6,18 +6,14 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DomibusConnectorBusinessDomain {
 
+public class DomibusConnectorBusinessDomain {
     public static final String DEFAULT_LANE_NAME = "defaultBusinessDomain";
 
     private BusinessDomainId id;
-
     private String description;
-
     private boolean enabled;
-
     private Map<String, String> messageLaneProperties = new HashMap<>();
-
     private ConfigurationSource configurationSource;
 
     public static DomibusConnectorBusinessDomain getDefaultMessageLane() {
@@ -73,6 +69,11 @@ public class DomibusConnectorBusinessDomain {
     }
 
     @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DomibusConnectorBusinessDomain)) return false;
@@ -82,21 +83,16 @@ public class DomibusConnectorBusinessDomain {
         return id != null ? id.equals(that.id) : that.id == null;
     }
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-
     public static class BusinessDomainId {
+        @NotBlank
+        private String messageLaneId;
 
-        public BusinessDomainId() {}
+        public BusinessDomainId() {
+        }
 
         public BusinessDomainId(String id) {
             this.messageLaneId = id;
         }
-
-        @NotBlank
-        private String messageLaneId;
 
         public String getMessageLaneId() {
             return messageLaneId;
@@ -107,8 +103,8 @@ public class DomibusConnectorBusinessDomain {
         }
 
         @Override
-        public String toString() {
-            return String.format("MessageLaneId: [%s]", this.messageLaneId);
+        public int hashCode() {
+            return messageLaneId != null ? messageLaneId.hashCode() : 0;
         }
 
         @Override
@@ -122,9 +118,8 @@ public class DomibusConnectorBusinessDomain {
         }
 
         @Override
-        public int hashCode() {
-            return messageLaneId != null ? messageLaneId.hashCode() : 0;
+        public String toString() {
+            return String.format("MessageLaneId: [%s]", this.messageLaneId);
         }
     }
-
 }

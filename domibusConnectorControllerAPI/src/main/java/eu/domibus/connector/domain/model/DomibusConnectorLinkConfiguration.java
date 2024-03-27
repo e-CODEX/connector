@@ -4,26 +4,24 @@ import eu.domibus.connector.domain.enums.ConfigurationSource;
 import org.springframework.core.style.ToStringCreator;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
+
 
 public class DomibusConnectorLinkConfiguration {
-
-
     @NotBlank
     private LinkConfigName configName;
-
     private String linkImpl;
-
-    private Map<String,String> properties = new HashMap<>();
-
+    private Map<String, String> properties = new HashMap<>();
     private ConfigurationSource configurationSource;
 
     public LinkConfigName getConfigName() {
         return configName;
+    }
+
+    public void setConfigName(LinkConfigName configName) {
+        this.configName = configName;
     }
 
     public ConfigurationSource getConfigurationSource() {
@@ -32,10 +30,6 @@ public class DomibusConnectorLinkConfiguration {
 
     public void setConfigurationSource(ConfigurationSource configurationSource) {
         this.configurationSource = configurationSource;
-    }
-
-    public void setConfigName(LinkConfigName configName) {
-        this.configName = configName;
     }
 
     public String getLinkImpl() {
@@ -54,6 +48,26 @@ public class DomibusConnectorLinkConfiguration {
         this.properties = properties;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(configName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DomibusConnectorLinkConfiguration that = (DomibusConnectorLinkConfiguration) o;
+        return Objects.equals(configName, that.configName);
+    }
+
+    public String toString() {
+        return new ToStringCreator(this)
+                .append("ConfigName", this.configName)
+                .append("Plugin", this.linkImpl)
+                .toString();
+    }
+
     public static class LinkConfigName {
         private String configName;
 
@@ -70,6 +84,11 @@ public class DomibusConnectorLinkConfiguration {
         }
 
         @Override
+        public int hashCode() {
+            return Objects.hash(configName);
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -78,33 +97,8 @@ public class DomibusConnectorLinkConfiguration {
         }
 
         @Override
-        public int hashCode() {
-            return Objects.hash(configName);
-        }
-
-        @Override
         public String toString() {
             return this.configName;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DomibusConnectorLinkConfiguration that = (DomibusConnectorLinkConfiguration) o;
-        return Objects.equals(configName, that.configName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(configName);
-    }
-
-    public String toString() {
-        return new ToStringCreator(this)
-                .append("ConfigName", this.configName)
-                .append("Plugin", this.linkImpl)
-                .toString();
     }
 }

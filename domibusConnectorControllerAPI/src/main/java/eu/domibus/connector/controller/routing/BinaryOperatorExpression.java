@@ -2,6 +2,7 @@ package eu.domibus.connector.controller.routing;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 
+
 public class BinaryOperatorExpression extends Expression {
     private final TokenType operand;
     private final Expression exp1;

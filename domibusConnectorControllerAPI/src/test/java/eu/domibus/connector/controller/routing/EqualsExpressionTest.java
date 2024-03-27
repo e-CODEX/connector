@@ -4,15 +4,13 @@ import eu.domibus.connector.domain.model.DomibusConnectorAction;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageDetails;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class EqualsExpressionTest {
-
     @Test
-    public void equalsExpressionTest_shouldMatch() {
+    void equalsExpressionTest_shouldMatch() {
         String ACTION = "Action1";
         EqualsExpression equalsExpression = new EqualsExpression(TokenType.AS4_ACTION, ACTION);
 
@@ -26,7 +24,7 @@ class EqualsExpressionTest {
     }
 
     @Test
-    public void equalsExpressionTest_shouldNotMatch() {
+    void equalsExpressionTest_shouldNotMatch() {
         String ACTION = "Action1";
         EqualsExpression equalsExpression = new EqualsExpression(TokenType.AS4_ACTION, ACTION);
 
@@ -38,5 +36,4 @@ class EqualsExpressionTest {
         boolean result = equalsExpression.evaluate(message);
         assertThat(result).isFalse();
     }
-
 }

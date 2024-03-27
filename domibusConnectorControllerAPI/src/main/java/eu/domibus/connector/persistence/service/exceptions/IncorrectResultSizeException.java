@@ -1,7 +1,6 @@
 package eu.domibus.connector.persistence.service.exceptions;
 
 public class IncorrectResultSizeException extends PersistenceException {
-
     public IncorrectResultSizeException() {
     }
 

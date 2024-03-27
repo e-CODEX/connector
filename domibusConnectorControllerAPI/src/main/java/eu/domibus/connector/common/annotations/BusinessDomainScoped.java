@@ -7,11 +7,9 @@ import java.lang.annotation.*;
 
 
 @Scope(value = BusinessDomainScoped.DC_BUSINESS_DOMAIN_SCOPE_NAME, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface BusinessDomainScoped {
-
-    public static final String DC_BUSINESS_DOMAIN_SCOPE_NAME = "dcBusinessDomain";
-
+    String DC_BUSINESS_DOMAIN_SCOPE_NAME = "dcBusinessDomain";
 }

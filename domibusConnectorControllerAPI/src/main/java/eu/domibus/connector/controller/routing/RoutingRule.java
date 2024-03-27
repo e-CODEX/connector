@@ -9,9 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.UUID;
 
+
 @MapNested
 public class RoutingRule {
-
     public static int HIGH_PRIORITY = -2000;
     public static int LOW_PRIORITY = 2000;
 
@@ -36,6 +36,11 @@ public class RoutingRule {
 
     public static String generateID() {
         return UUID.randomUUID().toString().substring(0, 8);
+    }
+
+    // sorts by ascending priority, means 0 comes before -2000.
+    public static Comparator<RoutingRule> getComparator() {
+        return (r1, r2) -> Integer.compare(r2.priority, r1.priority);
     }
 
     public String getLinkName() {
@@ -95,6 +100,11 @@ public class RoutingRule {
     }
 
     @Override
+    public int hashCode() {
+        return routingRuleId != null ? routingRuleId.hashCode() : 0;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RoutingRule)) return false;
@@ -104,11 +114,6 @@ public class RoutingRule {
         return routingRuleId != null ? routingRuleId.equals(that.routingRuleId) : that.routingRuleId == null;
     }
 
-    @Override
-    public int hashCode() {
-        return routingRuleId != null ? routingRuleId.hashCode() : 0;
-    }
-
     public String toString() {
         return new ToStringCreator(this)
                 .append("ruleId", routingRuleId)
@@ -116,10 +121,5 @@ public class RoutingRule {
                 .append("priority", priority)
                 .append("rule", matchClause)
                 .toString();
-    }
-
-    // sorts by ascending priority, means 0 comes before -2000.
-    public static Comparator<RoutingRule> getComparator() {
-        return (r1, r2) -> Integer.compare(r2.priority, r1.priority);
     }
 }

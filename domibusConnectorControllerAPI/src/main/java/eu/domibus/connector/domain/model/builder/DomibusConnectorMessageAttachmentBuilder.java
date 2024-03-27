@@ -1,26 +1,25 @@
-
 package eu.domibus.connector.domain.model.builder;
 
-import eu.domibus.connector.domain.model.LargeFileReference;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageAttachment;
+import eu.domibus.connector.domain.model.LargeFileReference;
+
 
 /**
- *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public final class DomibusConnectorMessageAttachmentBuilder {
-
     private String identifier;
-	private LargeFileReference attachment;
-	private String name;
-	private String mimeType;
-	private String description;
-    
+    private LargeFileReference attachment;
+    private String name;
+    private String mimeType;
+    private String description;
+
+    private DomibusConnectorMessageAttachmentBuilder() {
+    }
+
     public static DomibusConnectorMessageAttachmentBuilder createBuilder() {
         return new DomibusConnectorMessageAttachmentBuilder();
     }
-    
-    private DomibusConnectorMessageAttachmentBuilder() {}
 
     public DomibusConnectorMessageAttachmentBuilder setIdentifier(String identifier) {
         this.identifier = identifier;
@@ -46,7 +45,7 @@ public final class DomibusConnectorMessageAttachmentBuilder {
         this.description = description;
         return this;
     }
-    
+
     public DomibusConnectorMessageAttachmentBuilder copyPropertiesFrom(DomibusConnectorMessageAttachment attachment) {
         this.attachment = attachment.getAttachment();
         this.description = attachment.getDescription();
@@ -63,13 +62,11 @@ public final class DomibusConnectorMessageAttachmentBuilder {
         if (this.identifier == null) {
             throw new IllegalArgumentException("identifier must be provided!");
         }
-        DomibusConnectorMessageAttachment domibusConnectorMessageAttachment = new DomibusConnectorMessageAttachment(attachment, identifier);
+        DomibusConnectorMessageAttachment domibusConnectorMessageAttachment =
+                new DomibusConnectorMessageAttachment(attachment, identifier);
         domibusConnectorMessageAttachment.setDescription(description);
         domibusConnectorMessageAttachment.setMimeType(mimeType);
         domibusConnectorMessageAttachment.setName(name);
         return domibusConnectorMessageAttachment;
     }
-
-    
-    
 }

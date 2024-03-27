@@ -1,7 +1,6 @@
 package eu.domibus.connector.controller.exception;
 
 public class DomibusConnectorBackendException extends RuntimeException {
-
     public DomibusConnectorBackendException() {
     }
 
@@ -17,7 +16,11 @@ public class DomibusConnectorBackendException extends RuntimeException {
         super(cause);
     }
 
-    public DomibusConnectorBackendException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public DomibusConnectorBackendException(
+            String message,
+            Throwable cause,
+            boolean enableSuppression,
+            boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

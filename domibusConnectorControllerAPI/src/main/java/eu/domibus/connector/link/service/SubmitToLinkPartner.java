@@ -4,12 +4,13 @@ import eu.domibus.connector.controller.exception.DomibusConnectorSubmitToLinkExc
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 
+
 /**
  * Generic interface for submitting a message
  * to a link (eg. gateway-ws-link, gateway-jms-link, backend-ws-link, ...)
  */
 public interface SubmitToLinkPartner {
-
-    public void submitToLink(DomibusConnectorMessage message, DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) throws DomibusConnectorSubmitToLinkException;
-
+    void submitToLink(
+            DomibusConnectorMessage message,
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) throws DomibusConnectorSubmitToLinkException;
 }

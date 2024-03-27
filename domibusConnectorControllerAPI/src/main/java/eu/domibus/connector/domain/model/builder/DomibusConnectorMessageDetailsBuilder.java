@@ -5,12 +5,9 @@ import eu.domibus.connector.domain.model.DomibusConnectorAction;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageDetails;
 import eu.domibus.connector.domain.model.DomibusConnectorParty;
 import eu.domibus.connector.domain.model.DomibusConnectorService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.lang.Nullable;
+
 
 public class DomibusConnectorMessageDetailsBuilder {
-
-
     private String refToBackendMessageId;
     private String backendMessageId;
     private String ebmsMessageId;
@@ -27,7 +24,8 @@ public class DomibusConnectorMessageDetailsBuilder {
     private String connectorBackendClientName;
     private String gatewayName;
 
-    private DomibusConnectorMessageDetailsBuilder() {}
+    private DomibusConnectorMessageDetailsBuilder() {
+    }
 
     public static DomibusConnectorMessageDetailsBuilder create() {
         return new DomibusConnectorMessageDetailsBuilder();
@@ -85,7 +83,7 @@ public class DomibusConnectorMessageDetailsBuilder {
 
     public DomibusConnectorMessageDetailsBuilder withAction(String action) {
         this.action = new DomibusConnectorAction(action);
-//        this.action = new DomibusConnectorAction(action, true);
+        // this.action = new DomibusConnectorAction(action, true);
         return this;
     }
 
@@ -125,12 +123,14 @@ public class DomibusConnectorMessageDetailsBuilder {
 
     public DomibusConnectorMessageDetailsBuilder copyPropertiesFrom(DomibusConnectorMessageDetails messageDetails) {
         if (messageDetails.getAction() != null) {
-            this.action = DomibusConnectorActionBuilder.createBuilder()
+            this.action = DomibusConnectorActionBuilder
+                    .createBuilder()
                     .copyPropertiesFrom(messageDetails.getAction())
                     .build();
         }
         if (messageDetails.getService() != null) {
-            this.service = DomibusConnectorServiceBuilder.createBuilder()
+            this.service = DomibusConnectorServiceBuilder
+                    .createBuilder()
                     .copyPropertiesFrom(messageDetails.getService())
                     .build();
         }
@@ -139,12 +139,14 @@ public class DomibusConnectorMessageDetailsBuilder {
         this.finalRecipient = messageDetails.getFinalRecipient();
         this.originalSender = messageDetails.getOriginalSender();
         if (messageDetails.getFromParty() != null) {
-            this.fromParty = DomibusConnectorPartyBuilder.createBuilder()
+            this.fromParty = DomibusConnectorPartyBuilder
+                    .createBuilder()
                     .copyPropertiesFrom(messageDetails.getFromParty())
                     .build();
         }
         if (messageDetails.getToParty() != null) {
-            this.toParty = DomibusConnectorPartyBuilder.createBuilder()
+            this.toParty = DomibusConnectorPartyBuilder
+                    .createBuilder()
                     .copyPropertiesFrom(messageDetails.getToParty())
                     .build();
         }

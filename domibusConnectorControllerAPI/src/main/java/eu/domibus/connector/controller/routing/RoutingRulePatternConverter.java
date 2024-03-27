@@ -3,8 +3,8 @@ package eu.domibus.connector.controller.routing;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 
-public class RoutingRulePatternConverter implements Converter<String, RoutingRulePattern> {
 
+public class RoutingRulePatternConverter implements Converter<String, RoutingRulePattern> {
     @Nullable
     @Override
     public RoutingRulePattern convert(String source) {
@@ -13,6 +13,4 @@ public class RoutingRulePatternConverter implements Converter<String, RoutingRul
         }
         return new RoutingRulePattern(source);
     }
-
-
 }

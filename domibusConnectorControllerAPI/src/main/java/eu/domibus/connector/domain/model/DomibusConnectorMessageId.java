@@ -5,9 +5,9 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 
+
 @Validated
 public class DomibusConnectorMessageId {
-
     @NotBlank
     String connectorMessageId;
 
@@ -29,18 +29,19 @@ public class DomibusConnectorMessageId {
     }
 
     @Override
+    public int hashCode() {
+        return connectorMessageId != null ? connectorMessageId.hashCode() : 0;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DomibusConnectorMessageId)) return false;
 
         DomibusConnectorMessageId that = (DomibusConnectorMessageId) o;
 
-        return connectorMessageId != null ? connectorMessageId.equals(that.connectorMessageId) : that.connectorMessageId == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return connectorMessageId != null ? connectorMessageId.hashCode() : 0;
+        return connectorMessageId != null ? connectorMessageId.equals(that.connectorMessageId) :
+                that.connectorMessageId == null;
     }
 
     public String toString() {

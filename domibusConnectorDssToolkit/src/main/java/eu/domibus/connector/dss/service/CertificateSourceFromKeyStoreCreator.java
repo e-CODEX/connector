@@ -19,9 +19,9 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.Objects;
 
+
 @Service
 public class CertificateSourceFromKeyStoreCreator {
-
     private static final Logger LOGGER = LogManager.getLogger(CertificateSourceFromKeyStoreCreator.class);
 
     private final DCKeyStoreService dcKeyStoreService;
@@ -32,42 +32,72 @@ public class CertificateSourceFromKeyStoreCreator {
 
     public CertificateSource createCertificateSourceFromStore(StoreConfigurationProperties storeConfigurationProperties) {
         Objects.requireNonNull(storeConfigurationProperties, "store configuration is not allowed to be null!");
-        LOGGER.debug("Using truststore location [{}], password [{}], type [{}]", storeConfigurationProperties.getPath(),
+        LOGGER.debug(
+                "Using truststore location [{}], password [{}], type [{}]", storeConfigurationProperties.getPath(),
                 LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword()),
-                storeConfigurationProperties.getType());
+                storeConfigurationProperties.getType()
+        );
         KeyStoreCertificateSource keyStoreCertificateSource = null;
         InputStream res = null;
         try {
             res = dcKeyStoreService.loadKeyStoreAsResource(storeConfigurationProperties).getInputStream();
         } catch (IOException ioException) {
-            String error = String.format("Failed to load keystore: location [%s], type [%s], password [%s] ",
+            String error = String.format(
+                    "Failed to load keystore: location [%s], type [%s], password [%s] ",
                     storeConfigurationProperties.getPath(),
                     storeConfigurationProperties.getType(),
-                    LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword()) );
+                    LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword())
+            );
             throw new RuntimeException(error, ioException);
         }
         try {
-            keyStoreCertificateSource = new KeyStoreCertificateSource(res, storeConfigurationProperties.getType(), storeConfigurationProperties.getPassword());
+            keyStoreCertificateSource = new KeyStoreCertificateSource(
+                    res,
+                    storeConfigurationProperties.getType(),
+                    storeConfigurationProperties.getPassword()
+            );
         } catch (DSSException dssException) {
-            String error = String.format("Failed to load keystore: location [%s], type [%s], password [%s] ",
+            String error = String.format(
+                    "Failed to load keystore: location [%s], type [%s], password [%s] ",
                     storeConfigurationProperties.getPath(),
                     storeConfigurationProperties.getType(),
-                    LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword()) );
+                    LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword())
+            );
             throw new RuntimeException(error, dssException);
         }
         return keyStoreCertificateSource;
     }
 
-    public SignatureConnectionAndPrivateKeyEntry createSignatureConnectionFromStore(KeyAndKeyStoreConfigurationProperties keyAndKeyStoreConfigurationProperties) {
+    public SignatureConnectionAndPrivateKeyEntry createSignatureConnectionFromStore(
+            KeyAndKeyStoreConfigurationProperties keyAndKeyStoreConfigurationProperties) {
         StoreConfigurationProperties storeConfigurationProperties = keyAndKeyStoreConfigurationProperties.getKeyStore();
-        LOGGER.debug("Using keystore location [{}], password [{}], type [{}]", storeConfigurationProperties.getPath(),
+        LOGGER.debug(
+                "Using keystore location [{}], password [{}], type [{}]", storeConfigurationProperties.getPath(),
                 LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword()),
-                storeConfigurationProperties.getType());
+                storeConfigurationProperties.getType()
+        );
         InputStream res = null;
         try {
             res = dcKeyStoreService.loadKeyStoreAsResource(storeConfigurationProperties).getInputStream();
-            KeyStoreSignatureTokenConnection keyStoreSignatureTokenConnection = new KeyStoreSignatureTokenConnection(res, storeConfigurationProperties.getType(), new KeyStore.PasswordProtection(storeConfigurationProperties.getPassword().toCharArray()));
-            DSSPrivateKeyEntry privatKeyEntry = keyStoreSignatureTokenConnection.getKey(keyAndKeyStoreConfigurationProperties.getPrivateKey().getAlias(), new KeyStore.PasswordProtection(keyAndKeyStoreConfigurationProperties.getPrivateKey().getPassword().toCharArray()));
+            KeyStoreSignatureTokenConnection keyStoreSignatureTokenConnection =
+                    new KeyStoreSignatureTokenConnection(
+                            res,
+                            storeConfigurationProperties.getType(),
+                            new KeyStore.PasswordProtection(
+                                    storeConfigurationProperties
+                                            .getPassword()
+                                            .toCharArray()
+                            )
+                    );
+            DSSPrivateKeyEntry privatKeyEntry = keyStoreSignatureTokenConnection.getKey(
+                    keyAndKeyStoreConfigurationProperties.getPrivateKey().getAlias(),
+                    new KeyStore.PasswordProtection(
+                            keyAndKeyStoreConfigurationProperties
+                                    .getPrivateKey()
+                                    .getPassword()
+                                    .toCharArray()
+                    )
+            );
 
             return new SignatureConnectionAndPrivateKeyEntry(keyStoreSignatureTokenConnection, privatKeyEntry);
         } catch (IOException e) {
@@ -83,8 +113,9 @@ public class CertificateSourceFromKeyStoreCreator {
             throw new RuntimeException("Not Supported");
         }
 
-        public SignatureConnectionAndPrivateKeyEntry(SignatureTokenConnection signatureTokenConnection,
-                                                     DSSPrivateKeyEntry dssPrivateKeyEntry) {
+        public SignatureConnectionAndPrivateKeyEntry(
+                SignatureTokenConnection signatureTokenConnection,
+                DSSPrivateKeyEntry dssPrivateKeyEntry) {
             this.signatureTokenConnection = signatureTokenConnection;
             this.dssPrivateKeyEntry = dssPrivateKeyEntry;
         }
@@ -97,5 +128,4 @@ public class CertificateSourceFromKeyStoreCreator {
             return dssPrivateKeyEntry;
         }
     }
-
 }

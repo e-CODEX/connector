@@ -1,177 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <payload:NewFormA xmlns:payload="http://paymentorder.justice.eu/Payload/V1_0">
+    <OriginatorMessageId>R123456-2010</OriginatorMessageId>
+    <ResponsePDF>false</ResponsePDF>
+    <CourtId>008</CourtId>
 
-		<OriginatorMessageId>R123456-2010</OriginatorMessageId>
-		<ResponsePDF>false</ResponsePDF>
-		<CourtId>008</CourtId>
+    <payload:Formsheet_A>
+        <Party id="p0001">
+            <Address id="a0001">
+                <Country>DE</Country>
+                <City>Berlin</City>
+                <PostalCode>10365</PostalCode>
+                <Street>Wolfengasse</Street>
+                <StreetNumber>11</StreetNumber>
+            </Address>
+            <Communication id="c0001">
+                <Entry>020 4444 5555</Entry>
+                <IdentifierOfMedia>02</IdentifierOfMedia>
+                <KindOfMedia>01</KindOfMedia>
+            </Communication>
+            <FirstName>Wolf</FirstName>
+            <Name>Wulf</Name>
+            <PartyRole id="r0001">
+                <Role>02</Role>
+            </PartyRole>
+            <Profession>Tierhalter</Profession>
+            <Type>01</Type>
+        </Party>
 
-<payload:Formsheet_A>
-  
-  <Party id="p0001">
-    <Address id="a0001">      
-        <Country>DE</Country>
-        <City>Berlin</City>
-        <PostalCode>10365</PostalCode>
-        <Street>Wolfengasse</Street>
-        <StreetNumber>11</StreetNumber>
-    </Address>    
- 	<Communication id="c0001">
-        <Entry>020 4444 5555</Entry>
-        <IdentifierOfMedia>02</IdentifierOfMedia>
-        <KindOfMedia>01</KindOfMedia>
-      </Communication>          
-     <FirstName>Wolf</FirstName>
-     <Name>Wulf</Name>  
-      <PartyRole id="r0001">
-        <Role>02</Role>
-      </PartyRole>
-     <Profession>Tierhalter</Profession>      
-      <Type>01</Type>
-    </Party>
-  
-   <Party id="p0002">
-      <Address id="a0002">
-        <Country>AT</Country>
-        <City>Wien</City>
-        <PostalCode>1010</PostalCode>
-        <Street>Albertgasse</Street>
-        <StreetNumber>12</StreetNumber>
-      </Address>
-      <AsRepresentative id="ar00001">
-      	<KindOfRelationship>01</KindOfRelationship>
-        <Represented ref="p0003"/> <!-- ERRATUM: hier stand irrtümlich 'p0001' -->
-      </AsRepresentative>
-      <Communication id="c0002">
-        <Entry>01 4444 555</Entry>
-        <IdentifierOfMedia>02</IdentifierOfMedia>
-        <KindOfMedia>01</KindOfMedia>
-      </Communication>
-      <Communication id="c0003">
-        <Entry>albert@rechtsanwalt-advokat.at</Entry>
-        <IdentifierOfMedia>02</IdentifierOfMedia>
-        <KindOfMedia>03</KindOfMedia>
-      </Communication>     
-      <FirstName>Albert</FirstName>
-      <Identifier>R123456</Identifier>
-      <Name>Advokat</Name> 
-      <PartyRole id="r0002">
-        <Role>03</Role>
-      </PartyRole>
-     <Profession>Rechtsanwalt</Profession> 
-      <Title>03</Title>
-      <Type>01</Type>
-    </Party>
-    
-     <Party id="p0003">
-      <Address id="a0003">
-        <Country>AT</Country>
-        <City>Wien</City>        
-        <PostalCode>1010</PostalCode>
-        <Street>Mustergasse</Street>
-        <StreetNumber>1</StreetNumber>
-      </Address>
-      <Communication id="c0004">
-        <Entry>01 111 222 333</Entry>
-        <IdentifierOfMedia>02</IdentifierOfMedia>
-        <KindOfMedia>01</KindOfMedia>
-      </Communication>
-      <FirstName>Franz</FirstName>
-      <Name>Mustermann</Name>
-      <PartyRole id="r0003">
-        <Role>01</Role>
-      </PartyRole>
-     <Profession>Zoohändler</Profession>      
-      <Title>Dipl.Ing.</Title>
-      <Type>01</Type>
-    </Party> 
-  
-   <ConsumerContract>false</ConsumerContract>
+        <Party id="p0002">
+            <Address id="a0002">
+                <Country>AT</Country>
+                <City>Wien</City>
+                <PostalCode>1010</PostalCode>
+                <Street>Albertgasse</Street>
+                <StreetNumber>12</StreetNumber>
+            </Address>
+            <AsRepresentative id="ar00001">
+                <KindOfRelationship>01</KindOfRelationship>
+                <Represented ref="p0003"/> <!-- ERRATUM: hier stand irrtümlich 'p0001' -->
+            </AsRepresentative>
+            <Communication id="c0002">
+                <Entry>01 4444 555</Entry>
+                <IdentifierOfMedia>02</IdentifierOfMedia>
+                <KindOfMedia>01</KindOfMedia>
+            </Communication>
+            <Communication id="c0003">
+                <Entry>albert@rechtsanwalt-advokat.at</Entry>
+                <IdentifierOfMedia>02</IdentifierOfMedia>
+                <KindOfMedia>03</KindOfMedia>
+            </Communication>
+            <FirstName>Albert</FirstName>
+            <Identifier>R123456</Identifier>
+            <Name>Advokat</Name>
+            <PartyRole id="r0002">
+                <Role>03</Role>
+            </PartyRole>
+            <Profession>Rechtsanwalt</Profession>
+            <Title>03</Title>
+            <Type>01</Type>
+        </Party>
 
-    <CountryOfClaimant>17</CountryOfClaimant>
-    <CountryOfCourt>17</CountryOfCourt>
-    <CountryOfDefendant>03</CountryOfDefendant>
-    <KindOfPayment>03</KindOfPayment>
+        <Party id="p0003">
+            <Address id="a0003">
+                <Country>AT</Country>
+                <City>Wien</City>
+                <PostalCode>1010</PostalCode>
+                <Street>Mustergasse</Street>
+                <StreetNumber>1</StreetNumber>
+            </Address>
+            <Communication id="c0004">
+                <Entry>01 111 222 333</Entry>
+                <IdentifierOfMedia>02</IdentifierOfMedia>
+                <KindOfMedia>01</KindOfMedia>
+            </Communication>
+            <FirstName>Franz</FirstName>
+            <Name>Mustermann</Name>
+            <PartyRole id="r0003">
+                <Role>01</Role>
+            </PartyRole>
+            <Profession>Zoohändler</Profession>
+            <Title>Dipl.Ing.</Title>
+            <Type>01</Type>
+        </Party>
 
-  <AmountOfTotalClaim>50000.0</AmountOfTotalClaim>
-  <CurrencyOfTotalClaim>EUR</CurrencyOfTotalClaim>
-  
-   <ApplicationConfirmation id="ac0001">
-      <CityOfSignature>Wien</CityOfSignature>
-      <DateOfSignature>2010-03-10</DateOfSignature>
-    </ApplicationConfirmation> 
-    
-     <Claim id="cl0001">
-      <Amount>7000.0</Amount>
-      <BaseOfClaim>01</BaseOfClaim>
-      <Circumstance>30</Circumstance>
-      <DateFrom>2010-01-12</DateFrom>
-    </Claim>
-    <Claim id="cl0002">
-      <Amount>43000.0</Amount>
-      <BaseOfClaim>01</BaseOfClaim>
-      <Circumstance>30</Circumstance>
-      <DateFrom>2010-01-10</DateFrom>
-    </Claim>
+        <ConsumerContract>false</ConsumerContract>
 
-   <Cost id="co0001">
-      <Amount>1300.0</Amount>
-      <Currency>EUR</Currency>
-	  <Explanation>Rechtsanwaltskosten</Explanation>      
-      <KindOfCost>02</KindOfCost>      
-    </Cost>
-    <Cost id="co0002">
-      <KindOfCost>01</KindOfCost>
-    </Cost>
-  
-    <Evidence id="ev0001">     
-      <Date>2010-01-12</Date>
-      <Description>Re. Nr. 1870/10</Description>
-      <KindOfEvidence>01</KindOfEvidence>
-       <Claim ref="cl0001"/>
-    </Evidence>
-    <Evidence id="ev0002">
-      <Date>2010-01-10</Date>
-      <Description>Re. Nr. 1789/10</Description>
-      <KindOfEvidence>01</KindOfEvidence>
-      <Claim ref="cl0002"/>
-    </Evidence>
-  
-    <Interest id="in0001">
-      <AmountRelevantForCalculation>43000.0</AmountRelevantForCalculation>     
-      <DateFrom>2010-02-10</DateFrom>
-      <Ground>02</Ground>
-      <InterestRate>12.0</InterestRate>
-      <Period>A</Period>
-      <Claim ref="cl0001"/>
-    </Interest>
-    <Interest id="in0002">
-      <AmountRelevantForCalculation>7000.0</AmountRelevantForCalculation>     
-      <DateFrom>2010-02-12</DateFrom>
-      <Ground>02</Ground>
-      <InterestRate>12.0</InterestRate>
-      <Period>A</Period>
-       <Claim ref="cl0002"/>
-    </Interest>
-  
-   <Jurisdiction id="j0001">
-      <Reason>02</Reason>
-    </Jurisdiction>
-     
-    <payload:MeansOfCollectionAccount id="mo0002"> 
-      <AccountHolder>Dr. Max Mustermann</AccountHolder>
-      <BIC>AYMSAT31</BIC>
-      <IBAN>AT50390500000000987654</IBAN>      
-    </payload:MeansOfCollectionAccount>
-    <payload:MeansOfDepositAccount id="mo0001"> 
-      <AccountHolder>Dr. Albert Advokat</AccountHolder>
-      <AccountNumber>5666778</AccountNumber>
-      <BankIdentification>60000</BankIdentification>
-    </payload:MeansOfDepositAccount>
+        <CountryOfClaimant>17</CountryOfClaimant>
+        <CountryOfCourt>17</CountryOfCourt>
+        <CountryOfDefendant>03</CountryOfDefendant>
+        <KindOfPayment>03</KindOfPayment>
 
-    <RejectionOfTransfer id="re0001">
-      <CityOfSignature>Wien</CityOfSignature>
-      <DateOfSignature>2010-03-10</DateOfSignature>
-    </RejectionOfTransfer>
-    
-</payload:Formsheet_A>
+        <AmountOfTotalClaim>50000.0</AmountOfTotalClaim>
+        <CurrencyOfTotalClaim>EUR</CurrencyOfTotalClaim>
+
+        <ApplicationConfirmation id="ac0001">
+            <CityOfSignature>Wien</CityOfSignature>
+            <DateOfSignature>2010-03-10</DateOfSignature>
+        </ApplicationConfirmation>
+
+        <Claim id="cl0001">
+            <Amount>7000.0</Amount>
+            <BaseOfClaim>01</BaseOfClaim>
+            <Circumstance>30</Circumstance>
+            <DateFrom>2010-01-12</DateFrom>
+        </Claim>
+        <Claim id="cl0002">
+            <Amount>43000.0</Amount>
+            <BaseOfClaim>01</BaseOfClaim>
+            <Circumstance>30</Circumstance>
+            <DateFrom>2010-01-10</DateFrom>
+        </Claim>
+
+        <Cost id="co0001">
+            <Amount>1300.0</Amount>
+            <Currency>EUR</Currency>
+            <Explanation>Rechtsanwaltskosten</Explanation>
+            <KindOfCost>02</KindOfCost>
+        </Cost>
+        <Cost id="co0002">
+            <KindOfCost>01</KindOfCost>
+        </Cost>
+
+        <Evidence id="ev0001">
+            <Date>2010-01-12</Date>
+            <Description>Re. Nr. 1870/10</Description>
+            <KindOfEvidence>01</KindOfEvidence>
+            <Claim ref="cl0001"/>
+        </Evidence>
+        <Evidence id="ev0002">
+            <Date>2010-01-10</Date>
+            <Description>Re. Nr. 1789/10</Description>
+            <KindOfEvidence>01</KindOfEvidence>
+            <Claim ref="cl0002"/>
+        </Evidence>
+
+        <Interest id="in0001">
+            <AmountRelevantForCalculation>43000.0</AmountRelevantForCalculation>
+            <DateFrom>2010-02-10</DateFrom>
+            <Ground>02</Ground>
+            <InterestRate>12.0</InterestRate>
+            <Period>A</Period>
+            <Claim ref="cl0001"/>
+        </Interest>
+        <Interest id="in0002">
+            <AmountRelevantForCalculation>7000.0</AmountRelevantForCalculation>
+            <DateFrom>2010-02-12</DateFrom>
+            <Ground>02</Ground>
+            <InterestRate>12.0</InterestRate>
+            <Period>A</Period>
+            <Claim ref="cl0002"/>
+        </Interest>
+
+        <Jurisdiction id="j0001">
+            <Reason>02</Reason>
+        </Jurisdiction>
+
+        <payload:MeansOfCollectionAccount id="mo0002">
+            <AccountHolder>Dr. Max Mustermann</AccountHolder>
+            <BIC>AYMSAT31</BIC>
+            <IBAN>AT50390500000000987654</IBAN>
+        </payload:MeansOfCollectionAccount>
+        <payload:MeansOfDepositAccount id="mo0001">
+            <AccountHolder>Dr. Albert Advokat</AccountHolder>
+            <AccountNumber>5666778</AccountNumber>
+            <BankIdentification>60000</BankIdentification>
+        </payload:MeansOfDepositAccount>
+
+        <RejectionOfTransfer id="re0001">
+            <CityOfSignature>Wien</CityOfSignature>
+            <DateOfSignature>2010-03-10</DateOfSignature>
+        </RejectionOfTransfer>
+    </payload:Formsheet_A>
 </payload:NewFormA>

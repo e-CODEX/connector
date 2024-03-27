@@ -8,12 +8,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TrustListSourceConfigurationProperties {
-
     private Duration tlSync = Duration.ofDays(1);
-
     private List<TlSourceConfig> tlSources = new ArrayList<>();
-
     private List<LotlSourceConfig> lotlSources = new ArrayList<>();
 
     public List<TlSourceConfig> getTlSources() {
@@ -69,11 +67,11 @@ public class TrustListSourceConfigurationProperties {
     }
 
     public static class LotlSourceConfig {
-
-        private String lotlUrl = "https://ec.europa.eu/tools/lotl/eu-lotl.xml";
-        private String signingCertificatesAnnouncementUri = "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.C_.2019.276.01.0001.01.ENG";
         StoreConfigurationProperties signingCerts;
         boolean pivotSupport = true;
+        private String lotlUrl = "https://ec.europa.eu/tools/lotl/eu-lotl.xml";
+        private String signingCertificatesAnnouncementUri =
+                "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.C_.2019.276.01.0001.01.ENG";
 
         public String getLotlUrl() {
             return lotlUrl;
@@ -145,6 +143,4 @@ public class TrustListSourceConfigurationProperties {
             this.offline = offline;
         }
     }
-
-
 }

@@ -17,23 +17,24 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.UnsupportedEncodingException;
 
-@SpringBootTest(classes = {BasicDssConfiguration.class,
-        DSSTrustedListsManager.class,
-        ConnectorConverterAutoConfiguration.class,
-        DCKeyStoreService.class
-},
+
+@SpringBootTest(
+        classes = {BasicDssConfiguration.class,
+                DSSTrustedListsManager.class,
+                ConnectorConverterAutoConfiguration.class,
+                DCKeyStoreService.class
+        },
         properties = "connector.dss.tlCacheLocation=file:./target/tlcache/"
 
 )
-@ActiveProfiles({"seclib-test", SpringProfiles.TEST, "dss-tl-test" })
+@ActiveProfiles({"seclib-test", SpringProfiles.TEST, "dss-tl-test"})
 @Disabled("Test is failing in local build")
-public class TestDssConfig {
-
+class TestDssConfig {
     @Autowired
     TSPSource tspSource;
 
     @Test
-    public void testTspSource() throws UnsupportedEncodingException {
+    void testTspSource() throws UnsupportedEncodingException {
         final DigestAlgorithm digestAlgorithm = DigestAlgorithm.SHA256;
         final byte[] toDigest = "Hello world".getBytes("UTF-8");
         final byte[] digestValue = DSSUtils.digest(digestAlgorithm, toDigest);
@@ -41,5 +42,4 @@ public class TestDssConfig {
         TimestampBinary timeStampResponse = tspSource.getTimeStampResponse(digestAlgorithm, digestValue);
         AssertionsForClassTypes.assertThat(timeStampResponse.getBytes()).isNotNull();
     }
-
 }

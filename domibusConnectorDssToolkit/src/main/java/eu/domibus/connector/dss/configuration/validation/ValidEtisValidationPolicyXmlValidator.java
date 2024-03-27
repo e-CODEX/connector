@@ -15,8 +15,9 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ValidEtisValidationPolicyXmlValidator implements ConstraintValidator<ValidEtsiValidationPolicyXml, String> {
 
+public class ValidEtisValidationPolicyXmlValidator implements ConstraintValidator<ValidEtsiValidationPolicyXml,
+        String> {
     private static final Logger LOGGER = LogManager.getLogger(ValidEtisValidationPolicyXmlValidator.class);
 
     private final ApplicationContext applicationContext;
@@ -25,10 +26,9 @@ public class ValidEtisValidationPolicyXmlValidator implements ConstraintValidato
         this.applicationContext = context;
     }
 
-
     @Override
     public void initialize(ValidEtsiValidationPolicyXml constraintAnnotation) {
-//        ConstraintValidator.super.initialize(constraintAnnotation);
+        // ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
     @Override

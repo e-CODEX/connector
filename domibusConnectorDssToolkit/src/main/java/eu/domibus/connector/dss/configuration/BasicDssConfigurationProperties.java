@@ -14,25 +14,20 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @ConfigurationProperties(prefix = BasicDssConfigurationProperties.PREFIX)
 @Validated
 public class BasicDssConfigurationProperties {
-
     public static final String PREFIX = "connector.dss";
 
     @NestedConfigurationProperty
     private ProxyProperties httpsProxy;
-
     @NestedConfigurationProperty
     private ProxyProperties httpProxy;
-
     private Map<String, @Valid Tsp> timeStampServers = new HashMap<>();
-
     private Map<String, @Valid TrustListSourceConfigurationProperties> trustListSources = new HashMap<>();
-
     @NotNull
     private Duration tlCacheExpiration = Duration.ofDays(1);
-
     @NotNull
     private Path tlCacheLocation = Paths.get("./tlcache");
 
@@ -86,7 +81,6 @@ public class BasicDssConfigurationProperties {
 
     @Valid
     public static class Tsp {
-
         //@Pattern(regexp = "^(https|http):\\/\\/", message = "Only http or https urls are allowed")
         @NotBlank
         private String url;
@@ -109,5 +103,4 @@ public class BasicDssConfigurationProperties {
             this.policyOid = policyOid;
         }
     }
-
 }

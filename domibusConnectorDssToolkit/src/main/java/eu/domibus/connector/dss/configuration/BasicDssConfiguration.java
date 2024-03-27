@@ -1,26 +1,21 @@
 package eu.domibus.connector.dss.configuration;
 
 import eu.domibus.connector.tools.logging.LoggingMarker;
-
 import eu.europa.esig.dss.service.NonceSource;
 import eu.europa.esig.dss.service.SecureRandomNonceSource;
 import eu.europa.esig.dss.service.crl.OnlineCRLSource;
 import eu.europa.esig.dss.service.http.commons.CommonsDataLoader;
-import eu.europa.esig.dss.service.http.commons.FileCacheDataLoader;
 import eu.europa.esig.dss.service.http.commons.OCSPDataLoader;
 import eu.europa.esig.dss.service.http.commons.TimestampDataLoader;
 import eu.europa.esig.dss.service.http.proxy.ProxyConfig;
 import eu.europa.esig.dss.service.http.proxy.ProxyProperties;
 import eu.europa.esig.dss.service.ocsp.OnlineOCSPSource;
 import eu.europa.esig.dss.service.tsp.OnlineTSPSource;
-import eu.europa.esig.dss.spi.client.http.DSSFileLoader;
 import eu.europa.esig.dss.spi.client.http.DataLoader;
-import eu.europa.esig.dss.spi.client.http.IgnoreDataLoader;
 import eu.europa.esig.dss.spi.x509.tsp.CompositeTSPSource;
 import eu.europa.esig.dss.spi.x509.tsp.TSPSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,70 +26,87 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+
 @Configuration
 @EnableConfigurationProperties(BasicDssConfigurationProperties.class)
 public class BasicDssConfiguration {
-
-    private static final Logger LOGGER = LogManager.getLogger(BasicDssConfiguration.class);
-
     public static final String PROXY_CONFIG_BEAN_NAME = "domibusConnectorProxyConfig";
     public static final String DEFAULT_DATALOADER_BEAN_NAME = "defaultDataLoader";
     public static final String DEFAULT_OCSP_SOURCE_BEAN_NAME = "defaultOcspLoader";
     public static final String DEFAULT_CRL_SOURCE_BEAN_NAME = "defaultCrlLoader";
     public static final String DEFAULT_TIMESTAMPE_SOURCE_BEAN_NAME = "defaultCompositeTimestampSource";
+    private static final Logger LOGGER = LogManager.getLogger(BasicDssConfiguration.class);
 
     @Bean(name = PROXY_CONFIG_BEAN_NAME)
     public ProxyConfig domibusConnectorProxyConfig(
-          BasicDssConfigurationProperties basicDssConfigurationProperties
-    ) {
+            BasicDssConfigurationProperties basicDssConfigurationProperties) {
         ProxyConfig proxyConfig = new ProxyConfig();
-
-        //HTTPS Proxy
+        // HTTPS Proxy
         if (basicDssConfigurationProperties.getHttpsProxy() != null) {
             proxyConfig.setHttpsProperties(basicDssConfigurationProperties.getHttpsProxy());
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS https proxy config [{}] from {}.https-proxy.*", basicDssConfigurationProperties.getHttpsProxy(), BasicDssConfigurationProperties.PREFIX);
+            LOGGER.info(
+                    LoggingMarker.Log4jMarker.CONFIG,
+                    "Setting DSS https proxy config [{}] from {}.https-proxy.*",
+                    basicDssConfigurationProperties.getHttpsProxy(), BasicDssConfigurationProperties.PREFIX
+            );
         } else if (StringUtils.hasText(System.getProperty("https.proxyHost"))) {
             ProxyProperties httpsProxy = new ProxyProperties();
             httpsProxy.setHost(System.getProperty("https.proxyHost"));
             String port = System.getProperty("https.proxyPort");
             try {
                 httpsProxy.setPort(Integer.parseInt(port));
-                LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS https proxy config [{}] from SystemProperties", httpsProxy);
+                LOGGER.info(
+                        LoggingMarker.Log4jMarker.CONFIG,
+                        "Setting DSS https proxy config [{}] from SystemProperties",
+                        httpsProxy
+                );
                 proxyConfig.setHttpProperties(httpsProxy);
             } catch (NumberFormatException nfe) {
-                //do nothing..
+                // do nothing..
             }
-
         } else if (StringUtils.hasText(System.getenv("HTTPS_PROXY"))) {
             String envVariable = "HTTPS_PROXY";
-
             ProxyProperties proxyProperties = getProxyPropertiesFromSystemEnv(envVariable);
 
             if (proxyProperties != null) {
                 proxyConfig.setHttpsProperties(proxyProperties);
-                LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS https proxy config [{}] from Environment variable [{}]", proxyProperties, envVariable);
+                LOGGER.info(
+                        LoggingMarker.Log4jMarker.CONFIG,
+                        "Setting DSS https proxy config [{}] from Environment variable [{}]",
+                        proxyProperties, envVariable
+                );
             }
-
         } else {
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS https proxy to nothing. No proxy configured!");
+            LOGGER.info(
+                    LoggingMarker.Log4jMarker.CONFIG,
+                    "Setting DSS https proxy to nothing. No proxy configured!"
+            );
         }
 
-        //HTTP Proxy
+        // HTTP Proxy
         if (basicDssConfigurationProperties.getHttpProxy() != null) {
             proxyConfig.setHttpProperties(basicDssConfigurationProperties.getHttpProxy());
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS http proxy config [{}] from {}.http-proxy.*", basicDssConfigurationProperties.getHttpsProxy(), BasicDssConfigurationProperties.PREFIX);
+            LOGGER.info(
+                    LoggingMarker.Log4jMarker.CONFIG,
+                    "Setting DSS http proxy config [{}] from {}.http-proxy.*",
+                    basicDssConfigurationProperties.getHttpsProxy(),
+                    BasicDssConfigurationProperties.PREFIX
+            );
         } else if (StringUtils.hasText(System.getProperty("http.proxyHost"))) {
             ProxyProperties httpProxy = new ProxyProperties();
             httpProxy.setHost(System.getProperty("http.proxyHost"));
             String port = System.getProperty("http.proxyPort");
             try {
                 httpProxy.setPort(Integer.parseInt(port));
-                LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS http proxy config [{}] from SystemProperties", httpProxy);
+                LOGGER.info(
+                        LoggingMarker.Log4jMarker.CONFIG,
+                        "Setting DSS http proxy config [{}] from SystemProperties",
+                        httpProxy
+                );
                 proxyConfig.setHttpProperties(httpProxy);
             } catch (NumberFormatException nfe) {
-                //do nothing..
+                // do nothing..
             }
-
         } else if (StringUtils.hasText(System.getenv("HTTP_PROXY"))) {
             String envVariable = "HTTP_PROXY";
 
@@ -102,11 +114,18 @@ public class BasicDssConfiguration {
 
             if (proxyProperties != null) {
                 proxyConfig.setHttpProperties(proxyProperties);
-                LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS http proxy config [{}] from Environment variable [{}]", proxyProperties, envVariable);
+                LOGGER.info(
+                        LoggingMarker.Log4jMarker.CONFIG,
+                        "Setting DSS http proxy config [{}] from Environment variable [{}]",
+                        proxyProperties,
+                        envVariable
+                );
             }
-
         } else {
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting DSS http proxy to nothing. No proxy configured!");
+            LOGGER.info(
+                    LoggingMarker.Log4jMarker.CONFIG,
+                    "Setting DSS http proxy to nothing. No proxy configured!"
+            );
         }
 
         return proxyConfig;
@@ -127,7 +146,7 @@ public class BasicDssConfiguration {
             try {
                 proxyProperties.setPort(Integer.parseInt(proxyPort));
             } catch (NumberFormatException nfe) {
-                //do nothing..
+                // do nothing..
             }
             proxyProperties.setHost(proxyHost);
         }
@@ -167,16 +186,21 @@ public class BasicDssConfiguration {
     }
 
     @Bean(name = DEFAULT_TIMESTAMPE_SOURCE_BEAN_NAME)
-    CompositeTSPSource compositeTSPSource(ProxyConfig proxyConfig, NonceSource nonceSource, BasicDssConfigurationProperties basicDssConfigurationProperties) {
+    CompositeTSPSource compositeTSPSource(
+            ProxyConfig proxyConfig,
+            NonceSource nonceSource,
+            BasicDssConfigurationProperties basicDssConfigurationProperties) {
         TimestampDataLoader timestampDataLoader = new TimestampDataLoader();
         timestampDataLoader.setProxyConfig(proxyConfig);
 
-        Map<String, BasicDssConfigurationProperties.Tsp> timeStampServers = basicDssConfigurationProperties.getTimeStampServers();
+        Map<String, BasicDssConfigurationProperties.Tsp> timeStampServers =
+                basicDssConfigurationProperties.getTimeStampServers();
 
         Map<String, TSPSource> collect = timeStampServers
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(e -> e.getKey(),
+                .collect(Collectors.toMap(
+                        e -> e.getKey(),
                         entry -> {
                             String url = entry.getValue().getUrl();
                             String policyOid = entry.getValue().getPolicyOid();
@@ -191,14 +215,18 @@ public class BasicDssConfiguration {
                             } else {
                                 throw new IllegalArgumentException("Illegal tsp url!");
                             }
-                            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Adding TimeStampServer with key [{}] url [{}] and policyOid [{}] to TSP Sources", entry.getKey(), url, policyOid);
+                            LOGGER.info(
+                                    LoggingMarker.Log4jMarker.CONFIG,
+                                    "Adding TimeStampServer with key [{}] url [{}] and policyOid [{}] to TSP Sources",
+                                    entry.getKey(), url, policyOid
+                            );
                             return onlineTSPSource;
-                        }));
+                        }
+                ));
 
         CompositeTSPSource compositeTSPSource = new CompositeTSPSource();
         compositeTSPSource.setTspSources(collect);
 
         return compositeTSPSource;
     }
-
 }

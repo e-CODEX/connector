@@ -6,11 +6,10 @@ import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
 
 import javax.validation.constraints.NotNull;
 
-public class SignatureConfigurationProperties extends KeyAndKeyStoreConfigurationProperties {
 
+public class SignatureConfigurationProperties extends KeyAndKeyStoreConfigurationProperties {
     @NotNull
     EncryptionAlgorithm encryptionAlgorithm = EncryptionAlgorithm.RSA;
-
     @NotNull
     DigestAlgorithm digestAlgorithm = DigestAlgorithm.SHA256;
 

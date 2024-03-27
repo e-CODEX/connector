@@ -11,27 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(classes = {BasicDssConfiguration.class,
-        DSSTrustedListsManager.class,
-        ConverterAutoConfiguration.class,
-        ConnectorConverterAutoConfiguration.class,
-        DCKeyStoreService.class
-},
-    properties = "connector.dss.tlCacheLocation=file:./target/tlcache/"
+
+@SpringBootTest(
+        classes = {BasicDssConfiguration.class,
+                DSSTrustedListsManager.class,
+                ConverterAutoConfiguration.class,
+                ConnectorConverterAutoConfiguration.class,
+                DCKeyStoreService.class
+        },
+        properties = "connector.dss.tlCacheLocation=file:./target/tlcache/"
 
 )
-@ActiveProfiles({"seclib-test", SpringProfiles.TEST, "dss-tl-test" })
+@ActiveProfiles({"seclib-test", SpringProfiles.TEST, "dss-tl-test"})
 class DSSTrustedListsManagerTest {
-
-
     @Autowired
     DSSTrustedListsManager dssTrustedListsManager;
 
     @Test
-    public void testStartup() {
+    void testStartup() {
         Assertions.assertThat(dssTrustedListsManager.getAllSourceNames()).hasSize(2);
         Assertions.assertThat(dssTrustedListsManager.getCertificateSource("list1")).isPresent();
     }
-
-
 }

@@ -4,15 +4,13 @@ import eu.domibus.connector.common.annotations.MapNested;
 import eu.domibus.connector.dss.configuration.validation.ValidEtsiValidationPolicyXml;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationDescription;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+
 @MapNested
 public class SignatureValidationConfigurationProperties extends CertificateVerifierConfigurationProperties {
-
     @NotBlank
     @ValidEtsiValidationPolicyXml
     @ConfigurationLabel("Validation Constraints")
@@ -27,5 +25,4 @@ public class SignatureValidationConfigurationProperties extends CertificateVerif
     public void setValidationConstraintsXml(String validationConstraintsXml) {
         this.validationConstraintsXml = validationConstraintsXml;
     }
-
 }

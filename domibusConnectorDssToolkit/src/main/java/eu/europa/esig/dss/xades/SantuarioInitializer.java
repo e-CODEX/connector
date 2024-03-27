@@ -3,19 +3,19 @@ package eu.europa.esig.dss.xades;
 /**
  * DSS - Digital Signature Services
  * Copyright (C) 2015 European Commission, provided under the CEF programme
- *
+ * <p>
  * This file is part of the "DSS - Digital Signature Services" project.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -36,9 +36,10 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Customized Initialization of Santuario.
- *
+ * <p>
  * We don't use the secureValidation parameter because it ignores some signature
  * algorithms
  */
@@ -49,10 +50,11 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class SantuarioInitializer {
-
     private static final Logger LOG = LoggerFactory.getLogger(SantuarioInitializer.class);
 
-    /** Field alreadyInitialized */
+    /**
+     * Field alreadyInitialized
+     */
     private static boolean alreadyInitialized = false;
 
     /**
@@ -70,15 +72,12 @@ public class SantuarioInitializer {
 
     /**
      * Method init
-     *
      */
     public static synchronized void init() {
         if (isInitialized()) {
             return;
         }
-
         dynamicInit();
-
         alreadyInitialized = true;
     }
 
@@ -140,7 +139,7 @@ public class SantuarioInitializer {
     /**
      * Customized
      * org.apache.xml.security.utils.resolver.ResourceResolver.registerDefaultResolvers()
-     *
+     * <p>
      * Ignore references which point to a file (file://) or external http urls
      * Enforce ResolverFragment against XPath injections
      */
@@ -151,11 +150,10 @@ public class SantuarioInitializer {
             throw new IllegalArgumentException("Cannot register resolver", e);
         }
         try {
-            ResourceResolver.register(ResolverXPointer.class.getName() );
+            ResourceResolver.register(ResolverXPointer.class.getName());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new IllegalArgumentException("Cannot register resolver", e);
         }
     }
-
 }
 

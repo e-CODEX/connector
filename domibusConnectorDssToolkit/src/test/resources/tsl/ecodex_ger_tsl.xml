@@ -1,145 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tsl:TrustServiceStatusList xmlns:tsl="http://uri.etsi.org/02231/v2#" Id="TrustServiceStatusList-1" TSLTag="http://uri.etsi.org/02231/TSLTag">
-<!--
+<tsl:TrustServiceStatusList xmlns:tsl="http://uri.etsi.org/02231/v2#" Id="TrustServiceStatusList-1"
+                            TSLTag="http://uri.etsi.org/02231/TSLTag">
+    <!--
 
-*******************************************************************************
-	Application: TLEdit 1.4.2.10.11.17.16.50
-	API:         A2 TSL API v1.4.2 b20101117
-	Date:        30.11.10 15:14:11.527 MEZ [2010-11-30T14:14:11Z]
-*******************************************************************************
--->
-<tsl:SchemeInformation>
-<tsl:TSLVersionIdentifier>3</tsl:TSLVersionIdentifier>
-<tsl:TSLSequenceNumber>4</tsl:TSLSequenceNumber>
-<tsl:TSLType>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/TSLType/generic</tsl:TSLType>
-<tsl:SchemeOperatorName>
-<tsl:Name xml:lang="en">German e-CODEX Connector TSL</tsl:Name>
-<tsl:Name xml:lang="de">Deutsche e-CODEX Connector TSL</tsl:Name>
-</tsl:SchemeOperatorName>
-<tsl:SchemeOperatorAddress>
-<tsl:PostalAddresses>
-<tsl:PostalAddress xml:lang="en">
-<tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
-<tsl:Locality>Duesseldorf</tsl:Locality>
-<tsl:PostalCode>40476</tsl:PostalCode>
-<tsl:CountryName>DE</tsl:CountryName>
-</tsl:PostalAddress>
-<tsl:PostalAddress xml:lang="de">
-<tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
-<tsl:Locality>Duesseldorf</tsl:Locality>
-<tsl:PostalCode>40476</tsl:PostalCode>
-<tsl:CountryName>DE</tsl:CountryName>
-</tsl:PostalAddress>
-</tsl:PostalAddresses>
-<tsl:ElectronicAddress>
-<tsl:URI>http://www.e-codex.eu</tsl:URI>
-<tsl:URI>mailto:info@e-codex.eu</tsl:URI>
-</tsl:ElectronicAddress>
-</tsl:SchemeOperatorAddress>
-<tsl:SchemeName>
-<tsl:Name xml:lang="en">DE:Supervision/Accreditation Status List of certification services from Certification Service Providers, which are supervised/accredited by the referenced Member State for compliance with the relevant provisions laid down in Directive 1999/93/EC and its implementation in the referenced Member State's laws.</tsl:Name>
-<tsl:Name xml:lang="de">DE:Aufsichts- bzw. Akkreditierungsstatusliste der Zertifizierungsdienste von Zertifizierungsdiensteanbietern, die von der zuständigen Stelle des entsprechenden Mitgliedstaates im Hinblick auf die Einhaltung der entsprechenden Bestimmungen der Richtlinie 1999/93/EG beaufsichtigt werden bzw. akkreditiert sind.</tsl:Name>
-</tsl:SchemeName>
-<tsl:SchemeInformationURI>
-<tsl:URI xml:lang="en">http://www.nrca-ds.de/en/tsl_e.htm</tsl:URI>
-<tsl:URI xml:lang="de">http://www.nrca-ds.de/tsl.htm</tsl:URI>
-</tsl:SchemeInformationURI>
-<tsl:StatusDeterminationApproach>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/StatusDetn/appropriate</tsl:StatusDeterminationApproach>
-<tsl:SchemeTypeCommunityRules>
-<tsl:URI>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/schemerules/common</tsl:URI>
-<tsl:URI>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/schemerules/DE</tsl:URI>
-</tsl:SchemeTypeCommunityRules>
-<tsl:SchemeTerritory>DE</tsl:SchemeTerritory>
-<tsl:PolicyOrLegalNotice>
-<tsl:TSLLegalNotice xml:lang="en">The applicable legal framework for the present TSL implementation of the Trusted List of supervised/accredited Certification Service Providers for Germany is the Directive 1999/93/EC of the European Parliament and of the Council of 13 December 1999 on a Community framework for electronic signatures and its implementation in German laws.</tsl:TSLLegalNotice>
-<tsl:TSLLegalNotice xml:lang="de">Der geltende Rechtsrahmen für die vorliegende TSL-Umsetzung der vertrauenswürdigen Liste der beaufsichtigten bzw. akkreditierten Zertifizierungsdiensteanbieter für Deutschland ist die Richtlinie 1999/93/EG des Europäischen Parlaments und des Rates vom 13. Dezember 1999 über gemeinschaftliche Rahmenbedingungen für elektronische Signaturen und ihre Umsetzung in deutsches Recht.</tsl:TSLLegalNotice>
-</tsl:PolicyOrLegalNotice>
-<tsl:HistoricalInformationPeriod>65535</tsl:HistoricalInformationPeriod>
-<tsl:ListIssueDateTime>2014-01-01T15:00:00Z</tsl:ListIssueDateTime>
-<tsl:NextUpdate><tsl:dateTime>2018-01-01T13:59:59Z</tsl:dateTime></tsl:NextUpdate>
-</tsl:SchemeInformation>
-<tsl:TrustServiceProviderList>
-<tsl:TrustServiceProvider>
-<tsl:TSPInformation>
-<tsl:TSPName>
-<tsl:Name xml:lang="en">IT.NRW Test Certificate</tsl:Name>
-<tsl:Name xml:lang="de">IT.NRW Test Zertifikat</tsl:Name>
-</tsl:TSPName>
-<tsl:TSPAddress>
-<tsl:PostalAddresses>
-<tsl:PostalAddress xml:lang="en">
-<tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
-<tsl:Locality>Duesseldorf</tsl:Locality>
-<tsl:PostalCode>40476</tsl:PostalCode>
-<tsl:CountryName>DE</tsl:CountryName>
-</tsl:PostalAddress>
-<tsl:PostalAddress xml:lang="de">
-<tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
-<tsl:Locality>Duesseldorf</tsl:Locality>
-<tsl:PostalCode>40476</tsl:PostalCode>
-<tsl:CountryName>DE</tsl:CountryName>
-</tsl:PostalAddress>
-</tsl:PostalAddresses>
-<tsl:ElectronicAddress>
-<tsl:URI>http://www.e-codex.eu/</tsl:URI>
-</tsl:ElectronicAddress>
-</tsl:TSPAddress>
-<tsl:TSPInformationURI>
-<tsl:URI xml:lang="en">http://www.e-codex.eu/</tsl:URI>
-<tsl:URI xml:lang="de">http://www.e-codex.eu/</tsl:URI>
-</tsl:TSPInformationURI>
-</tsl:TSPInformation>
-<tsl:TSPServices>
-<tsl:TSPService>
-<tsl:ServiceInformation>
-<tsl:ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</tsl:ServiceTypeIdentifier>
-<tsl:ServiceName>
-<tsl:Name xml:lang="en">German Certificate</tsl:Name>
-<tsl:Name xml:lang="de">Deutsches Zertifikat</tsl:Name>
-</tsl:ServiceName>
-<tsl:ServiceDigitalIdentity>
-<tsl:DigitalId>
-<tsl:X509SubjectName>c=DE, st=NRW, l=Duesseldorf, o=Wishful Thinking, ou=Dreams and Landscapes, cn=Tom Tester</tsl:X509SubjectName></tsl:DigitalId>
-<tsl:DigitalId>
-<tsl:X509Certificate>
-MIIDpTCCAo2gAwIBAgIEZRtt3zANBgkqhkiG9w0BAQsFADCBgTELMAkGA1UEBhMCREUxDDAKBgNV
-BAgTA05SVzEUMBIGA1UEBxMLRHVlc3NlbGRvcmYxGTAXBgNVBAoTEFdpc2hmdWwgVGhpbmtpbmcx
-HjAcBgNVBAsTFURyZWFtcyBhbmQgTGFuZHNjYXBlczETMBEGA1UEAxMKVG9tIFRlc3RlcjAgFw0x
-NzExMTUwOTQzMjdaGA8yMTE0MTAxODA5NDMyN1owgYExCzAJBgNVBAYTAkRFMQwwCgYDVQQIEwNO
-UlcxFDASBgNVBAcTC0R1ZXNzZWxkb3JmMRkwFwYDVQQKExBXaXNoZnVsIFRoaW5raW5nMR4wHAYD
-VQQLExVEcmVhbXMgYW5kIExhbmRzY2FwZXMxEzARBgNVBAMTClRvbSBUZXN0ZXIwggEiMA0GCSqG
-SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDRFQfygdsePjVFfdSMziJuCny3dxAhPz/HPLfRPg8Unfio
-IO15tnyOMNJ2T7UPDZCwpY07sb3vd+G4XGpqpOQIz9Bqm6QHtm5O0OWDjZuA9ZPhpU83Eay74plx
-O7Mows7ChfhtTCt+gADravEMIofX3VuYfD4iC0ilhHOOPG4Bl2TJCrlgyBYR6RjRgvSksHDQsVTM
-Jo9JU8dhCPWimKCEsKUk3KOjjLi7rhhTGPkkElr4XyIoIhHU08L5Q+0S2pfsN9bbdjW3nkRUAGlH
-/zupEX1iGlm1PhRcK4G0/1imoUsGucKFQUZVtZJv1liAx+GVqTDYMQTA0eSnyLgd8zevAgMBAAGj
-ITAfMB0GA1UdDgQWBBQ0WSW7C3rD0JhJoNdD0tbk471D8zANBgkqhkiG9w0BAQsFAAOCAQEAfn4A
-OPJb6HDG7JF1uRfePqw2IuUpYeFhpdEcUgG0mpUKxoq1YP9Ui8tp3uXEeZgyPJuMtki9n68AKKi1
-aqQItSJsouG9lOSvj14Lr1G0cFKiWZi2e/u03co+UjrxoS2YQI+8iZlQFoUzXnrJu5dt4IcwSU63
-02XscS5b7kgY2GRdT26+637odx+xndURJ1SIXbM/BLELHWmHZoUnW+Tk1zl1086uVlywYItQcpwy
-yZGBn5+1l0uO4e4Z96js/CTOR0Yx3K9WM7SRZy1KSk8Gm3uvSM0YZytbVPmCLFgKUB3vjh6Hhszb
-iQyW1wFlZ2VSMuwrAOrLh3PrRhGzl+UgDA==
-</tsl:X509Certificate>
-</tsl:DigitalId>
-</tsl:ServiceDigitalIdentity>
-<tsl:ServiceStatus>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/Svcstatus/accredited</tsl:ServiceStatus>
-<tsl:StatusStartingTime>20014-01-01T22:00:00Z</tsl:StatusStartingTime>
-<tsl:ServiceInformationExtensions>
-<tsl:Extension Critical="true">
-<ecc:Qualifications xmlns:ecc="http://uri.etsi.org/TrstSvc/SvcInfoExt/eSigDir-1999-93-EC-TrustedList/#">
-<ecc:QualificationElement>
-<ecc:Qualifiers>
-<ecc:Qualifier uri="http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/SvcInfoExt/QCWithSSCD"></ecc:Qualifier>
-</ecc:Qualifiers>
-<ecc:CriteriaList assert="all">
-</ecc:CriteriaList>
-</ecc:QualificationElement>
-</ecc:Qualifications>
-</tsl:Extension>
-</tsl:ServiceInformationExtensions>
-</tsl:ServiceInformation>
-</tsl:TSPService>
-</tsl:TSPServices>
-</tsl:TrustServiceProvider>
-</tsl:TrustServiceProviderList>
+    *******************************************************************************
+        Application: TLEdit 1.4.2.10.11.17.16.50
+        API:         A2 TSL API v1.4.2 b20101117
+        Date:        30.11.10 15:14:11.527 MEZ [2010-11-30T14:14:11Z]
+    *******************************************************************************
+    -->
+    <tsl:SchemeInformation>
+        <tsl:TSLVersionIdentifier>3</tsl:TSLVersionIdentifier>
+        <tsl:TSLSequenceNumber>4</tsl:TSLSequenceNumber>
+        <tsl:TSLType>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/TSLType/generic</tsl:TSLType>
+        <tsl:SchemeOperatorName>
+            <tsl:Name xml:lang="en">German e-CODEX Connector TSL</tsl:Name>
+            <tsl:Name xml:lang="de">Deutsche e-CODEX Connector TSL</tsl:Name>
+        </tsl:SchemeOperatorName>
+        <tsl:SchemeOperatorAddress>
+            <tsl:PostalAddresses>
+                <tsl:PostalAddress xml:lang="en">
+                    <tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
+                    <tsl:Locality>Duesseldorf</tsl:Locality>
+                    <tsl:PostalCode>40476</tsl:PostalCode>
+                    <tsl:CountryName>DE</tsl:CountryName>
+                </tsl:PostalAddress>
+                <tsl:PostalAddress xml:lang="de">
+                    <tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
+                    <tsl:Locality>Duesseldorf</tsl:Locality>
+                    <tsl:PostalCode>40476</tsl:PostalCode>
+                    <tsl:CountryName>DE</tsl:CountryName>
+                </tsl:PostalAddress>
+            </tsl:PostalAddresses>
+            <tsl:ElectronicAddress>
+                <tsl:URI>http://www.e-codex.eu</tsl:URI>
+                <tsl:URI>mailto:info@e-codex.eu</tsl:URI>
+            </tsl:ElectronicAddress>
+        </tsl:SchemeOperatorAddress>
+        <tsl:SchemeName>
+            <tsl:Name xml:lang="en">DE:Supervision/Accreditation Status List of certification services from
+                Certification Service Providers, which are supervised/accredited by the referenced Member State for
+                compliance with the relevant provisions laid down in Directive 1999/93/EC and its implementation in the
+                referenced Member State's laws.
+            </tsl:Name>
+            <tsl:Name xml:lang="de">DE:Aufsichts- bzw. Akkreditierungsstatusliste der Zertifizierungsdienste von
+                Zertifizierungsdiensteanbietern, die von der zuständigen Stelle des entsprechenden Mitgliedstaates im
+                Hinblick auf die Einhaltung der entsprechenden Bestimmungen der Richtlinie 1999/93/EG beaufsichtigt
+                werden bzw. akkreditiert sind.
+            </tsl:Name>
+        </tsl:SchemeName>
+        <tsl:SchemeInformationURI>
+            <tsl:URI xml:lang="en">http://www.nrca-ds.de/en/tsl_e.htm</tsl:URI>
+            <tsl:URI xml:lang="de">http://www.nrca-ds.de/tsl.htm</tsl:URI>
+        </tsl:SchemeInformationURI>
+        <tsl:StatusDeterminationApproach>
+            http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/StatusDetn/appropriate
+        </tsl:StatusDeterminationApproach>
+        <tsl:SchemeTypeCommunityRules>
+            <tsl:URI>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/schemerules/common</tsl:URI>
+            <tsl:URI>http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/schemerules/DE</tsl:URI>
+        </tsl:SchemeTypeCommunityRules>
+        <tsl:SchemeTerritory>DE</tsl:SchemeTerritory>
+        <tsl:PolicyOrLegalNotice>
+            <tsl:TSLLegalNotice xml:lang="en">The applicable legal framework for the present TSL implementation of the
+                Trusted List of supervised/accredited Certification Service Providers for Germany is the Directive
+                1999/93/EC of the European Parliament and of the Council of 13 December 1999 on a Community framework
+                for electronic signatures and its implementation in German laws.
+            </tsl:TSLLegalNotice>
+            <tsl:TSLLegalNotice xml:lang="de">Der geltende Rechtsrahmen für die vorliegende TSL-Umsetzung der
+                vertrauenswürdigen Liste der beaufsichtigten bzw. akkreditierten Zertifizierungsdiensteanbieter für
+                Deutschland ist die Richtlinie 1999/93/EG des Europäischen Parlaments und des Rates vom 13. Dezember
+                1999 über gemeinschaftliche Rahmenbedingungen für elektronische Signaturen und ihre Umsetzung in
+                deutsches Recht.
+            </tsl:TSLLegalNotice>
+        </tsl:PolicyOrLegalNotice>
+        <tsl:HistoricalInformationPeriod>65535</tsl:HistoricalInformationPeriod>
+        <tsl:ListIssueDateTime>2014-01-01T15:00:00Z</tsl:ListIssueDateTime>
+        <tsl:NextUpdate>
+            <tsl:dateTime>2018-01-01T13:59:59Z</tsl:dateTime>
+        </tsl:NextUpdate>
+    </tsl:SchemeInformation>
+    <tsl:TrustServiceProviderList>
+        <tsl:TrustServiceProvider>
+            <tsl:TSPInformation>
+                <tsl:TSPName>
+                    <tsl:Name xml:lang="en">IT.NRW Test Certificate</tsl:Name>
+                    <tsl:Name xml:lang="de">IT.NRW Test Zertifikat</tsl:Name>
+                </tsl:TSPName>
+                <tsl:TSPAddress>
+                    <tsl:PostalAddresses>
+                        <tsl:PostalAddress xml:lang="en">
+                            <tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
+                            <tsl:Locality>Duesseldorf</tsl:Locality>
+                            <tsl:PostalCode>40476</tsl:PostalCode>
+                            <tsl:CountryName>DE</tsl:CountryName>
+                        </tsl:PostalAddress>
+                        <tsl:PostalAddress xml:lang="de">
+                            <tsl:StreetAddress>Mauerstr. 54</tsl:StreetAddress>
+                            <tsl:Locality>Duesseldorf</tsl:Locality>
+                            <tsl:PostalCode>40476</tsl:PostalCode>
+                            <tsl:CountryName>DE</tsl:CountryName>
+                        </tsl:PostalAddress>
+                    </tsl:PostalAddresses>
+                    <tsl:ElectronicAddress>
+                        <tsl:URI>http://www.e-codex.eu/</tsl:URI>
+                    </tsl:ElectronicAddress>
+                </tsl:TSPAddress>
+                <tsl:TSPInformationURI>
+                    <tsl:URI xml:lang="en">http://www.e-codex.eu/</tsl:URI>
+                    <tsl:URI xml:lang="de">http://www.e-codex.eu/</tsl:URI>
+                </tsl:TSPInformationURI>
+            </tsl:TSPInformation>
+            <tsl:TSPServices>
+                <tsl:TSPService>
+                    <tsl:ServiceInformation>
+                        <tsl:ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</tsl:ServiceTypeIdentifier>
+                        <tsl:ServiceName>
+                            <tsl:Name xml:lang="en">German Certificate</tsl:Name>
+                            <tsl:Name xml:lang="de">Deutsches Zertifikat</tsl:Name>
+                        </tsl:ServiceName>
+                        <tsl:ServiceDigitalIdentity>
+                            <tsl:DigitalId>
+                                <tsl:X509SubjectName>c=DE, st=NRW, l=Duesseldorf, o=Wishful Thinking, ou=Dreams and
+                                    Landscapes, cn=Tom Tester
+                                </tsl:X509SubjectName>
+                            </tsl:DigitalId>
+                            <tsl:DigitalId>
+                                <tsl:X509Certificate>
+                                    MIIDpTCCAo2gAwIBAgIEZRtt3zANBgkqhkiG9w0BAQsFADCBgTELMAkGA1UEBhMCREUxDDAKBgNV
+                                    BAgTA05SVzEUMBIGA1UEBxMLRHVlc3NlbGRvcmYxGTAXBgNVBAoTEFdpc2hmdWwgVGhpbmtpbmcx
+                                    HjAcBgNVBAsTFURyZWFtcyBhbmQgTGFuZHNjYXBlczETMBEGA1UEAxMKVG9tIFRlc3RlcjAgFw0x
+                                    NzExMTUwOTQzMjdaGA8yMTE0MTAxODA5NDMyN1owgYExCzAJBgNVBAYTAkRFMQwwCgYDVQQIEwNO
+                                    UlcxFDASBgNVBAcTC0R1ZXNzZWxkb3JmMRkwFwYDVQQKExBXaXNoZnVsIFRoaW5raW5nMR4wHAYD
+                                    VQQLExVEcmVhbXMgYW5kIExhbmRzY2FwZXMxEzARBgNVBAMTClRvbSBUZXN0ZXIwggEiMA0GCSqG
+                                    SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDRFQfygdsePjVFfdSMziJuCny3dxAhPz/HPLfRPg8Unfio
+                                    IO15tnyOMNJ2T7UPDZCwpY07sb3vd+G4XGpqpOQIz9Bqm6QHtm5O0OWDjZuA9ZPhpU83Eay74plx
+                                    O7Mows7ChfhtTCt+gADravEMIofX3VuYfD4iC0ilhHOOPG4Bl2TJCrlgyBYR6RjRgvSksHDQsVTM
+                                    Jo9JU8dhCPWimKCEsKUk3KOjjLi7rhhTGPkkElr4XyIoIhHU08L5Q+0S2pfsN9bbdjW3nkRUAGlH
+                                    /zupEX1iGlm1PhRcK4G0/1imoUsGucKFQUZVtZJv1liAx+GVqTDYMQTA0eSnyLgd8zevAgMBAAGj
+                                    ITAfMB0GA1UdDgQWBBQ0WSW7C3rD0JhJoNdD0tbk471D8zANBgkqhkiG9w0BAQsFAAOCAQEAfn4A
+                                    OPJb6HDG7JF1uRfePqw2IuUpYeFhpdEcUgG0mpUKxoq1YP9Ui8tp3uXEeZgyPJuMtki9n68AKKi1
+                                    aqQItSJsouG9lOSvj14Lr1G0cFKiWZi2e/u03co+UjrxoS2YQI+8iZlQFoUzXnrJu5dt4IcwSU63
+                                    02XscS5b7kgY2GRdT26+637odx+xndURJ1SIXbM/BLELHWmHZoUnW+Tk1zl1086uVlywYItQcpwy
+                                    yZGBn5+1l0uO4e4Z96js/CTOR0Yx3K9WM7SRZy1KSk8Gm3uvSM0YZytbVPmCLFgKUB3vjh6Hhszb
+                                    iQyW1wFlZ2VSMuwrAOrLh3PrRhGzl+UgDA==
+                                </tsl:X509Certificate>
+                            </tsl:DigitalId>
+                        </tsl:ServiceDigitalIdentity>
+                        <tsl:ServiceStatus>
+                            http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/Svcstatus/accredited
+                        </tsl:ServiceStatus>
+                        <tsl:StatusStartingTime>20014-01-01T22:00:00Z</tsl:StatusStartingTime>
+                        <tsl:ServiceInformationExtensions>
+                            <tsl:Extension Critical="true">
+                                <ecc:Qualifications
+                                        xmlns:ecc="http://uri.etsi.org/TrstSvc/SvcInfoExt/eSigDir-1999-93-EC-TrustedList/#">
+                                    <ecc:QualificationElement>
+                                        <ecc:Qualifiers>
+                                            <ecc:Qualifier
+                                                    uri="http://uri.etsi.org/TrstSvc/eSigDir-1999-93-EC-TrustedList/SvcInfoExt/QCWithSSCD"></ecc:Qualifier>
+                                        </ecc:Qualifiers>
+                                        <ecc:CriteriaList assert="all">
+                                        </ecc:CriteriaList>
+                                    </ecc:QualificationElement>
+                                </ecc:Qualifications>
+                            </tsl:Extension>
+                        </tsl:ServiceInformationExtensions>
+                    </tsl:ServiceInformation>
+                </tsl:TSPService>
+            </tsl:TSPServices>
+        </tsl:TrustServiceProvider>
+    </tsl:TrustServiceProviderList>
 </tsl:TrustServiceStatusList>

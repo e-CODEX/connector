@@ -6,19 +6,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.validation.constraints.NotNull;
 
+
 @Component(EvidencesTimeoutConfigurationProperties.BEAN_NAME)
-@ConfigurationProperties(prefix="connector.controller.evidence")
+@ConfigurationProperties(prefix = "connector.controller.evidence")
 @Validated
 @PropertySource("classpath:/eu/domibus/connector/controller/spring/default-connector.properties")
 @Data
 public class EvidencesTimeoutConfigurationProperties {
-
     public static final String BEAN_NAME = "evidencesTimeoutConfigurationProperties";
-
     /**
      * This property configures if timeouts for messages
      * should be checked!
@@ -26,13 +24,13 @@ public class EvidencesTimeoutConfigurationProperties {
     private boolean timeoutActive = true;
 
     /**
-     * This property defines the how often the timeouts for the
+     * This property defines how often the timeouts for the
      * evidences should be checked
      * the default value is 1 minute (60000ms)
      */
     @NotNull
-    private DomibusConnectorDuration checkTimeout; //TODO put this into a global configuration, since the timer job
-    //configuration should be globally handled!
+    private DomibusConnectorDuration checkTimeout; // TODO put this into a global configuration, since the timer job
+    // configuration should be globally handled!
 
     /**
      * This property defines the timeout how long the connector should
@@ -95,10 +93,8 @@ public class EvidencesTimeoutConfigurationProperties {
      * successfully submitted to the gateway
      * The default value is 24 hours
      * 0 disables the timeoutProcessor
-     * If the timeout exceeds the according warnTmeoutProcessor is started
+     * If the timeout exceeds the according warnTimeoutProcessor is started
      */
     @NotNull
     private DomibusConnectorDuration retrievalWarnTimeout;
-
-
 }

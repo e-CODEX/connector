@@ -15,14 +15,11 @@ import java.util.UUID;
 
 /**
  * This processing step generates a EBMS id for the message
- *  -) the EBMSID is only created if the EBMSID of the by the backend provided message is empty
- *
+ * -) the EBMSID is only created if the EBMSID of the by the backend provided message is empty
  */
 @Component
 public class GenerateEbmsIdStep implements MessageProcessStep {
-
     private static final Logger LOGGER = LogManager.getLogger(GenerateEbmsIdStep.class);
-
     private final ConfigurationPropertyManagerService configurationPropertyLoaderService;
 
     public GenerateEbmsIdStep(ConfigurationPropertyManagerService configurationPropertyLoaderService) {
@@ -32,15 +29,19 @@ public class GenerateEbmsIdStep implements MessageProcessStep {
     @Override
     @MDC(name = LoggingMDCPropertyNames.MDC_DC_STEP_PROCESSOR_PROPERTY_NAME, value = "GenerateEbmsIdStep")
     public boolean executeStep(DomibusConnectorMessage domibusConnectorMessage) {
-        ConnectorMessageProcessingProperties connectorMessageProcessingProperties = configurationPropertyLoaderService.loadConfiguration(domibusConnectorMessage.getMessageLaneId(), ConnectorMessageProcessingProperties.class);
+        ConnectorMessageProcessingProperties connectorMessageProcessingProperties = configurationPropertyLoaderService
+                .loadConfiguration(
+                        domibusConnectorMessage.getMessageLaneId(), ConnectorMessageProcessingProperties.class
+                );
         if (connectorMessageProcessingProperties.isEbmsIdGeneratorEnabled()) {
             LOGGER.debug("Setting EBMS id within connector is enabled");
             if (StringUtils.isEmpty(domibusConnectorMessage.getMessageDetails().getEbmsMessageId())) {
-                String ebmsId = UUID.randomUUID().toString() + "@" + connectorMessageProcessingProperties.getEbmsIdSuffix();
+                String ebmsId = UUID.randomUUID() + "@" + connectorMessageProcessingProperties
+                        .getEbmsIdSuffix();
                 domibusConnectorMessage.getMessageDetails().setEbmsMessageId(ebmsId);
                 LOGGER.info("Setting EBMS id to [{}]", ebmsId);
             }
         }
-        return  true;
+        return true;
     }
 }

@@ -1,11 +1,8 @@
 package eu.domibus.connector.controller.queues;
 
-import eu.domibus.connector.controller.queues.producer.ToLinkQueue;
 import eu.domibus.connector.controller.service.HasManageableDlq;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import lombok.Getter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.jms.core.BrowserCallback;
 import org.springframework.jms.core.JmsTemplate;
 
@@ -18,9 +15,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 public class QueueHelper implements HasManageableDlq {
-
-    private static final Logger LOGGER = LogManager.getLogger(ToLinkQueue.class);
-
     @Getter
     private final Queue destination;
     @Getter
@@ -60,7 +54,8 @@ public class QueueHelper implements HasManageableDlq {
         });
     }
 
-    // TODO this is a replacement for the method below, this method does not depend on a destination. It can restore any dlq message to the queue where it failed processing.
+    // TODO this is a replacement for the method below, this method does not depend on a destination.
+    //  It can restore any dlq message to the queue where it failed processing.
     private void moveAnyDlqMessageBackToItsOrigQueue(Message msg) {
         try {
             final Message message = jmsTemplate.receiveSelected(msg.getJMSDestination(), "JMSMessageID = '" + msg.getJMSMessageID() + "'");
@@ -70,12 +65,14 @@ public class QueueHelper implements HasManageableDlq {
         }
     }
 
-    // TODO this is not working, throws:
-//      XA resource 'jmsConnectionFactory': commit for XID 'bla.bla' raised -4: the supplied XID is invalid for this XA resource
+    // TODO this is not working, throws: XA resource 'jmsConnectionFactory': commit for XID 'bla.bla' raised -4:
+    //  the supplied XID is invalid for this XA resource
     @Override
     public void moveMsgFromDlqToQueue(Message msg) {
         try {
-            final DomibusConnectorMessage c = (DomibusConnectorMessage) jmsTemplate.receiveSelectedAndConvert(msg.getJMSDestination(), "JMSMessageID = '" + msg.getJMSMessageID() + "'");
+            final DomibusConnectorMessage c = (DomibusConnectorMessage) jmsTemplate.receiveSelectedAndConvert(
+                    msg.getJMSDestination(), "JMSMessageID = '" + msg.getJMSMessageID() + "'"
+            );
             putOnQueue(c);
         } catch (JMSException e) {
             e.printStackTrace();
@@ -85,10 +82,9 @@ public class QueueHelper implements HasManageableDlq {
     @Override
     public void deleteMsg(Message msg) {
         try {
-            final Message m =
-                    jmsTemplate.receiveSelected(
-                            msg.getJMSDestination(),
-                            "JMSMessageID = '" + msg.getJMSMessageID() + "'");
+            final Message m = jmsTemplate.receiveSelected(
+                            msg.getJMSDestination(), "JMSMessageID = '" + msg.getJMSMessageID() + "'"
+            );
 
             if (m != null) {
                 m.acknowledge();

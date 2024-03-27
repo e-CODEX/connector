@@ -5,18 +5,14 @@ import eu.domibus.connector.lib.logging.MDC;
 import eu.domibus.connector.persistence.service.DCMessagePersistenceService;
 import eu.domibus.connector.tools.LoggingMDCPropertyNames;
 import eu.domibus.connector.tools.logging.LoggingMarker;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.logging.LogManager;
 
 @Component
 public class CreateNewBusinessMessageInDBStep implements MessageProcessStep {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateNewBusinessMessageInDBStep.class);
-
     private final DCMessagePersistenceService messagePersistenceService;
 
     public CreateNewBusinessMessageInDBStep(DCMessagePersistenceService messagePersistenceService) {
@@ -30,5 +26,4 @@ public class CreateNewBusinessMessageInDBStep implements MessageProcessStep {
         LOGGER.debug(LoggingMarker.BUSINESS_LOG, "Successfully created (uncommitted) new business message in database");
         return true;
     }
-
 }

@@ -1,4 +1,3 @@
-
 package eu.domibus.connector.controller.spring;
 
 
@@ -9,8 +8,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+
 /**
  * Configures Controller Context
+ *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 @Configuration
@@ -19,5 +20,4 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties(ConnectorConfigurationProperties.class)
 @PropertySource("classpath:/eu/domibus/connector/controller/spring/default-connector.properties")
 public class ControllerContext {
-
 }

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+
 /**
  * Does some validation
  * if the Action of this evidence message
@@ -22,14 +23,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ValidateMessageConfirmationStep implements MessageProcessStep {
-
     private static final Logger LOGGER = LogManager.getLogger(ValidateMessageConfirmationStep.class);
 
     private final ConfirmationCreatorService confirmationCreatorService;
     private final ConfigurationPropertyManagerService configurationPropertyLoaderService;
 
-    public ValidateMessageConfirmationStep(ConfirmationCreatorService confirmationCreatorService,
-                                           ConfigurationPropertyManagerService configurationPropertyLoaderService) {
+    public ValidateMessageConfirmationStep(
+            ConfirmationCreatorService confirmationCreatorService,
+            ConfigurationPropertyManagerService configurationPropertyLoaderService) {
         this.confirmationCreatorService = confirmationCreatorService;
         this.configurationPropertyLoaderService = configurationPropertyLoaderService;
     }
@@ -49,16 +50,25 @@ public class ValidateMessageConfirmationStep implements MessageProcessStep {
 
     private void validateActionService(DomibusConnectorMessage domibusConnectorMessage) {
         EvidenceActionServiceConfigurationProperties evidenceActionServiceConfigurationProperties =
-                configurationPropertyLoaderService.loadConfiguration(domibusConnectorMessage.getMessageLaneId(), EvidenceActionServiceConfigurationProperties.class);
+                configurationPropertyLoaderService.loadConfiguration(
+                        domibusConnectorMessage.getMessageLaneId(),
+                        EvidenceActionServiceConfigurationProperties.class
+                );
         boolean enforcing = evidenceActionServiceConfigurationProperties.isEnforceServiceActionNames();
 
-        DomibusConnectorMessageConfirmation confirmation = domibusConnectorMessage.getTransportedMessageConfirmations().get(0);
+        DomibusConnectorMessageConfirmation confirmation =
+                domibusConnectorMessage.getTransportedMessageConfirmations().get(0);
         DomibusConnectorEvidenceType evidenceType = confirmation.getEvidenceType();
         DomibusConnectorAction requiredEvidenceAction = confirmationCreatorService.createEvidenceAction(evidenceType);
 
         DomibusConnectorAction action = domibusConnectorMessage.getMessageDetails().getAction();
         if (!requiredEvidenceAction.equals(action)) {
-            String error = String.format("Enforcing the AS4 action is [%s] and the action [%s] is illegal for this type [%s] of evidence", enforcing, action, evidenceType);
+            String error = String.format(
+                    "Enforcing the AS4 action is [%s] and the action [%s] is illegal for this type [%s] of evidence",
+                    enforcing,
+                    action,
+                    evidenceType
+            );
             if (enforcing) {
                 throwError(domibusConnectorMessage, error);
             } else {
@@ -79,5 +89,4 @@ public class ValidateMessageConfirmationStep implements MessageProcessStep {
     private void throwError(DomibusConnectorMessage msg, String text) {
         throw new DomibusConnectorMessageException(msg, ValidateMessageConfirmationStep.class, text);
     }
-
 }

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><TrustOkToken xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<?xml version="1.0" encoding="UTF-8"?>
+<TrustOkToken xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
     <Issuer>
         <ServiceProvider>BRZ</ServiceProvider>
         <Country>AT</Country>
@@ -25,8 +26,71 @@
         </TechnicalResult>
         <LegalResult>
             <TrustLevel>SUCCESSFUL</TrustLevel>
-            <Disclaimer>e-CODEX approves the validity of the document. It is attested that it fulfils the requirements to be legally valid in the sending country.</Disclaimer>
+            <Disclaimer>e-CODEX approves the validity of the document. It is attested that it fulfils the requirements
+                to be legally valid in the sending country.
+            </Disclaimer>
         </LegalResult>
         <OriginalValidationReport/>
     </Validation>
-<ds:Signature Id="id-2f5dce460fd4ba5d3b5ab8476b91bc69"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference Id="r-id-1" URI=""><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"><ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath></ds:Transform><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>pGr+ILbgg5H57RzY9CBlYw3kPxs=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xades-id-2f5dce460fd4ba5d3b5ab8476b91bc69"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>rpKC8hZs7oiC/kMYXIPxxsCFWMM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="value-id-2f5dce460fd4ba5d3b5ab8476b91bc69">YKsDetqN7TW9eRDEfgBVC5u+PXRQVw8dbAJ+6kBm1NqzdQg/9WPasIRoLISB85jNRDt1EXtmzX453pww0VZEih1iMocMzUmAQEcVBM+0Zo9panbHUOcduroCgad9Q0AvIwqJ+Xrx9VCoSIkJOxIVSaWjFevlSzzF0jLBSfxInv+HujZhC40XsVi4brTq3ge3yJT+CW3eOYVvJB40lfxa6PSWON4ih6XXWqwpaGK9I1eSQ5j6yaBiP8t7+fH1fICB0PDT9nyWsGYYyXXz+Zb7bvGF66BsWDmJxJjAvf9azANWffCZCwRDEt0jUUgDj3Kj6XbAkJuuNOaXox+KXUNbIg==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIICrDCCAZSgAwIBAgIEXoxXqjANBgkqhkiG9w0BAQsFADAXMRUwEwYDVQQDDAxub25fZXhpc3RhbnQwIBcNMjAwNDA3MTAzNjI2WhgPMzAxMTA0MDcxMDM2MjZaMBcxFTATBgNVBAMMDG5vbl9leGlzdGFudDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKv8cOayZNl7mCMARXYE9sG7ZB0znf4F7lpGHYOQ2yUQpnzz/A8xqPo/rH+ScLVdBrqgyaIVnogngfC2AQba5LUIixkwU+7d7at9yaA5w8C7l8PTSFKoTCK+1MlNh7MHwlunTip+1QBQfa0AyPen02MuR4r7wlEIHLod1Zjf+70GJTz2t5mAsNX/5U/HUuQcYoC8YdiMzVGum/huZUefLIhOFEwfQRGcZkZnmqoJFZpaIsK+jF8kWkKgAROxRy1OvbK1GiWmn95+kD0ra/xsmxHJ+Qs0K2NH5DFGkqivC70ym3OkLGJxyfEEJ4/LDg1nYwUrVm2SJBTJmLMwwHYHCtkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAIb5TJUMIi7aTIDN8/p8k2m4XJD+iYCBvXcMfWIxKOihHhi/R5NlssxoBnP3m7Lr9iiRk017JNl+r3OgogobkfTDvkblbJMppQVGPUhxRzJ6jiTIHKQFWwY9rcwbsYBMOnLllzw0U0UqXD48vFw3PQ9gFD47aVYNShxZeMmRILnbGo4pJeT5QZJUuH010R/fscBen42kporYYRtwODYWxF/V8QTvtLvldT7AMOn4UKm4XHSDqfzCRh0H12pneijSVbQE1AviRrVP/yRaMqOTCIEO5ooKyFkAfj6w9OfzYrwEaqyWbCFtCaGqaqOBUaTWuEQxO2jjHfZm/lc7f2l80vQ==</ds:X509Certificate></ds:X509Data></ds:KeyInfo><ds:Object><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="#id-2f5dce460fd4ba5d3b5ab8476b91bc69"><xades:SignedProperties Id="xades-id-2f5dce460fd4ba5d3b5ab8476b91bc69"><xades:SignedSignatureProperties><xades:SigningTime>2020-04-07T10:47:26Z</xades:SigningTime><xades:SigningCertificateV2><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><ds:DigestValue>yTC3HEXDK2tERNZ139nMM8bSnQT+L0fM2XpAVVLqgRIRFL0QjbmbI/v1p3UMoLbDZmdNiW7squ5VSJnHeit91Q==</ds:DigestValue></xades:CertDigest><xades:IssuerSerialV2>MCMwG6QZMBcxFTATBgNVBAMMDG5vbl9leGlzdGFudAIEXoxXqg==</xades:IssuerSerialV2></xades:Cert></xades:SigningCertificateV2></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#r-id-1"><xades:MimeType>text/xml</xades:MimeType></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></TrustOkToken>
+    <ds:Signature Id="id-2f5dce460fd4ba5d3b5ab8476b91bc69">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <ds:Reference Id="r-id-1" URI="">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+                        <ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath>
+                    </ds:Transform>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>pGr+ILbgg5H57RzY9CBlYw3kPxs=</ds:DigestValue>
+            </ds:Reference>
+            <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
+                          URI="#xades-id-2f5dce460fd4ba5d3b5ab8476b91bc69">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>rpKC8hZs7oiC/kMYXIPxxsCFWMM=</ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue Id="value-id-2f5dce460fd4ba5d3b5ab8476b91bc69">
+            YKsDetqN7TW9eRDEfgBVC5u+PXRQVw8dbAJ+6kBm1NqzdQg/9WPasIRoLISB85jNRDt1EXtmzX453pww0VZEih1iMocMzUmAQEcVBM+0Zo9panbHUOcduroCgad9Q0AvIwqJ+Xrx9VCoSIkJOxIVSaWjFevlSzzF0jLBSfxInv+HujZhC40XsVi4brTq3ge3yJT+CW3eOYVvJB40lfxa6PSWON4ih6XXWqwpaGK9I1eSQ5j6yaBiP8t7+fH1fICB0PDT9nyWsGYYyXXz+Zb7bvGF66BsWDmJxJjAvf9azANWffCZCwRDEt0jUUgDj3Kj6XbAkJuuNOaXox+KXUNbIg==
+        </ds:SignatureValue>
+        <ds:KeyInfo>
+            <ds:X509Data>
+                <ds:X509Certificate>
+                    MIICrDCCAZSgAwIBAgIEXoxXqjANBgkqhkiG9w0BAQsFADAXMRUwEwYDVQQDDAxub25fZXhpc3RhbnQwIBcNMjAwNDA3MTAzNjI2WhgPMzAxMTA0MDcxMDM2MjZaMBcxFTATBgNVBAMMDG5vbl9leGlzdGFudDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKv8cOayZNl7mCMARXYE9sG7ZB0znf4F7lpGHYOQ2yUQpnzz/A8xqPo/rH+ScLVdBrqgyaIVnogngfC2AQba5LUIixkwU+7d7at9yaA5w8C7l8PTSFKoTCK+1MlNh7MHwlunTip+1QBQfa0AyPen02MuR4r7wlEIHLod1Zjf+70GJTz2t5mAsNX/5U/HUuQcYoC8YdiMzVGum/huZUefLIhOFEwfQRGcZkZnmqoJFZpaIsK+jF8kWkKgAROxRy1OvbK1GiWmn95+kD0ra/xsmxHJ+Qs0K2NH5DFGkqivC70ym3OkLGJxyfEEJ4/LDg1nYwUrVm2SJBTJmLMwwHYHCtkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAIb5TJUMIi7aTIDN8/p8k2m4XJD+iYCBvXcMfWIxKOihHhi/R5NlssxoBnP3m7Lr9iiRk017JNl+r3OgogobkfTDvkblbJMppQVGPUhxRzJ6jiTIHKQFWwY9rcwbsYBMOnLllzw0U0UqXD48vFw3PQ9gFD47aVYNShxZeMmRILnbGo4pJeT5QZJUuH010R/fscBen42kporYYRtwODYWxF/V8QTvtLvldT7AMOn4UKm4XHSDqfzCRh0H12pneijSVbQE1AviRrVP/yRaMqOTCIEO5ooKyFkAfj6w9OfzYrwEaqyWbCFtCaGqaqOBUaTWuEQxO2jjHfZm/lc7f2l80vQ==
+                </ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+        <ds:Object>
+            <xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+                                        Target="#id-2f5dce460fd4ba5d3b5ab8476b91bc69">
+                <xades:SignedProperties Id="xades-id-2f5dce460fd4ba5d3b5ab8476b91bc69">
+                    <xades:SignedSignatureProperties>
+                        <xades:SigningTime>2020-04-07T10:47:26Z</xades:SigningTime>
+                        <xades:SigningCertificateV2>
+                            <xades:Cert>
+                                <xades:CertDigest>
+                                    <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+                                    <ds:DigestValue>
+                                        yTC3HEXDK2tERNZ139nMM8bSnQT+L0fM2XpAVVLqgRIRFL0QjbmbI/v1p3UMoLbDZmdNiW7squ5VSJnHeit91Q==
+                                    </ds:DigestValue>
+                                </xades:CertDigest>
+                                <xades:IssuerSerialV2>MCMwG6QZMBcxFTATBgNVBAMMDG5vbl9leGlzdGFudAIEXoxXqg==
+                                </xades:IssuerSerialV2>
+                            </xades:Cert>
+                        </xades:SigningCertificateV2>
+                    </xades:SignedSignatureProperties>
+                    <xades:SignedDataObjectProperties>
+                        <xades:DataObjectFormat ObjectReference="#r-id-1">
+                            <xades:MimeType>text/xml</xades:MimeType>
+                        </xades:DataObjectFormat>
+                    </xades:SignedDataObjectProperties>
+                </xades:SignedProperties>
+            </xades:QualifyingProperties>
+        </ds:Object>
+    </ds:Signature>
+</TrustOkToken>

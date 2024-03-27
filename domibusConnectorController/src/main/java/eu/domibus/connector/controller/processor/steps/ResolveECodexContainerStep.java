@@ -9,11 +9,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class ResolveECodexContainerStep implements MessageProcessStep {
-
     private static final Logger LOGGER = LogManager.getLogger(ResolveECodexContainerStep.class);
-
     private final DomibusConnectorSecurityToolkit securityToolkit;
 
     public ResolveECodexContainerStep(DomibusConnectorSecurityToolkit securityToolkit) {
@@ -27,5 +26,4 @@ public class ResolveECodexContainerStep implements MessageProcessStep {
         LOGGER.info(LoggingMarker.Log4jMarker.BUSINESS_LOG, "Successfully resolved eCodexContainer");
         return true;
     }
-
 }

@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+
 @Configuration
 @PropertySource("classpath:connector-default-quartz.properties")
 public class QuartzConfiguration {
-
     @Autowired
     ConnectorConfigurationProperties connectorConfigurationProperties;
 
@@ -26,7 +26,4 @@ public class QuartzConfiguration {
             return connectorConfigurationProperties.getInstanceName();
         }
     }
-
-
-
 }

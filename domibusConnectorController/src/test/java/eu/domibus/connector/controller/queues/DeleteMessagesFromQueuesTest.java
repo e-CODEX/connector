@@ -35,84 +35,48 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {DeleteMessagesFromQueuesTest.MyTestContext.class}, properties = {"spring.liquibase.enabled=false"})
+
+@SpringBootTest(
+        classes = {DeleteMessagesFromQueuesTest.MyTestContext.class}, properties = {"spring.liquibase.enabled=false"}
+)
 @ActiveProfiles({"test", "jms-test"})
 @DirtiesContext
 @Disabled // does not run on CI
-public class DeleteMessagesFromQueuesTest {
-
-    @SpringBootApplication
-    public static class MyTestContext {
-        @Bean("TestQueue1")
-        public Queue createTestQueue1() {
-            return new ActiveMQQueue("q1");
-        }
-
-        @Bean("TestDlq1")
-        public Queue createTestDlq1() {
-            return new ActiveMQQueue("dlq1");
-        }
-    }
-
-
-    public List<Message> receiveAllFromQueue(Destination destination) {
-        return nonXaJmsTemplate.execute(session -> {
-            try (final MessageConsumer consumer = session.createConsumer(destination)) {
-                List<Message> messages = new ArrayList<>();
-                Message message;
-                while ((message = consumer.receiveNoWait()) != null) {
-                    messages.add(message);
-                }
-                return messages;
-            }
-        }, true);
-    }
-
+class DeleteMessagesFromQueuesTest {
     @Autowired
     @Qualifier("TestQueue1")
     Queue q1;
-
     @Autowired
     @Qualifier("TestDlq1")
     Queue dlq1;
-
     @MockBean
     SubmitToLinkService submitToLinkService;
-
     @MockBean
     SubmitToConnector submitToConnector;
-
     @MockBean
     EvidenceMessageProcessor evidenceMessageProcessor;
-
     @MockBean
     ToBackendBusinessMessageProcessor toBackendBusinessMessageProcessor;
-
     @MockBean
     ToGatewayBusinessMessageProcessor toGatewayBusinessMessageProcessor;
-
     @MockBean
     ToLinkPartnerListener toLinkPartnerListener;
-
     @MockBean
     CleanupMessageProcessor cleanupMessageProcessor;
-
     @Autowired
     ToLinkQueue toLinkQueueProducer;
-
     @Autowired
     ToConnectorQueue toConnectorQueueProducer;
-
-
     @Autowired
     ToCleanupQueue toCleanupQueueProducer;
-
     @Autowired
     QueuesConfigurationProperties queuesConfigurationProperties;
-
     @Autowired
     TransactionTemplate txTemplate;
-
+    @Autowired
+    JmsTemplate nonXaJmsTemplate;
+    @Autowired
+    MessageConverter converter;
     // Inject the primary (XA aware) ConnectionFactory
     @Autowired
     private ConnectionFactory defaultConnectionFactory;
@@ -127,11 +91,18 @@ public class DeleteMessagesFromQueuesTest {
     @Qualifier("nonXaJmsConnectionFactory")
     private ConnectionFactory nonXaConnectionFactory;
 
-    @Autowired
-    JmsTemplate nonXaJmsTemplate;
-
-    @Autowired
-    MessageConverter converter;
+    public List<Message> receiveAllFromQueue(Destination destination) {
+        return nonXaJmsTemplate.execute(session -> {
+            try (final MessageConsumer consumer = session.createConsumer(destination)) {
+                List<Message> messages = new ArrayList<>();
+                Message message;
+                while ((message = consumer.receiveNoWait()) != null) {
+                    messages.add(message);
+                }
+                return messages;
+            }
+        }, true);
+    }
 
     @BeforeEach
     public void beforeEach() {
@@ -140,8 +111,7 @@ public class DeleteMessagesFromQueuesTest {
     }
 
     @Test
-    public void it_is_possible_to_delete_specific_msgs_from_queues_and_dlqs() throws JMSException {
-
+    void it_is_possible_to_delete_specific_msgs_from_queues_and_dlqs() throws JMSException {
         // Arrange
         final QueueHelper sut = new QueueHelper(q1, dlq1, nonXaJmsTemplate);
         DomibusConnectorMessage msgDlq = DomainEntityCreator.createMessage();
@@ -163,11 +133,24 @@ public class DeleteMessagesFromQueuesTest {
         // Act
         sut.deleteMsg(jmsMsgQueue);
         sut.deleteMsg(jmsMsgDlq);
-        sut.deleteMsg(jmsMsgDlq); // tests that code works if you delete a msg that is not there, should be in another test, but no time
+        sut.deleteMsg(jmsMsgDlq); // tests that code works if you delete a msg that is not there, should be in
+        // another test, but no time
 
         // Assert
         assertThat(sut.listAllMessages()).isEmpty();
         assertThat(sut.listAllMessagesInDlq()).isEmpty();
     }
 
+    @SpringBootApplication
+    public static class MyTestContext {
+        @Bean("TestQueue1")
+        public Queue createTestQueue1() {
+            return new ActiveMQQueue("q1");
+        }
+
+        @Bean("TestDlq1")
+        public Queue createTestDlq1() {
+            return new ActiveMQQueue("dlq1");
+        }
+    }
 }

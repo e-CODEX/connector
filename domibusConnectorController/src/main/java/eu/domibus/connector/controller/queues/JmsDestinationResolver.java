@@ -1,6 +1,5 @@
 package eu.domibus.connector.controller.queues;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.lang.Nullable;
@@ -12,7 +11,6 @@ import javax.jms.Session;
 
 @Component
 public class JmsDestinationResolver implements DestinationResolver {
-
     private final ApplicationContext ctx;
 
     public JmsDestinationResolver(ApplicationContext ctx) {
@@ -21,8 +19,6 @@ public class JmsDestinationResolver implements DestinationResolver {
 
     @Override
     public Destination resolveDestinationName(@Nullable Session session, String destinationName, boolean pubSubDomain) throws JMSException {
-        Destination bean = ctx.getBean(destinationName, Destination.class);
-        return bean;
+        return ctx.getBean(destinationName, Destination.class);
     }
-
 }

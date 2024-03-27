@@ -5,24 +5,24 @@ import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @BusinessDomainScoped
 @ConfigurationProperties(prefix = ConnectorMessageProcessingProperties.PREFIX)
 public class ConnectorMessageProcessingProperties {
-
     public static final String PREFIX = "processing";
 
     /**
      * should the by the connector created evidences
      * transported back to the backend
-     *  this would affect all kind of evidences which
-     *  are originally created by the connector
-     *  <ul>
-     *      <li>The automatically created SubmissionAcceptance</li>
-     *      <li>The by a evidence trigger message created evidence message</li>
-     *  </ul>
-     *
-     *  The default is true
+     * this would affect all kind of evidences which
+     * are originally created by the connector
+     * <ul>
+     *     <li>The automatically created SubmissionAcceptance</li>
+     *     <li>The by a evidence trigger message created evidence message</li>
+     * </ul>
+     * <p>
+     * The default is true
      */
     @ConfigurationLabel("Transport generated evidence back")
     private boolean sendGeneratedEvidencesToBackend = true;
@@ -32,11 +32,8 @@ public class ConnectorMessageProcessingProperties {
      */
     @ConfigurationLabel("EBMS generation enabled")
     private boolean ebmsIdGeneratorEnabled = true;
-
     private String ebmsIdSuffix = "ecodex.eu";
-
     private PModeVerificationMode outgoingPModeVerificationMode = PModeVerificationMode.RELAXED;
-
     private PModeVerificationMode incomingPModeVerificationMode = PModeVerificationMode.STRICT;
 
     public PModeVerificationMode getOutgoingPModeVerificationMode() {
@@ -79,7 +76,9 @@ public class ConnectorMessageProcessingProperties {
         this.ebmsIdSuffix = ebmsIdSuffix;
     }
 
-    public static enum PModeVerificationMode {
-        CREATE, RELAXED, STRICT;
+    public enum PModeVerificationMode {
+        CREATE,
+        RELAXED,
+        STRICT;
     }
 }

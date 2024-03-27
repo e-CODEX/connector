@@ -1,34 +1,24 @@
 package eu.domibus.connector.controller.routing;
 
-import eu.domibus.connector.controller.test.util.ITCaseTestAnnotation;
 import eu.domibus.connector.controller.test.util.ITCaseTestContext;
 import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 
 import static eu.domibus.connector.persistence.spring.PersistenceProfiles.STORAGE_DB_PROFILE_NAME;
-import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {ITCaseTestContext.class},
-        properties = {
-                "spring.jta.enabled=false"
-//                "logging.level.eu.domibus=TRACE"
-        }
-)
+
+@SpringBootTest(classes = {ITCaseTestContext.class}, properties = {"spring.jta.enabled=false"})
 @Commit
 @ActiveProfiles({"ITCaseTestContext", STORAGE_DB_PROFILE_NAME, "test"})
-public class DCRoutingRulesManagerImplTest {
-
+class DCRoutingRulesManagerImplTest {
     @Autowired
     private DCRoutingRulesManager routingRulesManager;
-
-
 
     @Test
     void addBackendRoutingRule() {
@@ -37,10 +27,7 @@ public class DCRoutingRulesManagerImplTest {
         rr.setConfigurationSource(ConfigurationSource.ENV);
         rr.setLinkName("backend_bob");
         rr.setMatchClause(new RoutingRulePattern("equals(ServiceName, 'test')"));
-
         routingRulesManager.addBackendRoutingRule(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), rr);
-
-        
     }
 
     @Test
@@ -57,6 +44,4 @@ public class DCRoutingRulesManagerImplTest {
     @Disabled("not implemented yet")
     void isBackendRoutingEnabled() {
     }
-
-
 }

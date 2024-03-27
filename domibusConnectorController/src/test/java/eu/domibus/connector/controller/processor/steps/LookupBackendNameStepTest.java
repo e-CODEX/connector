@@ -20,10 +20,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
+
 class LookupBackendNameStepTest {
-
-
-    //regel 1: ist ein backend in der msg gesetzt? (dann lasse es wie es ist)
+    // regel 1: ist ein backend in der msg gesetzt? (dann lasse es wie es ist)
     @Test
     void given_a_message_that_has_a_specified_backend_then_the_message_should_be_sent_there() {
         // Arrange
@@ -33,7 +32,9 @@ class LookupBackendNameStepTest {
 
         final RoutingRule routingRule1 = new RoutingRule();
         routingRule1.setLinkName("fooLink");
-        routingRule1.setMatchClause(new RoutingRulePattern("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))"));
+        routingRule1.setMatchClause(new RoutingRulePattern(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, " +
+                        "'urn:e-codex:services:'))"));
         final HashMap<String, RoutingRule> routingRules = new HashMap<>();
         routingRules.put("foobarId", routingRule1);
 
@@ -55,7 +56,7 @@ class LookupBackendNameStepTest {
     }
 
 
-    //regel4: setze das default backend
+    // regel4: setze das default backend
     @Test
     void given_a_message_without_a_specified_backend_and_no_conversation_id_when_backend_routing_is_enabled_but_not_route_matches_then_the_message_is_sent_to_the_default_backend() {
         // Arrange
@@ -65,7 +66,9 @@ class LookupBackendNameStepTest {
 
         final RoutingRule routingRule1 = new RoutingRule();
         routingRule1.setLinkName("fooLink");
-        routingRule1.setMatchClause(new RoutingRulePattern("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))"));
+        routingRule1.setMatchClause(new RoutingRulePattern(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, " +
+                        "'urn:e-codex:services:'))"));
         final HashMap<String, RoutingRule> routingRules = new HashMap<>();
         routingRules.put("foobarId", routingRule1);
 
@@ -77,7 +80,7 @@ class LookupBackendNameStepTest {
 
         final DomibusConnectorMessage message = DomainEntityCreator.createMessage();
         message.getMessageDetails().setService(DomainEntityCreator.createServiceEPO());
-//        message.getMessageDetails().setConnectorBackendClientName("EPO_backend");
+        //        message.getMessageDetails().setConnectorBackendClientName("EPO_backend");
 
         // Act
         sut.executeStep(message);
@@ -86,7 +89,7 @@ class LookupBackendNameStepTest {
         assertThat(message.getMessageDetails().getConnectorBackendClientName()).isEqualTo("DEFAULT_BACKEND");
     }
 
-    //regel4: setze das default backend
+    // regel4: setze das default backend
     @Test
     void given_a_message_without_a_specified_backend_and_no_conversation_id_when_backend_routing_is_disabled_then_the_message_is_sent_to_the_default_backend() {
         // Arrange
@@ -96,7 +99,9 @@ class LookupBackendNameStepTest {
 
         final RoutingRule routingRule1 = new RoutingRule();
         routingRule1.setLinkName("fooLink");
-        routingRule1.setMatchClause(new RoutingRulePattern("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))"));
+        routingRule1.setMatchClause(new RoutingRulePattern(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, " +
+                        "'urn:e-codex:services:'))"));
         final HashMap<String, RoutingRule> routingRules = new HashMap<>();
         routingRules.put("foobarId", routingRule1);
 
@@ -108,7 +113,7 @@ class LookupBackendNameStepTest {
 
         final DomibusConnectorMessage message = DomainEntityCreator.createMessage();
         message.getMessageDetails().setService(DomainEntityCreator.createServiceEPO());
-//        message.getMessageDetails().setConnectorBackendClientName("EPO_backend");
+        //        message.getMessageDetails().setConnectorBackendClientName("EPO_backend");
 
         // Act
         sut.executeStep(message);
@@ -117,7 +122,7 @@ class LookupBackendNameStepTest {
         assertThat(message.getMessageDetails().getConnectorBackendClientName()).isEqualTo("DEFAULT_BACKEND");
     }
 
-    //regel2: gibt es eine Nachricht mit der gleichen ConversationId, die ein Backend gesetzt hat? Wenn ja nimm das.
+    // regel2: gibt es eine Nachricht mit der gleichen ConversationId, die ein Backend gesetzt hat? Wenn ja nimm das.
     @Test
     void given_a_message_without_a_specified_backend_but_with_a_conversation_id_when_processed_then_the_message_is_sent_to_the_backend_that_was_configured_for_that_conversation_id() {
         // Arrange
@@ -127,7 +132,8 @@ class LookupBackendNameStepTest {
         List<DomibusConnectorMessage> messagesByConversationId = new ArrayList<>();
         final DomibusConnectorMessage otherMessageWithConvId = DomainEntityCreator.createMessage();
         otherMessageWithConvId.getMessageDetails().setConversationId("fooConvId");
-        otherMessageWithConvId.getMessageDetails().setConnectorBackendClientName("BACKEND_OF_ANOTHER_MSG_WITH_SAME_CONV_ID");
+        otherMessageWithConvId.getMessageDetails()
+                              .setConnectorBackendClientName("BACKEND_OF_ANOTHER_MSG_WITH_SAME_CONV_ID");
         messagesByConversationId.add(otherMessageWithConvId);
         Mockito.when(peristenceMock.findMessagesByConversationId(any())).thenReturn(messagesByConversationId);
 
@@ -135,7 +141,9 @@ class LookupBackendNameStepTest {
 
         final RoutingRule routingRule1 = new RoutingRule();
         routingRule1.setLinkName("fooLink");
-        routingRule1.setMatchClause(new RoutingRulePattern("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))"));
+        routingRule1.setMatchClause(new RoutingRulePattern(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, " +
+                        "'urn:e-codex:services:'))"));
         final HashMap<String, RoutingRule> routingRules = new HashMap<>();
         routingRules.put("foobarId", routingRule1);
 
@@ -152,10 +160,12 @@ class LookupBackendNameStepTest {
         sut.executeStep(message);
 
         // Assert
-        assertThat(message.getMessageDetails().getConnectorBackendClientName()).isEqualTo("BACKEND_OF_ANOTHER_MSG_WITH_SAME_CONV_ID");
+        assertThat(message.getMessageDetails().getConnectorBackendClientName()).isEqualTo(
+                "BACKEND_OF_ANOTHER_MSG_WITH_SAME_CONV_ID");
     }
 
-    //regel3: Werte die Routing Rules aus, die erste  Routing Rule die matched gewinnt. Matching geht nach routing rule priorität.
+    // regel3: Werte die Routing Rules aus, die erste  Routing Rule die matched gewinnt. Matching geht nach routing
+    // rule priorität.
     @Test
     void given_a_message_without_a_specified_backend_when_backend_routing_is_enabled_and_a_rule_matches_then_the_message_is_sent_to_the_backend_associated_with_that_rule() {
         // Arrange
@@ -165,7 +175,9 @@ class LookupBackendNameStepTest {
 
         final RoutingRule routingRule1 = new RoutingRule();
         routingRule1.setLinkName("BACKEND_ASSOCIATED_WITH_RULE");
-        routingRule1.setMatchClause(new RoutingRulePattern("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))"));
+        routingRule1.setMatchClause(new RoutingRulePattern(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, " +
+                        "'urn:e-codex:services:'))"));
         final HashMap<String, RoutingRule> routingRules = new HashMap<>();
         routingRules.put("foobarId", routingRule1);
 
@@ -183,12 +195,16 @@ class LookupBackendNameStepTest {
         sut.executeStep(message);
 
         // Assert
-        assertThat(message.getMessageDetails().getConnectorBackendClientName()).isEqualTo("BACKEND_ASSOCIATED_WITH_RULE");
+        assertThat(message.getMessageDetails()
+                          .getConnectorBackendClientName()).isEqualTo("BACKEND_ASSOCIATED_WITH_RULE");
     }
 
-    //regel3: Werte die Routing Rules aus, die erste  Routing Rule die matched gewinnt. Matching geht nach routing rule priorität.
+    // regel3: Werte die Routing Rules aus, die erste  Routing Rule die matched gewinnt. Matching geht nach routing
+    // rule priorität.
     @Test
-    @DisplayName("given_a_message_without_a_specified_backend_when_backend_routing_is_enabled_and_a_rule_matches_then_the_message_is_sent_to_the_backend_associated_with_that_rule")
+    @DisplayName(
+            "given_a_message_without_a_specified_backend_when_backend_routing_is_enabled_and_a_rule_matches_then_the_message_is_sent_to_the_backend_associated_with_that_rule"
+    )
     void given_a_message_without_a_specified_backend_when_backend_routing_is_enabled_and_multiple_matching_rules_then_the_message_is_sent_to_the_backend_associated_with_that_rule() {
         // Arrange
         final ConfigurationPropertyManagerService configMock = Mockito.mock(ConfigurationPropertyManagerService.class);
@@ -198,13 +214,17 @@ class LookupBackendNameStepTest {
         final HashMap<String, RoutingRule> routingRules = new HashMap<>();
         final RoutingRule routingRule1 = new RoutingRule();
         routingRule1.setLinkName("BACKEND_ASSOCIATED_WITH_RULE_LOWER_PRIORITY");
-        routingRule1.setMatchClause(new RoutingRulePattern("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))"));
+        routingRule1.setMatchClause(new RoutingRulePattern(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, " +
+                        "'urn:e-codex:services:'))"));
         routingRule1.setPriority(-2000);
         routingRules.put("rule1", routingRule1);
 
         final RoutingRule routingRule2 = new RoutingRule();
         routingRule2.setLinkName("BACKEND_ASSOCIATED_WITH_RULE_HIGHER_PRIORITY");
-        routingRule2.setMatchClause(new RoutingRulePattern("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))"));
+        routingRule2.setMatchClause(new RoutingRulePattern(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, " +
+                        "'urn:e-codex:services:'))"));
         routingRule2.setPriority(0);
         routingRules.put("rule2", routingRule2);
 
@@ -222,7 +242,8 @@ class LookupBackendNameStepTest {
         sut.executeStep(message);
 
         // Assert
-        assertThat(message.getMessageDetails().getConnectorBackendClientName()).isEqualTo("BACKEND_ASSOCIATED_WITH_RULE_HIGHER_PRIORITY");
+        assertThat(message.getMessageDetails().getConnectorBackendClientName()).isEqualTo(
+                "BACKEND_ASSOCIATED_WITH_RULE_HIGHER_PRIORITY");
     }
 }
 

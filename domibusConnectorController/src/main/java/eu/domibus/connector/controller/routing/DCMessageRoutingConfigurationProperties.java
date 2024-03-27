@@ -3,32 +3,24 @@ package eu.domibus.connector.controller.routing;
 import eu.domibus.connector.common.DomibusConnectorDefaults;
 import eu.domibus.connector.common.annotations.BusinessDomainScoped;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 
 @BusinessDomainScoped
 //@Component
 @ConfigurationProperties(prefix = DCMessageRoutingConfigurationProperties.ROUTING_CONFIG_PREFIX)
 public class DCMessageRoutingConfigurationProperties {
-
     public static final String ROUTING_CONFIG_PREFIX = "connector.routing";
 
     private boolean enabled = true;
-
     private Map<String, RoutingRule> backendRules = new HashMap<>();
-
     private Map<String, RoutingRule> gatewayRules = new HashMap<>();
-
     @NotBlank
     private String defaultBackendName = DomibusConnectorDefaults.DEFAULT_BACKEND_NAME;
-
     @NotBlank
     private String defaultGatewayName = DomibusConnectorDefaults.DEFAULT_GATEWAY_NAME;
 
@@ -36,7 +28,6 @@ public class DCMessageRoutingConfigurationProperties {
      * Backend name of the connector itself,
      * is used for connector2connector tests,
      * when the connector itself acts as a backend
-     *
      */
     @NotBlank
     private String connectorBackendName = "connectorBackend";
@@ -45,9 +36,9 @@ public class DCMessageRoutingConfigurationProperties {
      * Gateway name of the connector itself,
      * is used for backend2backend tests,
      * when the connector itself acts as a gateway
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * NOT IMPLEMENTED YET!
      */
     @NotBlank
@@ -111,9 +102,8 @@ public class DCMessageRoutingConfigurationProperties {
 
     @PostConstruct
     public void afterPropertiesSet() {
-        //align routing rule id to key
+        // align routing rule id to key
         backendRules.forEach((key, value) -> value.setRoutingRuleId(key));
         gatewayRules.forEach((key, value) -> value.setRoutingRuleId(key));
     }
-
 }

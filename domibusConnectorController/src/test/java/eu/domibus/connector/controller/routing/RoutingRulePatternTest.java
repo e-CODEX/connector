@@ -7,10 +7,9 @@ import eu.domibus.connector.domain.testutil.DomainEntityCreator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-public class RoutingRulePatternTest {
 
+class RoutingRulePatternTest {
     @Test
     void matchesServiceName() {
         DomibusConnectorMessage epoMessage = DomainEntityCreator.createEpoMessage();
@@ -57,7 +56,8 @@ public class RoutingRulePatternTest {
         DomibusConnectorService service = new DomibusConnectorService("serviceName", "s:ervice-Type");
         epoMessage.getMessageDetails().setService(service);
 
-        RoutingRulePattern pattern = new RoutingRulePattern("&(equals(ServiceName, 'serviceName'),equals(ServiceType, 's:ervice-Type'))");
+        RoutingRulePattern pattern =
+                new RoutingRulePattern("&(equals(ServiceName, 'serviceName'),equals(ServiceType, 's:ervice-Type'))");
         assertThat(pattern.matches(epoMessage)).isTrue();
     }
 
@@ -67,23 +67,18 @@ public class RoutingRulePatternTest {
         DomibusConnectorService service = new DomibusConnectorService("serviceName", "serviceType");
         epoMessage.getMessageDetails().setService(service);
 
-        RoutingRulePattern pattern = new RoutingRulePattern("|(equals(ServiceName, 'serviceName'),equals(ServiceName, 'serName'))");
+        RoutingRulePattern pattern =
+                new RoutingRulePattern("|(equals(ServiceName, 'serviceName'),equals(ServiceName, 'serName'))");
         assertThat(pattern.matches(epoMessage)).isTrue();
     }
 
     @Test
-    public void testAction() {
-
+    void testAction() {
         DomibusConnectorMessage epoMessage = DomainEntityCreator.createEpoMessage();
         DomibusConnectorAction action = new DomibusConnectorAction("Connector-TEST");
         epoMessage.getMessageDetails().setAction(action);
 
         RoutingRulePattern pattern = new RoutingRulePattern("equals(Action, 'Connector-TEST')");
         assertThat(pattern.matches(epoMessage)).isTrue();
-
-
     }
-
-
-
 }

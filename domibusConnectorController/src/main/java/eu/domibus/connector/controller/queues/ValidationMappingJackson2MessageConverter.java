@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageType;
-import org.springframework.lang.Nullable;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.jms.support.converter.SmartMessageConverter;
+import org.springframework.lang.Nullable;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -17,13 +16,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ValidationMappingJackson2MessageConverter implements SmartMessageConverter {
-
     private final ObjectMapper objectMapper;
     private final Validator validator;
     private final MappingJackson2MessageConverter converter;
 
-    public ValidationMappingJackson2MessageConverter(ObjectMapper objectMapper,
-        Validator validator) {
+    public ValidationMappingJackson2MessageConverter(
+            ObjectMapper objectMapper, Validator validator) {
 
         this.validator = validator;
         this.objectMapper = objectMapper;
@@ -32,9 +30,7 @@ public class ValidationMappingJackson2MessageConverter implements SmartMessageCo
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
         converter.setObjectMapper(objectMapper);
-
     }
-
 
     @Override
     public Message toMessage(Object object, Session session, @Nullable Object conversionHint) throws JMSException, MessageConversionException {
@@ -62,5 +58,4 @@ public class ValidationMappingJackson2MessageConverter implements SmartMessageCo
     public Object fromMessage(Message message) throws JMSException, MessageConversionException {
         return converter.fromMessage(message);
     }
-
 }

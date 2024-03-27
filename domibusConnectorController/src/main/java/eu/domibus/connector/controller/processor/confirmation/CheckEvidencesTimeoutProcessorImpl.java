@@ -21,18 +21,18 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
 public class CheckEvidencesTimeoutProcessorImpl implements CheckEvidencesTimeoutProcessor {
-
-    private static Logger LOGGER = LogManager.getLogger(CheckEvidencesTimeoutProcessorImpl.class);
-
+    private static final Logger LOGGER = LogManager.getLogger(CheckEvidencesTimeoutProcessorImpl.class);
     private final EvidencesTimeoutConfigurationProperties evidencesTimeoutConfigurationProperties;
     private final DCMessagePersistenceService persistenceService;
     private final CreateEvidenceTimeoutConfirmationStep createEvidenceTimeoutConfirmationStep;
 
-    public CheckEvidencesTimeoutProcessorImpl(EvidencesTimeoutConfigurationProperties evidencesTimeoutConfigurationProperties,
-                                              DCMessagePersistenceService persistenceService,
-                                              CreateEvidenceTimeoutConfirmationStep createEvidenceTimeoutConfirmationStep) {
+    public CheckEvidencesTimeoutProcessorImpl(
+            EvidencesTimeoutConfigurationProperties evidencesTimeoutConfigurationProperties,
+            DCMessagePersistenceService persistenceService,
+            CreateEvidenceTimeoutConfirmationStep createEvidenceTimeoutConfirmationStep) {
         this.evidencesTimeoutConfigurationProperties = evidencesTimeoutConfigurationProperties;
         this.persistenceService = persistenceService;
         this.createEvidenceTimeoutConfirmationStep = createEvidenceTimeoutConfirmationStep;
@@ -43,51 +43,70 @@ public class CheckEvidencesTimeoutProcessorImpl implements CheckEvidencesTimeout
     public void checkEvidencesTimeout() throws DomibusConnectorControllerException {
         LOGGER.info("Job for checking evidence timeouts triggered.");
         Date start = new Date();
-
-        // only check for timeout of RELAY_REMMD_ACCEPTANCE/REJECTION evidences if the timeout is set in the connector.properties
+        // only check for timeout of RELAY_REMMD_ACCEPTANCE/REJECTION evidences if the timeout is set in
+        // the connector.properties
         if (evidencesTimeoutConfigurationProperties.getRelayREMMDTimeout().getMilliseconds() > 0 ||
-                evidencesTimeoutConfigurationProperties.getRelayREMMDWarnTimeout().getMilliseconds() > 0 )
+                evidencesTimeoutConfigurationProperties.getRelayREMMDWarnTimeout().getMilliseconds() > 0) {
             checkNotRejectedNorConfirmedWithoutRelayREMMD();
+        }
 
         // only check for timeout of DELIVERY/NON_DELIVERY evidences if the timeout is set in the connector.properties
         if (evidencesTimeoutConfigurationProperties.getDeliveryTimeout().getMilliseconds() > 0 ||
-                evidencesTimeoutConfigurationProperties.getDeliveryWarnTimeout().getMilliseconds() > 0)
+                evidencesTimeoutConfigurationProperties.getDeliveryWarnTimeout().getMilliseconds() > 0) {
             checkNotRejectedNorConfirmedAndWithoutDelivery();
+        }
 
-        LOGGER.debug("Job for checking evidence timeouts finished in {} ms.",
-                (System.currentTimeMillis() - start.getTime()));
-
+        LOGGER.debug(
+                "Job for checking evidence timeouts finished in {} ms.",
+                (System.currentTimeMillis() - start.getTime())
+        );
     }
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public void checkNotRejectedNorConfirmedWithoutRelayREMMD() throws DomibusConnectorControllerException {
-        //Request database to get all messages not rejected and not confirmed yet and without a RELAY_REMMD_ACCEPTANCE/REJECTION evidence
-        List<DomibusConnectorMessage> messages = persistenceService.findOutgoingMessagesNotRejectedNorConfirmedAndWithoutRelayREMMD();
+        // Request database to get all messages not rejected and not confirmed yet and without
+        // a RELAY_REMMD_ACCEPTANCE/REJECTION evidence
+        List<DomibusConnectorMessage> messages =
+                persistenceService.findOutgoingMessagesNotRejectedNorConfirmedAndWithoutRelayREMMD();
         LOGGER.trace("Checking [{}] messages for not rejected nor confirmed withoutRelayREMMD", messages.size());
         messages.forEach(this::checkNotRejectedNorConfirmedWithoutRelayREMMD);
     }
 
     void checkNotRejectedNorConfirmedWithoutRelayREMMD(DomibusConnectorMessage message) {
         String messageId = message.getConnectorMessageId().toString();
-        try (org.slf4j.MDC.MDCCloseable mdcCloseable = org.slf4j.MDC.putCloseable(LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME, messageId)) {
+        try (
+                org.slf4j.MDC.MDCCloseable mdcCloseable = org.slf4j.MDC.putCloseable(
+                        LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME, messageId)
+        ) {
             CurrentBusinessDomain.setCurrentBusinessDomain(message.getMessageLaneId());
             Duration relayREMMDTimeout = evidencesTimeoutConfigurationProperties.getRelayREMMDTimeout().getDuration();
-            Duration relayREMMDWarnTimeout = evidencesTimeoutConfigurationProperties.getRelayREMMDWarnTimeout().getDuration();
+            Duration relayREMMDWarnTimeout = evidencesTimeoutConfigurationProperties
+                    .getRelayREMMDWarnTimeout()
+                    .getDuration();
 
-            //if it is later then the evaluated timeout given
+            // if it is later than the evaluated timeout given
             if (Duration.between(getDeliveryTime(message), Instant.now()).compareTo(relayREMMDTimeout) > 0) {
                 try {
                     createEvidenceTimeoutConfirmationStep.createRelayRemmdFailureAndSendIt(message);
-                    LOGGER.warn(LoggingMarker.Log4jMarker.BUSINESS_LOG, "Message [{}] reached relayREMMD timeout. A RelayREMMDFailure evidence has been generated and sent.", message.getConnectorMessageIdAsString());
+                    LOGGER.warn(
+                            LoggingMarker.Log4jMarker.BUSINESS_LOG,
+                            "Message [{}] reached relayREMMD timeout. A RelayREMMDFailure evidence " +
+                                    "has been generated and sent.",
+                            message.getConnectorMessageIdAsString()
+                    );
                 } catch (DomibusConnectorMessageException e) {
-                    //throw new DomibusConnectorControllerException(e);
+                    // throw new DomibusConnectorControllerException(e);
                     LOGGER.error("Exception occured while checking relayREMMDTimeout", e);
                 }
                 return;
             }
             if (Duration.between(getDeliveryTime(message), Instant.now()).compareTo(relayREMMDWarnTimeout) > 0) {
-                LOGGER.warn(LoggingMarker.Log4jMarker.BUSINESS_LOG, "Message [{}] reached warning limit for relayREMMD confirmation timeout. No RelayREMMD evidence for this message has been received yet!",
-                        message.getConnectorMessageId());
+                LOGGER.warn(
+                        LoggingMarker.Log4jMarker.BUSINESS_LOG,
+                        "Message [{}] reached warning limit for relayREMMD confirmation timeout. " +
+                                "No RelayREMMD evidence for this message has been received yet!",
+                        message.getConnectorMessageId()
+                );
             }
         } finally {
             CurrentBusinessDomain.setCurrentBusinessDomain(null);
@@ -96,33 +115,50 @@ public class CheckEvidencesTimeoutProcessorImpl implements CheckEvidencesTimeout
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public void checkNotRejectedNorConfirmedAndWithoutDelivery() throws DomibusConnectorControllerException {
-        //Request database to get all messages not rejected yet and without a DELIVERY/NON_DELIVERY evidence
-        List<DomibusConnectorMessage> messages = persistenceService.findOutgoingMessagesNotRejectedNorConfirmedAndWithoutDelivery();
+        // Request database to get all messages not rejected yet and without a DELIVERY/NON_DELIVERY evidence
+        List<DomibusConnectorMessage> messages = persistenceService
+                .findOutgoingMessagesNotRejectedNorConfirmedAndWithoutDelivery();
         LOGGER.trace("Checking [{}] messages for confirmation timeout notRejectedWithoutDelivery", messages.size());
         messages.forEach(this::checkNotRejectedNorConfirmedAndWithoutDelivery);
     }
 
     void checkNotRejectedNorConfirmedAndWithoutDelivery(DomibusConnectorMessage message) {
         String messageId = message.getConnectorMessageId().toString();
-        try (org.slf4j.MDC.MDCCloseable mdcCloseable = org.slf4j.MDC.putCloseable(LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME, messageId)) {
+        try (
+                org.slf4j.MDC.MDCCloseable mdcCloseable = org.slf4j.MDC.putCloseable(
+                        LoggingMDCPropertyNames
+                                .MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME,
+                        messageId
+                )
+        ) {
             CurrentBusinessDomain.setCurrentBusinessDomain(message.getMessageLaneId());
             LOGGER.trace("checkNotRejectedWithoutDelivery# checking message: [{}]");
             Duration deliveryTimeout = evidencesTimeoutConfigurationProperties.getDeliveryTimeout().getDuration();
-            Duration deliveryWarnTimeout = evidencesTimeoutConfigurationProperties.getDeliveryWarnTimeout().getDuration();
+            Duration deliveryWarnTimeout =
+                    evidencesTimeoutConfigurationProperties.getDeliveryWarnTimeout().getDuration();
 
-            //if it is later then the evaluated timeout given
+            // if it is later than the evaluated timeout given
             if (Duration.between(getDeliveryTime(message), Instant.now()).compareTo(deliveryTimeout) > 0) {
                 try {
                     createEvidenceTimeoutConfirmationStep.createNonDeliveryAndSendIt(message);
-                    LOGGER.warn(LoggingMarker.Log4jMarker.BUSINESS_LOG, "Message [{}] reached Delivery confirmation timeout. A NonDelivery evidence has been generated and sent.", message.getConnectorMessageIdAsString());
+                    LOGGER.warn(
+                            LoggingMarker.Log4jMarker.BUSINESS_LOG,
+                            "Message [{}] reached Delivery confirmation timeout. A NonDelivery evidence has " +
+                                    "been generated and sent.",
+                            message.getConnectorMessageIdAsString()
+                    );
                 } catch (DomibusConnectorMessageException e) {
                     throw new DomibusConnectorControllerException(e);
                 }
                 return;
             }
             if (Duration.between(getDeliveryTime(message), Instant.now()).compareTo(deliveryWarnTimeout) > 0) {
-                LOGGER.warn(LoggingMarker.Log4jMarker.BUSINESS_LOG, "Message [{}] reached warning limit for delivery confirmation timeout. No Delivery evidence for this message has been received yet!",
-                        message.getConnectorMessageId());
+                LOGGER.warn(
+                        LoggingMarker.Log4jMarker.BUSINESS_LOG,
+                        "Message [{}] reached warning limit for delivery confirmation timeout. No Delivery " +
+                                "evidence for this message has been received yet!",
+                        message.getConnectorMessageId()
+                );
             }
         } finally {
             CurrentBusinessDomain.setCurrentBusinessDomain(null);
@@ -144,11 +180,7 @@ public class CheckEvidencesTimeoutProcessorImpl implements CheckEvidencesTimeout
                 break;
             default:
                 throw new IllegalStateException("Unknown message direction, cannot process any timeouts!");
-
         }
         return deliveryDate.toInstant();
     }
-
-
-
 }

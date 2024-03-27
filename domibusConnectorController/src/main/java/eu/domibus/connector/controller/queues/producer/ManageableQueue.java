@@ -8,8 +8,8 @@ import javax.jms.Message;
 import javax.jms.Queue;
 import java.util.List;
 
-public abstract class ManageableQueue implements HasManageableDlq {
 
+public abstract class ManageableQueue implements HasManageableDlq {
     private final QueueHelper queueHelper;
 
     ManageableQueue(QueueHelper queueHelper) {
@@ -24,16 +24,6 @@ public abstract class ManageableQueue implements HasManageableDlq {
     @Override
     public Queue getQueue() {
         return queueHelper.getDestination();
-    }
-
-    @Override
-    public String getName() {
-        return queueHelper.getName();
-    }
-
-    @Override
-    public String getMessageAsText(Message msg) {
-        return queueHelper.getMessageAsText(msg);
     }
 
     @Override
@@ -65,5 +55,4 @@ public abstract class ManageableQueue implements HasManageableDlq {
     public String getDlqName() {
         return queueHelper.getDlqName();
     }
-
 }

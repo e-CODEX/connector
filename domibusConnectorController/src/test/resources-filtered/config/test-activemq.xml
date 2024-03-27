@@ -1,6 +1,6 @@
-<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
+<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
     <core xmlns="urn:activemq:core">
-
         <address-settings>
             <address-setting match="#">
                 <dead-letter-address>DLQ</dead-letter-address>
@@ -8,7 +8,7 @@
                 <dead-letter-queue-prefix>DLQ</dead-letter-queue-prefix>
                 <redelivery-delay>3</redelivery-delay>
                 <!-- with -1 only the global-max-size is in use for limiting -->
-<!--                <max-size-bytes>-1</max-size-bytes>-->
+                <!--                <max-size-bytes>-1</max-size-bytes>-->
                 <message-counter-history-day-limit>10</message-counter-history-day-limit>
                 <address-full-policy>PAGE</address-full-policy>
                 <auto-create-queues>true</auto-create-queues>

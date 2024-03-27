@@ -1,16 +1,14 @@
 package eu.domibus.connector.domain.transition.tools;
 
+import eu.domibus.connector.domain.transition.DomibusConnectorMessageDetailsType;
 import eu.domibus.connector.domain.transition.*;
 import org.springframework.core.style.ToStringCreator;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 
 public class PrintDomibusConnectorMessageType {
-
-
     /**
      * Helper method to print MessageType without DataAttachments
+     *
      * @param messageType the message
      * @return the converted message
      */
@@ -25,7 +23,7 @@ public class PrintDomibusConnectorMessageType {
         messageDetailsToString.append("originalSender", messageDetails.getOriginalSender());
         messageDetailsToString.append("finalRecipient", messageDetails.getFinalRecipient());
 
-        //append service
+        // append service
         if (messageDetails.getService() != null) {
             DomibusConnectorServiceType service = messageDetails.getService();
             ToStringCreator serviceToStringCreator = new ToStringCreator(service);
@@ -35,26 +33,22 @@ public class PrintDomibusConnectorMessageType {
         } else {
             messageDetailsToString.append("service", null);
         }
-        //append action
+        // append action
         messageDetailsToString.append("action", messageDetails.getAction());
-        //append from party
+        // append from party
         messageDetailsToString.append("fromParty", partyToString(messageDetails.getFromParty()));
-        //append to party
+        // append to party
         messageDetailsToString.append("toParty", partyToString(messageDetails.getToParty()));
 
-
-        //TODO: append content
-
-        //TODO: append attachments
-
-        //TODO: append confirmations
-
-        //TODO: append errors
+        // TODO: append content
+        // TODO: append attachments
+        // TODO: append confirmations
+        // TODO: append errors
 
         ToStringCreator messageToString = new ToStringCreator(messageType);
         messageToString.append("messageDetails", messageDetailsToString.toString());
-        return messageToString.toString();
 
+        return messageToString.toString();
     }
 
     private static String partyToString(DomibusConnectorPartyType party) {
@@ -62,8 +56,7 @@ public class PrintDomibusConnectorMessageType {
         partyToStringCreator.append("partyId", party.getPartyId());
         partyToStringCreator.append("partyIdType", party.getPartyIdType());
         partyToStringCreator.append("role", party.getRole());
+
         return partyToStringCreator.toString();
     }
-
-
 }

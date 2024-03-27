@@ -7,13 +7,20 @@
         <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
         <Property name="LOG_LEVEL_PATTERN">%5p</Property>
         <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
-        <Property name="CONN_CONSOLE_LOG_PATTERN">%style{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %highlight{${LOG_LEVEL_PATTERN}} %style{${sys:PID}}{magenta} %clr{---}{faint} [tid=%38.-38X{messageid}] [processor=%20.-20X{message_processor}] %clr{[%15.15t]}{faint} %style{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
-        <Property name="CONN_FILE_LOG_PATTERN">%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} ${sys:PID} --- [tid=%64.-64X{messageid}] [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        <Property name="CONN_CONSOLE_LOG_PATTERN">%style{%d{${LOG_DATEFORMAT_PATTERN}}}{faint}
+            %highlight{${LOG_LEVEL_PATTERN}} %style{${sys:PID}}{magenta} %clr{---}{faint} [tid=%38.-38X{messageid}]
+            [processor=%20.-20X{message_processor}] %clr{[%15.15t]}{faint} %style{%-40.40c{1.}}{cyan} %clr{:}{faint}
+            %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}
+        </Property>
+        <Property name="CONN_FILE_LOG_PATTERN">%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} ${sys:PID} ---
+            [tid=%64.-64X{messageid}] [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}
+        </Property>
     </Properties>
     <Appenders>
         <!-- log business related logs into own log file -->
         <!-- business log messages are marked with 'BUSINESS' -->
-        <RollingFile name="Business" fileName="${basePath}/business.log" filePattern="${basePath}/business-%d{yyyy-MM-dd}.log">
+        <RollingFile name="Business" fileName="${basePath}/business.log"
+                     filePattern="${basePath}/business-%d{yyyy-MM-dd}.log">
             <MarkerFilter marker="BUSINESS" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="${sys:CONN_FILE_LOG_PATTERN}"/>
             <Policies>
@@ -21,7 +28,8 @@
             </Policies>
         </RollingFile>
         <!-- -->
-        <RollingFile name="File" fileName="${basePath}/connector.log" filePattern="${basePath}/connector-%d{yyyy-MM-dd}.log">
+        <RollingFile name="File" fileName="${basePath}/connector.log"
+                     filePattern="${basePath}/connector-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="${sys:CONN_FILE_LOG_PATTERN}"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="5M"/>

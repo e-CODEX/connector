@@ -17,7 +17,8 @@
     </JarScanner>
 
     <!-- location of the connector configuration -->
-    <Parameter name="spring.config.location" value="file:///${CATALINA_HOME}/conf/connector/connector.properties" override="false"/>
+    <Parameter name="spring.config.location" value="file:///${CATALINA_HOME}/conf/connector/connector.properties"
+               override="false"/>
     <!-- location of the log4j2 logging configuration -->
     <Parameter name="logging.config" value="file:///${CATALINA_HOME}/conf/connector/log4j2.xml"/>
 

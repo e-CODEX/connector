@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>eu.domibus.connector</groupId>
@@ -11,7 +12,8 @@
     <description>This module contains the documentation like the create, migrate sql scripts</description>
     <properties>
         <!--  This needs to be set to be able to call the sites from the UI! -->
-        <html.docu.output.directory>${project.basedir}/target/classes/META-INF/resources/documentation</html.docu.output.directory>
+        <html.docu.output.directory>${project.basedir}/target/classes/META-INF/resources/documentation
+        </html.docu.output.directory>
     </properties>
     <build>
         <defaultGoal>process-resources</defaultGoal>
@@ -68,15 +70,15 @@
                 <configuration>
                     <sourceDirectory>src/asciidoc/doc</sourceDirectory>
                     <attributes>
-                        <!--                            <sourcedir>${project.build.sourceDirectory}</sourcedir>-->
+                        <!--<sourcedir>${project.build.sourceDirectory}</sourcedir>-->
                         <project-version>${project.version}</project-version>
                         <source-highlighter>rouge</source-highlighter>
                         <rouge-style>github</rouge-style>
-                        <!--                                <data-uri/>-->
+                        <!--<data-uri/>-->
                         <mvnbasedir>${project.basedir}/../</mvnbasedir>
                         <basepath>${project.basedir}/src/asciidoc/</basepath>
                         <webimagedir>./images</webimagedir>
-                        <!--                        <imagesdir>../images</imagesdir>-->
+                        <!--<imagesdir>../images</imagesdir>-->
                         <icons>font</icons>
                     </attributes>
                     <preserveDirectories>true</preserveDirectories>

@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Mit XMLSpy v2008 rel. 2 (http://www.altova.com) von RL (Bremen Online Services GmbH) bearbeitet -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eDel="http://uri.eu-spocs.eu/configuration/eDelivery"
-		   targetNamespace="http://uri.eu-spocs.eu/configuration/eDelivery" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://uri.eu-spocs.eu/configuration/eDelivery" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
 
-	<xs:element name="EDeliveryDetail">
-		<xs:annotation>
-			<xs:documentation>Comment describing your root element
-			</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-			<xs:choice>
-				<xs:element name="Server">
-					<xs:complexType>
-							<xs:attribute name="defaultCitizenQAAlevel" type="xs:int"/>
-							<xs:attribute name="gatewayName" use="required"/>
-							<xs:attribute name="gatewayDomain" use="optional"/>
-							<xs:attribute name="gatewayAddress" use="required"/>
-					</xs:complexType>
-				</xs:element>
-					<xs:element name="Client"/>
-			</xs:choice>
+    <xs:element name="EDeliveryDetail">
+        <xs:annotation>
+            <xs:documentation>Comment describing your root element
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice>
+                    <xs:element name="Server">
+                        <xs:complexType>
+                            <xs:attribute name="defaultCitizenQAAlevel" type="xs:int"/>
+                            <xs:attribute name="gatewayName" use="required"/>
+                            <xs:attribute name="gatewayDomain" use="optional"/>
+                            <xs:attribute name="gatewayAddress" use="required"/>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Client"/>
+                </xs:choice>
 
-				<xs:element name="PostalAdress">
-					<xs:complexType>
-					<xs:attribute name="StreetAddress" use="optional"/> 
-					<xs:attribute name="Locality" use="optional"/>
-					<xs:attribute name="PostalCode" use="optional"/>
-					<xs:attribute name="Country" use="optional"/>
-					</xs:complexType>
-				</xs:element>
+                <xs:element name="PostalAdress">
+                    <xs:complexType>
+                        <xs:attribute name="StreetAddress" use="optional"/>
+                        <xs:attribute name="Locality" use="optional"/>
+                        <xs:attribute name="PostalCode" use="optional"/>
+                        <xs:attribute name="Country" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
 
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

@@ -2,11 +2,7 @@ package eu.ecodex.evidences.exception;
 
 
 public class ECodexEvidenceBuilderException extends Exception {
-
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8972538454498818077L;
+    private static final long serialVersionUID = -8972538454498818077L;
 
     public ECodexEvidenceBuilderException() {
         // TODO Auto-generated constructor stub
@@ -26,6 +22,5 @@ public class ECodexEvidenceBuilderException extends Exception {
         super(arg0);
         // TODO Auto-generated constructor stub
     }
-
 }
 

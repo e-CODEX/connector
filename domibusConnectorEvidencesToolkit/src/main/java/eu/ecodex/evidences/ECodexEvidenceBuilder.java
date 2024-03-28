@@ -1,42 +1,30 @@
 package eu.ecodex.evidences;
 
-import java.io.ByteArrayOutputStream;
-import java.net.MalformedURLException;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import eu.domibus.connector.common.annotations.BusinessDomainScoped;
-import org.apache.log4j.Logger;
-import org.etsi.uri._02640.soapbinding.v1_.DeliveryConstraints;
-import org.etsi.uri._02640.soapbinding.v1_.Destinations;
-import org.etsi.uri._02640.soapbinding.v1_.MsgIdentification;
-import org.etsi.uri._02640.soapbinding.v1_.MsgMetaData;
-import org.etsi.uri._02640.soapbinding.v1_.Originators;
-import org.etsi.uri._02640.soapbinding.v1_.REMDispatchType;
-import org.etsi.uri._02640.v2.EntityDetailsType;
-import org.etsi.uri._02640.v2.EventReasonType;
-import org.etsi.uri._02640.v2.REMEvidenceType;
-
 import eu.ecodex.evidences.exception.ECodexEvidenceBuilderException;
 import eu.ecodex.evidences.types.ECodexMessageDetails;
 import eu.ecodex.signature.EvidenceUtils;
 import eu.ecodex.signature.EvidenceUtilsXades;
 import eu.spocseu.edeliverygw.REMErrorEvent;
 import eu.spocseu.edeliverygw.configuration.EDeliveryDetails;
-import eu.spocseu.edeliverygw.evidences.DeliveryNonDeliveryToRecipient;
-import eu.spocseu.edeliverygw.evidences.Evidence;
-import eu.spocseu.edeliverygw.evidences.RelayREMMDAcceptanceRejection;
-import eu.spocseu.edeliverygw.evidences.RelayREMMDFailure;
-import eu.spocseu.edeliverygw.evidences.RetrievalNonRetrievalByRecipient;
-import eu.spocseu.edeliverygw.evidences.SubmissionAcceptanceRejection;
+import eu.spocseu.edeliverygw.evidences.*;
 import eu.spocseu.edeliverygw.messageparts.SpocsFragments;
+import org.apache.log4j.Logger;
+import org.etsi.uri._02640.soapbinding.v1_.*;
+import org.etsi.uri._02640.v2.EntityDetailsType;
+import org.etsi.uri._02640.v2.EventReasonType;
+import org.etsi.uri._02640.v2.REMEvidenceType;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.ByteArrayOutputStream;
+import java.net.MalformedURLException;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 
 @BusinessDomainScoped
 public class ECodexEvidenceBuilder implements EvidenceBuilder {
@@ -44,15 +32,23 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
 
     private static EvidenceUtils signer = null;
 
-    public ECodexEvidenceBuilder(Resource javaKeyStorePath, String javaKeyStoreType, String javaKeyStorePassword, String alias, String keyPassword) {
+    public ECodexEvidenceBuilder(
+            Resource javaKeyStorePath,
+            String javaKeyStoreType,
+            String javaKeyStorePassword,
+            String alias,
+            String keyPassword) {
         // signer = new EvidenceUtilsImpl(javaKeyStorePath,
         // javaKeyStorePassword, alias, keyPassword);
         signer = new EvidenceUtilsXades(javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword);
     }
 
     @Override
-    public byte[] createSubmissionAcceptanceRejection(boolean isAcceptance, REMErrorEvent eventReason, EDeliveryDetails evidenceIssuerDetails, ECodexMessageDetails messageDetails)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createSubmissionAcceptanceRejection(
+            boolean isAcceptance,
+            REMErrorEvent eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            ECodexMessageDetails messageDetails) throws ECodexEvidenceBuilderException {
 
         EventReasonType reason = null;
 
@@ -66,8 +62,11 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createSubmissionAcceptanceRejection(boolean isAcceptance, EventReasonType eventReason, EDeliveryDetails evidenceIssuerDetails, ECodexMessageDetails messageDetails)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createSubmissionAcceptanceRejection(
+            boolean isAcceptance,
+            EventReasonType eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            ECodexMessageDetails messageDetails) throws ECodexEvidenceBuilderException {
         Date start = new Date();
 
         // This is the message and all related information
@@ -77,8 +76,10 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
         EntityDetailsType recipient = new EntityDetailsType();
         EntityDetailsType sender = new EntityDetailsType();
         try {
-            recipient.getAttributedElectronicAddressOrElectronicAddress().add(SpocsFragments.createElectoricAddress(messageDetails.getSenderAddress(), "displayName"));
-            sender.getAttributedElectronicAddressOrElectronicAddress().add(SpocsFragments.createElectoricAddress(messageDetails.getRecipientAddress(), "displayName"));
+            recipient.getAttributedElectronicAddressOrElectronicAddress()
+                     .add(SpocsFragments.createElectoricAddress(messageDetails.getSenderAddress(), "displayName"));
+            sender.getAttributedElectronicAddressOrElectronicAddress()
+                  .add(SpocsFragments.createElectoricAddress(messageDetails.getRecipientAddress(), "displayName"));
         } catch (MalformedURLException e) {
             LOG.warn(e);
         }
@@ -112,10 +113,10 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
 
         dispatch.setMsgMetaData(msgMetaData);
 
-        SubmissionAcceptanceRejection evidence = new SubmissionAcceptanceRejection(evidenceIssuerDetails, dispatch, isAcceptance);
+        SubmissionAcceptanceRejection evidence =
+                new SubmissionAcceptanceRejection(evidenceIssuerDetails, dispatch, isAcceptance);
 
-        if (eventReason != null)
-            evidence.setEventReason(eventReason);
+        if (eventReason != null) evidence.setEventReason(eventReason);
 
         evidence.setUAMessageId(messageDetails.getNationalMessageId());
         evidence.setHashInformation(messageDetails.getHashValue(), messageDetails.getHashAlgorithm());
@@ -128,8 +129,11 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createRelayREMMDAcceptanceRejection(boolean isAcceptance, REMErrorEvent eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createRelayREMMDAcceptanceRejection(
+            boolean isAcceptance,
+            REMErrorEvent eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
 
         EventReasonType reason = null;
 
@@ -143,15 +147,18 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createRelayREMMDAcceptanceRejection(boolean isAcceptance, EventReasonType eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createRelayREMMDAcceptanceRejection(
+            boolean isAcceptance,
+            EventReasonType eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
 
         REMEvidenceType previousEvidence = signer.convertIntoEvidenceType(previousEvidenceInByte);
 
-        RelayREMMDAcceptanceRejection evidence = new RelayREMMDAcceptanceRejection(evidenceIssuerDetails, previousEvidence, isAcceptance);
+        RelayREMMDAcceptanceRejection evidence =
+                new RelayREMMDAcceptanceRejection(evidenceIssuerDetails, previousEvidence, isAcceptance);
 
-        if (eventReason != null)
-            evidence.setEventReason(eventReason);
+        if (eventReason != null) evidence.setEventReason(eventReason);
 
         byte[] signedByteArray = signEvidence(evidence, true);
 
@@ -159,8 +166,10 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createRelayREMMDFailure(REMErrorEvent eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createRelayREMMDFailure(
+            REMErrorEvent eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
 
         EventReasonType reason = null;
 
@@ -174,15 +183,16 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createRelayREMMDFailure(EventReasonType eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createRelayREMMDFailure(
+            EventReasonType eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
 
         REMEvidenceType previousEvidence = signer.convertIntoEvidenceType(previousEvidenceInByte);
 
         RelayREMMDFailure evidence = new RelayREMMDFailure(evidenceIssuerDetails, previousEvidence);
 
-        if (eventReason != null)
-            evidence.setEventReason(eventReason);
+        if (eventReason != null) evidence.setEventReason(eventReason);
 
         byte[] signedByteArray = signEvidence(evidence, true);
 
@@ -190,8 +200,11 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createDeliveryNonDeliveryToRecipient(boolean isDelivery, REMErrorEvent eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createDeliveryNonDeliveryToRecipient(
+            boolean isDelivery,
+            REMErrorEvent eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
         EventReasonType reason = null;
 
         if (eventReason != null) {
@@ -204,15 +217,18 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createDeliveryNonDeliveryToRecipient(boolean isDelivery, EventReasonType eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createDeliveryNonDeliveryToRecipient(
+            boolean isDelivery,
+            EventReasonType eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
 
         REMEvidenceType previousEvidence = signer.convertIntoEvidenceType(previousEvidenceInByte);
 
-        DeliveryNonDeliveryToRecipient evidence = new DeliveryNonDeliveryToRecipient(evidenceIssuerDetails, previousEvidence, isDelivery);
+        DeliveryNonDeliveryToRecipient evidence =
+                new DeliveryNonDeliveryToRecipient(evidenceIssuerDetails, previousEvidence, isDelivery);
 
-        if (eventReason != null)
-            evidence.setEventReason(eventReason);
+        if (eventReason != null) evidence.setEventReason(eventReason);
 
         byte[] signedByteArray = signEvidence(evidence, true);
 
@@ -220,8 +236,11 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
     }
 
     @Override
-    public byte[] createRetrievalNonRetrievalByRecipient(boolean isRetrieval, REMErrorEvent eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createRetrievalNonRetrievalByRecipient(
+            boolean isRetrieval,
+            REMErrorEvent eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
 
         EventReasonType reason = null;
 
@@ -231,20 +250,27 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
             reason.setDetails(eventReason.getEventDetails());
         }
 
-        return createRetrievalNonRetrievalByRecipient(isRetrieval, reason, evidenceIssuerDetails, previousEvidenceInByte);
-
+        return createRetrievalNonRetrievalByRecipient(
+                isRetrieval,
+                reason,
+                evidenceIssuerDetails,
+                previousEvidenceInByte
+        );
     }
 
     @Override
-    public byte[] createRetrievalNonRetrievalByRecipient(boolean isRetrieval, EventReasonType eventReason, EDeliveryDetails evidenceIssuerDetails, byte[] previousEvidenceInByte)
-            throws ECodexEvidenceBuilderException {
+    public byte[] createRetrievalNonRetrievalByRecipient(
+            boolean isRetrieval,
+            EventReasonType eventReason,
+            EDeliveryDetails evidenceIssuerDetails,
+            byte[] previousEvidenceInByte) throws ECodexEvidenceBuilderException {
 
         REMEvidenceType previousEvidence = signer.convertIntoEvidenceType(previousEvidenceInByte);
 
-        RetrievalNonRetrievalByRecipient evidence = new RetrievalNonRetrievalByRecipient(evidenceIssuerDetails, previousEvidence, isRetrieval);
+        RetrievalNonRetrievalByRecipient evidence =
+                new RetrievalNonRetrievalByRecipient(evidenceIssuerDetails, previousEvidence, isRetrieval);
 
-        if (eventReason != null)
-            evidence.setEventReason(eventReason);
+        if (eventReason != null) evidence.setEventReason(eventReason);
 
         byte[] signedByteArray = signEvidence(evidence, true);
 
@@ -274,5 +300,4 @@ public class ECodexEvidenceBuilder implements EvidenceBuilder {
 
         return signedByteArray;
     }
-
 }

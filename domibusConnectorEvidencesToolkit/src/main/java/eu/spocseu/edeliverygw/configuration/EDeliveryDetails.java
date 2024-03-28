@@ -23,258 +23,221 @@ See SPOCS_WP3_LICENSE_URL for license information
 --------------------------------------------------------------------------- */
 package eu.spocseu.edeliverygw.configuration;
 
+import eu.spocseu.edeliverygw.configuration.xsd.EDeliveryDetail;
+
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.spocseu.edeliverygw.configuration.xsd.EDeliveryDetail;
 
 /**
  * This Class represents the holds the <code>Configuration</code> of the
  * eDelivery Project.
- * 
+ *
  * @author oley
  */
-public class EDeliveryDetails
-{
+public class EDeliveryDetails {
+    private String gatewayName;
+    private String streetAdress;
+    private String locality;
+    private String postalCode;
+    private String country;
+    private boolean checkSignature = false;
+    private boolean checkMessage = false;
+    private String gatewayAddress;
+    private String gatewayDomain;
+    private int defaultCitizenQAAlevel = 1;
+    private boolean synchronGatewayMD = true;
+    private static Properties spocsProperties;
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(EDeliveryDetails.class);
-	private String gatewayName;
+    public EDeliveryDetails(EDeliveryDetail jaxBObject) {
+        setGatewayAddress(jaxBObject.getServer().getGatewayAddress());
+        setGatewayName(jaxBObject.getServer().getGatewayName());
+        // PostalAdress
+        if (jaxBObject.getPostalAdress() != null) {
+            setStreetAdress(jaxBObject.getPostalAdress().getStreetAddress());
+            setLocality(jaxBObject.getPostalAdress().getLocality());
+            setPostalCode(jaxBObject.getPostalAdress().getPostalCode());
+            setCountry(jaxBObject.getPostalAdress().getCountry());
+        }
 
-	private String streetAdress;
-	private String locality;
-	private String postalCode;
-	private String country;
-	
-	private boolean checkSignature = false;
-	private boolean checkMessage = false;
-	
-	private String gatewayAddress;
-	private String gatewayDomain;
-	private int defaultCitizenQAAlevel = 1;
+        jaxBObject.getServer().getDefaultCitizenQAAlevel();
+        if (jaxBObject.getServer().getDefaultCitizenQAAlevel() != null)
+            setDefaultCitizenQAAlevel(jaxBObject.getServer().getDefaultCitizenQAAlevel());
+        // // // ########### signature trust store ########
+        // if (jaxBObject.getSignatureTrustStore() != null) {
+        // InputStream trustIn = config.getInputstream(jaxBObject
+        // .getSignatureTrustStore().getValue());
+        // char[] password = jaxBObject.getSignatureTrustStore().getPin()
+        // .toCharArray();
+        // setSignatureTrustStore(CryptoTools.loadKeyStore(
+        // trustIn, password, jaxBObject.getSignatureTrustStore().getType()),
+        // password);
+        // } else
+        // LOG.info("no signature store store declared");
+        // ########### Set the trust store for the signature certificate check
+        // if (spocsProperties.getProperty("trustStore") != null) {
+        //
+        // InputStream trustIn = getInputstream(getConfigDir(),
+        // spocsProperties.getProperty("trustStore"));
+        // eDeliveryDetails.settrustStorePassword = spocsProperties.getProperty(
+        // "trustStorePassword").toCharArray();
+        // trustStore = CryptoTools.loadKeyStore(trustIn, trustStorePassword,
+        // getKeyStoreType(spocsProperties.getProperty("trustStore")));
+        // Enumeration<String> en = trustStore.aliases();
+        // while (en.hasMoreElements()) {
+        // Certificate[] certs = trustStore.getCertificateChain(en
+        // .nextElement());
+        // if (certs != null) {
+        // for (Certificate certificate : certs) {
+        // X509Certificate cert = (X509Certificate) certificate;
+        // trustedCertificates.add(cert);
+        // }
+        // }
+        // }
+        // } else
+        // LOG.info("no trust store declared");
+        // ########### signature trust store ########
+        // if (spocsProperties.getProperty("signatureTrustStore") != null) {
+        // InputStream trustIn = getInputstream(getConfigDir(),
+        // spocsProperties.getProperty("signatureTrustStore"));
+        // eDeliveryDetails.signatureStorePassword = spocsProperties
+        // .getProperty("signatureTrustPassword").toCharArray();
+        // signatureStore = CryptoTools.loadKeyStore(trustIn,
+        // signatureStorePassword, getKeyStoreType(spocsProperties
+        // .getProperty("signatureTrustStore")));
+        // } else
+        // LOG.info("no signature store store declared");
+        //
+        // // SSL Keystore
+        // if (spocsProperties.getProperty("sslTrustStore") != null) {
+        // char[] password = spocsProperties.getProperty(
+        // "sslTrustStorePassword").toCharArray();
+        //
+        // KeyStore store = KeyStore
+        // .getInstance(getKeyStoreType(spocsProperties
+        // .getProperty("sslTrustStore")));
+        // store.load(
+        // getInputstream(getConfigDir(),
+        // spocsProperties.getProperty("sslTrustStore")),
+        // password);
+        // sslTrustStore = store;
+        //
+        // } else
+        // LOG.info("no SSL Trust store declared!");
 
-	private boolean synchronGatewayMD = true;
-	private static Properties spocsProperties;
+        // if (spocsProperties.getProperty("tslPropertiesFile") != null) {
+        // try {
+        // tslProperties.loadFromXML(getInputstream(configDir,
+        // spocsProperties.getProperty("tslPropertiesFile")));
+        // } catch (IOException e) {
+        // throw new FileNotFoundException(
+        // "TSL Properties File not found!");
+        // }
+        // } else
+        // LOG.info("no path to TSL Properties File declared");
 
-	public EDeliveryDetails(EDeliveryDetail jaxBObject)
-	{
-		setGatewayAddress(jaxBObject.getServer().getGatewayAddress());
-		setGatewayName(jaxBObject.getServer().getGatewayName());
-		// PostalAdress
-		if (jaxBObject.getPostalAdress() != null) {
-			setStreetAdress(jaxBObject.getPostalAdress().getStreetAddress());
-			setLocality(jaxBObject.getPostalAdress().getLocality());
-			setPostalCode(jaxBObject.getPostalAdress().getPostalCode());
-			setCountry(jaxBObject.getPostalAdress().getCountry());
-		}
-		
-		jaxBObject.getServer().getDefaultCitizenQAAlevel();
-		if (jaxBObject.getServer().getDefaultCitizenQAAlevel() != null)
-			setDefaultCitizenQAAlevel(jaxBObject.getServer()
-					.getDefaultCitizenQAAlevel());
-		// // // ########### signature trust store ########
-		// if (jaxBObject.getSignatureTrustStore() != null) {
-		// InputStream trustIn = config.getInputstream(jaxBObject
-		// .getSignatureTrustStore().getValue());
-		// char[] password = jaxBObject.getSignatureTrustStore().getPin()
-		// .toCharArray();
-		// setSignatureTrustStore(CryptoTools.loadKeyStore(
-		// trustIn, password, jaxBObject.getSignatureTrustStore().getType()),
-		// password);
-		// } else
-		// LOG.info("no signature store store declared");
-		// ########### Set the trust store for the signature certificate check
-		// if (spocsProperties.getProperty("trustStore") != null) {
-		//
-		// InputStream trustIn = getInputstream(getConfigDir(),
-		// spocsProperties.getProperty("trustStore"));
-		// eDeliveryDetails.settrustStorePassword = spocsProperties.getProperty(
-		// "trustStorePassword").toCharArray();
-		// trustStore = CryptoTools.loadKeyStore(trustIn, trustStorePassword,
-		// getKeyStoreType(spocsProperties.getProperty("trustStore")));
-		// Enumeration<String> en = trustStore.aliases();
-		// while (en.hasMoreElements()) {
-		// Certificate[] certs = trustStore.getCertificateChain(en
-		// .nextElement());
-		// if (certs != null) {
-		// for (Certificate certificate : certs) {
-		// X509Certificate cert = (X509Certificate) certificate;
-		// trustedCertificates.add(cert);
-		// }
-		// }
-		// }
-		// } else
-		// LOG.info("no trust store declared");
-		// ########### signature trust store ########
-		// if (spocsProperties.getProperty("signatureTrustStore") != null) {
-		// InputStream trustIn = getInputstream(getConfigDir(),
-		// spocsProperties.getProperty("signatureTrustStore"));
-		// eDeliveryDetails.signatureStorePassword = spocsProperties
-		// .getProperty("signatureTrustPassword").toCharArray();
-		// signatureStore = CryptoTools.loadKeyStore(trustIn,
-		// signatureStorePassword, getKeyStoreType(spocsProperties
-		// .getProperty("signatureTrustStore")));
-		// } else
-		// LOG.info("no signature store store declared");
-		//
-		// // SSL Keystore
-		// if (spocsProperties.getProperty("sslTrustStore") != null) {
-		// char[] password = spocsProperties.getProperty(
-		// "sslTrustStorePassword").toCharArray();
-		//
-		// KeyStore store = KeyStore
-		// .getInstance(getKeyStoreType(spocsProperties
-		// .getProperty("sslTrustStore")));
-		// store.load(
-		// getInputstream(getConfigDir(),
-		// spocsProperties.getProperty("sslTrustStore")),
-		// password);
-		// sslTrustStore = store;
-		//
-		// } else
-		// LOG.info("no SSL Trust store declared!");
+        // setGatewayAddress(spocsProperties.getProperty("gatewayAddress",
+        // "NoGatewayAddressSet"));
+        // setGatewayName(spocsProperties.getProperty("gatewayName",
+        // "NoGatewayNameSet"));
+        // setSynchronGatewayMD(Boolean.valueOf(spocsProperties.getProperty(
+        // "SynchronGatewayMD", "true")));
+        // setDefaultCitizenQAAlevel(Integer.valueOf(spocsProperties.getProperty(
+        // "DefaultCitizenQAAlevel", "1")));
+        // setSynchronGatewayMD(Boolean.getBoolean(spocsProperties.getProperty(
+        // "IsSynchronGateway", "true")));
+        // setCountry(COUNTRY_CODES.getCountryCode(spocsProperties.getProperty(
+        // "GWCountry", "DE")));
+    }
 
-		// if (spocsProperties.getProperty("tslPropertiesFile") != null) {
-		// try {
-		// tslProperties.loadFromXML(getInputstream(configDir,
-		// spocsProperties.getProperty("tslPropertiesFile")));
-		// } catch (IOException e) {
-		// throw new FileNotFoundException(
-		// "TSL Properties File not found!");
-		// }
-		// } else
-		// LOG.info("no path to TSL Properties File declared");
+    public static Properties getSpocsProperties() {
+        return spocsProperties;
+    }
 
-		// setGatewayAddress(spocsProperties.getProperty("gatewayAddress",
-		// "NoGatewayAddressSet"));
-		// setGatewayName(spocsProperties.getProperty("gatewayName",
-		// "NoGatewayNameSet"));
-		// setSynchronGatewayMD(Boolean.valueOf(spocsProperties.getProperty(
-		// "SynchronGatewayMD", "true")));
-		// setDefaultCitizenQAAlevel(Integer.valueOf(spocsProperties.getProperty(
-		// "DefaultCitizenQAAlevel", "1")));
-		// setSynchronGatewayMD(Boolean.getBoolean(spocsProperties.getProperty(
-		// "IsSynchronGateway", "true")));
-		// setCountry(COUNTRY_CODES.getCountryCode(spocsProperties.getProperty(
-		// "GWCountry", "DE")));
-	}
+    public String getGatewayName() {
+        return gatewayName;
+    }
 
+    public void setGatewayName(String gatewayName) {
+        this.gatewayName = gatewayName;
+    }
 
-	public static Properties getSpocsProperties()
-	{
-		return spocsProperties;
-	}
+    public String getGatewayAddress() {
+        return gatewayAddress;
+    }
 
-	public String getGatewayName()
-	{
-		return gatewayName;
-	}
+    public void setGatewayAddress(String gatewayAddress) {
+        this.gatewayAddress = gatewayAddress;
+    }
 
-	public void setGatewayName(String gatewayName)
-	{
-		this.gatewayName = gatewayName;
-	}
+    public boolean isSynchronGatewayMD() {
+        return synchronGatewayMD;
+    }
 
-	public String getGatewayAddress()
-	{
-		return gatewayAddress;
-	}
+    public void setSynchronGatewayMD(boolean synchronGatewayMD) {
+        this.synchronGatewayMD = synchronGatewayMD;
+    }
 
-	public void setGatewayAddress(String gatewayAddress)
-	{
-		this.gatewayAddress = gatewayAddress;
-	}
+    public int getDefaultCitizenQAAlevel() {
+        return defaultCitizenQAAlevel;
+    }
 
-	public boolean isSynchronGatewayMD()
-	{
-		return synchronGatewayMD;
-	}
+    public void setDefaultCitizenQAAlevel(int _defaultCitizenQAAlevel) {
+        this.defaultCitizenQAAlevel = _defaultCitizenQAAlevel;
+    }
 
-	public void setSynchronGatewayMD(boolean synchronGatewayMD)
-	{
-		this.synchronGatewayMD = synchronGatewayMD;
-	}
+    public String getGatewayDomain() {
+        return gatewayDomain;
+    }
 
-	public int getDefaultCitizenQAAlevel()
-	{
-		return defaultCitizenQAAlevel;
-	}
+    public void setGatewayDomain(String gatewayDomain) {
+        this.gatewayDomain = gatewayDomain;
+    }
 
-	public void setDefaultCitizenQAAlevel(int _defaultCitizenQAAlevel)
-	{
-		this.defaultCitizenQAAlevel = _defaultCitizenQAAlevel;
-	}
+    public String getStreetAdress() {
+        return streetAdress;
+    }
 
-	public String getGatewayDomain()
-	{
-		return gatewayDomain;
-	}
+    public void setStreetAdress(String streetAdress) {
+        this.streetAdress = streetAdress;
+    }
 
-	public void setGatewayDomain(String gatewayDomain)
-	{
-		this.gatewayDomain = gatewayDomain;
-	}
+    public String getLocality() {
+        return locality;
+    }
 
-	public String getStreetAdress()
-	{
-		return streetAdress;
-	}
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
 
-	public void setStreetAdress(String streetAdress)
-	{
-		this.streetAdress = streetAdress;
-	}
+    public String getPostalCode() {
+        return postalCode;
+    }
 
-	public String getLocality()
-	{
-		return locality;
-	}
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
 
-	public void setLocality(String locality)
-	{
-		this.locality = locality;
-	}
+    public boolean isCheckSignature() {
+        return checkSignature;
+    }
 
-	public String getPostalCode()
-	{
-		return postalCode;
-	}
+    public void setCheckSignature(boolean checkSignature) {
+        this.checkSignature = checkSignature;
+    }
 
-	public void setPostalCode(String postalCode)
-	{
-		this.postalCode = postalCode;
-	}
+    public String getCountry() {
+        return country;
+    }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	public boolean isCheckSignature()
-	{
-		return checkSignature;
-	}
+    public boolean isCheckMessage() {
+        return checkMessage;
+    }
 
-	public void setCheckSignature(boolean checkSignature)
-	{
-		this.checkSignature = checkSignature;
-	}
-
-	public String getCountry()
-	{
-		return country;
-	}
-
-	public void setCountry(String country)
-	{
-		this.country = country;
-	}
-
-	public boolean isCheckMessage()
-	{
-		return checkMessage;
-	}
-
-	public void setCheckMessage(boolean checkMessage)
-	{
-		this.checkMessage = checkMessage;
-	}
+    public void setCheckMessage(boolean checkMessage) {
+        this.checkMessage = checkMessage;
+    }
 }

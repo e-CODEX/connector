@@ -9,18 +9,17 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 
+
 @BusinessDomainScoped
 @Component
 @ConfigurationProperties(prefix = EvidencesToolkitConfigurationProperties.CONFIG_PREFIX)
 @Validated
 public class EvidencesToolkitConfigurationProperties {
-
     public static final String CONFIG_PREFIX = "connector.evidences";
 
     @Valid
     @NestedConfigurationProperty
     SignatureConfigurationProperties signature = new SignatureConfigurationProperties();
-
     @Valid
     @NestedConfigurationProperty
     EvidencesIssuerInfo issuerInfo = new EvidencesIssuerInfo();

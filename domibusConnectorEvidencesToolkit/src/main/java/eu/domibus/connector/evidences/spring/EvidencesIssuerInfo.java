@@ -5,13 +5,12 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class EvidencesIssuerInfo {
 
+public class EvidencesIssuerInfo {
     @Valid
     @NotNull
     @NestedConfigurationProperty
     private PostalAdressConfigurationProperties postalAddress = new PostalAdressConfigurationProperties();
-
     @NotNull
     @Valid
     @NestedConfigurationProperty

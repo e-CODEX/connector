@@ -1,43 +1,34 @@
-<jaxb:bindings xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-               version="2.1"
-                xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
-
-<!--    <jaxb:bindings node="//xsd:schema[@targetNamespace='http://uri.eu-spocs.eu/configuration/eDelivery']">-->
-    <jaxb:bindings schemaLocation="../xsd/eDeliveryDetails.xsd" >
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" version="2.1">
+    <!--    <jaxb:bindings node="//xsd:schema[@targetNamespace='http://uri.eu-spocs.eu/configuration/eDelivery']">-->
+    <jaxb:bindings schemaLocation="../xsd/eDeliveryDetails.xsd">
         <jaxb:schemaBindings>
             <jaxb:package name="eu.spocseu.edeliverygw.configuration"/>
-<!--            <jaxb:nameXmlTransform>-->
-<!--                <jaxb:typeName suffix="Response"/>-->
-<!--            </jaxb:nameXmlTransform>-->
+            <!--            <jaxb:nameXmlTransform>-->
+            <!--                <jaxb:typeName suffix="Response"/>-->
+            <!--            </jaxb:nameXmlTransform>-->
         </jaxb:schemaBindings>
     </jaxb:bindings>
 
     <jaxb:bindings schemaLocation="../xsd/TS102640_v2.xsd">
         <jaxb:schemaBindings>
-            <jaxb:package name="org.etsi.uri._02640.v2" />
+            <jaxb:package name="org.etsi.uri._02640.v2"/>
         </jaxb:schemaBindings>
     </jaxb:bindings>
-
-
-<!--    <jaxb:bindings schemaLocation="ts_102231v030102_xsd.xsd" >-->
-<!--        <jaxb:schemaBindings>-->
-<!--            <jaxb:package name="org.etsi.uri._02231.v2_" />-->
-<!--        </jaxb:schemaBindings>-->
-<!--    </jaxb:bindings>-->
-
+    <!--    <jaxb:bindings schemaLocation="ts_102231v030102_xsd.xsd" >-->
+    <!--        <jaxb:schemaBindings>-->
+    <!--            <jaxb:package name="org.etsi.uri._02231.v2_" />-->
+    <!--        </jaxb:schemaBindings>-->
+    <!--    </jaxb:bindings>-->
 
 </jaxb:bindings>
+    <!--    <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>-->
 
-<!--    <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>-->
+    <!--    &lt;!&ndash; set default package structure &ndash;&gt;-->
+    <!--&lt;!&ndash;    <jaxws:package name="abra.ca.dabra" />&ndash;&gt;-->
 
-<!--    &lt;!&ndash; set default package structure &ndash;&gt;-->
-<!--&lt;!&ndash;    <jaxws:package name="abra.ca.dabra" />&ndash;&gt;-->
-
-<!--    &lt;!&ndash; set package structure for complex schema types &ndash;&gt;-->
-<!--    <jaxws:bindings node="wsdl:definitions/wsdl:types/xs:schema/xs:simpleType[@name='MyEnum']">-->
-<!--        <jaxb:schemaBindings>-->
-<!--            <jaxb:package name="a.b.c" />-->
-<!--        </jaxb:schemaBindings>-->
-<!--    </jaxws:bindings>-->
+    <!--    &lt;!&ndash; set package structure for complex schema types &ndash;&gt;-->
+    <!--    <jaxws:bindings node="wsdl:definitions/wsdl:types/xs:schema/xs:simpleType[@name='MyEnum']">-->
+    <!--        <jaxb:schemaBindings>-->
+    <!--            <jaxb:package name="a.b.c" />-->
+    <!--        </jaxb:schemaBindings>-->
+    <!--    </jaxws:bindings>-->

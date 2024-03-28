@@ -12,23 +12,42 @@ import org.bouncycastle.util.encoders.Hex;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
-public class EvidenceBuilderExplorationTests {
 
-
+class EvidenceBuilderExplorationTests {
     @Test
-    public void testEvidenceBuilderWithoutValidKeyStore() throws ECodexEvidenceBuilderException, DomibusConnectorEvidencesToolkitException {
-        ECodexEvidenceBuilder eCodexEvidenceBuilder = new ECodexEvidenceBuilder(new ClassPathResource(""), "JKS", "", "", "");
+    void testEvidenceBuilderWithoutValidKeyStore() throws ECodexEvidenceBuilderException,
+            DomibusConnectorEvidencesToolkitException {
+        ECodexEvidenceBuilder eCodexEvidenceBuilder =
+                new ECodexEvidenceBuilder(new ClassPathResource(""), "JKS", "", "", "");
 
-        byte[] submissionAcceptanceRejection = eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(false, REMErrorEvent.OTHER, buildEDeliveryDetails(), buildMessageDetails());
-        //if there is an error the generated evidence gets null!
+        byte[] submissionAcceptanceRejection = eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(
+                false,
+                REMErrorEvent.OTHER,
+                buildEDeliveryDetails(),
+                buildMessageDetails()
+        );
+        // if there is an error the generated evidence gets null!
         Assertions.assertThat(submissionAcceptanceRejection).isNull();
     }
 
     @Test
-    public void testEvidenceBuilderWithtValidKeyStore() throws ECodexEvidenceBuilderException, DomibusConnectorEvidencesToolkitException {
-        ECodexEvidenceBuilder eCodexEvidenceBuilder = new ECodexEvidenceBuilder(new ClassPathResource("/keystore/evidence_test.jks"), "JKS", "12345", "test", "12345");
+    void testEvidenceBuilderWithtValidKeyStore() throws ECodexEvidenceBuilderException,
+            DomibusConnectorEvidencesToolkitException {
+        ECodexEvidenceBuilder eCodexEvidenceBuilder =
+                new ECodexEvidenceBuilder(
+                        new ClassPathResource("/keystore/evidence_test.jks"),
+                        "JKS",
+                        "12345",
+                        "test",
+                        "12345"
+                );
 
-        byte[] submissionAcceptanceRejection = eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(false, REMErrorEvent.OTHER, buildEDeliveryDetails(), buildMessageDetails());
+        byte[] submissionAcceptanceRejection = eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(
+                false,
+                REMErrorEvent.OTHER,
+                buildEDeliveryDetails(),
+                buildMessageDetails()
+        );
 
         Assertions.assertThat(submissionAcceptanceRejection).isNotNull();
     }
@@ -62,8 +81,7 @@ public class EvidenceBuilderExplorationTests {
         ECodexMessageDetails messageDetails = new ECodexMessageDetails();
 
         messageDetails.setHashAlgorithm("MD5");
-        if (hash != null)
-            messageDetails.setHashValue(Hex.decode(hash));
+        if (hash != null) messageDetails.setHashValue(Hex.decode(hash));
 
         if (nationalMessageId == null || nationalMessageId.isEmpty()) {
             throw new DomibusConnectorEvidencesToolkitException(
@@ -82,5 +100,4 @@ public class EvidenceBuilderExplorationTests {
         messageDetails.setSenderAddress(senderAddress);
         return messageDetails;
     }
-
 }

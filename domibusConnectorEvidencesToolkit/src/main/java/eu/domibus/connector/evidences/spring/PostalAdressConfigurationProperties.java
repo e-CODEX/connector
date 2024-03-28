@@ -1,13 +1,10 @@
 package eu.domibus.connector.evidences.spring;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 /**
  * This configuration properties are holding
@@ -17,31 +14,25 @@ import javax.validation.constraints.NotNull;
 @Validated
 @Valid
 public class PostalAdressConfigurationProperties {
-
     /**
      * The street
      */
     @NotBlank
     private String street;
-
     /**
      * Locality, eg, Brussels, Vienna, ...
      */
     @NotBlank
     private String locality;
-
     /**
      * The zipCode
      */
     @NotBlank
     private String zipCode;
-
     /**
      * The country, preferred the
      * ISO 2-letter Country Code
      * eg. AT, DE, ...
-     *
-     *
      */
     @NotBlank
     private String country;

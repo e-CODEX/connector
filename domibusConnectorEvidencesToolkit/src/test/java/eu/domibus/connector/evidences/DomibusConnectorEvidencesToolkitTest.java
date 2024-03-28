@@ -30,35 +30,30 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 
+
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
-public class DomibusConnectorEvidencesToolkitTest {
-
-    @SpringBootApplication(
-            scanBasePackages = {"eu.domibus.connector.evidences", "eu.domibus.connector.common", "eu.domibus.connector.utils", "eu.domibus.connector.lib"}
-    )
-    public static class TestContext {}
-
+class DomibusConnectorEvidencesToolkitTest {
     private static Logger LOG = LoggerFactory.getLogger(DomibusConnectorEvidencesToolkitTest.class);
 
     @MockBean
     DCBusinessDomainManager dcBusinessDomainManager;
-
     @Autowired
     private DomibusConnectorEvidencesToolkit evidencesToolkit;
-
     @Autowired
     private EvidencesToolkitConfigurationProperties evidencesToolkitConfigurationProperties;
 
     @BeforeEach
     public void beforeEach() {
         CurrentBusinessDomain.setCurrentBusinessDomain(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
-        Mockito.when(dcBusinessDomainManager.getBusinessDomain(eq(DomibusConnectorBusinessDomain.getDefaultMessageLaneId())))
+        Mockito
+                .when(dcBusinessDomainManager.getBusinessDomain(eq(DomibusConnectorBusinessDomain.getDefaultMessageLaneId())))
                 .thenReturn(Optional.of(DomibusConnectorBusinessDomain.getDefaultMessageLane()));
     }
 
     @Test
-    public void testCreateSubmissionAcceptance() throws DomibusConnectorEvidencesToolkitException, TransformerException {
+    void testCreateSubmissionAcceptance() throws DomibusConnectorEvidencesToolkitException,
+            TransformerException {
         LOG.info("Started testCreateSubmissionAcceptance");
 
         DomibusConnectorMessage message = buildTestMessage();
@@ -66,7 +61,13 @@ public class DomibusConnectorEvidencesToolkitTest {
         assertThat(evidencesToolkit).as("evidences toolkit must be init!").isNotNull();
         assertThat(message).as("message must not be null!").isNotNull();
 
-        DomibusConnectorMessageConfirmation confirmation = evidencesToolkit.createEvidence(DomibusConnectorEvidenceType.SUBMISSION_ACCEPTANCE, message, null, null);
+        DomibusConnectorMessageConfirmation confirmation =
+                evidencesToolkit.createEvidence(
+                        DomibusConnectorEvidenceType.SUBMISSION_ACCEPTANCE,
+                        message,
+                        null,
+                        null
+                );
         Assertions.assertNotNull(confirmation);
         String evidencePretty = prettyPrint(confirmation.getEvidence());
         LOG.info(evidencePretty);
@@ -75,7 +76,8 @@ public class DomibusConnectorEvidencesToolkitTest {
     }
 
     @Test
-    public void testCreateSubmissionAcceptance_businessDocIsNull() throws DomibusConnectorEvidencesToolkitException, TransformerException {
+    void testCreateSubmissionAcceptance_businessDocIsNull() throws DomibusConnectorEvidencesToolkitException,
+            TransformerException {
         LOG.info("Started testCreateSubmissionAcceptance");
 
         DomibusConnectorMessage message = buildTestMessage_businessDocIsNull();
@@ -83,7 +85,13 @@ public class DomibusConnectorEvidencesToolkitTest {
         assertThat(evidencesToolkit).as("evidences toolkit must be init!").isNotNull();
         assertThat(message).as("message must not be null!").isNotNull();
 
-        DomibusConnectorMessageConfirmation confirmation = evidencesToolkit.createEvidence(DomibusConnectorEvidenceType.SUBMISSION_ACCEPTANCE, message, null, null);
+        DomibusConnectorMessageConfirmation confirmation =
+                evidencesToolkit.createEvidence(
+                        DomibusConnectorEvidenceType.SUBMISSION_ACCEPTANCE,
+                        message,
+                        null,
+                        null
+                );
         Assertions.assertNotNull(confirmation);
         String evidencePretty = prettyPrint(confirmation.getEvidence());
         LOG.info(evidencePretty);
@@ -92,7 +100,7 @@ public class DomibusConnectorEvidencesToolkitTest {
     }
 
     @Test
-    public void testCreateSubmissionRejection() {
+    void testCreateSubmissionRejection() {
         LOG.info("Started testCreateSubmissionRejection");
 
         DomibusConnectorMessage message = buildTestMessage();
@@ -101,7 +109,9 @@ public class DomibusConnectorEvidencesToolkitTest {
             DomibusConnectorMessageConfirmation confirmation = evidencesToolkit.createEvidence(
                     DomibusConnectorEvidenceType.SUBMISSION_REJECTION,
                     message,
-                    DomibusConnectorRejectionReason.OTHER, null);
+                    DomibusConnectorRejectionReason.OTHER,
+                    null
+            );
             Assertions.assertNotNull(confirmation);
             String evidencePretty = prettyPrint(confirmation.getEvidence());
             LOG.info(evidencePretty);
@@ -128,8 +138,7 @@ public class DomibusConnectorEvidencesToolkitTest {
 
         LargeFileReferenceMemoryBacked ref = new LargeFileReferenceMemoryBacked("originalMessage".getBytes());
 
-        DomibusConnectorMessageDocument document =
-                new DomibusConnectorMessageDocument(ref, "documentName", null);
+        DomibusConnectorMessageDocument document = new DomibusConnectorMessageDocument(ref, "documentName", null);
 
         content.setXmlContent("originalMessage".getBytes());
         content.setDocument(document);
@@ -146,11 +155,8 @@ public class DomibusConnectorEvidencesToolkitTest {
         details.setFinalRecipient("someRecipientAddress");
 
         DomibusConnectorMessageContent content = new DomibusConnectorMessageContent();
-
-//        LargeFileReferenceMemoryBacked ref = new LargeFileReferenceMemoryBacked("originalMessage".getBytes());
-
-        DomibusConnectorMessageDocument document =
-                new DomibusConnectorMessageDocument(null, "documentName", null);
+        // LargeFileReferenceMemoryBacked ref = new LargeFileReferenceMemoryBacked("originalMessage".getBytes());
+        DomibusConnectorMessageDocument document = new DomibusConnectorMessageDocument(null, "documentName", null);
 
         content.setXmlContent("originalMessage".getBytes());
         content.setDocument(document);
@@ -177,4 +183,10 @@ public class DomibusConnectorEvidencesToolkitTest {
         return xmlOutput.getWriter().toString();
     }
 
+    @SpringBootApplication(
+            scanBasePackages = {"eu.domibus.connector.evidences", "eu.domibus.connector.common", "eu.domibus" +
+                    ".connector.utils", "eu.domibus.connector.lib"}
+    )
+    public static class TestContext {
+    }
 }

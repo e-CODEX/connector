@@ -1,58 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <SubmissionAcceptanceRejection xmlns="http://uri.etsi.org/02640/v2#"
-	xmlns:ns2="http://uri.etsi.org/02231/v2#" xmlns:ns3="http://www.w3.org/2000/09/xmldsig#"
-	xmlns:ns4="http://uri.etsi.org/01903/v1.3.2#" xmlns:ns5="urn:oasis:names:tc:SAML:2.0:assertion"
-	xmlns:ns6="http://www.w3.org/2001/04/xmlenc#" xmlns:ns7="http://uri.etsi.org/02640/soapbinding/v1#"
-	xmlns:xmime="http://www.w3.org/2005/05/xmlmime" version="2.1.1"
-	Id="babb56ba-6852-426f-baf5-dcfaf3b9f94f">
-	<EventCode>http:uri.etsi.org/02640/Event#Acceptance</EventCode>
-	<EvidenceIdentifier>8617418c-06b1-45ea-a961-c902a634a52f
-	</EvidenceIdentifier>
-	<EvidenceIssuerPolicyID>
-		<PolicyID>http://uri.eu-ecodex.eu/eDeliveryPolicy</PolicyID>
-	</EvidenceIssuerPolicyID>
-	<EvidenceIssuerDetails>
-		<NamesPostalAddresses>
-			<NamePostalAddress>
-				<EntityName>
-					<Name>gatewayname</Name>
-				</EntityName>
-				<PostalAddress>
-					<StreetAddress>streetaddress</StreetAddress>
-					<Locality>locality</Locality>
-					<PostalCode>postalcode</PostalCode>
-					<CountryName>country</CountryName>
-				</PostalAddress>
-			</NamePostalAddress>
-		</NamesPostalAddresses>
-		<AttributedElectronicAddress scheme="mailto">gatewayaddress
-		</AttributedElectronicAddress>
-	</EvidenceIssuerDetails>
-	<EventTime>2012-11-08T13:39:18.421+01:00</EventTime>
-	<SubmissionTime>2012-11-08T13:39:18.343+01:00</SubmissionTime>
-	<ReplyToAddress scheme="mailto" DisplayName="displayName">stefan.mueller@it.nrw.de
-	</ReplyToAddress>
-	<SenderDetails>
-		<NamesPostalAddresses>
-			<NamePostalAddress>
-				<EntityName />
-			</NamePostalAddress>
-		</NamesPostalAddresses>
-		<AttributedElectronicAddress DisplayName="displayName">stefan.mueller@it.nrw.de
-		</AttributedElectronicAddress>
-	</SenderDetails>
-	<RecipientsDetails>
-		<EntityDetails>
-			<NamesPostalAddresses>
-				<NamePostalAddress>
-					<EntityName />
-				</NamePostalAddress>
-			</NamesPostalAddresses>
-			<AttributedElectronicAddress DisplayName="displayName">
-				stefan.mueller@it.nrw.de</AttributedElectronicAddress>
-		</EntityDetails>
-	</RecipientsDetails>
-	<SenderMessageDetails isNotification="false">
-		<MessageIdentifierByREMMD>messageID</MessageIdentifierByREMMD>
-	</SenderMessageDetails>
+                               xmlns:ns2="http://uri.etsi.org/02231/v2#" xmlns:ns3="http://www.w3.org/2000/09/xmldsig#"
+                               xmlns:ns4="http://uri.etsi.org/01903/v1.3.2#"
+                               xmlns:ns5="urn:oasis:names:tc:SAML:2.0:assertion"
+                               xmlns:ns6="http://www.w3.org/2001/04/xmlenc#"
+                               xmlns:ns7="http://uri.etsi.org/02640/soapbinding/v1#"
+                               xmlns:xmime="http://www.w3.org/2005/05/xmlmime" version="2.1.1"
+                               Id="babb56ba-6852-426f-baf5-dcfaf3b9f94f">
+    <EventCode>http:uri.etsi.org/02640/Event#Acceptance</EventCode>
+    <EvidenceIdentifier>8617418c-06b1-45ea-a961-c902a634a52f
+    </EvidenceIdentifier>
+    <EvidenceIssuerPolicyID>
+        <PolicyID>http://uri.eu-ecodex.eu/eDeliveryPolicy</PolicyID>
+    </EvidenceIssuerPolicyID>
+    <EvidenceIssuerDetails>
+        <NamesPostalAddresses>
+            <NamePostalAddress>
+                <EntityName>
+                    <Name>gatewayname</Name>
+                </EntityName>
+                <PostalAddress>
+                    <StreetAddress>streetaddress</StreetAddress>
+                    <Locality>locality</Locality>
+                    <PostalCode>postalcode</PostalCode>
+                    <CountryName>country</CountryName>
+                </PostalAddress>
+            </NamePostalAddress>
+        </NamesPostalAddresses>
+        <AttributedElectronicAddress scheme="mailto">gatewayaddress
+        </AttributedElectronicAddress>
+    </EvidenceIssuerDetails>
+    <EventTime>2012-11-08T13:39:18.421+01:00</EventTime>
+    <SubmissionTime>2012-11-08T13:39:18.343+01:00</SubmissionTime>
+    <ReplyToAddress scheme="mailto" DisplayName="displayName">stefan.mueller@it.nrw.de
+    </ReplyToAddress>
+    <SenderDetails>
+        <NamesPostalAddresses>
+            <NamePostalAddress>
+                <EntityName/>
+            </NamePostalAddress>
+        </NamesPostalAddresses>
+        <AttributedElectronicAddress DisplayName="displayName">stefan.mueller@it.nrw.de
+        </AttributedElectronicAddress>
+    </SenderDetails>
+    <RecipientsDetails>
+        <EntityDetails>
+            <NamesPostalAddresses>
+                <NamePostalAddress>
+                    <EntityName/>
+                </NamePostalAddress>
+            </NamesPostalAddresses>
+            <AttributedElectronicAddress DisplayName="displayName">
+                stefan.mueller@it.nrw.de
+            </AttributedElectronicAddress>
+        </EntityDetails>
+    </RecipientsDetails>
+    <SenderMessageDetails isNotification="false">
+        <MessageIdentifierByREMMD>messageID</MessageIdentifierByREMMD>
+    </SenderMessageDetails>
 </SubmissionAcceptanceRejection>

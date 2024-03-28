@@ -23,67 +23,48 @@ See SPOCS_WP3_LICENSE_URL for license information
 --------------------------------------------------------------------------- */
 package eu.spocseu.edeliverygw.evidences;
 
-import java.io.OutputStream;
-
-import javax.xml.bind.JAXBException;
-
+import eu.spocseu.edeliverygw.JaxbContextHolder;
+import eu.spocseu.edeliverygw.configuration.EDeliveryDetails;
 import org.etsi.uri._02640.v2.ObjectFactory;
 import org.etsi.uri._02640.v2.REMEvidenceType;
 
-import eu.spocseu.edeliverygw.JaxbContextHolder;
-import eu.spocseu.edeliverygw.configuration.EDeliveryDetails;
+import javax.xml.bind.JAXBException;
+import java.io.OutputStream;
+
 
 /**
  * This class represents a ReceivedByNonREMSystem evidence. It helps to create
  * the underlying REMEvidenceType JAXB object of the xsd structure.
- * 
+ *
  * @author Lindemann
- * 
  */
-public class ReceivedByNonREMSystem extends Evidence
-{
+public class ReceivedByNonREMSystem extends Evidence {
+    /**
+     * This constructor creates this ReceivedByNonREMSystem evidence:
+     *
+     * @param details Configuration object to set some properties
+     */
+    public ReceivedByNonREMSystem(EDeliveryDetails details) {
+        super(details);
+    }
 
+    /**
+     * This constructor creates this ReceivedByNonREMSystem evidence with the
+     * given JAXB object and the configuration.
+     *
+     * @param evidenceType The JAXB object.
+     */
+    public ReceivedByNonREMSystem(REMEvidenceType evidenceType) {
+        super(evidenceType);
+    }
 
-	/**
-	 * This constructor creates this ReceivedByNonREMSystem evidence:
-	 * 
-	 * @param details
-	 *            Configuration object to set some properties
-	 */
-	public ReceivedByNonREMSystem(EDeliveryDetails details)
-	{
-		super(details);
-
-	}
-
-	/**
-	 * This constructor creates this ReceivedByNonREMSystem evidence with the
-	 * given JAXB object and the configuration.
-	 * 
-	 * @param evidenceType
-	 *            The JAXB object.
-	 */
-	public ReceivedByNonREMSystem(REMEvidenceType evidenceType)
-	{
-		super(evidenceType);
-
-	}
-
-	/**
-	 * This method serializes the underlying JAXB object.
-	 * 
-	 * @param out
-	 *            The output stream that the information will be streamed into.
-	 */
-	public void serialize(OutputStream out) throws JAXBException
-	{
-		JaxbContextHolder
-				.getSpocsJaxBContext()
-				.createMarshaller()
-				.marshal(
-					new ObjectFactory().createReceivedFromNonREMSystem(jaxbObj),
-					out);
-
-	}
-
+    /**
+     * This method serializes the underlying JAXB object.
+     *
+     * @param out The output stream that the information will be streamed into.
+     */
+    public void serialize(OutputStream out) throws JAXBException {
+        JaxbContextHolder.getSpocsJaxBContext().createMarshaller()
+                         .marshal(new ObjectFactory().createReceivedFromNonREMSystem(jaxbObj), out);
+    }
 }

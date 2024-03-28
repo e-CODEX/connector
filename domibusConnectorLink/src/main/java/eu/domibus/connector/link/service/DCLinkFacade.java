@@ -5,14 +5,12 @@ import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
-import eu.domibus.connector.domain.model.DomibusConnectorTransportStep;
 import eu.domibus.connector.link.api.ActiveLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.api.PluginFeature;
 import eu.domibus.connector.link.api.exception.LinkPluginException;
 import eu.domibus.connector.persistence.service.DCLinkPersistenceService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.boot.actuate.endpoint.web.Link;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
@@ -21,22 +19,22 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 @Service
 @ConditionalOnBean(DCLinkPluginConfiguration.class)
 public class DCLinkFacade {
-
     private final DCActiveLinkManagerService linkManager;
     private final DCLinkPersistenceService dcLinkPersistenceService;
     private final DCLinkPluginConfigurationProperties lnkConfig;
 
-    public DCLinkFacade(DCActiveLinkManagerService linkManager,
-                        DCLinkPersistenceService dcLinkPersistenceService,
-                        DCLinkPluginConfigurationProperties props) {
+    public DCLinkFacade(
+            DCActiveLinkManagerService linkManager,
+            DCLinkPersistenceService dcLinkPersistenceService,
+            DCLinkPluginConfigurationProperties props) {
         this.linkManager = linkManager;
         this.dcLinkPersistenceService = dcLinkPersistenceService;
         this.lnkConfig = props;
     }
-
 
     public boolean isActive(DomibusConnectorLinkPartner d) {
         if (d.getLinkPartnerName() == null) {
@@ -50,23 +48,22 @@ public class DCLinkFacade {
     }
 
     public List<DomibusConnectorLinkPartner> getAllLinksOfType(LinkType linkType) {
-        return getAllLinks().stream()
-                .filter(l -> Objects.equals(l.getLinkType(), linkType) || linkType == null)
-                .collect(Collectors.toList());
+        return getAllLinks().stream().filter(l -> Objects.equals(l.getLinkType(), linkType) || linkType == null)
+                            .collect(Collectors.toList());
     }
 
     public List<DomibusConnectorLinkPartner> getAllLinks() {
         List<DomibusConnectorLinkPartner> allLinks = new ArrayList<>();
 
         allLinks.addAll(dcLinkPersistenceService.getAllLinks());
-        allLinks.addAll(lnkConfig.getBackend().stream()
-                .filter(Objects::nonNull)
-                .flatMap(b -> mapCnfg(b, LinkType.BACKEND)).collect(Collectors.toList()));
+        allLinks.addAll(lnkConfig.getBackend().stream().filter(Objects::nonNull)
+                                 .flatMap(b -> mapCnfg(b, LinkType.BACKEND)).collect(Collectors.toList()));
         allLinks.addAll(mapCnfg(lnkConfig.getGateway(), LinkType.GATEWAY).collect(Collectors.toList()));
         return allLinks;
     }
 
-    private Stream<DomibusConnectorLinkPartner> mapCnfg(DCLinkPluginConfigurationProperties.DCLnkPropertyConfig b, LinkType linkType) {
+    private Stream<DomibusConnectorLinkPartner> mapCnfg(
+            DCLinkPluginConfigurationProperties.DCLnkPropertyConfig b, LinkType linkType) {
         if (b == null) {
             return Stream.empty();
         }
@@ -87,14 +84,15 @@ public class DCLinkFacade {
         });
     }
 
-    //convert property names from KebabCase to CamelCase
+    // convert property names from KebabCase to CamelCase
     // eg.:  cn-name to cnName
     private Map<String, String> mapKebabCaseToCamelCase(Map<String, String> properties) {
-        Map<String, String> map = properties
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(e -> CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, e.getKey()),e -> e.getValue()));
-        return map;
+        return properties
+                .entrySet().stream()
+                .collect(Collectors.toMap(e -> CaseFormat.LOWER_HYPHEN.to(
+                        CaseFormat.LOWER_CAMEL,
+                        e.getKey()
+                ), e -> e.getValue()));
     }
 
     public Optional<DomibusConnectorLinkPartner> loadLinkPartner(DomibusConnectorLinkPartner.LinkPartnerName name) {
@@ -112,12 +110,11 @@ public class DCLinkFacade {
         try {
             linkManager.shutdownLinkPartner(linkPartner.getLinkPartnerName());
         } catch (LinkPluginException exception) {
-            //handle
+            // handle
         }
         if (ConfigurationSource.DB == linkPartner.getConfigurationSource()) {
             dcLinkPersistenceService.deleteLinkPartner(linkPartner);
         }
-
     }
 
     public void updateLinkPartner(DomibusConnectorLinkPartner linkPartner) {
@@ -128,20 +125,17 @@ public class DCLinkFacade {
 
     public Optional<DomibusConnectorLinkConfiguration> loadLinkConfig(DomibusConnectorLinkConfiguration.LinkConfigName configName) {
         List<DomibusConnectorLinkConfiguration> allConfigs = getAllConfigurations();
-        return allConfigs.stream()
-                .filter(c -> configName.equals(c.getConfigName()))
-                .findAny();
+        return allConfigs.stream().filter(c -> configName.equals(c.getConfigName())).findAny();
     }
 
     private List<DomibusConnectorLinkConfiguration> getAllConfigurations() {
         List<DomibusConnectorLinkConfiguration> allLinkConfigurations =
                 dcLinkPersistenceService.getAllLinkConfigurations();
 
-        return Stream.of(getAllLinks().stream()
-                .map(DomibusConnectorLinkPartner::getLinkConfiguration), allLinkConfigurations.stream())
-                .flatMap(Function.identity())
-                .distinct()
-                .collect(Collectors.toList());
+        return Stream.of(
+                getAllLinks().stream().map(DomibusConnectorLinkPartner::getLinkConfiguration),
+                allLinkConfigurations.stream()
+        ).flatMap(Function.identity()).distinct().collect(Collectors.toList());
     }
 
     public void updateLinkConfig(DomibusConnectorLinkConfiguration linkConfig) {
@@ -151,21 +145,19 @@ public class DCLinkFacade {
     }
 
     public List<DomibusConnectorLinkConfiguration> getAllLinkConfigurations(LinkType linkType) {
-        //get all configurations wich support the linkType
+        // get all configurations wich support the linkType
         Stream<DomibusConnectorLinkConfiguration> stream1 =
                 dcLinkPersistenceService.getAllLinkConfigurations().stream()
-                        .filter(c -> getLinkPluginByName(c.getLinkImpl())
-                                .map(p -> p.getFeatures()
-                                        .contains(getPluginFeatureFromLinkType(linkType))).orElse(false));
-        //get all configurations which have a link partner with this link type
-        Stream<DomibusConnectorLinkConfiguration> stream2 = getAllLinksOfType(linkType)
-                .stream()
-                .map(DomibusConnectorLinkPartner::getLinkConfiguration);
-        //merge together
-        return Stream.of(stream1, stream2)
-                .flatMap(Function.identity())
-                .distinct()
-                .collect(Collectors.toList());
+                                        .filter(c -> getLinkPluginByName(c.getLinkImpl())
+                                                .map(p -> p.getFeatures()
+                                                           .contains(
+                                                                   getPluginFeatureFromLinkType(linkType)))
+                                                .orElse(false));
+        // get all configurations which have a link partner with this link type
+        Stream<DomibusConnectorLinkConfiguration> stream2 =
+                getAllLinksOfType(linkType).stream().map(DomibusConnectorLinkPartner::getLinkConfiguration);
+        // merge together
+        return Stream.of(stream1, stream2).flatMap(Function.identity()).distinct().collect(Collectors.toList());
     }
 
     private PluginFeature getPluginFeatureFromLinkType(LinkType linkType) {
@@ -179,11 +171,8 @@ public class DCLinkFacade {
     }
 
     public List<LinkPlugin> getAvailableLinkPlugins(LinkType linkType) {
-        return linkManager
-                .getAvailableLinkPlugins()
-                .stream()
-                .filter(p -> p.getSupportedLinkTypes().contains(linkType))
-                .collect(Collectors.toList());
+        return linkManager.getAvailableLinkPlugins().stream().filter(p -> p.getSupportedLinkTypes().contains(linkType))
+                          .collect(Collectors.toList());
     }
 
     public Optional<LinkPlugin> getLinkPluginByName(String linkImpl) {

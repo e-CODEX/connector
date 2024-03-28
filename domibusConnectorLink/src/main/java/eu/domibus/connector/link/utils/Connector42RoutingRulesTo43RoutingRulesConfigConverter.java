@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @Lazy
 @Component
 public class Connector42RoutingRulesTo43RoutingRulesConfigConverter {
-
-    private static final Logger LOGGER = LogManager.getLogger(Connector42RoutingRulesTo43RoutingRulesConfigConverter.class);
+    private static final Logger LOGGER =
+            LogManager.getLogger(Connector42RoutingRulesTo43RoutingRulesConfigConverter.class);
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -27,11 +27,11 @@ public class Connector42RoutingRulesTo43RoutingRulesConfigConverter {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     public List<RoutingRule> getRoutingRules() {
-        List<RoutingRule> routingRules = jdbcTemplate.query("SELECT s.DOMIBUS_CONNECTOR_SERVICE_ID, b.BACKEND_NAME FROM " +
-                        "DOMIBUS_CONNECTOR_BACK_2_S s LEFT JOIN DOMIBUS_CONNECTOR_BACKEND_INFO b ON s.DOMIBUS_CONNECTOR_BACKEND_ID = b.ID",
-                (RowMapper<RoutingRule>) (rs, rowNum) -> {
+        return jdbcTemplate.query(
+                "SELECT s.DOMIBUS_CONNECTOR_SERVICE_ID, b.BACKEND_NAME FROM " + "DOMIBUS_CONNECTOR_BACK_2_S s LEFT " +
+                        "JOIN DOMIBUS_CONNECTOR_BACKEND_INFO b ON s.DOMIBUS_CONNECTOR_BACKEND_ID = b.ID",
+                (rs, rowNum) -> {
                     try {
                         RoutingRule rr = new RoutingRule();
                         String backendName = rs.getString(2);
@@ -46,13 +46,10 @@ public class Connector42RoutingRulesTo43RoutingRulesConfigConverter {
                         return rr;
                     } catch (Exception e) {
                         LOGGER.warn("Failed to import a routing rule from old config", e);
-                        //Ignore
+                        // Ignore
                     }
                     return null;
-                }).stream()
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-        return routingRules;
+                }
+        ).stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
-
 }

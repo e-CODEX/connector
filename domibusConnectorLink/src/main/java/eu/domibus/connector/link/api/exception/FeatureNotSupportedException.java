@@ -2,8 +2,8 @@ package eu.domibus.connector.link.api.exception;
 
 import eu.domibus.connector.link.api.PluginFeature;
 
-public class FeatureNotSupportedException extends LinkPluginException {
 
+public class FeatureNotSupportedException extends LinkPluginException {
     private final PluginFeature pluginFeature;
 
     public FeatureNotSupportedException(PluginFeature pluginFeature) {
@@ -25,7 +25,12 @@ public class FeatureNotSupportedException extends LinkPluginException {
         this.pluginFeature = pluginFeature;
     }
 
-    public FeatureNotSupportedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, PluginFeature pluginFeature) {
+    public FeatureNotSupportedException(
+            String message,
+            Throwable cause,
+            boolean enableSuppression,
+            boolean writableStackTrace,
+            PluginFeature pluginFeature) {
         super(message, cause, enableSuppression, writableStackTrace);
         this.pluginFeature = pluginFeature;
     }

@@ -28,23 +28,25 @@ import static test.eu.domibus.connector.link.wsbackendplugin.BackendClientPushWe
 
 /**
  * A very simple connector backend for testing purposes
- *
+ * <p>
  * messages can be pushed to and are stored within the Bean
- *
  */
-@SpringBootApplication(scanBasePackageClasses = {ConnectorClientTestBackend.class},
+@SpringBootApplication(
+        scanBasePackageClasses = {ConnectorClientTestBackend.class},
         exclude = {DataSourceAutoConfiguration.class,
                 ActiveMQAutoConfiguration.class,
-                QuartzAutoConfiguration.class})
+                QuartzAutoConfiguration.class}
+)
 @Profile(ConnectorClientTestBackend.TEST_BACKEND_PROFILE_NAME)
 @ImportResource("classpath:/test/eu/domibus/connector/link/wsbackendplugin/testclient.xml")
 public class ConnectorClientTestBackend {
-
     public static final String TEST_BACKEND_PROFILE_NAME = "wsbackendprofile";
     public static final String PUSH_BACKEND_PROFILE_NAME = "ws-backendclient-server";
 
+    @Autowired
+    ConfigurableApplicationContext applicationContext;
 
-    //client alice...
+    // client alice...
     public static void main(String[] args) {
         Map<String, Object> props = new HashMap<>();
         startContext("alice", "http://localhost:8021/services/backend", SocketUtils.findAvailableTcpPort());
@@ -66,20 +68,17 @@ public class ConnectorClientTestBackend {
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
         SpringApplicationBuilder springApp = builder.sources(ConnectorClientTestBackend.class);
         if (pushClient) {
-                springApp.web(WebApplicationType.SERVLET);
+            springApp.web(WebApplicationType.SERVLET);
         } else {
             springApp.web(WebApplicationType.NONE);
         }
         springApp.profiles(profiles.toArray(new String[]{}))
-                .properties(props)
-                .bannerMode(Banner.Mode.OFF);
+                 .properties(props)
+                 .bannerMode(Banner.Mode.OFF);
 
         ConfigurableApplicationContext configurableApplicationContext = springApp.build().run();
         return configurableApplicationContext.getBean(ConnectorClientTestBackend.class);
     }
-
-    @Autowired
-    ConfigurableApplicationContext applicationContext;
 
     public ApplicationContext getApplicationContext() {
         return applicationContext;
@@ -89,6 +88,7 @@ public class ConnectorClientTestBackend {
      * returns a LinkedBlockingQueue holding all messages
      * which have been pushed to the Pull backend
      * Will only work if it is a pull client
+     *
      * @return LinkedBlockingQueue holding all messages
      */
     public LinkedBlockingQueue<DomibusConnectorMessageType> submittedMessages() {
@@ -97,6 +97,7 @@ public class ConnectorClientTestBackend {
 
     /**
      * throws exception if not started as push backend!
+     *
      * @return the http address of the cxf pull backend webservice
      */
     public GetServerAddress getServerAddress() {
@@ -106,15 +107,14 @@ public class ConnectorClientTestBackend {
     /**
      * returns the created ConnectorClient CXF-Proxy
      * can be used to send messages to the connector backend for testing
+     *
      * @return ConnectorClient CXF-Proxy
      */
     public DomibusConnectorBackendWebService backendConnectorClientProxy() {
         return applicationContext.getBean(DomibusConnectorBackendWebService.class);
     }
 
-
     public void shutdown() {
         applicationContext.close();
     }
-
 }

@@ -21,6 +21,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
 /**
  * IMPLEMENTATION OF THE GW WEB SERIVCE INTERFACE
  * FOR TESTING PURPOSE
@@ -29,9 +30,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ImportResource("classpath:/test/eu/domibus/connector/link/wsgatewayplugin/TestGatewayContext.xml")
 @Profile("testgw")
 public class TestGW {
-
     public static final String TO_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME = "toGwSubmittedMessagesBlockingQueue";
-
+    @Autowired
+    ConfigurableApplicationContext applicationContext;
 
     public static TestGW startTestGw(String connectorAddress, int serverPort) {
         Properties props = new Properties();
@@ -39,22 +40,21 @@ public class TestGW {
         props.put("connector.address", connectorAddress);
 
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
-        SpringApplication springApp = builder.sources(TestGW.class)
+        SpringApplication springApp = builder
+                .sources(TestGW.class)
                 .web(WebApplicationType.SERVLET)
                 .bannerMode(Banner.Mode.OFF)
                 .profiles("testgw")
                 .properties(props)
                 .build();
-        ConfigurableApplicationContext ctx =  springApp.run();
+        ConfigurableApplicationContext ctx = springApp.run();
         return ctx.getBean(TestGW.class);
     }
 
-    public static LinkedBlockingQueue<DomibusConnectorMessageType> getToGwSubmittedMessages(ConfigurableApplicationContext context) {
-        return (LinkedBlockingQueue<DomibusConnectorMessageType>) context.getBean(TO_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME);
-    }
-
-    public DomibusConnectorGatewayDeliveryWebService getConnectorDeliveryClient() {
-        return (DomibusConnectorGatewayDeliveryWebService) applicationContext.getBean("connectorDeliveryClient");
+    public static LinkedBlockingQueue<DomibusConnectorMessageType> getToGwSubmittedMessages(
+            ConfigurableApplicationContext context) {
+        return (LinkedBlockingQueue<DomibusConnectorMessageType>) context.getBean(
+                TO_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME);
     }
 
     public static String getSubmitAddress(ConfigurableApplicationContext ctx) {
@@ -62,42 +62,39 @@ public class TestGW {
         return "http://localhost:" + port + "/services/submission";
     }
 
-    @Autowired
-    ConfigurableApplicationContext applicationContext;
+    public DomibusConnectorGatewayDeliveryWebService getConnectorDeliveryClient() {
+        return (DomibusConnectorGatewayDeliveryWebService) applicationContext.getBean("connectorDeliveryClient");
+    }
 
     @Bean(TO_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME)
     public LinkedBlockingQueue<DomibusConnectorMessageType> deliveredMessagesList() {
 
-//        return Collections.synchronizedList(new ArrayList<>());
+        //        return Collections.synchronizedList(new ArrayList<>());
         return new LinkedBlockingQueue<>(20);
     }
-
 
     @Bean("testGwSubmissionService")
     public DomibusConnectorGatewaySubmissionWebService testGwSubmissionService() {
         return new DomibusConnectorGatewaySubmissionWebService() {
-
             @Override
             public DomibsConnectorAcknowledgementType submitMessage(DomibusConnectorMessageType deliverMessageRequest) {
                 LinkedBlockingQueue<DomibusConnectorMessageType> queue = deliveredMessagesList();
 
-                //messageList.add(deliverMessageRequest);
+                // messageList.add(deliverMessageRequest);
                 if (!queue.offer(deliverMessageRequest)) {
                     throw new RuntimeException("Could not add element to queue " + queue);
                 }
 
                 DomibsConnectorAcknowledgementType acknowledgementType = new DomibsConnectorAcknowledgementType();
 
-                String messageId = UUID.randomUUID().toString() + "_TESTGW";
+                String messageId = UUID.randomUUID() + "_TESTGW";
 
                 acknowledgementType.setResultMessage("resultMessage");
                 acknowledgementType.setResult(true);
                 acknowledgementType.setMessageId(messageId);
 
                 return acknowledgementType;
-
             }
         };
     }
-
 }

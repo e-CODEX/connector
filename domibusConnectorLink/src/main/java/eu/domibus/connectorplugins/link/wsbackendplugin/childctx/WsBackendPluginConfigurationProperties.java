@@ -1,6 +1,5 @@
 package eu.domibus.connectorplugins.link.wsbackendplugin.childctx;
 
-import eu.domibus.connector.lib.spring.configuration.CxfTrustKeyStoreConfigurationProperties;
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreAndTrustStoreConfigurationProperties;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationDescription;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
@@ -15,12 +14,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
-
 @ConfigurationProperties(prefix = "")
 @Validated
 @Data
 public class WsBackendPluginConfigurationProperties {
-
     /**
      * Specifies the address where the Backend WebService should be published
      * the path specefied here is added to the path of the CXF-Servlet
@@ -28,36 +25,34 @@ public class WsBackendPluginConfigurationProperties {
      * "/services/backend"
      */
     @ConfigurationLabel("Where should the cxf endpoint for the backends be exposed")
-    @ConfigurationDescription("Specifies the address where the Backend WebService should be published\n" +
-            "the path specefied here is added to the path of the CXF-Servlet\n" +
-            "(which is per default configured as /services - this leads to the default URL of\n" +
-            "'/services/backend'")
+    @ConfigurationDescription(
+            "Specifies the address where the Backend WebService should be published\n" + "the path specefied here is "
+                    + "added to the path of the CXF-Servlet\n" + "(which is per default configured as /services - " + "this " + "leads to the default URL of\n" + "'/services/backend'"
+    )
     private String backendPublishAddress = "/backend";
-
 
     /**
      * SSL Key Store configuration
-     *
-     * The SSL-Key Store holds the path to the keyStore and the keyStore password to access the private-key which is needed to establish the TLS connection
+     * <p>
+     * The SSL-Key Store holds the path to the keyStore and the keyStore password to access the private-key which is
+     * needed to establish the TLS connection
      * to the Gateway. The private key is used to authenticate against the Gateway.
      */
     @NestedConfigurationProperty
     @ConfigurationDescription("TLS between backend - Connector")
     private KeyAndKeyStoreAndTrustStoreConfigurationProperties tls;
-
     @Valid
     @NestedConfigurationProperty
     @NotNull
     @ConfigurationDescription("CXF encryption, signing, certs connector ")
     private KeyAndKeyStoreAndTrustStoreConfigurationProperties soap;
-
     @Valid
     @NotNull
     @ConfigurationLabel("WS Policy for Backend <-> Connector")
-    @ConfigurationDescription("This Property is used to define the location of the ws policy which is used for communication with the gateway")
+    @ConfigurationDescription(
+            "This Property is used to define the location of the ws policy which is used for communication with the " + "gateway"
+    )
     private Resource wsPolicy = new ClassPathResource("/wsdl/backend.policy.xml");
 
     private boolean cxfLoggingEnabled = false;
-
-
 }

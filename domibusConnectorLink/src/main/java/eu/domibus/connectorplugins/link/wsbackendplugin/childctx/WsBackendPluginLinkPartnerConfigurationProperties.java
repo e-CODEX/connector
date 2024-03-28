@@ -11,14 +11,14 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Data
 public class WsBackendPluginLinkPartnerConfigurationProperties {
-
     @ConfigurationLabel("The address where the link partner is available")
     @ConfigurationDescription("Configure here the address where the remote soap service is listening")
     private String pushAddress = "";
-
     @ConfigurationLabel("Encryption Alias")
-    @ConfigurationDescription("The alias of the certificate of the link partner. So the connector can find \n" +
-            "the correct certificate and us this public key to encrpyt the message")
+    @ConfigurationDescription(
+            "The alias of the certificate of the link partner. So the connector can find \n" + "the correct " +
+                    "certificate and us this public key to encrpyt the message"
+    )
     private String encryptionAlias = "";
 
     private String certificateDn = "";

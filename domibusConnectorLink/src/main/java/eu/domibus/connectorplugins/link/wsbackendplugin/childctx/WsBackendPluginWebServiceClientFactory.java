@@ -1,4 +1,3 @@
-
 package eu.domibus.connectorplugins.link.wsbackendplugin.childctx;
 
 import eu.domibus.connector.link.common.MerlinPropertiesFactory;
@@ -18,20 +17,21 @@ import java.util.Properties;
 
 import static eu.domibus.connector.tools.logging.LoggingMarker.Log4jMarker.CONFIG;
 
+
 /**
  * Creates a web service client for pushing messages to backend client
+ *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 @Component
 public class WsBackendPluginWebServiceClientFactory {
-
     private static final Logger LOGGER = LogManager.getLogger(WsBackendPluginWebServiceClientFactory.class);
 
     private final WsBackendPluginConfigurationProperties config;
     private final MerlinPropertiesFactory merlinPropertiesFactory;
 
-    public WsBackendPluginWebServiceClientFactory(WsBackendPluginConfigurationProperties config,
-                                                  MerlinPropertiesFactory merlinPropertiesFactory) {
+    public WsBackendPluginWebServiceClientFactory(
+            WsBackendPluginConfigurationProperties config, MerlinPropertiesFactory merlinPropertiesFactory) {
         this.config = config;
         this.merlinPropertiesFactory = merlinPropertiesFactory;
     }
@@ -51,9 +51,10 @@ public class WsBackendPluginWebServiceClientFactory {
         jaxWsProxyFactoryBean.getFeatures().add(wsPolicyFeature);
         jaxWsProxyFactoryBean.setAddress(pushAddress);
         jaxWsProxyFactoryBean.setWsdlURL(DomibusConnectorBackendDeliveryWSService.WSDL_LOCATION.toString());
-//        jaxWsProxyFactoryBean.setWsdlURL(pushAddress + "?wsdl"); //maybe load own wsdl instead of remote one?
+        // jaxWsProxyFactoryBean.setWsdlURL(pushAddress + "?wsdl"); //maybe load own wsdl instead of remote one?
 
-        Properties properties = merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(this.config.getSoap(), ".");
+        Properties properties =
+                merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(this.config.getSoap(), ".");
 
         HashMap<String, Object> jaxWsFactoryBeanProperties = new HashMap<>();
         jaxWsFactoryBeanProperties.put("security.encryption.username", linkPartnerConfig.getEncryptionAlias());
@@ -61,12 +62,14 @@ public class WsBackendPluginWebServiceClientFactory {
         jaxWsFactoryBeanProperties.put("security.encryption.properties", properties);
         jaxWsFactoryBeanProperties.put("security.signature.properties", properties);
 
-        LOGGER.debug(CONFIG, "#createWsClient: Configuring WsClient with following properties: [{}]", jaxWsFactoryBeanProperties);
+        LOGGER.debug(
+                CONFIG,
+                "#createWsClient: Configuring WsClient with following properties: [{}]",
+                jaxWsFactoryBeanProperties
+        );
 
         jaxWsProxyFactoryBean.setProperties(jaxWsFactoryBeanProperties);
 
         return (DomibusConnectorBackendDeliveryWebService) jaxWsProxyFactoryBean.create();
     }
-
-
 }

@@ -26,17 +26,16 @@ import java.util.Properties;
 @EnableConfigurationProperties(WsBackendPluginConfigurationProperties.class)
 @ComponentScan(basePackageClasses = WsBackendPluginConfiguration.class)
 public class WsBackendPluginConfiguration {
-
-    private static final Logger LOGGER = LogManager.getLogger(WsBackendPluginConfiguration.class);
     public static final String WS_BACKEND_PLUGIN_PROFILE_NAME = "link.wsbackendplugin";
-
+    private static final Logger LOGGER = LogManager.getLogger(WsBackendPluginConfiguration.class);
     private final WsBackendPluginConfigurationProperties configurationProperties;
     private final SpringBus springBus;
     private final MerlinPropertiesFactory merlinPropertiesFactory;
 
-    public WsBackendPluginConfiguration(WsBackendPluginConfigurationProperties configurationProperties,
-                                        SpringBus springBus,
-                                        MerlinPropertiesFactory merlinPropertiesFactory) {
+    public WsBackendPluginConfiguration(
+            WsBackendPluginConfigurationProperties configurationProperties,
+            SpringBus springBus,
+            MerlinPropertiesFactory merlinPropertiesFactory) {
         this.configurationProperties = configurationProperties;
         this.springBus = springBus;
         this.merlinPropertiesFactory = merlinPropertiesFactory;
@@ -68,16 +67,21 @@ public class WsBackendPluginConfiguration {
         endpoint.getProperties().put("security.enable.streaming", true);
         endpoint.getProperties().put("mtom-enabled", true);
 
-        Properties encSigProperties = merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(configurationProperties.getSoap(), "");
+        Properties encSigProperties = merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(
+                configurationProperties.getSoap(),
+                ""
+        );
 
         endpoint.getProperties().put("security.encryption.properties", encSigProperties);
         endpoint.getProperties().put("security.signature.properties", encSigProperties);
         endpoint.getProperties().put("security.encryption.username", "useReqSigCert");
 
         endpoint.publish();
-        LOGGER.debug("Published WebService [{}] under [{}]", DomibusConnectorBackendWSService.class, config.getBackendPublishAddress());
+        LOGGER.debug(
+                "Published WebService [{}] under [{}]",
+                DomibusConnectorBackendWSService.class,
+                config.getBackendPublishAddress()
+        );
         return endpoint;
     }
-
-
 }

@@ -1,7 +1,6 @@
 package eu.domibus.connector.link.utils;
 
 import eu.domibus.connector.common.DomibusConnectorDefaults;
-import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.enums.LinkMode;
 import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
@@ -18,18 +17,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 
 /**
  * This class will help, load old properties (e.g. Connector 4.2)
  * and convert it into new properties (eg. Connector 4.3)
  * This one will do it for Link Configuration
- *
  */
 public class Connector42LinkConfigTo43LinkConfigConverter {
-
     public static final String GWL_GW_ADDRESS_OLD_PROP_NAME = "connector.gatewaylink.ws.submissionEndpointAddress";
     public static final String GWL_ENCRYPT_ALIAS_OLD_PROP_NAME = "connector.gatewaylink.ws.encrypt-alias";
     public static final String GWL_TRUST_STORE_PW_OLD_PROP_NAME = "connector.gatewaylink.ws.trust-store.password";
@@ -46,21 +47,18 @@ public class Connector42LinkConfigTo43LinkConfigConverter {
     public static final String BACKEND_PRIVATE_KEY_ALIAS_OLD_PROP_NAME = "connector.backend.ws.key.private-key.alias";
     public static final String BACKEND_PRIVATE_KEY_PW_OLD_PROP_NAME = "connector.backend.ws.key.private-key.password";
 
-
     private final Properties oldProperties;
     private final BeanToPropertyMapConverter beanToPropertyMapConverter;
     private final JdbcTemplate jdbcTemplate;
 
-    public Connector42LinkConfigTo43LinkConfigConverter(BeanToPropertyMapConverter beanToPropertyMapConverter,
-                                                        JdbcTemplate jdbcTemplate,
-                                                        Properties oldProperties) {
+    public Connector42LinkConfigTo43LinkConfigConverter(
+            BeanToPropertyMapConverter beanToPropertyMapConverter,
+            JdbcTemplate jdbcTemplate,
+            Properties oldProperties) {
         this.beanToPropertyMapConverter = beanToPropertyMapConverter;
         this.jdbcTemplate = jdbcTemplate;
         this.oldProperties = oldProperties;
     }
-
-
-
 
     public List<DomibusConnectorLinkPartner> getGwPartner() {
         DomibusConnectorLinkConfiguration lnkConfig = getGwLinkConfiguration();
@@ -78,13 +76,18 @@ public class Connector42LinkConfigTo43LinkConfigConverter {
     private DomibusConnectorLinkConfiguration getGwLinkConfiguration() {
         DomibusConnectorLinkConfiguration domibusConnectorLinkConfiguration = new DomibusConnectorLinkConfiguration();
         domibusConnectorLinkConfiguration.setLinkImpl(WsGatewayPlugin.IMPL_NAME);
-        domibusConnectorLinkConfiguration.setConfigName(new DomibusConnectorLinkConfiguration.LinkConfigName("Imported_4.2_GWConfig"));
-        domibusConnectorLinkConfiguration.setProperties(beanToPropertyMapConverter.readBeanPropertiesToMap(convertGwLinkProperties(), ""));
+        domibusConnectorLinkConfiguration.setConfigName(new DomibusConnectorLinkConfiguration.LinkConfigName(
+                "Imported_4.2_GWConfig"));
+        domibusConnectorLinkConfiguration.setProperties(beanToPropertyMapConverter.readBeanPropertiesToMap(
+                convertGwLinkProperties(),
+                ""
+        ));
         return domibusConnectorLinkConfiguration;
     }
 
     private WsGatewayPluginConfigurationProperties convertGwLinkProperties() {
-        WsGatewayPluginConfigurationProperties wsGatewayPluginConfigurationProperties = new WsGatewayPluginConfigurationProperties();
+        WsGatewayPluginConfigurationProperties wsGatewayPluginConfigurationProperties =
+                new WsGatewayPluginConfigurationProperties();
         wsGatewayPluginConfigurationProperties.setGwAddress(getOldRequiredProperty(GWL_GW_ADDRESS_OLD_PROP_NAME));
         wsGatewayPluginConfigurationProperties.setCxfLoggingEnabled(false);
 
@@ -109,11 +112,11 @@ public class Connector42LinkConfigTo43LinkConfigConverter {
         privateKeyConfig.setAlias(getOldRequiredProperty(GWL_PRIVATE_KEY_ALIAS_OLD_PROP_NAME));
         cxfProps.setPrivateKey(privateKeyConfig);
         return wsGatewayPluginConfigurationProperties;
-
     }
 
     private WsBackendPluginConfigurationProperties convertBackendLinkProperties() {
-        WsBackendPluginConfigurationProperties wsBackendPluginConfigurationProperties = new WsBackendPluginConfigurationProperties();
+        WsBackendPluginConfigurationProperties wsBackendPluginConfigurationProperties =
+                new WsBackendPluginConfigurationProperties();
         wsBackendPluginConfigurationProperties.setCxfLoggingEnabled(false);
 
         CxfTrustKeyStoreConfigurationProperties cxfProps = new CxfTrustKeyStoreConfigurationProperties();
@@ -143,11 +146,10 @@ public class Connector42LinkConfigTo43LinkConfigConverter {
 
         DomibusConnectorLinkConfiguration lnkConfig = getBackendLinkConfiguration();
 
-        List<DomibusConnectorLinkPartner> domibusConnectorLinkPartners = loadBackendsFromDb()
-                .stream()
-                .peek(lp -> {   lp.setLinkConfiguration(lnkConfig);
-                    lp.setDescription("imported by import 4.2 old config");} )
-                .collect(Collectors.toList());
+        List<DomibusConnectorLinkPartner> domibusConnectorLinkPartners = loadBackendsFromDb().stream().peek(lp -> {
+            lp.setLinkConfiguration(lnkConfig);
+            lp.setDescription("imported by import 4.2 old config");
+        }).collect(Collectors.toList());
 
         return domibusConnectorLinkPartners;
     }
@@ -155,51 +157,54 @@ public class Connector42LinkConfigTo43LinkConfigConverter {
     private DomibusConnectorLinkConfiguration getBackendLinkConfiguration() {
         DomibusConnectorLinkConfiguration domibusConnectorLinkConfiguration = new DomibusConnectorLinkConfiguration();
         domibusConnectorLinkConfiguration.setLinkImpl(WsBackendPlugin.IMPL_NAME);
-        domibusConnectorLinkConfiguration.setConfigName(new DomibusConnectorLinkConfiguration.LinkConfigName("Imported_4.2_BackendConfig"));
-        domibusConnectorLinkConfiguration.setProperties(beanToPropertyMapConverter.readBeanPropertiesToMap(convertBackendLinkProperties(), ""));
+        domibusConnectorLinkConfiguration.setConfigName(new DomibusConnectorLinkConfiguration.LinkConfigName(
+                "Imported_4.2_BackendConfig"));
+        domibusConnectorLinkConfiguration.setProperties(beanToPropertyMapConverter.readBeanPropertiesToMap(
+                convertBackendLinkProperties(),
+                ""
+        ));
         return domibusConnectorLinkConfiguration;
     }
 
     private List<DomibusConnectorLinkPartner> loadBackendsFromDb() {
+        return jdbcTemplate.query(
+                "Select BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_PUSH_ADDRESS, BACKEND_DEFAULT, BACKEND_ENABLED, " +
+                        "BACKEND_DESCRIPTION " + " FROM DOMIBUS_CONNECTOR_BACKEND_INFO",
+                (rs, rowNum) -> {
 
-        List<DomibusConnectorLinkPartner> query = jdbcTemplate.query(
-                "Select BACKEND_NAME, BACKEND_KEY_ALIAS, BACKEND_PUSH_ADDRESS, BACKEND_DEFAULT, BACKEND_ENABLED, BACKEND_DESCRIPTION " +
-                " FROM DOMIBUS_CONNECTOR_BACKEND_INFO", (RowMapper<DomibusConnectorLinkPartner>) (rs, rowNum) -> {
+                    DomibusConnectorLinkPartner p = new DomibusConnectorLinkPartner();
+                    p.setDescription(rs.getString("BACKEND_DESCRIPTION"));
+                    p.setEnabled(rs.getBoolean("BACKEND_ENABLED"));
+                    p.setLinkPartnerName(new DomibusConnectorLinkPartner.LinkPartnerName(rs.getString("BACKEND_NAME")));
+                    p.setRcvLinkMode(LinkMode.PASSIVE);
+                    p.setLinkType(LinkType.BACKEND);
 
-            DomibusConnectorLinkPartner p = new DomibusConnectorLinkPartner();
-            p.setDescription(rs.getString("BACKEND_DESCRIPTION"));
-            p.setEnabled(rs.getBoolean("BACKEND_ENABLED"));
-            p.setLinkPartnerName(new DomibusConnectorLinkPartner.LinkPartnerName(rs.getString("BACKEND_NAME")));
-            p.setRcvLinkMode(LinkMode.PASSIVE);
-            p.setLinkType(LinkType.BACKEND);
+                    Map<String, String> props = new HashMap<>();
+                    p.setProperties(props);
 
-            Map<String, String> props = new HashMap<>();
-            p.setProperties(props);
+                    props.put("encryption-alias", rs.getString("BACKEND_KEY_ALIAS"));
+                    props.put("certificate-dn", rs.getString("BACKEND_NAME"));
 
-            props.put("encryption-alias", rs.getString("BACKEND_KEY_ALIAS"));
-            props.put("certificate-dn", rs.getString("BACKEND_NAME"));
-
-            String pushAddress = rs.getString("BACKEND_PUSH_ADDRESS");
-            if (StringUtils.hasText(pushAddress)) {
-                p.setSendLinkMode(LinkMode.PUSH);
-                props.put("push-address", pushAddress);
-            } else {
-                p.setSendLinkMode(LinkMode.PULL);
-            }
-
-            return p;
-        });
-
-        return query;
+                    String pushAddress = rs.getString("BACKEND_PUSH_ADDRESS");
+                    if (StringUtils.hasText(pushAddress)) {
+                        p.setSendLinkMode(LinkMode.PUSH);
+                        props.put("push-address", pushAddress);
+                    } else {
+                        p.setSendLinkMode(LinkMode.PULL);
+                    }
+                    return p;
+                }
+        );
     }
 
     private String getOldRequiredProperty(String oldPropName) {
         if (oldProperties.containsKey(oldPropName)) {
             return oldProperties.get(oldPropName).toString();
         } else {
-            throw new IllegalArgumentException(String.format("The provided 'old' properties does not contain the property [%s], which is required!", oldPropName));
+            throw new IllegalArgumentException(String.format(
+                    "The provided 'old' properties does not contain the property [%s], which is required!",
+                    oldPropName
+            ));
         }
     }
-
-
 }

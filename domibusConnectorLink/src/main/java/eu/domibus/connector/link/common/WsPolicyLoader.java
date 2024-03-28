@@ -1,4 +1,3 @@
-
 package eu.domibus.connector.link.common;
 
 import org.apache.cxf.staxutils.StaxUtils;
@@ -13,19 +12,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
 /**
- *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public class WsPolicyLoader {
-    
     private static final Logger LOGGER = LoggerFactory.getLogger(WsPolicyLoader.class);
 
-    private Resource wsPolicy;
+    private final Resource wsPolicy;
 
     public WsPolicyLoader(Resource resource) {
         this.wsPolicy = resource;
@@ -43,7 +39,10 @@ public class WsPolicyLoader {
             throw new UncheckedIOException(String.format("ws policy [%s] cannot be read!", wsPolicy), ioe);
         }
         if (is == null) {
-            throw new WsPolicyLoaderException(String.format("ws policy [%s] cannot be read! InputStream is nulL!", wsPolicy));
+            throw new WsPolicyLoaderException(String.format(
+                    "ws policy [%s] cannot be read! InputStream is nulL!",
+                    wsPolicy
+            ));
         }
         List<Element> policyElements = new ArrayList<Element>();
         try {
@@ -51,12 +50,10 @@ public class WsPolicyLoader {
             LOGGER.debug("adding policy element [{}]", e);
             policyElements.add(e);
         } catch (XMLStreamException ex) {
-            throw new WsPolicyLoaderException("cannot parse policy " + wsPolicy , ex);
+            throw new WsPolicyLoaderException("cannot parse policy " + wsPolicy, ex);
         }
-//        policyFeature.getPolicyElements().addAll(policyElements);
+        // policyFeature.getPolicyElements().addAll(policyElements);
         policyFeature.setPolicyElements(policyElements);
         return policyFeature;
     }
-
-    
 }

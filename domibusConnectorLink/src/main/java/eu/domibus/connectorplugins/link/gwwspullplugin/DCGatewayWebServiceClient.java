@@ -1,7 +1,9 @@
 package eu.domibus.connectorplugins.link.gwwspullplugin;
 
 import eu.domibus.connector.controller.exception.DomibusConnectorSubmitToLinkException;
-import eu.domibus.connector.controller.service.*;
+import eu.domibus.connector.controller.service.DomibusConnectorMessageIdGenerator;
+import eu.domibus.connector.controller.service.SubmitToConnector;
+import eu.domibus.connector.controller.service.TransportStateService;
 import eu.domibus.connector.domain.enums.TransportState;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
@@ -29,38 +31,36 @@ import java.util.Optional;
 
 
 public class DCGatewayWebServiceClient implements SubmitToLinkPartner, PullFromLinkPartner {
-
     private static final Logger LOGGER = LogManager.getLogger(DCGatewayWebServiceClient.class);
-
     @Autowired
     DomibusConnectorGatewayWebService gatewayWebService;
-
     @Autowired
     DomibusConnectorDomainMessageTransformerService transformerService;
-
     @Autowired
     TransportStateService transportStateService;
-
     @Autowired
     SubmitToConnector submitToConnector;
-
     @Autowired
     DCActiveLinkManagerService dcActiveLinkManagerService;
-
     @Autowired
     DomibusConnectorMessageIdGenerator messageIdGenerator;
 
-
     @Override
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public void submitToLink(DomibusConnectorMessage message, DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) throws DomibusConnectorSubmitToLinkException {
-        TransportStateService.DomibusConnectorTransportState transportState = new TransportStateService.DomibusConnectorTransportState();
+    public void submitToLink(
+            DomibusConnectorMessage message,
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) throws DomibusConnectorSubmitToLinkException {
+        TransportStateService.DomibusConnectorTransportState transportState =
+                new TransportStateService.DomibusConnectorTransportState();
         transportState.setStatus(TransportState.PENDING);
-        TransportStateService.TransportId transportId = transportStateService.createTransportFor(message, linkPartnerName);
+        TransportStateService.TransportId transportId =
+                transportStateService.createTransportFor(message, linkPartnerName);
         transportStateService.updateTransportToGatewayStatus(transportId, transportState);
 
-        DomibusConnectorMessageType domibusConnectorMessageType = transformerService.transformDomainToTransition(message);
-        DomibsConnectorAcknowledgementType domibsConnectorAcknowledgementType = gatewayWebService.submitMessage(domibusConnectorMessageType);
+        DomibusConnectorMessageType domibusConnectorMessageType =
+                transformerService.transformDomainToTransition(message);
+        DomibsConnectorAcknowledgementType domibsConnectorAcknowledgementType =
+                gatewayWebService.submitMessage(domibusConnectorMessageType);
 
         transportState = new TransportStateService.DomibusConnectorTransportState();
         transportState.setRemoteMessageId(domibsConnectorAcknowledgementType.getMessageId());
@@ -71,12 +71,15 @@ public class DCGatewayWebServiceClient implements SubmitToLinkPartner, PullFromL
             transportState.setStatus(TransportState.FAILED);
         }
         transportStateService.updateTransportToGatewayStatus(transportId, transportState);
-
     }
 
-
     public void pullMessagesFrom(DomibusConnectorLinkPartner.LinkPartnerName linkPartner) {
-        try (MDC.MDCCloseable mdcCloseable = MDC.putCloseable(LoggingMDCPropertyNames.MDC_LINK_PARTNER_NAME, linkPartner.getLinkName())) {
+        try (
+                MDC.MDCCloseable mdcCloseable = MDC.putCloseable(
+                        LoggingMDCPropertyNames.MDC_LINK_PARTNER_NAME,
+                        linkPartner.getLinkName()
+                )
+        ) {
             ListPendingMessageIdsRequest req = new ListPendingMessageIdsRequest();
             ListPendingMessageIdsResponse listPendingMessageIdsResponse = gatewayWebService.listPendingMessageIds(req);
 
@@ -85,25 +88,30 @@ public class DCGatewayWebServiceClient implements SubmitToLinkPartner, PullFromL
         }
     }
 
-    private void pullMessage(DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName, java.lang.String remoteMessageId) {
-
+    private void pullMessage(
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName, java.lang.String remoteMessageId) {
         DomibusConnectorMessageId connectorMessageId = messageIdGenerator.generateDomibusConnectorMessageId();
-        try (MDC.MDCCloseable mdcCloseable = MDC.putCloseable(LoggingMDCPropertyNames.MDC_REMOTE_MSG_ID, remoteMessageId);
-            MDC.MDCCloseable conMsgId = MDC.putCloseable(LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME, connectorMessageId.getConnectorMessageId());
+        try (
+                MDC.MDCCloseable mdcCloseable = MDC.putCloseable(
+                        LoggingMDCPropertyNames.MDC_REMOTE_MSG_ID,
+                        remoteMessageId
+                ); MDC.MDCCloseable conMsgId =
+                        MDC.putCloseable(
+                                LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME,
+                                connectorMessageId.getConnectorMessageId()
+                        )
         ) {
             LOGGER.trace("Pulling message with id [{}] from [{}]", remoteMessageId, linkPartnerName);
             GetMessageByIdRequest getMessageByIdRequest = new GetMessageByIdRequest();
             getMessageByIdRequest.setMessageId(remoteMessageId);
             DomibusConnectorMessageType messageById = gatewayWebService.getMessageById(getMessageByIdRequest);
 
-            DomibusConnectorMessage message = transformerService.transformTransitionToDomain(messageById, connectorMessageId);
+            DomibusConnectorMessage message =
+                    transformerService.transformTransitionToDomain(messageById, connectorMessageId);
 
-
-            Optional<ActiveLinkPartner> activeLinkPartnerByName = dcActiveLinkManagerService.getActiveLinkPartnerByName(linkPartnerName);
+            Optional<ActiveLinkPartner> activeLinkPartnerByName =
+                    dcActiveLinkManagerService.getActiveLinkPartnerByName(linkPartnerName);
             submitToConnector.submitToConnector(message, activeLinkPartnerByName.get().getLinkPartner());
-
         }
     }
-
-
 }

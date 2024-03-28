@@ -17,7 +17,6 @@ import java.util.List;
 @ConfigurationProperties(prefix = DCLinkPluginConfigurationProperties.PREFIX)
 @Data
 public class DCLinkPluginConfigurationProperties {
-
     public static final String PREFIX = "connector.link";
 
     @ConfigurationLabel("Link Autostart")
@@ -29,7 +28,6 @@ public class DCLinkPluginConfigurationProperties {
      */
     private boolean loadDbConfig = true;
 
-
     /**
      * switch if link config should be read from spring environment
      */
@@ -40,7 +38,6 @@ public class DCLinkPluginConfigurationProperties {
      * fails, by default start connector always
      */
     private boolean failOnLinkPluginError = false;
-
 
     /**
      * If set the gateway link configuration is loaded from here
@@ -61,5 +58,4 @@ public class DCLinkPluginConfigurationProperties {
         @NestedConfigurationProperty
         private List<DomibusConnectorLinkPartner> linkPartners = new ArrayList<>();
     }
-
 }

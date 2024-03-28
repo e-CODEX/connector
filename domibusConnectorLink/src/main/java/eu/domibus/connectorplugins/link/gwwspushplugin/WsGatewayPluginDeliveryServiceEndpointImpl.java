@@ -15,19 +15,16 @@ import org.apache.logging.log4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class WsGatewayPluginDeliveryServiceEndpointImpl implements DomibusConnectorGatewayDeliveryWebService {
 
+public class WsGatewayPluginDeliveryServiceEndpointImpl implements DomibusConnectorGatewayDeliveryWebService {
     private static final Logger LOGGER = LogManager.getLogger(WsGatewayPluginDeliveryServiceEndpointImpl.class);
 
     @Autowired
     SubmitToConnector submitToConnector;
-
     @Autowired
     DomibusConnectorMessageIdGenerator messageIdGenerator;
-
     @Autowired
     DomibusConnectorDomainMessageTransformerService transformerService;
-
     @Autowired
     DomibusConnectorLinkPartner linkPartner;
 
@@ -36,18 +33,28 @@ public class WsGatewayPluginDeliveryServiceEndpointImpl implements DomibusConnec
         String linkName = linkPartner.getLinkPartnerName().getLinkName();
         DomibsConnectorAcknowledgementType ret = new DomibsConnectorAcknowledgementType();
         DomibusConnectorMessageId connectorMessageId = messageIdGenerator.generateDomibusConnectorMessageId();
-        try (MDC.MDCCloseable mdc = MDC.putCloseable(LoggingMDCPropertyNames.MDC_LINK_PARTNER_NAME, linkName);
-                MDC.MDCCloseable conId = MDC.putCloseable(LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME, connectorMessageId.getConnectorMessageId())
+        try (
+                MDC.MDCCloseable mdc = MDC.putCloseable(
+                        LoggingMDCPropertyNames.MDC_LINK_PARTNER_NAME,
+                        linkName
+                ); MDC.MDCCloseable conId = MDC.putCloseable(
+                LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME,
+                connectorMessageId.getConnectorMessageId()
+        )
         ) {
-            LOGGER.debug("Message delivered from gateway [{}] assigning connectorMessageId [{}]", linkName, connectorMessageId);
-            DomibusConnectorMessage domibusConnectorMessage = transformerService.transformTransitionToDomain(deliverMessageRequest, connectorMessageId);
+            LOGGER.debug(
+                    "Message delivered from gateway [{}] assigning connectorMessageId [{}]",
+                    linkName,
+                    connectorMessageId
+            );
+            DomibusConnectorMessage domibusConnectorMessage =
+                    transformerService.transformTransitionToDomain(deliverMessageRequest, connectorMessageId);
             domibusConnectorMessage.setConnectorMessageId(connectorMessageId);
 
             submitToConnector.submitToConnector(domibusConnectorMessage, linkPartner);
 
             ret.setMessageId(connectorMessageId.getConnectorMessageId());
             ret.setResult(true);
-
         } catch (Exception e) {
             ret.setResultMessage(e.getMessage());
             ret.setResult(false);
@@ -55,6 +62,4 @@ public class WsGatewayPluginDeliveryServiceEndpointImpl implements DomibusConnec
         }
         return ret;
     }
-
-
 }

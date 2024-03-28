@@ -16,13 +16,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static test.eu.domibus.connector.link.wsbackendplugin.BackendClientPushWebServiceConfiguration.PUSH_DELIVERED_MESSAGES_LIST_BEAN_NAME;
 
-class DummyDomibusConnectorBackendDeliveryWebServiceImpl implements DomibusConnectorBackendDeliveryWebService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(DummyDomibusConnectorBackendDeliveryWebServiceImpl.class);
+class DummyDomibusConnectorBackendDeliveryWebServiceImpl implements DomibusConnectorBackendDeliveryWebService {
+    private final static Logger LOGGER =
+            LoggerFactory.getLogger(DummyDomibusConnectorBackendDeliveryWebServiceImpl.class);
 
     @Resource
     WebServiceContext webServiceContext;
-
     @Autowired
     @Qualifier(PUSH_DELIVERED_MESSAGES_LIST_BEAN_NAME)
     LinkedBlockingQueue<DomibusConnectorMessageType> domibusConnectorMessageTypeList;
@@ -39,8 +39,7 @@ class DummyDomibusConnectorBackendDeliveryWebServiceImpl implements DomibusConne
         DomibsConnectorAcknowledgementType ack = new DomibsConnectorAcknowledgementType();
         domibusConnectorMessageTypeList.add(deliverMessageRequest);
         ack.setResult(true);
-        ack.setMessageId(backendClientName + "msg" + UUID.randomUUID().toString());
+        ack.setMessageId(backendClientName + "msg" + UUID.randomUUID());
         return ack;
     }
-
 }

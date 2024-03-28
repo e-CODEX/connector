@@ -3,7 +3,9 @@ package eu.domibus.connector.link.service;
 import eu.domibus.connector.domain.enums.LinkMode;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
-import eu.domibus.connector.link.api.*;
+import eu.domibus.connector.link.api.ActiveLink;
+import eu.domibus.connector.link.api.ActiveLinkPartner;
+import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.api.exception.LinkPluginException;
 import eu.domibus.connector.tools.LoggingMDCPropertyNames;
 import eu.domibus.connector.tools.logging.LoggingMarker;
@@ -22,29 +24,30 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 /**
  * This class manages the lifecycle of the connector links
  */
 @Service
 @ConditionalOnBean(DCLinkPluginConfiguration.class)
 public class DCActiveLinkManagerService {
-
-    private final static Logger LOGGER = LogManager.getLogger(DCActiveLinkManagerService.class);
+    private static final Logger LOGGER = LogManager.getLogger(DCActiveLinkManagerService.class);
 
     private final Scheduler scheduler;
     private final List<LinkPlugin> linkPluginFactories;
+    private final Map<DomibusConnectorLinkPartner.LinkPartnerName, ActiveLinkPartner> activeLinkPartners =
+            new ConcurrentHashMap<>();
+    private final Map<DomibusConnectorLinkConfiguration.LinkConfigName, ActiveLink> activeLinkConfigurations =
+            new ConcurrentHashMap<>();
 
-    private Map<DomibusConnectorLinkPartner.LinkPartnerName, ActiveLinkPartner> activeLinkPartners = new ConcurrentHashMap<>();
-    private Map<DomibusConnectorLinkConfiguration.LinkConfigName, ActiveLink> activeLinkConfigurations = new ConcurrentHashMap<>();
-
-    public DCActiveLinkManagerService(Scheduler scheduler,
-                                      @Autowired(required = false) List<LinkPlugin> linkPluginFactories) {
+    public DCActiveLinkManagerService(
+            Scheduler scheduler,
+            @Autowired(required = false) List<LinkPlugin> linkPluginFactories) {
         this.scheduler = scheduler;
         if (linkPluginFactories == null) {
             linkPluginFactories = new ArrayList<>();
         }
         this.linkPluginFactories = linkPluginFactories;
-
     }
 
     Optional<SubmitToLinkPartner> getSubmitToLinkPartner(String linkName) {
@@ -60,37 +63,43 @@ public class DCActiveLinkManagerService {
             String error = String.format("No linkPartner with name %s available", linkPartnerName);
             throw new LinkPluginException(error);
         }
-//        DomibusConnectorLinkPartner.LinkPartnerName name = new DomibusConnectorLinkPartner.LinkPartnerName(linkName);
-        SubmitToLinkPartner submitToLinkBean = activeLinkPartner.getParentLink().getLinkPlugin().getSubmitToLink(activeLinkPartner);
+        //        DomibusConnectorLinkPartner.LinkPartnerName name = new DomibusConnectorLinkPartner.LinkPartnerName
+        //        (linkName);
+        SubmitToLinkPartner submitToLinkBean =
+                activeLinkPartner.getParentLink().getLinkPlugin().getSubmitToLink(activeLinkPartner);
         return Optional.of(submitToLinkBean);
     }
 
     public Optional<PullFromLinkPartner> getPullFromLinkPartner(String linkName) {
-        DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName = new DomibusConnectorLinkPartner.LinkPartnerName(linkName);
+        DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName =
+                new DomibusConnectorLinkPartner.LinkPartnerName(linkName);
         ActiveLinkPartner activeLinkPartner = activeLinkPartners.get(linkPartnerName);
         if (activeLinkPartner == null) {
             String error = String.format("No linkPartner with name %s available", linkName);
             throw new LinkPluginException(error);
         }
-//        DomibusConnectorLinkPartner.LinkPartnerName name = new DomibusConnectorLinkPartner.LinkPartnerName(linkName);
-        Optional<PullFromLinkPartner> pullFromLinkBean = activeLinkPartner.getParentLink().getLinkPlugin().getPullFromLink(activeLinkPartner);
+        //        DomibusConnectorLinkPartner.LinkPartnerName name = new DomibusConnectorLinkPartner.LinkPartnerName
+        //        (linkName);
+        Optional<PullFromLinkPartner> pullFromLinkBean =
+                activeLinkPartner.getParentLink().getLinkPlugin().getPullFromLink(activeLinkPartner);
         return pullFromLinkBean;
     }
-
 
     public List<LinkPlugin> getAvailableLinkPlugins() {
         return this.linkPluginFactories;
     }
 
     public Optional<LinkPlugin> getLinkPluginByName(String name) {
-        return this.linkPluginFactories
-                .stream()
-                .filter(lp -> lp.getPluginName().equals(name))
-                .findFirst();
+        return this.linkPluginFactories.stream().filter(lp -> lp.getPluginName().equals(name)).findFirst();
     }
 
     public synchronized Optional<ActiveLinkPartner> activateLinkPartner(DomibusConnectorLinkPartner linkInfo) {
-        try (MDC.MDCCloseable li = MDC.putCloseable(LoggingMDCPropertyNames.MDC_LINK_PARTNER_NAME, linkInfo.getLinkPartnerName().toString())) {
+        try (
+                MDC.MDCCloseable li = MDC.putCloseable(
+                        LoggingMDCPropertyNames.MDC_LINK_PARTNER_NAME,
+                        linkInfo.getLinkPartnerName().toString()
+                )
+        ) {
             DomibusConnectorLinkConfiguration linkConfiguration = linkInfo.getLinkConfiguration();
             DomibusConnectorLinkConfiguration.LinkConfigName configName = linkConfiguration.getConfigName();
             final DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName = linkInfo.getLinkPartnerName();
@@ -112,7 +121,6 @@ public class DCActiveLinkManagerService {
             }
             activeLinkConfigurations.put(configName, activeLink);
 
-
             LinkPlugin linkPlugin = activeLink.getLinkPlugin();
 
             ActiveLinkPartner activeLinkPartner = null;
@@ -129,42 +137,41 @@ public class DCActiveLinkManagerService {
             String error = String.format("Error while activating Link Partner [%s]", linkInfo.getLinkPartnerName());
             throw new LinkPluginException(error, e);
         }
-
     }
-
 
     private void unconfigurePull(DomibusConnectorLinkPartner linkInfo, ActiveLinkPartner activeLinkPartner) {
         if (linkInfo.getRcvLinkMode() != LinkMode.PULL) {
             return;
         }
-        Optional<PullFromLinkPartner> pullFromBean = getPullFromLinkPartner(activeLinkPartner.getLinkPartner().getLinkPartnerName().getLinkName());
+        Optional<PullFromLinkPartner> pullFromBean =
+                getPullFromLinkPartner(activeLinkPartner.getLinkPartner().getLinkPartnerName().getLinkName());
         if (!pullFromBean.isPresent()) {
             LOGGER.warn("PULL MODE activated but NO pull bean found!");
             return;
         }
         try {
-
             String linkPartnerName = linkInfo.getLinkPartnerName().toString();
 
-            //Delete Job and recreate it...
+            // Delete Job and recreate it...
             JobKey jobKey = createJobKey(linkPartnerName);
             scheduler.deleteJob(jobKey);
 
-            //same for the trigger...
+            // same for the trigger...
             TriggerKey triggerKey = createTriggerKey(linkPartnerName);
             scheduler.unscheduleJob(triggerKey);
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Deactivating pull job for LinkPartner [{}]", linkPartnerName);
-
-
+            LOGGER.info(
+                    LoggingMarker.Log4jMarker.CONFIG,
+                    "Deactivating pull job for LinkPartner [{}]",
+                    linkPartnerName
+            );
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     /**
      * configure scheduler for pull mode...
+     *
      * @param linkInfo
      * @param activeLinkPartner
      */
@@ -172,7 +179,8 @@ public class DCActiveLinkManagerService {
         if (linkInfo.getRcvLinkMode() != LinkMode.PULL) {
             return;
         }
-        Optional<PullFromLinkPartner> pullFromBean = getPullFromLinkPartner(activeLinkPartner.getLinkPartner().getLinkPartnerName().getLinkName());
+        Optional<PullFromLinkPartner> pullFromBean =
+                getPullFromLinkPartner(activeLinkPartner.getLinkPartner().getLinkPartnerName().getLinkName());
         if (!pullFromBean.isPresent()) {
             LOGGER.warn("PULL MODE activated but NO pull bean found!");
             return;
@@ -180,36 +188,37 @@ public class DCActiveLinkManagerService {
         try {
             String linkPartnerName = linkInfo.getLinkPartnerName().toString();
 
-            //first deconfigure trigger and/or job...
+            // first deconfigure trigger and/or job...
             unconfigurePull(linkInfo, activeLinkPartner);
 
-            //create job
+            // create job
             JobKey jobKey = createJobKey(linkPartnerName);
-            JobDetail link_pulls = JobBuilder.newJob(DCLinkPullJob.class)
-                    .storeDurably(true)
-                    .withIdentity(jobKey)
-                    .build();
+            JobDetail link_pulls =
+                    JobBuilder.newJob(DCLinkPullJob.class).storeDurably(true).withIdentity(jobKey).build();
 
             int pullIntervalSeconds = (int) linkInfo.getPullInterval().get(ChronoUnit.SECONDS);
 
-            //create trigger
+            // create trigger
             TriggerKey triggerKey = createTriggerKey(linkPartnerName);
             SimpleTrigger link_pull_trigger = TriggerBuilder.newTrigger().forJob(link_pulls)
 
-                    .withIdentity(triggerKey)
-                    .usingJobData(DCLinkPullJob.LINK_PARTNER_NAME_PROPERTY_NAME, linkInfo.getLinkPartnerName().toString())
-                    .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(pullIntervalSeconds))
-                    .build();
+                                                            .withIdentity(triggerKey).usingJobData(
+                            DCLinkPullJob.LINK_PARTNER_NAME_PROPERTY_NAME,
+                            linkInfo.getLinkPartnerName().toString()
+                    ).withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(pullIntervalSeconds)).build();
 
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Setting up trigger with pull intervall [{} seconds] to pull from [{}]", pullIntervalSeconds, linkPartnerName);
+            LOGGER.info(
+                    LoggingMarker.Log4jMarker.CONFIG,
+                    "Setting up trigger with pull intervall [{} seconds] to pull from [{}]",
+                    pullIntervalSeconds,
+                    linkPartnerName
+            );
 
             scheduler.scheduleJob(link_pulls, link_pull_trigger);
-
         } catch (SchedulerException e) {
             String error = String.format("An error occured while configuring pull for link [%s]", linkInfo);
             throw new LinkPluginException(error, e);
         }
-
     }
 
     @NotNull
@@ -223,15 +232,26 @@ public class DCActiveLinkManagerService {
     }
 
     private synchronized ActiveLink startLinkConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
-        try (MDC.MDCCloseable lc = MDC.putCloseable(LoggingMDCPropertyNames.MDC_LINK_CONFIG_NAME, linkConfiguration.getConfigName().toString())) {
+        try (
+                MDC.MDCCloseable lc = MDC.putCloseable(
+                        LoggingMDCPropertyNames.MDC_LINK_CONFIG_NAME,
+                        linkConfiguration.getConfigName().toString()
+                )
+        ) {
             String linkImpl = linkConfiguration.getLinkImpl();
             if (StringUtils.isEmpty(linkImpl)) {
-                String error = String.format("link impl of [%s] is empty! No link configuration can be created!", linkConfiguration);
+                String error = String.format(
+                        "link impl of [%s] is empty! No link configuration can be created!",
+                        linkConfiguration
+                );
                 throw new LinkPluginException(error);
             }
             Optional<LinkPlugin> first = linkPluginFactories.stream().filter(l -> l.canHandle(linkImpl)).findFirst();
             if (!first.isPresent()) {
-                String error = String.format("No link factory for linkImpl [%s] found! No link configuration will be created!", linkImpl);
+                String error = String.format(
+                        "No link factory for linkImpl [%s] found! No link configuration will be created!",
+                        linkImpl
+                );
                 throw new LinkPluginException(error);
             }
             LinkPlugin linkPlugin = first.get();
@@ -249,14 +269,16 @@ public class DCActiveLinkManagerService {
     public void shutdownLinkPartner(DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) {
         ActiveLinkPartner activeLinkPartner = activeLinkPartners.get(linkPartnerName);
         if (activeLinkPartner == null) {
-            throw new LinkPluginException(String.format("No active linkPartner with name %s found!", linkPartnerName.toString()));
+            throw new LinkPluginException(String.format(
+                    "No active linkPartner with name %s found!",
+                    linkPartnerName.toString()
+            ));
         }
 
         this.unconfigurePull(activeLinkPartner.getLinkPartner(), activeLinkPartner);
         activeLinkPartners.remove(linkPartnerName);
 
         activeLinkPartner.getParentLink().getLinkPlugin().shutdownActiveLinkPartner(activeLinkPartner);
-
     }
 
     @PreDestroy
@@ -276,7 +298,8 @@ public class DCActiveLinkManagerService {
     }
 
     public Optional<ActiveLinkPartner> getActiveLinkPartnerByName(String lp) {
-        DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName = new DomibusConnectorLinkPartner.LinkPartnerName(lp);
+        DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName =
+                new DomibusConnectorLinkPartner.LinkPartnerName(lp);
         return getActiveLinkPartnerByName(linkPartnerName);
     }
 
@@ -284,6 +307,4 @@ public class DCActiveLinkManagerService {
         ActiveLinkPartner activeLinkPartner = activeLinkPartners.get(linkPartnerName);
         return Optional.ofNullable(activeLinkPartner);
     }
-
-
 }

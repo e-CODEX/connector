@@ -16,7 +16,6 @@ import static test.eu.domibus.connector.link.impl.gwwspullplugin.TestGwWebServic
 
 
 public class TestGwPullServiceImpl implements DomibusConnectorGatewayWebService {
-
     @Autowired
     @Qualifier(TO_PULL_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME)
     LinkedBlockingQueue<DomibusConnectorMessageType> toGwSubmittedMsg;

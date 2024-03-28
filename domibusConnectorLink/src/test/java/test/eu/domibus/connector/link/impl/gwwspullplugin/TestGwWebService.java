@@ -24,6 +24,7 @@ import test.eu.domibus.connector.link.util.GetServerAddress;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
 /**
  * IMPLEMENTATION OF THE GW WEB SERIVCE INTERFACE
  * FOR TESTING PURPOSE
@@ -32,27 +33,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ImportResource("classpath:/test/eu/domibus/connector/link/gwwspullplugin/TestPullGatewayContext.xml")
 @Profile("testgwpull")
 public class TestGwWebService {
-
-    public interface ListPendingMessagesMock {
-        public ListPendingMessageIdsResponse listPendingMessageIds();
-    }
-
-    public interface GetMessageByIdMock {
-        DomibusConnectorMessageType getMessageById(GetMessageByIdRequest getMessageByIdRequest);
-    }
-
     public static final String TEST_GW_PULL_PROFILE_NAME = "testgwpull";
-
-    public static final String TO_PULL_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME = "toPullGwSubmittedMessagesQueue";
+    public static final String TO_PULL_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME =
+            "toPullGwSubmittedMessagesQueue";
 
     public static ConfigurableApplicationContext startContext(Map<String, Object> properties) {
-//        if (properties == null) {
-//            properties = new HashMap<>();
-//        }
-//        properties.put("server.port", SocketUtils.findAvailableTcpPort());
+        //        if (properties == null) {
+        //            properties = new HashMap<>();
+        //        }
+        //        properties.put("server.port", SocketUtils.findAvailableTcpPort());
 
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
-        SpringApplication springApp = builder.sources(TestGwWebService.class)
+        SpringApplication springApp = builder
+                .sources(TestGwWebService.class)
                 .web(WebApplicationType.SERVLET)
                 .properties(properties)
                 .bannerMode(Banner.Mode.OFF)
@@ -60,7 +53,6 @@ public class TestGwWebService {
                 .build();
         return springApp.run();
     }
-
 
     @Bean(TO_PULL_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME)
     @Qualifier(TO_PULL_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME)
@@ -79,7 +71,6 @@ public class TestGwWebService {
             public String getServerAddress() {
                 return "http://localhost:" + serverPort + "/services/pullservice";
             }
-
         };
     }
 
@@ -98,10 +89,16 @@ public class TestGwWebService {
         return Mockito.mock(GetMessageByIdMock.class);
     }
 
-
     @Bean("testGwPullService")
     public DomibusConnectorGatewayWebService domibusConnectorGatewayWebService() {
         return new TestGwPullServiceImpl();
     }
 
+    public interface ListPendingMessagesMock {
+        ListPendingMessageIdsResponse listPendingMessageIds();
+    }
+
+    public interface GetMessageByIdMock {
+        DomibusConnectorMessageType getMessageById(GetMessageByIdRequest getMessageByIdRequest);
+    }
 }

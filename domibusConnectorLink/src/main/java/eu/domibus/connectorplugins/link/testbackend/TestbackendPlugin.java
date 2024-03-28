@@ -7,10 +7,6 @@ import eu.domibus.connector.link.api.ActiveLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.api.PluginFeature;
 import eu.domibus.connector.link.service.SubmitToLinkPartner;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,18 +14,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 /**
  * The testbackendPlugin acts as a special plugin.
- *  This plugin does not transport any message to another service/gateway/backend/...
- *  It's only purpose is to respond with a delivery evidence for any received message.
- *
+ * This plugin does not transport any message to another service/gateway/backend/...
+ * It's only purpose is to respond with a delivery evidence for any received message.
  */
 //@Profile("plugin-" + TestbackendPlugin.IMPL_NAME)
 @Component
 public class TestbackendPlugin implements LinkPlugin {
-
-    private static final Logger LOGGER = LogManager.getLogger(TestbackendPlugin.class);
-
     public static final String IMPL_NAME = "testbackend";
 
     private final SubmitToTestLink submitToTestLink;
@@ -47,7 +40,6 @@ public class TestbackendPlugin implements LinkPlugin {
     public String getPluginDescription() {
         return "Domibus Connector Testbackend";
     }
-
 
     @Override
     public ActiveLink startConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
@@ -83,12 +75,9 @@ public class TestbackendPlugin implements LinkPlugin {
         return submitToTestLink;
     }
 
-
     @Override
     public List<PluginFeature> getFeatures() {
-        return Stream.<PluginFeature>of(
-                PluginFeature.RCV_PASSIVE_MODE
-        ).collect(Collectors.toList());
+        return Stream.of(PluginFeature.RCV_PASSIVE_MODE).collect(Collectors.toList());
     }
 
     public List<Class<?>> getPluginConfigurationProperties() {

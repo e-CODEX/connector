@@ -36,8 +36,10 @@ import static eu.domibus.connector.link.service.DCLinkPluginConfiguration.LINK_P
 import static org.assertj.core.api.Assertions.assertThat;
 import static test.eu.domibus.connector.link.LinkTestContext.SUBMIT_TO_CONNECTOR_QUEUE;
 
+
 @ExtendWith({SpringExtension.class})
-@SpringBootTest(classes = {LinkTestContext.class },
+@SpringBootTest(
+        classes = {LinkTestContext.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
 
@@ -46,13 +48,19 @@ import static test.eu.domibus.connector.link.LinkTestContext.SUBMIT_TO_CONNECTOR
 @ActiveProfiles({"wsgatewayplugin-test", "test", LINK_PLUGIN_PROFILE_NAME, "plugin-wsgatewayplugin"})
 @Disabled
 class WsGatewayPluginTest {
-
-    private static final Logger LOGGER = LogManager.getLogger(WsGatewayPluginTest.class);
-
+    static TestGW testGwWebService;
     private static Integer PORT;
+    @Autowired
+    @Qualifier(SUBMIT_TO_CONNECTOR_QUEUE)
+    public BlockingQueue<DomibusConnectorMessage> toConnectorSubmittedMessages;
+    @LocalServerPort
+    int localServerPort;
+    @Autowired
+    DCActiveLinkManagerService linkManagerService;
 
     /**
-     *  find free tcp port on first call and then always return this port
+     * find free tcp port on first call and then always return this port
+     *
      * @return a free tcp port
      */
     public static int GET_PORT() {
@@ -64,22 +72,16 @@ class WsGatewayPluginTest {
 
     /**
      * Register the correct gw-address within the spring-test-context
+     *
      * @param registry
      */
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("connector.link.gateway.link-config.properties.gw-address", () -> "http://localhost:" + GET_PORT() + "/services/submission");
+        registry.add(
+                "connector.link.gateway.link-config.properties.gw-address",
+                () -> "http://localhost:" + GET_PORT() + "/services/submission"
+        );
     }
-
-    @LocalServerPort
-    int localServerPort;
-
-    @Autowired
-    @Qualifier(SUBMIT_TO_CONNECTOR_QUEUE)
-    public BlockingQueue<DomibusConnectorMessage> toConnectorSubmittedMessages;
-
-
-    static TestGW testGwWebService;
 
     @BeforeAll
     public static void setupTestGwContext() {
@@ -89,52 +91,42 @@ class WsGatewayPluginTest {
     @BeforeEach
     public void beforeEach() {
         if (testGwWebService == null) {
-            testGwWebService = TestGW.startTestGw("http://localhost:" + localServerPort + "/services/gateway", GET_PORT());
+            testGwWebService =
+                    TestGW.startTestGw("http://localhost:" + localServerPort + "/services/gateway", GET_PORT());
         }
     }
 
-    @Autowired
-    DCActiveLinkManagerService linkManagerService;
-
-//    @Autowired
-//    DCPluginBasedGatewaySubmissionService gatewaySubmissionService;
-
     @Test
-    public void testPluginIsLoaded() {
+    void testPluginIsLoaded() {
         List<LinkPlugin> availableLinkPlugins = linkManagerService.getAvailableLinkPlugins();
         assertThat(availableLinkPlugins).extracting(LinkPlugin::getPluginName).contains("wsgatewayplugin");
     }
 
     @Test
-    public void testPluginConfigs() {
+    void testPluginConfigs() {
         Collection<ActiveLinkPartner> activeLinkPartners = linkManagerService.getActiveLinkPartners();
         assertThat(activeLinkPartners).hasSize(1);
     }
 
-
     @Test
-    public void testSubmitToConnector() throws InterruptedException {
+    void testSubmitToConnector() throws InterruptedException {
         DomibusConnectorMessageType message = TransitionCreator.createEpoMessage();
-        DomibsConnectorAcknowledgementType domibsConnectorAcknowledgementType = testGwWebService.getConnectorDeliveryClient().deliverMessage(message);
+        DomibsConnectorAcknowledgementType domibsConnectorAcknowledgementType =
+                testGwWebService.getConnectorDeliveryClient().deliverMessage(message);
 
         assertThat(domibsConnectorAcknowledgementType.isResult()).isTrue();
-
 
         DomibusConnectorMessage poll = toConnectorSubmittedMessages.poll(30, TimeUnit.SECONDS);
 
         assertThat(poll).isNotNull();
-
-
     }
 
     @Test
-    public void testSubmitToGw() throws Exception {
+    void testSubmitToGw() throws Exception {
         DomibusConnectorMessage message = DomainEntityCreator.createMessage();
-//        gatewaySubmissionService.submitToGateway(message);
+        //        gatewaySubmissionService.submitToGateway(message);
 
         DomibusConnectorMessageType msg = testGwWebService.deliveredMessagesList().poll(30, TimeUnit.SECONDS);
         assertThat(msg).isNotNull();
-
     }
-
 }

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+
 /**
  * Configuration for the spring childContext for
  * the pushGatewayPlugin
@@ -34,31 +35,26 @@ import java.util.Properties;
 @EnableConfigurationProperties(WsGatewayPluginConfigurationProperties.class)
 @ComponentScan(basePackageClasses = WsGatewayPluginConfiguration.class)
 public class WsGatewayPluginConfiguration {
-
     private static final Logger LOGGER = LogManager.getLogger(WsGatewayPluginConfiguration.class);
-
     public static final String WS_GATEWAY_PLUGIN = "link.wsgatewayplugin";
 
     @Autowired
     WsGatewayPluginConfigurationProperties configurationProperties;
-
     @Autowired
     ApplicationContext applicationContext;
+    @Autowired
+    MerlinPropertiesFactory merlinPropertiesFactory;
+    @Autowired
+    SpringBus springBus;
 
     @Bean
     WsGatewayPluginWebServiceClient dcGatewayWebServiceClient() {
         return new WsGatewayPluginWebServiceClient();
     }
 
-    @Autowired
-    MerlinPropertiesFactory merlinPropertiesFactory;
-
-    @Autowired
-    SpringBus springBus;
-
     @Bean
     DomibusConnectorGatewaySubmissionWebService gatewaySubmissionWebserviceProxy() {
-//        JaxWsClientProxy jaxWsClientProxy = new JaxWsClientProxy();
+        // JaxWsClientProxy jaxWsClientProxy = new JaxWsClientProxy();
         JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
         jaxWsProxyFactoryBean.setServiceClass(DomibusConnectorGatewaySubmissionWebService.class);
 
@@ -81,7 +77,10 @@ public class WsGatewayPluginConfiguration {
             jaxWsProxyFactoryBean.getFeatures().add(loggingFeature);
         }
 
-        Properties properties = merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(configurationProperties.getSoap(), ".");
+        Properties properties = merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(
+                configurationProperties.getSoap(),
+                "."
+        );
 
         props.put("mtom-enabled", true);
         props.put("security.encryption.properties", properties);
@@ -92,9 +91,7 @@ public class WsGatewayPluginConfiguration {
         jaxWsProxyFactoryBean.setProperties(props);
 
         return (DomibusConnectorGatewaySubmissionWebService) jaxWsProxyFactoryBean.create();
-
     }
-
 
     @Bean
     EndpointImpl gatewayDeliveryWebServiceEndpoint() {
@@ -114,20 +111,25 @@ public class WsGatewayPluginConfiguration {
             endpoint.getFeatures().add(loggingFeature);
         }
 
-
         endpoint.getProperties().put("security.callback-handler", new DefaultWsCallbackHandler());
         endpoint.getProperties().put("security.store.bytes.in.attachment", true);
         endpoint.getProperties().put("security.enable.streaming", true);
         endpoint.getProperties().put("mtom-enabled", true);
 
-        Properties encSigProperties = merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(configurationProperties.getSoap(), "");
+        Properties encSigProperties = merlinPropertiesFactory.mapCertAndStoreConfigPropertiesToMerlinProperties(
+                configurationProperties.getSoap(),
+                ""
+        );
 
         endpoint.getProperties().put("security.encryption.properties", encSigProperties);
         endpoint.getProperties().put("security.signature.properties", encSigProperties);
         endpoint.getProperties().put("security.encryption.username", "useReqSigCert");
 
         endpoint.publish();
-        LOGGER.debug("Published WebService [{}] under [{}]", DomibusConnectorGatewayDeliveryWSService.class, config.getGwDeliveryServicePublishAddress());
+        LOGGER.debug("Published WebService [{}] under [{}]",
+                     DomibusConnectorGatewayDeliveryWSService.class,
+                     config.getGwDeliveryServicePublishAddress()
+        );
         return endpoint;
     }
 
@@ -135,7 +137,4 @@ public class WsGatewayPluginConfiguration {
     WsGatewayPluginDeliveryServiceEndpointImpl wsGatewayPluginDeliveryServiceEndpoint() {
         return new WsGatewayPluginDeliveryServiceEndpointImpl();
     }
-
-
-
 }

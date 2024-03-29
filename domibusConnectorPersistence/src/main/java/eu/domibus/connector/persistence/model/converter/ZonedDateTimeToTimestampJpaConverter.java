@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class ZonedDateTimeToTimestampJpaConverter implements AttributeConverter<ZonedDateTime, java.sql.Timestamp> {
 
+public class ZonedDateTimeToTimestampJpaConverter implements AttributeConverter<ZonedDateTime, java.sql.Timestamp> {
     @Override
     public Timestamp convertToDatabaseColumn(ZonedDateTime attribute) {
         if (attribute == null) return null;
@@ -18,5 +18,4 @@ public class ZonedDateTimeToTimestampJpaConverter implements AttributeConverter<
         if (dbData == null) return null;
         return ZonedDateTime.ofInstant(dbData.toInstant(), ZoneId.systemDefault());
     }
-
 }

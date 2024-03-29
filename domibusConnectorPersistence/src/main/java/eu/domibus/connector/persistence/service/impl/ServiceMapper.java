@@ -2,21 +2,19 @@ package eu.domibus.connector.persistence.service.impl;
 
 import eu.domibus.connector.domain.model.DomibusConnectorService;
 import eu.domibus.connector.persistence.model.PDomibusConnectorService;
-import org.springframework.beans.BeanUtils;
 
 import javax.annotation.Nullable;
 
-public class ServiceMapper {
 
+public class ServiceMapper {
     static @Nullable
-	public
-    DomibusConnectorService mapServiceToDomain(@Nullable PDomibusConnectorService persistenceService) {
+    public DomibusConnectorService mapServiceToDomain(@Nullable PDomibusConnectorService persistenceService) {
         if (persistenceService != null) {
-            eu.domibus.connector.domain.model.DomibusConnectorService service
-                    = new eu.domibus.connector.domain.model.DomibusConnectorService(
-                    persistenceService.getService(),
-                    persistenceService.getServiceType()
-            );
+            eu.domibus.connector.domain.model.DomibusConnectorService service =
+                    new eu.domibus.connector.domain.model.DomibusConnectorService(
+                            persistenceService.getService(),
+                            persistenceService.getServiceType()
+                    );
             service.setDbKey(persistenceService.getId());
             return service;
         }
@@ -24,8 +22,7 @@ public class ServiceMapper {
     }
 
     static @Nullable
-	public
-    PDomibusConnectorService mapServiceToPersistence(@Nullable DomibusConnectorService service) {
+    public PDomibusConnectorService mapServiceToPersistence(@Nullable DomibusConnectorService service) {
         if (service != null) {
             PDomibusConnectorService persistenceService = new PDomibusConnectorService();
             persistenceService.setServiceType(service.getServiceType());
@@ -35,5 +32,4 @@ public class ServiceMapper {
         }
         return null;
     }
-
 }

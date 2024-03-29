@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-
 
     <changeSet id="extend_evidence_table" author="SKS" onValidationFail="MARK_RAN"
                failOnError="false">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG > 'V4.3.0';]]></sqlCheck>
+                <![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG > 'V4.3.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Removes not null constraint from SERVICE_TYPE at DOMIBUS_CONNECTOR_SERVICE table
         </comment>
         <renameColumn tableName="DOMIBUS_CONNECTOR_SERVICE"
-                      oldColumnName="SERVICE_TYPE" newColumnName="SERVICE_TYPE_OLD" />
+                      oldColumnName="SERVICE_TYPE" newColumnName="SERVICE_TYPE_OLD"/>
         <addColumn tableName="DOMIBUS_CONNECTOR_SERVICE">
-            <column name="SERVICE_TYPE" type="java.sql.Types.VARCHAR(512)" />
+            <column name="SERVICE_TYPE" type="java.sql.Types.VARCHAR(512)"/>
         </addColumn>
-        <sql>UPDATE DOMIBUS_CONNECTOR_SERVICE SET SERVICE_TYPE=SERVICE_TYPE_OLD</sql>
-        <dropColumn tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="SERVICE_TYPE_OLD" />
+        <sql>UPDATE DOMIBUS_CONNECTOR_SERVICE
+             SET SERVICE_TYPE=SERVICE_TYPE_OLD</sql>
+        <dropColumn tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="SERVICE_TYPE_OLD"/>
     </changeSet>
-
 
 </databaseChangeLog>

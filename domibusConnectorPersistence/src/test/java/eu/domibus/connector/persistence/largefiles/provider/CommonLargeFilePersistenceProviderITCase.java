@@ -20,8 +20,8 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class CommonLargeFilePersistenceProviderITCase {
 
+public abstract class CommonLargeFilePersistenceProviderITCase {
     @Autowired
     LargeFilePersistenceService largeFilePersistenceService;
 
@@ -38,9 +38,13 @@ public abstract class CommonLargeFilePersistenceProviderITCase {
 
         document1 = transactionTemplate.execute((TransactionStatus status) -> {
 
-            LargeFileReference d = largeFilePersistenceService.createDomibusConnectorBigDataReference(CONNECTOR_ID, "document1", MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE);
+            LargeFileReference d = largeFilePersistenceService.createDomibusConnectorBigDataReference(
+                    CONNECTOR_ID,
+                    "document1",
+                    MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE
+            );
 
-            try (InputStream is = new ByteArrayInputStream(writtenBytes); OutputStream os = d.getOutputStream();) {
+            try (InputStream is = new ByteArrayInputStream(writtenBytes); OutputStream os = d.getOutputStream()) {
                 IOUtils.copy(is, os);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -53,7 +57,7 @@ public abstract class CommonLargeFilePersistenceProviderITCase {
 
         byte[] readBytes = transactionTemplate.execute((TransactionStatus status) -> {
             LargeFileReference readableDataSource = largeFilePersistenceService.getReadableDataSource(document1);
-            try (InputStream is = readableDataSource.getInputStream();) {
+            try (InputStream is = readableDataSource.getInputStream()) {
                 return IOUtils.toByteArray(is);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -63,7 +67,6 @@ public abstract class CommonLargeFilePersistenceProviderITCase {
         assertThat(writtenBytes)
                 .as("Written bytes and read bytes must be equal")
                 .isEqualTo(readBytes);
-
     }
 
     @Test
@@ -76,9 +79,14 @@ public abstract class CommonLargeFilePersistenceProviderITCase {
 
         document1 = transactionTemplate.execute((TransactionStatus status) -> {
 
-            LargeFileReference d = largeFilePersistenceService.createDomibusConnectorBigDataReference(CONNECTOR_ID, "document1", MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE);
+            LargeFileReference d = largeFilePersistenceService
+                    .createDomibusConnectorBigDataReference(
+                            CONNECTOR_ID,
+                            "document1",
+                            MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE
+                    );
 
-            try (InputStream is = new ByteArrayInputStream(writtenBytes); OutputStream os = d.getOutputStream();) {
+            try (InputStream is = new ByteArrayInputStream(writtenBytes); OutputStream os = d.getOutputStream()) {
                 IOUtils.copy(is, os);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -86,16 +94,14 @@ public abstract class CommonLargeFilePersistenceProviderITCase {
             return d;
         });
 
-        Map<DomibusConnectorMessageId, List<LargeFileReference>> references = transactionTemplate.execute((TransactionStatus status) -> {
-            return largeFilePersistenceService.getAllAvailableReferences();
-        });
+        Map<DomibusConnectorMessageId, List<LargeFileReference>> references =
+                transactionTemplate.execute((TransactionStatus status) -> {
+                    return largeFilePersistenceService.getAllAvailableReferences();
+                });
 
         assertThat(references.get(new DomibusConnectorMessageId(CONNECTOR_ID)))
                 .hasSize(1);
-
     }
 
     protected abstract String getProviderName();
-
-
 }

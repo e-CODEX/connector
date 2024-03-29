@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
@@ -23,10 +23,10 @@
     <property name="text.type" value="longtext" dbms="mysql,mariadb"/>
     <property name="blob" value="BLOB" dbms="oracle,h2,postgresql"/>
     <property name="blob" value="longblob" dbms="mysql,mariadb"/>
-    <property name="timestamp.type" value="java.sql.types.TIMESTAMP(6)" dbms="mysql,mariadb" />
-    <property name="timestamp.type" value="java.sql.types.TIMESTAMP" dbms="h2,oracle,postgresql" />
-    <property name="connector_message_id.type" value="java.sql.types.VARCHAR(255)" />
+    <property name="timestamp.type" value="java.sql.types.TIMESTAMP(6)" dbms="mysql,mariadb"/>
+    <property name="timestamp.type" value="java.sql.types.TIMESTAMP" dbms="h2,oracle,postgresql"/>
+    <property name="connector_message_id.type" value="java.sql.types.VARCHAR(255)"/>
     <property name="boolean.type" value="java.sql.types.BOOLEAN" dbms="oracle,postgresql,mysql,mariadb"/>
-    <property name="boolean.type" value="TINYINT" dbms="h2" />
+    <property name="boolean.type" value="TINYINT" dbms="h2"/>
 
 </databaseChangeLog>

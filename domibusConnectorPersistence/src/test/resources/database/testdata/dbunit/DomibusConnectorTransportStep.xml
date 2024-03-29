@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <DOMIBUS_CONNECTOR_MESSAGE id="72" ebms_message_id="ebms1" connector_message_id="msg1" backend_message_id="20171103080259aads2_domibus-blue" direction_target="BACKEND" direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="ebms2" connector_message_id="msg2" backend_message_id="20171103080259aads3_domibus-blue" direction_target="BACKEND" direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="72" ebms_message_id="ebms1" connector_message_id="msg1"
+                               backend_message_id="20171103080259aads2_domibus-blue" direction_target="BACKEND"
+                               direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="ebms2" connector_message_id="msg2"
+                               backend_message_id="20171103080259aads3_domibus-blue" direction_target="BACKEND"
+                               direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000"/>
 
-    <DC_TRANSPORT_STEP id="2" transport_id="transport123" connector_message_id="msg1" LINK_PARTNER_NAME="partner1" attempt="4" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID="" CREATED="2017-12-12 12:34:23.000000000"/>
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="2" state="pending" CREATED="2017-12-12 12:34:23.000000000" />
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="2" state="failed" CREATED="2017-12-12 12:48:23.000000000" />
+    <DC_TRANSPORT_STEP id="2" transport_id="transport123" connector_message_id="msg1" LINK_PARTNER_NAME="partner1"
+                       attempt="4" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID=""
+                       CREATED="2017-12-12 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="2" state="pending" CREATED="2017-12-12 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="2" state="failed" CREATED="2017-12-12 12:48:23.000000000"/>
 
-    <DC_TRANSPORT_STEP id="3" transport_id="transport_3" connector_message_id="msg1" LINK_PARTNER_NAME="partner1" attempt="4" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID="" CREATED="2017-12-12 12:34:23.000000000"/>
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="3" state="pending" CREATED="2017-12-12 12:34:23.000000000" />
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="3" state="failed" CREATED="2017-12-12 12:40:23.000000000" />
+    <DC_TRANSPORT_STEP id="3" transport_id="transport_3" connector_message_id="msg1" LINK_PARTNER_NAME="partner1"
+                       attempt="4" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID=""
+                       CREATED="2017-12-12 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="3" state="pending" CREATED="2017-12-12 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="3" state="failed" CREATED="2017-12-12 12:40:23.000000000"/>
 
-    <DC_TRANSPORT_STEP id="4" transport_id="transport_4" connector_message_id="msg1" LINK_PARTNER_NAME="partner1" attempt="4" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID="" CREATED="2017-12-12 12:34:23.000000000"/>
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="4" state="pending" CREATED="2017-12-12 12:34:23.000000000" />
+    <DC_TRANSPORT_STEP id="4" transport_id="transport_4" connector_message_id="msg1" LINK_PARTNER_NAME="partner1"
+                       attempt="4" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID=""
+                       CREATED="2017-12-12 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="4" state="pending" CREATED="2017-12-12 12:34:23.000000000"/>
 
-    <DC_TRANSPORT_STEP id="5" transport_id="t_1" connector_message_id="msg2" LINK_PARTNER_NAME="partner2" attempt="1" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID="" CREATED="2017-12-12 12:34:23.000000000"/>
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="5" state="pending" CREATED="2017-12-12 12:34:23.000000000" />
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="5" state="pending_downloaded" CREATED="2017-12-13 12:34:23.000000000" />
+    <DC_TRANSPORT_STEP id="5" transport_id="t_1" connector_message_id="msg2" LINK_PARTNER_NAME="partner2" attempt="1"
+                       TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID="" CREATED="2017-12-12 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="5" state="pending" CREATED="2017-12-12 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="5" state="pending_downloaded" CREATED="2017-12-13 12:34:23.000000000"/>
 
-    <DC_TRANSPORT_STEP id="6" transport_id="t_2" connector_message_id="msg2" LINK_PARTNER_NAME="partner2" attempt="2" TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID="" CREATED="2017-12-14 12:34:23.000000000"/>
-    <DC_TRANSPORT_STEP_STATUS transport_step_id="6" state="pending" CREATED="2017-12-14 12:34:23.000000000" />
+    <DC_TRANSPORT_STEP id="6" transport_id="t_2" connector_message_id="msg2" LINK_PARTNER_NAME="partner2" attempt="2"
+                       TRANSPORT_SYSTEM_MESSAGE_ID="" REMOTE_MESSAGE_ID="" CREATED="2017-12-14 12:34:23.000000000"/>
+    <DC_TRANSPORT_STEP_STATUS transport_step_id="6" state="pending" CREATED="2017-12-14 12:34:23.000000000"/>
 
 </dataset>

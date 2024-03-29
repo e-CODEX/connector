@@ -4,19 +4,15 @@ import eu.domibus.connector.domain.model.DomibusConnectorService;
 import eu.domibus.connector.persistence.dao.DomibusConnectorServiceDao;
 import eu.domibus.connector.persistence.model.PDomibusConnectorService;
 import eu.domibus.connector.persistence.service.DomibusConnectorServicePersistenceService;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 public class DomibusConnectorServicePersistenceImpl implements DomibusConnectorServicePersistenceService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DomibusConnectorServicePersistenceImpl.class);
-
     DomibusConnectorServiceDao serviceDao;
 
     @Autowired
@@ -40,18 +36,10 @@ public class DomibusConnectorServicePersistenceImpl implements DomibusConnectorS
         }
         return services;
     }
-    
-    @Override
-    public List<String> getServiceListString() {
-        List<String> services = new ArrayList<>();
-        for (PDomibusConnectorService dbService : this.serviceDao.findAll()) {
-            services.add(dbService.getService());
-        }
-        return services;
-    }
 
     @Override
-    public DomibusConnectorService updateService(DomibusConnectorService oldService, DomibusConnectorService newService) {
+    public DomibusConnectorService updateService(
+            DomibusConnectorService oldService, DomibusConnectorService newService) {
         PDomibusConnectorService dbService = ServiceMapper.mapServiceToPersistence(newService);
         dbService = this.serviceDao.save(dbService);
         return ServiceMapper.mapServiceToDomain(dbService);
@@ -65,8 +53,17 @@ public class DomibusConnectorServicePersistenceImpl implements DomibusConnectorS
 
     @Override
     public eu.domibus.connector.domain.model.DomibusConnectorService getService(String service) {
-//        PDomibusConnectorService srv = serviceDao.findById(service).get();
-//        return ServiceMapper.mapServiceToDomain(srv);
+        // PDomibusConnectorService srv = serviceDao.findById(service).get();
+        // return ServiceMapper.mapServiceToDomain(srv);
         return null;
+    }
+
+    @Override
+    public List<String> getServiceListString() {
+        List<String> services = new ArrayList<>();
+        for (PDomibusConnectorService dbService : this.serviceDao.findAll()) {
+            services.add(dbService.getService());
+        }
+        return services;
     }
 }

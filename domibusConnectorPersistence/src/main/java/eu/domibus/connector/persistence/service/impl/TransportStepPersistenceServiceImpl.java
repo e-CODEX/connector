@@ -28,32 +28,34 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @Service
 @Transactional
 public class TransportStepPersistenceServiceImpl implements TransportStepPersistenceService {
-
     private static final Logger LOGGER = LogManager.getLogger(TransportStepPersistenceServiceImpl.class);
 
     private final DomibusConnectorTransportStepDao transportStepDao;
     private final ObjectMapper objectMapper;
 
-    public TransportStepPersistenceServiceImpl(DomibusConnectorTransportStepDao transportStepDao,
-                                               @DomainModelJsonObjectMapper ObjectMapper objectMapper) {
+    public TransportStepPersistenceServiceImpl(
+            DomibusConnectorTransportStepDao transportStepDao,
+            @DomainModelJsonObjectMapper ObjectMapper objectMapper) {
         this.transportStepDao = transportStepDao;
         this.objectMapper = objectMapper;
     }
 
-
     @Override
     public DomibusConnectorTransportStep createNewTransportStep(DomibusConnectorTransportStep transportStep) {
-        if (transportStep.getLinkPartnerName() == null || StringUtils.isEmpty(transportStep.getLinkPartnerName().toString())) {
+        if (transportStep.getLinkPartnerName() == null || StringUtils.isEmpty(transportStep.getLinkPartnerName()
+                                                                                           .toString())) {
             throw new IllegalArgumentException("LinkPartner name must be set!");
         }
         if (transportStep.getTransportedMessage().map(msg -> msg.getConnectorMessageId() == null).orElse(true)) {
             throw new IllegalArgumentException("TransportedMessage and ConnectorMessageId of message must be set!");
         }
         if (transportStep.getConnectorMessageId() == null) {
-            throw new IllegalArgumentException("The connectorMessageId on DomibusConnectorTransportStep is not allowed to be null!");
+            throw new IllegalArgumentException(
+                    "The connectorMessageId on DomibusConnectorTransportStep is not allowed to be null!");
         }
 
         java.lang.String msgId = transportStep.getTransportedMessage().get().getConnectorMessageId().toString();
@@ -77,7 +79,10 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
         if (foundTransport.isPresent()) {
             return mapTransportStepToDomain(foundTransport.get());
         } else {
-            throw new RuntimeException(java.lang.String.format("No Transport found with transport id [%s]", transportId));
+            throw new RuntimeException(java.lang.String.format(
+                    "No Transport found with transport id [%s]",
+                    transportId
+            ));
         }
     }
 
@@ -93,11 +98,11 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
     public List<DomibusConnectorTransportStep> findPendingStepBy(DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) {
 
         String[] states = new String[]{TransportState.PENDING.getDbName()};
-        DomibusConnectorLinkPartner.LinkPartnerName[] linkNames = new DomibusConnectorLinkPartner.LinkPartnerName[]{linkPartnerName};
+        DomibusConnectorLinkPartner.LinkPartnerName[] linkNames =
+                new DomibusConnectorLinkPartner.LinkPartnerName[]{linkPartnerName};
         Pageable p = Pageable.unpaged();
         return transportStepDao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(states, linkNames, p).stream()
-                .map(this::mapTransportStepToDomain)
-                .collect(Collectors.toList());
+                               .map(this::mapTransportStepToDomain).collect(Collectors.toList());
     }
 
     @Override
@@ -117,33 +122,38 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
         DomibusConnectorLinkPartner.LinkPartnerName[] linkPartnerArray;
 
         if (linkPartnerNames.size() == 0) {
-            linkPartnerArray = transportStepDao.findAllLinkPartnerNames().stream().toArray(DomibusConnectorLinkPartner.LinkPartnerName[]::new);
+            linkPartnerArray = transportStepDao.findAllLinkPartnerNames().stream()
+                                               .toArray(DomibusConnectorLinkPartner.LinkPartnerName[]::new);
         } else {
             linkPartnerArray = linkPartnerNames.stream().toArray(DomibusConnectorLinkPartner.LinkPartnerName[]::new);
         }
 
         // The query needs non-empty parameters to work. Null or () won't work, but ("") or (null) do.
-        Page<PDomibusConnectorTransportStep> stepByLastState = transportStepDao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(stateStrings, linkPartnerArray, pageable);
+        Page<PDomibusConnectorTransportStep> stepByLastState =
+                transportStepDao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
+                        stateStrings,
+                        linkPartnerArray,
+                        pageable
+                );
         return stepByLastState.map(this::mapTransportStepToDomain);
     }
 
-
     @Override
     public List<DomibusConnectorTransportStep> findStepByConnectorMessageId(DomibusConnectorMessageId messageId) {
-        return transportStepDao.findByConnectorMessageId(messageId.getConnectorMessageId())
-                .stream()
-                .map(this::mapTransportStepToDomain)
-                .collect(Collectors.toList());
+        return transportStepDao
+                .findByConnectorMessageId(messageId.getConnectorMessageId()).stream()
+                .map(this::mapTransportStepToDomain).collect(Collectors.toList());
     }
 
     @Override
     public List<DomibusConnectorLinkPartner.LinkPartnerName> findAllLinkPartners() {
-        List<DomibusConnectorLinkPartner.LinkPartnerName> allLinkPartnerNames = transportStepDao.findAllLinkPartnerNames();
-        return allLinkPartnerNames; //.stream().map(DomibusConnectorLinkPartner.LinkPartnerName::new).collect(Collectors.toList());
+        List<DomibusConnectorLinkPartner.LinkPartnerName> allLinkPartnerNames =
+                transportStepDao.findAllLinkPartnerNames();
+        return allLinkPartnerNames; //.stream().map(DomibusConnectorLinkPartner.LinkPartnerName::new).collect
+        // (Collectors.toList());
     }
 
     DomibusConnectorTransportStep mapTransportStepToDomain(PDomibusConnectorTransportStep dbTransportStep) {
-
         DomibusConnectorTransportStep step = new DomibusConnectorTransportStep();
 
         /*
@@ -157,7 +167,10 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
                     step.setTransportedMessage(domibusConnectorMessage);
                 }
             } catch (IOException e) {
-                LOGGER.warn("Exception occured while reading domibus connector message from transport step table. Maybe the message is a older format.", e);
+                LOGGER.warn(
+                        "Exception occured while reading domibus connector message from transport step table. Maybe " + "the message is a older format.",
+                        e
+                );
             }
         } else {
             LOGGER.warn("The transported message was null for step ", dbTransportStep);
@@ -172,19 +185,17 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
         step.setTransportSystemMessageId(dbTransportStep.getTransportSystemMessageId());
         step.setConnectorMessageId(new DomibusConnectorMessageId(dbTransportStep.getConnectorMessageId()));
 
-        List<DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate> statusUpdates = dbTransportStep
-                .getStatusUpdates()
-                .stream()
-                .map(this::mapTransportStepState)
-                .collect(Collectors.toList());
+        List<DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate> statusUpdates =
+                dbTransportStep.getStatusUpdates().stream().map(this::mapTransportStepState)
+                               .collect(Collectors.toList());
 
         step.setStatusUpdates(statusUpdates);
-
 
         return step;
     }
 
-    private DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate mapTransportStepState(PDomibusConnectorTransportStepStatusUpdate dbTransportUpdate) {
+    private DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate mapTransportStepState(
+            PDomibusConnectorTransportStepStatusUpdate dbTransportUpdate) {
         DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate update =
                 new DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate();
         update.setCreated(dbTransportUpdate.getCreated());
@@ -198,11 +209,11 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
             throw new IllegalArgumentException("The provided connector message id is not allowed to be null!");
         }
 
-
         java.lang.String msgId = transportStep.getConnectorMessageId().toString();
         DomibusConnectorLinkPartner.LinkPartnerName partnerName = transportStep.getLinkPartnerName();
 
-        Optional<PDomibusConnectorTransportStep> foundStep = transportStepDao.findbyMsgLinkPartnerAndAttempt(msgId, partnerName, transportStep.getAttempt());
+        Optional<PDomibusConnectorTransportStep> foundStep =
+                transportStepDao.findbyMsgLinkPartnerAndAttempt(msgId, partnerName, transportStep.getAttempt());
         PDomibusConnectorTransportStep dbStep = foundStep.orElseGet(() -> {
             PDomibusConnectorTransportStep s = new PDomibusConnectorTransportStep();
             s.setConnectorMessageId(msgId);
@@ -225,17 +236,18 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
         dbStep.setRemoteMessageId(transportStep.getRemoteMessageId());
         dbStep.setTransportSystemMessageId(transportStep.getTransportSystemMessageId());
 
-        Set<TransportState> updates = dbStep.getStatusUpdates()
-                .stream()
-                .map(u -> u.getTransportState())
-                .collect(Collectors.toSet());
+        Set<TransportState> updates =
+                dbStep.getStatusUpdates().stream().map(u -> u.getTransportState()).collect(Collectors.toSet());
 
-        List<PDomibusConnectorTransportStepStatusUpdate> newStatus = transportStep.getStatusUpdates()
-                .stream()
-                //if db not alredy contains update add it
+        List<PDomibusConnectorTransportStepStatusUpdate> newStatus = transportStep
+                .getStatusUpdates().stream()
+                // if db not alredy contains update
+                // add it
                 .filter(u -> !updates.contains(u.getTransportState()))
                 .map(u -> {
-                    PDomibusConnectorTransportStepStatusUpdate update = new PDomibusConnectorTransportStepStatusUpdate();
+                    PDomibusConnectorTransportStepStatusUpdate
+                            update =
+                            new PDomibusConnectorTransportStepStatusUpdate();
                     update.setCreated(u.getCreated());
                     update.setTransportState(u.getTransportState());
                     update.setText(u.getText());
@@ -247,5 +259,4 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
 
         return dbStep;
     }
-
 }

@@ -5,8 +5,11 @@
     <DC_LINK_CONFIGURATION id="1000" link_impl="testimpl" config_name="config2"/>
     <DC_LINK_CONFIG_PROPERTY DC_LINK_CONFIGURATION_ID="1000" PROPERTY_NAME="p1" PROPERTY_VALUE="value"/>
     <DC_LINK_CONFIG_PROPERTY DC_LINK_CONFIGURATION_ID="1000" PROPERTY_NAME="p2" PROPERTY_VALUE="value"/>
-    <DC_LINK_PARTNER id="1000" name="link1" enabled="false" description="testdescription" LINK_CONFIG_ID="1" LINK_TYPE="GATEWAY"/>
-    <DC_LINK_PARTNER id="1001" name="test" enabled="true" description="testdescription" LINK_CONFIG_ID="1" LINK_TYPE="BACKEND"/>
-    <DC_LINK_PARTNER id="1" name="test2" enabled="false" description="testdescription" LINK_CONFIG_ID="1000" LINK_TYPE="BACKEND"/>
+    <DC_LINK_PARTNER id="1000" name="link1" enabled="false" description="testdescription" LINK_CONFIG_ID="1"
+                     LINK_TYPE="GATEWAY"/>
+    <DC_LINK_PARTNER id="1001" name="test" enabled="true" description="testdescription" LINK_CONFIG_ID="1"
+                     LINK_TYPE="BACKEND"/>
+    <DC_LINK_PARTNER id="1" name="test2" enabled="false" description="testdescription" LINK_CONFIG_ID="1000"
+                     LINK_TYPE="BACKEND"/>
     <DC_LINK_PARTNER_PROPERTY DC_LINK_PARTNER_ID="1" PROPERTY_NAME="test" PROPERTY_VALUE="test"/>
 </dataset>

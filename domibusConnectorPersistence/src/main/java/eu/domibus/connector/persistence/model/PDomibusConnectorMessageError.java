@@ -1,57 +1,50 @@
 package eu.domibus.connector.persistence.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-
-import java.util.Date;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.util.Date;
+
 
 @Entity
 @Table(name = PDomibusConnectorMessageError.TABLE_NAME)
 public class PDomibusConnectorMessageError {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(PDomibusConnectorMessageError.class);
     public static final String TABLE_NAME = "DOMIBUS_CONNECTOR_MSG_ERROR";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PDomibusConnectorMessageError.class);
-
     @Id
-    @Column(name="ID")
-    @TableGenerator(name = "seq" + TABLE_NAME,
-            table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
-            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME,
-            pkColumnValue = TABLE_NAME + ".ID",
+    @Column(name = "ID")
+    @TableGenerator(
+            name = "seq" + TABLE_NAME, table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
+            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME, pkColumnValue = TABLE_NAME + ".ID",
             valueColumnName = PDomibusConnectorPersistenceModel.SEQ_VALUE_COLUMN_NAME,
             initialValue = PDomibusConnectorPersistenceModel.INITIAL_VALUE,
-            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK)
+            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK
+    )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq" + TABLE_NAME)
     private Long id;
-
     @OneToOne
     @JoinColumn(name = "MESSAGE_ID", nullable = false)
     private PDomibusConnectorMessage message;
-
     /**
      * The short message of the exception
      */
     @Column(name = "ERROR_MESSAGE", nullable = false, length = 2048)
     private String errorMessage;
-
     /**
      * contains the stack trace, if given
      */
     @Lob
     @Column(name = "DETAILED_TEXT")
     private String detailedText;
-
     /**
      * usually contains the full qualified class name where error happened
      */
     @Lob
     @Column(name = "ERROR_SOURCE")
     private String errorSource;
-
     @Column(name = "CREATED", nullable = false)
     private Date created;
 
@@ -132,5 +125,4 @@ public class PDomibusConnectorMessageError {
         toString.append("errorSource", errorSource);
         return toString.build();
     }
-
 }

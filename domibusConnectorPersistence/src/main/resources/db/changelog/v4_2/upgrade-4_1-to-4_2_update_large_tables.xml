@@ -1,40 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-
-
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
     <changeSet author="StephanSpindler" id="changelog-largefiles_remove_serialize-4.2_2.0">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
-            <tableExists tableName="DC_MSG_CONTENT_DETACHED_SIGNATURE" />
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
+            <tableExists tableName="DC_MSG_CONTENT_DETACHED_SIGNATURE"/>
         </preConditions>
-        <renameTable oldTableName="DC_MSG_CONTENT_DETACHED_SIGNATURE" newTableName="DC_MSGCNT_DETSIG" />
+        <renameTable oldTableName="DC_MSG_CONTENT_DETACHED_SIGNATURE" newTableName="DC_MSGCNT_DETSIG"/>
     </changeSet>
-
 
     <changeSet author="StephanSpindler" id="changelog-largefiles_remove_serialize-4.2_2.1">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DC_MSGCNT_DETSIG" />
+                <tableExists tableName="DC_MSGCNT_DETSIG"/>
             </not>
         </preConditions>
         <comment>This changesets creates a table which is used for detached signatures, from
-        message documents, attachments, ...</comment>
+            message documents, attachments, ...
+        </comment>
         <createTable tableName="DC_MSGCNT_DETSIG">
-            <column name="ID" type="${id.type}" >
-                <constraints nullable="false" />
+            <column name="ID" type="${id.type}">
+                <constraints nullable="false"/>
             </column>
-            <column name="SIGNATURE" type="java.sql.Types.CLOB" />
-            <column name="SIGNATURE_NAME" type="java.sql.Types.Varchar(255)" />
-            <column name="SIGNATURE_TYPE" type="java.sql.Types.Varchar(255)" />
+            <column name="SIGNATURE" type="java.sql.Types.CLOB"/>
+            <column name="SIGNATURE_NAME" type="java.sql.Types.Varchar(255)"/>
+            <column name="SIGNATURE_TYPE" type="java.sql.Types.Varchar(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="StephanSpindler" id="changelog-largefiles_add_pk_for_dc_detached_signature">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DC_MSGCNT_DETSIG" />
+                <primaryKeyExists tableName="DC_MSGCNT_DETSIG"/>
             </not>
         </preConditions>
         <addPrimaryKey tableName="DC_MSGCNT_DETSIG" columnNames="ID" constraintName="PK_DETACHED_SIGNATURE"/>
@@ -42,7 +54,11 @@
 
     <changeSet author="StephanSpindler" id="changelog-largefiles_remove_serialize-4.2_3">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_MSG_CONT">
             <column name="STORAGE_PROVIDER_NAME" type="java.sql.Types.Varchar(255)"></column>
@@ -53,13 +69,17 @@
             <column name="PAYLOAD_DESCRIPTION" type="java.sql.Types.CLOB"></column>
             <column name="PAYLOAD_MIMETYPE" type="java.sql.Types.Varchar(255)"></column>
             <column name="PAYLOAD_SIZE" type="java.sql.Types.BIGINT"></column>
-            <column name="DETACHED_SIGNATURE_ID" type="${id.type}" ></column>
+            <column name="DETACHED_SIGNATURE_ID" type="${id.type}"></column>
         </addColumn>
     </changeSet>
 
     <changeSet id="changelog-largefiles_remove_serialize-4.2_4" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT"
                                  baseColumnNames="DETACHED_SIGNATURE_ID"
@@ -67,7 +87,6 @@
                                  referencedTableName="DC_MSGCNT_DETSIG"
                                  referencedColumnNames="ID"/>
     </changeSet>
-
 
 </databaseChangeLog>
 

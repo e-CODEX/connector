@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-
-    <changeSet id="create_defaultMessageLane" author="SKS" >
+    <changeSet id="create_defaultMessageLane" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <not>
                 <sqlCheck expectedResult="1">
                     SELECT count(*) FROM DC_MESSAGE_LANE WHERE NAME = 'default';
@@ -22,32 +25,43 @@
 
     <changeSet id="create_p_mode_set_table" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <createTable tableName="DC_PMODE_SET">
             <column name="ID" type="${id.type}">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="FK_MESSAGE_LANE" type="${id.type}" />
-            <column name="CREATED" type="java.sql.Types.TIMESTAMP" />
-            <column name="DESCRIPTION" type="java.sql.Types.CLOB" />
-            <column name="ACTIVE" type="java.sql.Types.TINYINT" />
+            <column name="FK_MESSAGE_LANE" type="${id.type}"/>
+            <column name="CREATED" type="java.sql.Types.TIMESTAMP"/>
+            <column name="DESCRIPTION" type="java.sql.Types.CLOB"/>
+            <column name="ACTIVE" type="java.sql.Types.TINYINT"/>
         </createTable>
-        <addPrimaryKey tableName="DC_PMODE_SET" columnNames="ID" constraintName="PK_DC_PMODE_SET" />
+        <addPrimaryKey tableName="DC_PMODE_SET" columnNames="ID" constraintName="PK_DC_PMODE_SET"/>
     </changeSet>
 
     <changeSet id="create_p_mode_set_table_default_values" author="SKS">
         <validCheckSum>8:dbe4b1c88b3549493584d609fd34b848</validCheckSum>
         <validCheckSum>8:d7f6f807ca2020f1583f8412527b6db6</validCheckSum>
-        <addDefaultValue tableName="DC_PMODE_SET" columnDataType="java.sql.Types.TINYINT" columnName="ACTIVE" defaultValue="0" />
-        <addNotNullConstraint tableName="DC_PMODE_SET" columnDataType="java.sql.Types.TINYINT" columnName="ACTIVE" />
+        <addDefaultValue tableName="DC_PMODE_SET" columnDataType="java.sql.Types.TINYINT" columnName="ACTIVE"
+                         defaultValue="0"/>
+        <addNotNullConstraint tableName="DC_PMODE_SET" columnDataType="java.sql.Types.TINYINT" columnName="ACTIVE"/>
     </changeSet>
 
     <changeSet id="create_default_p_mode_set" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <sqlCheck expectedResult="0">
-                SELECT count(*) FROM DC_PMODE_SET WHERE ID = 1;
+                SELECT count(*)
+                FROM DC_PMODE_SET
+                WHERE ID = 1;
             </sqlCheck>
         </preConditions>
         <insert tableName="DC_PMODE_SET">
@@ -59,254 +73,357 @@
         </insert>
     </changeSet>
 
-
-
     <!-- add a technical key to party table, service table and action table -->
-    <changeSet id="drop_fk_on_message_info_table_fk_naming_variant" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet id="drop_fk_on_message_info_table_fk_naming_variant" author="SKS" onValidationFail="MARK_RAN"
+               failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <comment>Drop foreign keys, so we can change the referenced primary keys on the service, action and party table</comment>
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_1" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_2" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_3" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_4" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_I" />
+        <comment>Drop foreign keys, so we can change the referenced primary keys on the service, action and party
+            table
+        </comment>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_1"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_2"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_3"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_4"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="FK_DOMIBUS_CONNECTOR_MESSAGE_I"/>
     </changeSet>
-
 
     <!-- add a technical key to party table, service table and action table -->
     <changeSet id="drop_fk_on_message_info_table" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <comment>Drop foreign keys, so we can change the referenced primary keys on the service, action and party table</comment>
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_FROM_PARTY" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_TO_PARTY" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_SERVICE" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_ACTION" />
+        <comment>Drop foreign keys, so we can change the referenced primary keys on the service, action and party
+            table
+        </comment>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_FROM_PARTY"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_TO_PARTY"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_SERVICE"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="FK_MSGI_ACTION"/>
     </changeSet>
 
     <changeSet id="drop_fk_on_message_info_table_2" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <comment>Drop foreign keys, so we can change the referenced primary keys on the service, action and party table other names</comment>
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="dc_msg_info_fk_message" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="dc_msg_info_fk_to_party" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="dc_msg_info_fk_from_party" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="dc_msg_info_fk_service" />
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" constraintName="dc_msg_info_fk_action" />
+        <comment>Drop foreign keys, so we can change the referenced primary keys on the service, action and party table
+            other names
+        </comment>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="dc_msg_info_fk_message"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="dc_msg_info_fk_to_party"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="dc_msg_info_fk_from_party"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="dc_msg_info_fk_service"/>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                  constraintName="dc_msg_info_fk_action"/>
     </changeSet>
-
 
     <!-- drop foreign key on backe_2_s table to help with changing the pk -->
     <changeSet id="drop_fk_on_service_to_backend_table" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <comment>drop foreign key on DOMIBUS_CONNECTOR_BACK_2_S (backend to service mapping table) to DOMIBUS_CONNECTOR_SERVICE</comment>
-        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S" constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_02" />
+        <comment>drop foreign key on DOMIBUS_CONNECTOR_BACK_2_S (backend to service mapping table) to
+            DOMIBUS_CONNECTOR_SERVICE
+        </comment>
+        <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S"
+                                  constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_02"/>
     </changeSet>
 
     <!-- party table add technical key -->
     <changeSet id="modify_party_table_drop_primary_key" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <dropPrimaryKey tableName="DOMIBUS_CONNECTOR_PARTY" constraintName="PK_DOMIBUS_CONNECTOR_PARTY"/>
     </changeSet>
 
     <changeSet id="modify_party_table_add_columns" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <not>
-                <columnExists tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID" />
+                <columnExists tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID"/>
             </not>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_PARTY">
             <column name="ID" type="${id.type}">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
         </addColumn>
         <addColumn tableName="DOMIBUS_CONNECTOR_PARTY">
-            <column name="IDENTIFIER" type="java.sql.Types.Varchar(255)" />
+            <column name="IDENTIFIER" type="java.sql.Types.Varchar(255)"/>
         </addColumn>
         <addColumn tableName="DOMIBUS_CONNECTOR_PARTY">
-            <column name="FK_PMODE_SET" type="${id.type}" />
+            <column name="FK_PMODE_SET" type="${id.type}"/>
         </addColumn>
 
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_PARTY"
                                  baseColumnNames="FK_PMODE_SET"
                                  constraintName="FK_PARTY_PMODE_SET_ID"
                                  referencedTableName="DC_PMODE_SET"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
     </changeSet>
-
 
     <changeSet id="modify_party_table_create_autoincrement_id_column_mysql" author="SKS" dbms="mysql">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_PARTY">
-            <column name="ID_GEN" type="${id.type}" />
+            <column name="ID_GEN" type="${id.type}"/>
         </addColumn>
         <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_PARTY" columnNames="ID_GEN" constraintName="party_unq_idgen"/>
-        <addAutoIncrement columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN" />
-        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN" constraintName="party_notnull_idgen" />
+        <addAutoIncrement columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN"/>
+        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN"
+                              constraintName="party_notnull_idgen"/>
     </changeSet>
 
     <changeSet id="modify_party_table_create_autoincrement_id_column_other_dbms" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <not>
                 <dbms type="mysql,postgresql,mariadb"/>
             </not>
         </preConditions>
         <comment>Create and fill ID_GEN column with values from temporary sequence</comment>
-        <createSequence sequenceName="temp_seq" />
+        <createSequence sequenceName="temp_seq"/>
         <addColumn tableName="DOMIBUS_CONNECTOR_PARTY">
-            <column name="ID_GEN" type="${id.type}" />
+            <column name="ID_GEN" type="${id.type}"/>
         </addColumn>
-<!--        <addDefaultValue tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN" defaultValueSequenceNext="ID_GEN" />-->
-<!--        <update tableName="DOMIBUS_CONNECTOR_PARTY" >-->
-<!--            <column name="ID_GEN" defaultValueSequenceNext="temp_seq"></column>-->
-<!--        </update>-->
-        <sql>UPDATE DOMIBUS_CONNECTOR_PARTY SET ID_GEN=temp_seq.nextval;</sql>
+        <!--        <addDefaultValue tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN" defaultValueSequenceNext="ID_GEN" />-->
+        <!--        <update tableName="DOMIBUS_CONNECTOR_PARTY" >-->
+        <!--            <column name="ID_GEN" defaultValueSequenceNext="temp_seq"></column>-->
+        <!--        </update>-->
+        <sql>UPDATE DOMIBUS_CONNECTOR_PARTY
+             SET ID_GEN=temp_seq.nextval;</sql>
 
-        <dropSequence sequenceName="temp_seq" />
+        <dropSequence sequenceName="temp_seq"/>
     </changeSet>
 
     <changeSet id="modify_party_table_set_id_values" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <sql>UPDATE DOMIBUS_CONNECTOR_PARTY SET ID=ID_GEN</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_PARTY
+             SET ID=ID_GEN</sql>
     </changeSet>
 
     <changeSet id="modify_party_create_pk_column" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID" />
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_PARTY" columnNames="ID" constraintName="PK_DOMIBUS_CONNECTOR_PARTY" />
+        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_PARTY" columnNames="ID"
+                       constraintName="PK_DOMIBUS_CONNECTOR_PARTY"/>
     </changeSet>
 
     <changeSet id="modify_party_table_drop_id_gen_column" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <dropColumn tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN" />
+        <dropColumn tableName="DOMIBUS_CONNECTOR_PARTY" columnName="ID_GEN"/>
     </changeSet>
-
 
     <!-- action table add technical key -->
     <changeSet id="modify_action_table_drop_primary_key" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <dropPrimaryKey tableName="DOMIBUS_CONNECTOR_ACTION" constraintName="PK_DOMIBUS_CONNECTOR_ACTION"/>
     </changeSet>
 
     <changeSet id="modify_action_table_add_columns" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_ACTION">
             <column name="ID" type="${id.type}">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
         </addColumn>
         <addColumn tableName="DOMIBUS_CONNECTOR_ACTION">
-            <column name="FK_PMODE_SET" type="${id.type}" />
+            <column name="FK_PMODE_SET" type="${id.type}"/>
         </addColumn>
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_ACTION"
                                  baseColumnNames="FK_PMODE_SET"
                                  constraintName="FK_ACTION_PMODE_SET_ID"
                                  referencedTableName="DC_PMODE_SET"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
     </changeSet>
 
 
     <changeSet id="modify_action_table_create_autoincrement_id_column_mysql" dbms="mysql" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <dbms type="mysql"/>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_ACTION">
-            <column name="ID_GEN" type="${id.type}" />
+            <column name="ID_GEN" type="${id.type}"/>
         </addColumn>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_ACTION" columnNames="ID_GEN" constraintName="action_unq_idgen"/>
-        <addAutoIncrement columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID_GEN" />
-        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID_GEN" constraintName="action_notnull_idgen" />
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_ACTION" columnNames="ID_GEN"
+                             constraintName="action_unq_idgen"/>
+        <addAutoIncrement columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID_GEN"/>
+        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID_GEN"
+                              constraintName="action_notnull_idgen"/>
     </changeSet>
 
     <changeSet id="modify_action_table_create_autoincrement_id_column_other_dbms" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <not>
                 <dbms type="mysql"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="temp_seq" />
+        <createSequence sequenceName="temp_seq"/>
         <addColumn tableName="DOMIBUS_CONNECTOR_ACTION">
             <column name="ID_GEN" type="${id.type}">
-<!--                <constraints nullable="false" />-->
+                <!--                <constraints nullable="false" />-->
             </column>
         </addColumn>
-<!--        <update tableName="DOMIBUS_CONNECTOR_ACTION" >-->
-<!--            <column name="ID_GEN" defaultValueSequenceNext="temp_seq"></column>-->
-<!--        </update>-->
-        <sql>UPDATE DOMIBUS_CONNECTOR_ACTION SET ID_GEN=temp_seq.nextval;</sql>
-        <dropSequence sequenceName="temp_seq" />
+        <!--        <update tableName="DOMIBUS_CONNECTOR_ACTION" >-->
+        <!--            <column name="ID_GEN" defaultValueSequenceNext="temp_seq"></column>-->
+        <!--        </update>-->
+        <sql>UPDATE DOMIBUS_CONNECTOR_ACTION
+             SET ID_GEN=temp_seq.nextval;</sql>
+        <dropSequence sequenceName="temp_seq"/>
     </changeSet>
 
     <changeSet id="modify_action_table_set_id_values" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <sql>UPDATE DOMIBUS_CONNECTOR_ACTION SET ID=ID_GEN</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_ACTION
+             SET ID=ID_GEN</sql>
     </changeSet>
 
     <changeSet id="modify_action_create_pk_column" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addNotNullConstraint tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID" columnDataType="${id.type}" />
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_ACTION" columnNames="ID" constraintName="PK_DOMIBUS_CONNECTOR_ACTION" />
+        <addNotNullConstraint tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID" columnDataType="${id.type}"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_ACTION" columnNames="ID"
+                       constraintName="PK_DOMIBUS_CONNECTOR_ACTION"/>
     </changeSet>
 
     <changeSet id="modify_action_table_drop_id_gen_column" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <dropColumn tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID_GEN" />
+        <dropColumn tableName="DOMIBUS_CONNECTOR_ACTION" columnName="ID_GEN"/>
     </changeSet>
 
 
     <!-- service table add technical key -->
     <changeSet id="modify_service_table_drop_primary_key" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <dropPrimaryKey tableName="DOMIBUS_CONNECTOR_SERVICE" constraintName="PK_DOMIBUS_CONNECTOR_SERVICE"/>
     </changeSet>
 
     <changeSet id="modify_service_table_add_new_technical_pk_column" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_SERVICE">
-            <column name="ID" type="${id.type}" />
+            <column name="ID" type="${id.type}"/>
         </addColumn>
         <addColumn tableName="DOMIBUS_CONNECTOR_SERVICE">
-            <column name="FK_PMODE_SET" type="${id.type}" />
+            <column name="FK_PMODE_SET" type="${id.type}"/>
         </addColumn>
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_SERVICE"
                                  baseColumnNames="FK_PMODE_SET"
                                  constraintName="FK_SERVICE_PMODE_SET_ID"
                                  referencedTableName="DC_PMODE_SET"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
     </changeSet>
 
 
@@ -317,151 +434,214 @@
         <addColumn tableName="DOMIBUS_CONNECTOR_SERVICE">
             <column name="ID_GEN" type="${id.type}" defaultValue="NULL"/>
         </addColumn>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_SERVICE" columnNames="ID_GEN" constraintName="service_unq_idgen"/>
-        <addAutoIncrement columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID_GEN" />
-        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID_GEN" constraintName="service_notnull_idgen" />
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_SERVICE" columnNames="ID_GEN"
+                             constraintName="service_unq_idgen"/>
+        <addAutoIncrement columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID_GEN"/>
+        <addNotNullConstraint columnDataType="${id.type}" tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID_GEN"
+                              constraintName="service_notnull_idgen"/>
     </changeSet>
 
     <changeSet id="modify_service_table_create_autoincrement_id_column_other_dbms" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
             <not>
                 <dbms type="mysql"/>
             </not>
         </preConditions>
-        <createSequence sequenceName="temp_seq" />
+        <createSequence sequenceName="temp_seq"/>
         <addColumn tableName="DOMIBUS_CONNECTOR_SERVICE">
-            <column name="ID_GEN" type="${id.type}" >
-<!--                <constraints nullable="false" />-->
+            <column name="ID_GEN" type="${id.type}">
+                <!--                <constraints nullable="false" />-->
             </column>
         </addColumn>
-<!--        <update tableName="DOMIBUS_CONNECTOR_SERVICE" >-->
-<!--            <column name="ID_GEN" defaultValueSequenceNext="temp_seq"></column>-->
-<!--        </update>-->
-        <sql>UPDATE DOMIBUS_CONNECTOR_SERVICE SET ID_GEN=temp_seq.nextval;</sql>
-        <dropSequence sequenceName="temp_seq" />
+        <!--        <update tableName="DOMIBUS_CONNECTOR_SERVICE" >-->
+        <!--            <column name="ID_GEN" defaultValueSequenceNext="temp_seq"></column>-->
+        <!--        </update>-->
+        <sql>UPDATE DOMIBUS_CONNECTOR_SERVICE
+             SET ID_GEN=temp_seq.nextval;</sql>
+        <dropSequence sequenceName="temp_seq"/>
     </changeSet>
 
     <changeSet id="modify_service_table_set_id_values" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <sql>UPDATE DOMIBUS_CONNECTOR_SERVICE SET ID=ID_GEN</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_SERVICE
+             SET ID=ID_GEN</sql>
     </changeSet>
 
     <changeSet id="modify_service_table_create_pk_column" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addNotNullConstraint tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID" columnDataType="${id.type}" />
+        <addNotNullConstraint tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID" columnDataType="${id.type}"/>
         <addPrimaryKey tableName="DOMIBUS_CONNECTOR_SERVICE"
                        columnNames="ID"
-                       constraintName="PK_DOMIBUS_CONNECTOR_SERVICE" />
+                       constraintName="PK_DOMIBUS_CONNECTOR_SERVICE"/>
     </changeSet>
 
     <changeSet id="modify_service_table_drop_id_gen_column" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <dropColumn tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID_GEN" />
+        <dropColumn tableName="DOMIBUS_CONNECTOR_SERVICE" columnName="ID_GEN"/>
     </changeSet>
-    
+
     <!-- update fks on message info table -->
 
     <changeSet id="modify_message_info_for_new_action_party_service_fk" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>add new columsn for technical foreign key on message info table</comment>
         <addColumn tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO">
-            <column name="FK_FROM_PARTY_ID" type="${id.type}" />
-            <column name="FK_TO_PARTY_ID" type="${id.type}" />
-            <column name="FK_SERVICE" type="${id.type}" />
-            <column name="FK_ACTION" type="${id.type}" />
+            <column name="FK_FROM_PARTY_ID" type="${id.type}"/>
+            <column name="FK_TO_PARTY_ID" type="${id.type}"/>
+            <column name="FK_SERVICE" type="${id.type}"/>
+            <column name="FK_ACTION" type="${id.type}"/>
         </addColumn>
     </changeSet>
 
 
-
     <changeSet id="update_fk_from_parties_in_message_info" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE_INFO info
-            SET info.FK_TO_PARTY_ID = (SELECT party.id FROM DOMIBUS_CONNECTOR_PARTY party WHERE info.TO_PARTY_ID = party.PARTY_ID AND info.TO_PARTY_ROLE = party.ROLE)
-            WHERE exists (SELECT * FROM DOMIBUS_CONNECTOR_PARTY party WHERE info.TO_PARTY_ID = party.PARTY_ID AND info.TO_PARTY_ROLE = party.ROLE)
+             SET info.FK_TO_PARTY_ID = (SELECT party.id
+                                        FROM DOMIBUS_CONNECTOR_PARTY party
+                                        WHERE info.TO_PARTY_ID = party.PARTY_ID
+                                          AND info.TO_PARTY_ROLE = party.ROLE)
+             WHERE exists (SELECT *
+                           FROM DOMIBUS_CONNECTOR_PARTY party
+                           WHERE info.TO_PARTY_ID = party.PARTY_ID AND info.TO_PARTY_ROLE = party.ROLE)
         </sql>
     </changeSet>
 
     <changeSet id="update_fk_to_parties_in_message_info" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE_INFO info
-            SET info.FK_FROM_PARTY_ID = (SELECT party.id FROM DOMIBUS_CONNECTOR_PARTY party WHERE info.FROM_PARTY_ID = party.PARTY_ID AND info.FROM_PARTY_ROLE = party.ROLE)
-            WHERE exists (SELECT * FROM DOMIBUS_CONNECTOR_PARTY party WHERE info.FROM_PARTY_ID = party.PARTY_ID AND info.FROM_PARTY_ROLE = party.ROLE)
+             SET info.FK_FROM_PARTY_ID = (SELECT party.id
+                                          FROM DOMIBUS_CONNECTOR_PARTY party
+                                          WHERE info.FROM_PARTY_ID = party.PARTY_ID
+                                            AND info.FROM_PARTY_ROLE = party.ROLE)
+             WHERE exists (SELECT *
+                           FROM DOMIBUS_CONNECTOR_PARTY party
+                           WHERE info.FROM_PARTY_ID = party.PARTY_ID
+                             AND info.FROM_PARTY_ROLE = party.ROLE)
         </sql>
     </changeSet>
 
     <changeSet id="update_fk_action_in_message_info" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE_INFO info
-            SET info.FK_ACTION = (SELECT action.id FROM DOMIBUS_CONNECTOR_ACTION action WHERE info.ACTION = action.ACTION )
-            WHERE exists (SELECT * FROM DOMIBUS_CONNECTOR_ACTION action WHERE info.ACTION = action.ACTION )
+             SET info.FK_ACTION = (SELECT action.id FROM DOMIBUS_CONNECTOR_ACTION action
+             WHERE info.ACTION = action.ACTION )
+             WHERE exists (SELECT * FROM DOMIBUS_CONNECTOR_ACTION action WHERE info.ACTION = action.ACTION )
         </sql>
     </changeSet>
 
     <changeSet id="update_fk_service_in_message_info" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE_INFO info
-            SET info.FK_SERVICE = (SELECT service.id FROM DOMIBUS_CONNECTOR_SERVICE service WHERE info.SERVICE = service.SERVICE )
-            WHERE exists (SELECT service.id FROM DOMIBUS_CONNECTOR_SERVICE service WHERE info.SERVICE = service.SERVICE )
+             SET info.FK_SERVICE = (SELECT service.id
+                                    FROM DOMIBUS_CONNECTOR_SERVICE service
+                                    WHERE info.SERVICE = service.SERVICE)
+             WHERE exists (SELECT service.id
+                           FROM DOMIBUS_CONNECTOR_SERVICE service
+                           WHERE info.SERVICE = service.SERVICE)
         </sql>
     </changeSet>
 
 
     <changeSet id="create_fk_for_party_on_message_info_table" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
                                  baseColumnNames="FK_FROM_PARTY_ID"
                                  constraintName="FK_MSGINFO_FROM_PARTY"
                                  referencedTableName="DOMIBUS_CONNECTOR_PARTY"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
 
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
                                  baseColumnNames="FK_TO_PARTY_ID"
                                  constraintName="FK_MSGINFO_TO_PARTY"
                                  referencedTableName="DOMIBUS_CONNECTOR_PARTY"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
 
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
                                  baseColumnNames="FK_SERVICE"
                                  constraintName="FK_MSGINFO_SERVICE"
                                  referencedTableName="DOMIBUS_CONNECTOR_SERVICE"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
 
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
                                  baseColumnNames="FK_ACTION"
                                  constraintName="FK_MSGINFO_ACTION"
                                  referencedTableName="DOMIBUS_CONNECTOR_ACTION"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
     </changeSet>
 
     <changeSet id="create_fk_message_info_table_1" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
                                  baseColumnNames="MESSAGE_ID"
                                  constraintName="FK_MSGINFO_MSG"
                                  referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
-                                 referencedColumnNames="ID" />
+                                 referencedColumnNames="ID"/>
     </changeSet>
 
 

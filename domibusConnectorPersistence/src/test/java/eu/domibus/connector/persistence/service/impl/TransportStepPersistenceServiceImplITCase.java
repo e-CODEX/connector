@@ -22,15 +22,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @CommonPersistenceTest
 class TransportStepPersistenceServiceImplITCase {
-
     @Autowired
     DataSource ds;
-
     @Autowired
     TransportStepPersistenceService transportStepPersistenceService;
-
     @DomainModelJsonObjectMapper
     ObjectMapper objectMapper;
 
@@ -40,7 +38,8 @@ class TransportStepPersistenceServiceImplITCase {
         domibusConnectorTransportStep.setTransportId(new TransportStateService.TransportId("id"));
         domibusConnectorTransportStep.setConnectorMessageId("bar");
         domibusConnectorTransportStep.setTransportedMessage(null);
-        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(domibusConnectorTransportStep));
+        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(
+                domibusConnectorTransportStep));
     }
 
     @Test
@@ -49,7 +48,8 @@ class TransportStepPersistenceServiceImplITCase {
         domibusConnectorTransportStep.setTransportId(new TransportStateService.TransportId("id"));
         domibusConnectorTransportStep.setConnectorMessageId("bar");
         domibusConnectorTransportStep.setTransportedMessage("{}");
-        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(domibusConnectorTransportStep));
+        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(
+                domibusConnectorTransportStep));
     }
 
     @Test
@@ -58,9 +58,9 @@ class TransportStepPersistenceServiceImplITCase {
         domibusConnectorTransportStep.setTransportId(new TransportStateService.TransportId("id"));
         domibusConnectorTransportStep.setConnectorMessageId("bar");
         domibusConnectorTransportStep.setTransportedMessage("[]");
-        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(domibusConnectorTransportStep));
+        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(
+                domibusConnectorTransportStep));
     }
-
 
     @Test
     void createNewTransportStep() {
@@ -87,7 +87,8 @@ class TransportStepPersistenceServiceImplITCase {
         DomibusConnectorTransportStep step = new DomibusConnectorTransportStep();
         DomibusConnectorLinkPartner.LinkPartnerName lp = new DomibusConnectorLinkPartner.LinkPartnerName("link4");
 
-        DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate statusUpdate = new DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate();
+        DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate statusUpdate =
+                new DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate();
         statusUpdate.setTransportState(TransportState.PENDING);
         statusUpdate.setCreated(LocalDateTime.now());
 
@@ -101,8 +102,5 @@ class TransportStepPersistenceServiceImplITCase {
 
         List<DomibusConnectorTransportStep> pendingStepBy = transportStepPersistenceService.findPendingStepBy(lp);
         assertThat(pendingStepBy).hasSize(1);
-
     }
-
-
 }

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-
 
     <changeSet id="extend_evidence_table" author="SKS" onValidationFail="MARK_RAN"
                failOnError="false">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG > 'V4.3.0';]]></sqlCheck>
+                <![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG > 'V4.3.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Adds a finalTransportState reached column with index to DC_TRANSPORT_STEP
             this makes sure that the connector can determine fast if a transport has been finished or not
@@ -18,7 +21,7 @@
             </column>
         </addColumn>
         <createIndex tableName="DC_TRANSPORT_STEP" indexName="FINAL_STATE_REACHED_INDEX">
-            <column name="FINAL_STATE_REACHED" />
+            <column name="FINAL_STATE_REACHED"/>
         </createIndex>
     </changeSet>
 
@@ -26,12 +29,16 @@
                failOnError="false">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG > 'V4.3.0';]]></sqlCheck>
+                <![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG > 'V4.3.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Adds a field to store transported message, or other transport infos...
         </comment>
         <addColumn tableName="DC_TRANSPORT_STEP">
-            <column name="TRANSPORTED_MESSAGE" type="${text.type}" />
+            <column name="TRANSPORTED_MESSAGE" type="${text.type}"/>
         </addColumn>
     </changeSet>
 

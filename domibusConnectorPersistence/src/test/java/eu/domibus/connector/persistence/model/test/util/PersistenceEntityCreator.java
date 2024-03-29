@@ -10,63 +10,64 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
 
+
 /**
  * creates other persistence entities
+ *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public class PersistenceEntityCreator {
-
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static PDomibusConnectorAction createAction() {
         PDomibusConnectorAction domibusConnectorAction = new PDomibusConnectorAction();
         domibusConnectorAction.setAction("action1");
-//        domibusConnectorAction.setDocumentRequired(true);
+        //        domibusConnectorAction.setDocumentRequired(true);
         return domibusConnectorAction;
     }
-    
+
     public static PDomibusConnectorAction createRelayREMMDAcceptanceRejectionAction() {
         PDomibusConnectorAction domibusConnectorAction = new PDomibusConnectorAction();
         domibusConnectorAction.setAction("RelayREMMDAcceptanceRejection");
-//        domibusConnectorAction.setDocumentRequired(false);
+        //        domibusConnectorAction.setDocumentRequired(false);
         return domibusConnectorAction;
     }
-    
+
     public static PDomibusConnectorAction createDeliveryNonDeliveryToRecipientAction() {
         PDomibusConnectorAction domibusConnectorAction = new PDomibusConnectorAction();
         domibusConnectorAction.setAction("DeliveryNonDeliveryToRecipient");
-//        domibusConnectorAction.setDocumentRequired(false);
+        //        domibusConnectorAction.setDocumentRequired(false);
         return domibusConnectorAction;
     }
-    
-    public static PDomibusConnectorAction createRetrievalNonRetrievalToRecipientAction() {        
+
+    public static PDomibusConnectorAction createRetrievalNonRetrievalToRecipientAction() {
         PDomibusConnectorAction domibusConnectorAction = new PDomibusConnectorAction();
         domibusConnectorAction.setAction("RetrievalNonRetrievalToRecipient");
-//        domibusConnectorAction.setDocumentRequired(false);
+        //        domibusConnectorAction.setDocumentRequired(false);
         return domibusConnectorAction;
     }
-    
-    public static PDomibusConnectorAction createRelayREMMDFailureAction() {        
+
+    public static PDomibusConnectorAction createRelayREMMDFailureAction() {
         PDomibusConnectorAction domibusConnectorAction = new PDomibusConnectorAction();
         domibusConnectorAction.setAction("RelayREMMDFailure");
-//        domibusConnectorAction.setDocumentRequired(false);
+        //        domibusConnectorAction.setDocumentRequired(false);
         return domibusConnectorAction;
     }
-    
+
     public static PDomibusConnectorService createServiceEPO() {
         PDomibusConnectorService service = new PDomibusConnectorService();
         service.setService("EPO");
         service.setServiceType("urn:e-codex:services:");
         return service;
     }
-    
+
     public static PDomibusConnectorService createServicePing() {
         PDomibusConnectorService service = new PDomibusConnectorService();
         service.setService("Ping");
         service.setServiceType("urn:e-codex:services:");
         return service;
     }
-    
+
     public static PDomibusConnectorParty createPartyAT() {
         PDomibusConnectorParty at = new PDomibusConnectorParty();
         at.setPartyId("AT");
@@ -82,11 +83,11 @@ public class PersistenceEntityCreator {
         at.setPartyIdType("urn:oasis:names:tc:ebcore:partyid-type:iso3166-1");
         return at;
     }
-    
-//    public static PDomibusConnectorPartyPK createPartyPKforPartyAT() {
-//        return new PDomibusConnectorPartyPK("AT", "GW");
-//    }
-    
+
+    //    public static PDomibusConnectorPartyPK createPartyPKforPartyAT() {
+    //        return new PDomibusConnectorPartyPK("AT", "GW");
+    //    }
+
     public static PDomibusConnectorEvidence createDeliveryEvidence() {
         PDomibusConnectorEvidence evidence = new PDomibusConnectorEvidence();
         evidence.setBusinessMessage(createSimpleDomibusConnectorMessage());
@@ -94,8 +95,7 @@ public class PersistenceEntityCreator {
         evidence.setId(13L);
         return evidence;
     }
-    
-    
+
     public static PDomibusConnectorEvidence createNonDeliveryEvidence() {
         PDomibusConnectorEvidence evidence = new PDomibusConnectorEvidence();
         evidence.setBusinessMessage(createSimpleDomibusConnectorMessage());
@@ -103,13 +103,14 @@ public class PersistenceEntityCreator {
         evidence.setId(14L);
         return evidence;
     }
-    
+
     /**
      * creates a error message with
      * #createSimpleDomibusConnectorMessage as message
      * "error detail message" as detailed text
      * "error message" as error message
      * "error source" as error source
+     *
      * @return the MessageError
      */
     public static PDomibusConnectorMessageError createMessageError() {
@@ -123,7 +124,8 @@ public class PersistenceEntityCreator {
 
     /**
      * Creates a default PDomibusConnectorMessage, for testing purposes
-  it is a message with message content! and NO evidences
+     * it is a message with message content! and NO evidences
+     *
      * @return - the message
      */
     public static PDomibusConnectorMessage createSimpleDomibusConnectorMessage() {
@@ -153,6 +155,4 @@ public class PersistenceEntityCreator {
         messageInfo.setUpdated(new Date());
         return messageInfo;
     }
-
-    
 }

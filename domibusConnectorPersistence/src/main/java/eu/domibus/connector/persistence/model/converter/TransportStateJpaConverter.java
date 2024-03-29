@@ -4,8 +4,8 @@ import eu.domibus.connector.domain.enums.TransportState;
 
 import javax.persistence.AttributeConverter;
 
-public class TransportStateJpaConverter implements AttributeConverter<TransportState, java.lang.String> {
 
+public class TransportStateJpaConverter implements AttributeConverter<TransportState, java.lang.String> {
     public static TransportStateJpaConverter converter = new TransportStateJpaConverter();
 
     @Override
@@ -23,5 +23,4 @@ public class TransportStateJpaConverter implements AttributeConverter<TransportS
         }
         return TransportState.ofDbName(dbData);
     }
-
 }

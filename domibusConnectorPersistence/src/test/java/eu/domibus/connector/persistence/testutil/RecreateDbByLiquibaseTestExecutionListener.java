@@ -1,22 +1,18 @@
 package eu.domibus.connector.persistence.testutil;
 
-import liquibase.configuration.LiquibaseConfiguration;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
-import javax.sql.DataSource;
 
 public class RecreateDbByLiquibaseTestExecutionListener extends AbstractTestExecutionListener {
+    private boolean alreadyCleared = false;
 
     public final int getOrder() {
         return 2001;
     }
-
-    private boolean alreadyCleared = false;
 
     @Override
     public void prepareTestInstance(TestContext testContext) throws Exception {
@@ -37,7 +33,6 @@ public class RecreateDbByLiquibaseTestExecutionListener extends AbstractTestExec
         ApplicationContext app = testContext.getApplicationContext();
         SpringLiquibase springLiquibase = app.getBean(SpringLiquibase.class);
         springLiquibase.setDropFirst(true);
-        springLiquibase.afterPropertiesSet(); //The database get recreated here
+        springLiquibase.afterPropertiesSet(); // The database get recreated here
     }
-
 }

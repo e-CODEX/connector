@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <DOMIBUS_CONNECTOR_MESSAGE id="72" ebms_message_id="ebms1" connector_message_id="msg1" backend_message_id="20171103080259aads2_domibus-blue" direction_target="BACKEND" direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="ebms2" connector_message_id="conn1" backend_message_id="20171103080259aads2_domibus-blue2" direction_target="BACKEND" direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="72" ebms_message_id="ebms1" connector_message_id="msg1"
+                               backend_message_id="20171103080259aads2_domibus-blue" direction_target="BACKEND"
+                               direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="ebms2" connector_message_id="conn1"
+                               backend_message_id="20171103080259aads2_domibus-blue2" direction_target="BACKEND"
+                               direction_source="GATEWAY" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000"/>
     <DOMIBUS_CONNECTOR_MSG_CONT id="12" message_id="72" content="foo" checksum="0x2131"/>
     <!--        content_type="supercontent"-->
     <DOMIBUS_CONNECTOR_MSG_CONT id="13" message_id="73" content="foo" checksum="0x2131"/>

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <DOMIBUS_CONNECTOR_MESSAGE id="72" ebms_message_id="ebms1" connector_message_id="msg1" backend_message_id="20171103080259aads2_domibus-blue" direction_target="GATEWAY" direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="ebms2" connector_message_id="conn1" backend_message_id="20171103080259aads2_domibus-blue2" direction_target="GATEWAY" direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_BIGDATA name="f1" id="123" message_id="73" created="2017-12-12 12:34:23.000000000" content="HALLO WELT ICH BIN VIEL CONTENT"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="72" ebms_message_id="ebms1" connector_message_id="msg1"
+                               backend_message_id="20171103080259aads2_domibus-blue" direction_target="GATEWAY"
+                               direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="ebms2" connector_message_id="conn1"
+                               backend_message_id="20171103080259aads2_domibus-blue2" direction_target="GATEWAY"
+                               direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_BIGDATA name="f1" id="123" message_id="73" created="2017-12-12 12:34:23.000000000"
+                               content="HALLO WELT ICH BIN VIEL CONTENT"/>
 </dataset>

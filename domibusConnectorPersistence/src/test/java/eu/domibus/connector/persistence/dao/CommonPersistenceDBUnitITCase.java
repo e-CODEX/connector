@@ -1,4 +1,3 @@
-
 package eu.domibus.connector.persistence.dao;
 
 import eu.domibus.connector.persistence.testutil.SetupPersistenceContext;
@@ -17,14 +16,15 @@ import java.util.Set;
 
 import static eu.domibus.connector.persistence.spring.PersistenceProfiles.STORAGE_DB_PROFILE_NAME;
 
+
 /**
- *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public abstract class CommonPersistenceDBUnitITCase {
-
     protected static ConfigurableApplicationContext APPLICATION_CONTEXT;
-
+    protected DataSource ds;
+    protected ConfigurableApplicationContext applicationContext;
+    private DatabaseDataSourceConnection dbUnitConnection;
 
     @BeforeAll
     public static void beforeClass() {
@@ -39,21 +39,18 @@ public abstract class CommonPersistenceDBUnitITCase {
         APPLICATION_CONTEXT.close();
     }
 
-    protected DataSource ds;
-    private DatabaseDataSourceConnection dbUnitConnection;
-    protected ConfigurableApplicationContext applicationContext;
-        
     @BeforeEach
-    public void setUp() throws Exception {        
+    public void setUp() throws Exception {
         this.applicationContext = APPLICATION_CONTEXT;
-        //lookup type
+        // lookup type
         this.ds = APPLICATION_CONTEXT.getBean(DataSource.class);
-        //lookup name
-//        this.persistenceService = APPLICATION_CONTEXT.getBean("persistenceService", DomibusConnectorPersistenceService.class);
+        // lookup name
+        //        this.persistenceService = APPLICATION_CONTEXT.getBean("persistenceService",
+        //        DomibusConnectorPersistenceService.class);
     }
 
     @AfterEach
-    public void tearDown() throws  Exception {
+    public void tearDown() throws Exception {
         closeConnection();
     }
 
@@ -84,5 +81,4 @@ public abstract class CommonPersistenceDBUnitITCase {
             throw new RuntimeException(e);
         }
     }
-
 }

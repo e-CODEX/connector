@@ -11,16 +11,15 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @CommonPersistenceTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class DomibusConnectorPModePersistenceServiceTest {
-
     @Autowired
     DomibusConnectorPModePersistenceService pModePersistenceService;
 
     @Autowired
     DomibusConnectorKeystoreDao keyStoreDao;
-
 
     @Test
     @Order(1)
@@ -29,7 +28,10 @@ class DomibusConnectorPModePersistenceServiceTest {
         searchParty.setPartyId("domibus-blue");
         searchParty.setRoleType(DomibusConnectorParty.PartyRoleType.RESPONDER);
 
-        Optional<DomibusConnectorParty> configuredSingle = pModePersistenceService.getConfiguredSingle(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchParty);
+        Optional<DomibusConnectorParty> configuredSingle = pModePersistenceService.getConfiguredSingle(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                searchParty
+        );
 
         assertThat(configuredSingle).isPresent();
     }
@@ -40,7 +42,10 @@ class DomibusConnectorPModePersistenceServiceTest {
         DomibusConnectorAction searchAction = new DomibusConnectorAction();
         searchAction.setAction("Form_A");
 
-        Optional<DomibusConnectorAction> configuredSingle = pModePersistenceService.getConfiguredSingle(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchAction);
+        Optional<DomibusConnectorAction> configuredSingle = pModePersistenceService.getConfiguredSingle(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                searchAction
+        );
         assertThat(configuredSingle).isPresent();
     }
 
@@ -51,7 +56,10 @@ class DomibusConnectorPModePersistenceServiceTest {
         searchService.setService("service1");
         searchService.setServiceType(null);
 
-        Optional<DomibusConnectorService> configuredSingle = pModePersistenceService.getConfiguredSingle(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchService);
+        Optional<DomibusConnectorService> configuredSingle = pModePersistenceService.getConfiguredSingle(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                searchService
+        );
         assertThat(configuredSingle).isPresent();
     }
 
@@ -85,9 +93,9 @@ class DomibusConnectorPModePersistenceServiceTest {
     }
 
     @Test
-    @Order(200) //should run last, because it changes db
+    @Order(200)
+        // should run last, because it changes db
     void updatePModeConfigurationSet() {
-
         DomibusConnectorPModeSet pModeSet = new DomibusConnectorPModeSet();
         pModeSet.setMessageLaneId(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
         pModeSet.setDescription("Example");
@@ -116,13 +124,13 @@ class DomibusConnectorPModePersistenceServiceTest {
         pModeSet.getParties().add(partyDomibusBluInitiator);
 
         pModePersistenceService.updatePModeConfigurationSet(pModeSet);
-
     }
 
     @Test
     @Order(20)
     void getCurrentPModeSet() {
-        Optional<DomibusConnectorPModeSet> currentPModeSet = pModePersistenceService.getCurrentPModeSet(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
+        Optional<DomibusConnectorPModeSet> currentPModeSet =
+                pModePersistenceService.getCurrentPModeSet(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
         assertThat(currentPModeSet).isPresent();
     }
 }

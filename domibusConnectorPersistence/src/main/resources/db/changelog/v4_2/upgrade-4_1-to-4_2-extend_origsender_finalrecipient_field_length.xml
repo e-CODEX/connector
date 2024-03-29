@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-
 
     <changeSet id="extend_original_sender_field" author="SKS" onValidationFail="MARK_RAN"
                failOnError="false">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG > 'V4.2.0';]]></sqlCheck>
+                <![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG > 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <modifyDataType tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnName="ORIGINAL_SENDER" newDataType="java.sql.Types.VARCHAR(2048)" />
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnName="ORIGINAL_SENDER"
+                        newDataType="java.sql.Types.VARCHAR(2048)"/>
     </changeSet>
 
     <changeSet id="extend_final_recipient_field" author="SKS" onValidationFail="MARK_RAN"
                failOnError="false">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG > 'V4.2.0';]]></sqlCheck>
+                <![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG > 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <modifyDataType tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnName="FINAL_RECIPIENT" newDataType="java.sql.Types.VARCHAR(2048)" />
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnName="FINAL_RECIPIENT"
+                        newDataType="java.sql.Types.VARCHAR(2048)"/>
     </changeSet>
 
 </databaseChangeLog>

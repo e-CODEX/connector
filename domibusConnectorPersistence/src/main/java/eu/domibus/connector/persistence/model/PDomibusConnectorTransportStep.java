@@ -12,63 +12,52 @@ import java.util.List;
 
 import static eu.domibus.connector.persistence.model.PDomibusConnectorTransportStep.TABLE_NAME;
 
+
 @Entity
 @Table(name = TABLE_NAME)
 @ToString
 public class PDomibusConnectorTransportStep {
-
     public static final String TABLE_NAME = "DC_TRANSPORT_STEP";
 
     @Id
-    @Column(name="ID")
-    @TableGenerator(name = "seqTransportStep",
-            table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
-            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME,
-            pkColumnValue = TABLE_NAME + ".ID",
+    @Column(name = "ID")
+    @TableGenerator(
+            name = "seqTransportStep", table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
+            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME, pkColumnValue = TABLE_NAME + ".ID",
             valueColumnName = PDomibusConnectorPersistenceModel.SEQ_VALUE_COLUMN_NAME,
             initialValue = PDomibusConnectorPersistenceModel.INITIAL_VALUE,
-            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK)
+            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK
+    )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seqTransportStep")
     private Long id;
-
-//    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    // @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Column(name = "CONNECTOR_MESSAGE_ID", nullable = false)
     private String connectorMessageId;
-
     @Column(name = "LINK_PARTNER_NAME", nullable = false)
     private DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName;
-
     @Column(name = "ATTEMPT", nullable = false)
     private int attempt = 1;
-
     @Column(name = "TRANSPORT_ID")
     private TransportStateService.TransportId transportId;
-
     @Column(name = "TRANSPORTED_MESSAGE")
     @Lob
     private String transportedMessage;
-
     /**
      * The message id of the system used to transport the message
      * eg. jms-message-id, webRequestNumber,...
      */
     @Column(name = "TRANSPORT_SYSTEM_MESSAGE_ID")
     private String transportSystemMessageId;
-
     @Column(name = "REMOTE_MESSAGE_ID")
     private String remoteMessageId;
-
     @Column(name = "CREATED", nullable = false)
     private LocalDateTime created;
-
     /**
      * will be set to the date
      * when the final state has been reached
-     *
      */
     @Column(name = "FINAL_STATE_REACHED")
     private LocalDateTime finalStateReached;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportStep", fetch = FetchType.EAGER)
     private List<PDomibusConnectorTransportStepStatusUpdate> statusUpdates = new ArrayList<>();
 

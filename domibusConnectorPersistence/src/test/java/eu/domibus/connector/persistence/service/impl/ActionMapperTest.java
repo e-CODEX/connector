@@ -8,32 +8,30 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ActionMapperTest {
 
+class ActionMapperTest {
     @Test
-    public void mapActionToDomain() throws Exception {
+    void mapActionToDomain() throws Exception {
         PDomibusConnectorAction dbAction = PersistenceEntityCreator.createRelayREMMDFailureAction();
         DomibusConnectorAction action = ActionMapper.mapActionToDomain(dbAction);
         assertThat(action.getAction()).isEqualTo("RelayREMMDFailure");
     }
 
     @Test
-    public void mapActionToDomain_null_shouldRetNull() throws Exception {
+    void mapActionToDomain_null_shouldRetNull() throws Exception {
         assertThat(ActionMapper.mapActionToDomain(null)).isNull();
     }
 
     @Test
-    public void testMapActionToPersistence() {
+    void testMapActionToPersistence() {
         DomibusConnectorAction createActionForm_A = DomainEntityCreatorForPersistenceTests.createActionForm_A();
         PDomibusConnectorAction action = ActionMapper.mapActionToPersistence(createActionForm_A);
-//        assertThat(action.isDocumentRequired()).as("pdf is required so must be true").isTrue();
+        //        assertThat(action.isDocumentRequired()).as("pdf is required so must be true").isTrue();
         assertThat(action.getAction()).as("must match").isEqualTo("Form_A");
     }
 
     @Test
-    public void testMapActionToPersistence_null_shouldRetNull() {
+    void testMapActionToPersistence_null_shouldRetNull() {
         assertThat(ActionMapper.mapActionToPersistence(null)).isNull();
     }
-
-
 }

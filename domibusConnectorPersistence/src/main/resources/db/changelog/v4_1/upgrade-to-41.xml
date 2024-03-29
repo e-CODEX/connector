@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <property name="text.type" value="TEXT" dbms="h2,postgresql"/>
     <property name="text.type" value="CLOB" dbms="oracle"/>
     <property name="text.type" value="longtext" dbms="mysql"/>
@@ -9,41 +11,69 @@
 
     <changeSet author="domibusConnector" id="up1_changelog_4.1_rename_property_table">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
-            <tableExists tableName="DOMIBUS_WEBADMIN_PROPERTY" />
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
+            <tableExists tableName="DOMIBUS_WEBADMIN_PROPERTY"/>
         </preConditions>
         <renameTable oldTableName="DOMIBUS_WEBADMIN_PROPERTY" newTableName="DOMIBUS_CONNECTOR_PROPERTY"/>
     </changeSet>
     <changeSet id="up1_dropPrimaryKey" author="domibusConnector">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <dropPrimaryKey tableName="DOMIBUS_CONNECTOR_PROPERTY"/>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_rename_property_columns">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
-        <renameColumn tableName="DOMIBUS_CONNECTOR_PROPERTY" oldColumnName="KEY" newColumnName="PROPERTY_NAME" columnDataType="java.sql.Types.VARCHAR(2048)"/>
-        <renameColumn tableName="DOMIBUS_CONNECTOR_PROPERTY" oldColumnName="VALUE" newColumnName="PROPERTY_VALUE" columnDataType="java.sql.Types.VARCHAR(2048)"/>
-        <modifyDataType tableName="DOMIBUS_CONNECTOR_PROPERTY" columnName="PROPERTY_VALUE" newDataType="java.sql.Types.VARCHAR(2048)"/>
-        <modifyDataType tableName="DOMIBUS_CONNECTOR_PROPERTY" columnName="PROPERTY_NAME" newDataType="java.sql.Types.VARCHAR(2048)"/>
+        <renameColumn tableName="DOMIBUS_CONNECTOR_PROPERTY" oldColumnName="KEY" newColumnName="PROPERTY_NAME"
+                      columnDataType="java.sql.Types.VARCHAR(2048)"/>
+        <renameColumn tableName="DOMIBUS_CONNECTOR_PROPERTY" oldColumnName="VALUE" newColumnName="PROPERTY_VALUE"
+                      columnDataType="java.sql.Types.VARCHAR(2048)"/>
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_PROPERTY" columnName="PROPERTY_VALUE"
+                        newDataType="java.sql.Types.VARCHAR(2048)"/>
+        <modifyDataType tableName="DOMIBUS_CONNECTOR_PROPERTY" columnName="PROPERTY_NAME"
+                        newDataType="java.sql.Types.VARCHAR(2048)"/>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_drop_pk">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <dropPrimaryKey tableName="DOMIBUS_WEBADMIN_USER"/>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_rename_user_table">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <renameTable oldTableName="DOMIBUS_WEBADMIN_USER" newTableName="DOMIBUS_CONNECTOR_USER"/>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_add_user_columns">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_USER">
             <column name="ID" type="${id.type}"/>
@@ -57,7 +87,11 @@
     </changeSet>
     <changeSet id="up1_remove-users" author="domibusConnector">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <delete tableName="DOMIBUS_CONNECTOR_USER">
             <where>1=1</where>
@@ -65,14 +99,22 @@
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_user_table_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <addNotNullConstraint tableName="DOMIBUS_CONNECTOR_USER" columnName="ID" columnDataType="${id.type}"/>
         <addPrimaryKey tableName="DOMIBUS_CONNECTOR_USER" columnNames="ID" constraintName="PK_CONNECTOR_USER"/>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_create_password_table">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_USER_PWD">
             <column name="ID" type="${id.type}">
@@ -88,13 +130,21 @@
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_user_pw_table_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <addPrimaryKey tableName="DOMIBUS_CONNECTOR_USER_PWD" columnNames="ID" constraintName="PK_CONNECTOR_PASSWORD"/>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_update_admin_user">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <update tableName="DOMIBUS_CONNECTOR_USER">
             <column name="NUMBER_OF_GRACE_LOGINS" value="5"/>
@@ -106,28 +156,73 @@
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_createa_admin_user">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
-        <sql dbms="h2,oracle,mysql">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED, CREATED) VALUES (1, 'admin', 'ADMIN', 0, 5, 0, current_timestamp); INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED) VALUES (1, 1, '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306', '5b424031616564356639', 1, 1, current_timestamp);</sql>
-        <sql dbms="postgres">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED, CREATED) VALUES (1, 'admin', 'ADMIN', FALSE, 5, 0, current_timestamp); INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED) VALUES (1, 1, '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306', '5b424031616564356639', 1, 1, current_timestamp);</sql>
+        <sql dbms="h2,oracle,mysql">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED,
+                                                                        NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED,
+                                                                        CREATED)
+                                    VALUES (1, 'admin', 'ADMIN', 0, 5, 0, current_timestamp);
+        INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED)
+        VALUES (1, 1,
+                '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306',
+                '5b424031616564356639', 1, 1, current_timestamp);</sql>
+        <sql dbms="postgres">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS,
+                                                                 GRACE_LOGINS_USED, CREATED)
+                             VALUES (1, 'admin', 'ADMIN', FALSE, 5, 0, current_timestamp);
+        INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED)
+        VALUES (1, 1,
+                '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306',
+                '5b424031616564356639', 1, 1, current_timestamp);</sql>
     </changeSet>
     <changeSet id="up1_changelog_4.1_create_user_with_role_user" author="domibusConnector">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
-        <sql dbms="h2,oracle,mysql">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED, CREATED) VALUES (2, 'user', 'USER', 0, 5, 0, current_timestamp); INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED) VALUES (2, 2, '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306', '5b424031616564356639', 1, 1, current_timestamp);</sql>
-        <sql dbms="postgres">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED, CREATED) VALUES (2, 'user', 'USER', FALSE, 5, 0, current_timestamp); INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED) VALUES (2, 2, '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306', '5b424031616564356639', 1, 1, current_timestamp);</sql>
+        <sql dbms="h2,oracle,mysql">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED,
+                                                                        NUMBER_OF_GRACE_LOGINS, GRACE_LOGINS_USED,
+                                                                        CREATED)
+                                    VALUES (2, 'user', 'USER', 0, 5, 0, current_timestamp);
+        INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED)
+        VALUES (2, 2,
+                '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306',
+                '5b424031616564356639', 1, 1, current_timestamp);</sql>
+        <sql dbms="postgres">INSERT INTO DOMIBUS_CONNECTOR_USER (ID, USERNAME, ROLE, LOCKED, NUMBER_OF_GRACE_LOGINS,
+                                                                 GRACE_LOGINS_USED, CREATED)
+                             VALUES (2, 'user', 'USER', FALSE, 5, 0, current_timestamp);
+        INSERT INTO DOMIBUS_CONNECTOR_USER_PWD (ID, USER_ID, PASSWORD, SALT, CURRENT_PWD, INITIAL_PWD, CREATED)
+        VALUES (2, 2,
+                '2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306',
+                '5b424031616564356639', 1, 1, current_timestamp);</sql>
     </changeSet>
     <changeSet id="up1_changelog_4.1_update_seq_table" author="domibusConnector">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <!-- start with 20 to leave space for other ids -->
-        <sql>INSERT INTO DOMIBUS_CONNECTOR_SEQ_STORE VALUES ('DOMIBUS_CONNECTOR_USER.ID', 20); INSERT INTO DOMIBUS_CONNECTOR_SEQ_STORE VALUES ('DOMIBUS_CONNECTOR_USER_PWD.ID', 20);</sql>
+        <sql>INSERT INTO DOMIBUS_CONNECTOR_SEQ_STORE
+             VALUES ('DOMIBUS_CONNECTOR_USER.ID', 20);
+        INSERT INTO DOMIBUS_CONNECTOR_SEQ_STORE
+        VALUES ('DOMIBUS_CONNECTOR_USER_PWD.ID', 20);</sql>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog_4.1_upgrade_evidence_table">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_EVIDENCE">
             <column name="CONNECTOR_MESSAGE_ID" type="java.sql.Types.VARCHAR(255)"/>
@@ -135,19 +230,26 @@
     </changeSet>
     <changeSet id="up1_changelog_4.1_change_error_table" author="domibusConnector">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR">
             <column name="ERROR_TEXT_CLOB" type="java.sql.Types.CLOB"/>
         </addColumn>
-        <sql>UPDATE DOMIBUS_CONNECTOR_MSG_ERROR SET ERROR_TEXT_CLOB = DETAILED_TEXT;</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_MSG_ERROR
+             SET ERROR_TEXT_CLOB = DETAILED_TEXT;</sql>
         <dropColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR" columnName="DETAILED_TEXT"/>
-        <renameColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR" oldColumnName="ERROR_TEXT_CLOB" columnDataType="java.sql.Types.CLOB" newColumnName="DETAILED_TEXT"/>
+        <renameColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR" oldColumnName="ERROR_TEXT_CLOB"
+                      columnDataType="java.sql.Types.CLOB" newColumnName="DETAILED_TEXT"/>
     </changeSet>
 
-    <changeSet id="up1_up1_changelog-domibus-4.1_002_pre_setup_tag" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet id="up1_up1_changelog-domibus-4.1_002_pre_setup_tag" author="SKS" onValidationFail="MARK_RAN"
+               failOnError="false">
         <insert tableName="DC_DB_VERSION">
-            <column name="TAG" value="V4.1.0" />
+            <column name="TAG" value="V4.1.0"/>
         </insert>
     </changeSet>
 

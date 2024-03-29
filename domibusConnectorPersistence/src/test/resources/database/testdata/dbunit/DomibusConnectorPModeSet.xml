@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-
     <!-- truncate tables -->
-    <DOMIBUS_CONNECTOR_PARTY />
-    <DOMIBUS_CONNECTOR_ACTION />
-    <DOMIBUS_CONNECTOR_SERVICE />
+    <DOMIBUS_CONNECTOR_PARTY/>
+    <DOMIBUS_CONNECTOR_ACTION/>
+    <DOMIBUS_CONNECTOR_SERVICE/>
 
     <DC_MESSAGE_LANE
             ID="1"

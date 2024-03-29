@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <domibus_connector_message id="72" ebms_message_id="8dbba1fc-41ff-4d93-ae38-462bb3c5a1d2@domibus.eu" backend_message_id="20171103080259732_domibus-blue" direction_target="GATEWAY" direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000" connector_message_id="msg72"/>
-    <domibus_connector_message id="73" ebms_message_id="8ddasf-41ff-4d93-ae38-462bb3c5a1d2@domibus.eu" backend_message_id="20171103080259732_udfad" direction_target="GATEWAY" direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000" connector_message_id="msg73"/>
-    <domibus_connector_bigdata id="ee56d9df-349c-4cb9-900c-324602644c98" created="2017-12-13 12:34:23.000000000" last_access="2018-01-19 00:00:00.000" name="example.pdf" message_id="72" mimetype="application/pdf" content="HELLO WORLD I AM A LONG BLOB OF A LOT OF DATA. AN MY END IS WITH THE DOT AT THE END OF THIS SENTENCE."/>
-    <domibus_connector_bigdata id="ee56d9df-349c-4cb9-900c-324602642c98" created="2017-12-13 12:34:23.000000000" last_access="2018-01-19 00:00:00.000" message_id="73" name="example.txt" mimetype="application/txt" content="A DOT AT THE END OF THIS SENTENCE."/>
+    <domibus_connector_message id="72" ebms_message_id="8dbba1fc-41ff-4d93-ae38-462bb3c5a1d2@domibus.eu"
+                               backend_message_id="20171103080259732_domibus-blue" direction_target="GATEWAY"
+                               direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000" connector_message_id="msg72"/>
+    <domibus_connector_message id="73" ebms_message_id="8ddasf-41ff-4d93-ae38-462bb3c5a1d2@domibus.eu"
+                               backend_message_id="20171103080259732_udfad" direction_target="GATEWAY"
+                               direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000" connector_message_id="msg73"/>
+    <domibus_connector_bigdata id="ee56d9df-349c-4cb9-900c-324602644c98" created="2017-12-13 12:34:23.000000000"
+                               last_access="2018-01-19 00:00:00.000" name="example.pdf" message_id="72"
+                               mimetype="application/pdf"
+                               content="HELLO WORLD I AM A LONG BLOB OF A LOT OF DATA. AN MY END IS WITH THE DOT AT THE END OF THIS SENTENCE."/>
+    <domibus_connector_bigdata id="ee56d9df-349c-4cb9-900c-324602642c98" created="2017-12-13 12:34:23.000000000"
+                               last_access="2018-01-19 00:00:00.000" message_id="73" name="example.txt"
+                               mimetype="application/txt" content="A DOT AT THE END OF THIS SENTENCE."/>
 </dataset>

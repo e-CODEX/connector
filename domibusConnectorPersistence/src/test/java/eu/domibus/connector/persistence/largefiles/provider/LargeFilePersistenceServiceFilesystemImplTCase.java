@@ -7,14 +7,12 @@ import org.springframework.util.FileSystemUtils;
 
 import java.nio.file.Paths;
 
-import static eu.domibus.connector.persistence.spring.PersistenceProfiles.STORAGE_DB_PROFILE_NAME;
 import static eu.domibus.connector.persistence.spring.PersistenceProfiles.STORAGE_FS_PROFILE_NAME;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @CommonPersistenceTest
 @ActiveProfiles({"test", "db_h2", "connector", STORAGE_FS_PROFILE_NAME})
 class LargeFilePersistenceServiceFilesystemImplTCase extends CommonLargeFilePersistenceProviderITCase {
-
     @BeforeAll
     public static void deleteFS() {
         FileSystemUtils.deleteRecursively(Paths.get("./target/ittest").toFile());

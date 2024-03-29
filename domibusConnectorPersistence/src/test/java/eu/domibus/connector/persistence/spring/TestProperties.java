@@ -4,11 +4,11 @@ import eu.domibus.connector.common.annotations.BusinessDomainScoped;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @BusinessDomainScoped
 @ConfigurationProperties(prefix = "mytest.prop-dash")
 public class TestProperties {
-
     private String t1;
 
     private String camelCaseProperty;

@@ -6,22 +6,17 @@ import org.springframework.beans.BeanUtils;
 
 import javax.annotation.Nullable;
 
+
 public class ActionMapper {
-
-
     static @Nullable DomibusConnectorAction mapActionToDomain(@Nullable PDomibusConnectorAction persistenceAction) {
         if (persistenceAction != null) {
-            eu.domibus.connector.domain.model.DomibusConnectorAction action
-                    = new eu.domibus.connector.domain.model.DomibusConnectorAction(
-                    persistenceAction.getAction()
-//                    persistenceAction.isDocumentRequired()
-            );
+            eu.domibus.connector.domain.model.DomibusConnectorAction action =
+                    new eu.domibus.connector.domain.model.DomibusConnectorAction(persistenceAction.getAction());
             action.setDbKey(persistenceAction.getId());
             return action;
         }
         return null;
     }
-
 
     static @Nullable PDomibusConnectorAction mapActionToPersistence(@Nullable DomibusConnectorAction action) {
         if (action != null) {
@@ -32,5 +27,4 @@ public class ActionMapper {
         }
         return null;
     }
-
 }

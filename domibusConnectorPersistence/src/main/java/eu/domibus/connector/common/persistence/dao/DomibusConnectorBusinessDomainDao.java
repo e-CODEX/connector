@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+
 @Repository
 public interface DomibusConnectorBusinessDomainDao extends JpaRepository<PDomibusConnectorMessageLane, Long> {
-
-    public Optional<PDomibusConnectorMessageLane> findByName(DomibusConnectorBusinessDomain.BusinessDomainId name);
-
+    Optional<PDomibusConnectorMessageLane> findByName(DomibusConnectorBusinessDomain.BusinessDomainId name);
 }

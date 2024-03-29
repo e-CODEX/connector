@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <property name="text.type" value="TEXT" dbms="h2,postgresql"/>
     <property name="text.type" value="CLOB" dbms="oracle"/>
     <property name="text.type" value="longtext" dbms="mysql"/>
@@ -8,10 +10,15 @@
     <!--<changeSet author="domibusConnector" id="changelog_4.1_rename_property_table">-->
     <!--<renameTable oldTableName="DOMIBUS_WEBADMIN_PROPERTY" newTableName="DOMIBUS_CONNECTOR_PROPERTY" />-->
     <!--</changeSet>-->
-    <changeSet id="enable_loopback_messaging_support_in_db_drop_unique_constraints" author="domibusConnector" failOnError="false" onValidationFail="MARK_RAN">
-        <comment>JUEUSW-75 disable unique constraints for ebms and national message id to enable loopback sending of messages</comment>
-        <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" uniqueColumns="EBMS_MESSAGE_ID" constraintName="UQ_DOMIBUS_CONNE_EBMS_MESSAGE"/>
-        <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" uniqueColumns="BACKEND_MESSAGE_ID" constraintName="UQ_DOMIBUS_CONNE_NAT_MESSAGE_"/>
+    <changeSet id="enable_loopback_messaging_support_in_db_drop_unique_constraints" author="domibusConnector"
+               failOnError="false" onValidationFail="MARK_RAN">
+        <comment>JUEUSW-75 disable unique constraints for ebms and national message id to enable loopback sending of
+            messages
+        </comment>
+        <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" uniqueColumns="EBMS_MESSAGE_ID"
+                              constraintName="UQ_DOMIBUS_CONNE_EBMS_MESSAGE"/>
+        <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" uniqueColumns="BACKEND_MESSAGE_ID"
+                              constraintName="UQ_DOMIBUS_CONNE_NAT_MESSAGE_"/>
     </changeSet>
     <changeSet id="create_target_source" author="domibusConnector">
         <addColumn tableName="DOMIBUS_CONNECTOR_MESSAGE">
@@ -20,10 +27,20 @@
         </addColumn>
     </changeSet>
     <changeSet id="migrate_msg_direction_values" author="SKS">
-        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE SET DIRECTION_TARGET='GATEWAY' WHERE DIRECTION = 'NAT_TO_GW' OR DIRECTION='CON_TO_GW';</sql>
-        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE SET DIRECTION_TARGET='BACKEND' WHERE DIRECTION = 'GW_TO_NAT' OR DIRECTION='CON_TO_NAT';</sql>
-        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE SET DIRECTION_SOURCE='GATEWAY' WHERE DIRECTION = 'GW_TO_NAT';</sql>
-        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE SET DIRECTION_SOURCE='BACKEND' WHERE DIRECTION = 'NAT_TO_GW';</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE
+             SET DIRECTION_TARGET='GATEWAY'
+             WHERE DIRECTION = 'NAT_TO_GW'
+                OR DIRECTION = 'CON_TO_GW';</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE
+             SET DIRECTION_TARGET='BACKEND'
+             WHERE DIRECTION = 'GW_TO_NAT'
+                OR DIRECTION = 'CON_TO_NAT';</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE
+             SET DIRECTION_SOURCE='GATEWAY'
+             WHERE DIRECTION = 'GW_TO_NAT';</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_MESSAGE
+             SET DIRECTION_SOURCE='BACKEND'
+             WHERE DIRECTION = 'NAT_TO_GW';</sql>
     </changeSet>
     <changeSet id="drop_msg_direction_column" author="SKS">
         <dropColumn tableName="DOMIBUS_CONNECTOR_MESSAGE" columnName="DIRECTION"/>

@@ -5,9 +5,10 @@ import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-@Converter(autoApply = true)
-public class LinkPartnerNameConverter implements AttributeConverter<DomibusConnectorLinkPartner.LinkPartnerName, String> {
 
+@Converter(autoApply = true)
+public class LinkPartnerNameConverter implements AttributeConverter<DomibusConnectorLinkPartner.LinkPartnerName,
+        String> {
     @Override
     public String convertToDatabaseColumn(DomibusConnectorLinkPartner.LinkPartnerName attribute) {
         if (attribute == null) {

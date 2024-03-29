@@ -6,10 +6,10 @@ import eu.domibus.connector.persistence.model.enums.PMessageDirection;
 
 import javax.annotation.Nonnull;
 
-public class MessageDirectionMapper {
 
-    public static @Nonnull
-    PMessageDirection mapFromDomainToPersistence(@Nonnull DomibusConnectorMessageDirection direction) {
+public class MessageDirectionMapper {
+    public static @Nonnull PMessageDirection mapFromDomainToPersistence(
+            @Nonnull DomibusConnectorMessageDirection direction) {
         switch (direction) {
             case BACKEND_TO_GATEWAY:
                 return PMessageDirection.NAT_TO_GW;
@@ -20,8 +20,8 @@ public class MessageDirectionMapper {
         }
     }
 
-    public static @Nonnull
-    DomibusConnectorMessageDirection mapFromPersistenceToDomain(@Nonnull PMessageDirection direction) {
+    public static @Nonnull DomibusConnectorMessageDirection mapFromPersistenceToDomain(
+            @Nonnull PMessageDirection direction) {
         if (direction == null) {
             throw new IllegalArgumentException("Cannot map null to a direction!");
         }
@@ -43,7 +43,8 @@ public class MessageDirectionMapper {
         return mapFromDomainToPersistence(direction);
     }
 
-    public static DomibusConnectorMessageDirection mapFromPersistenceToDomain(MessageTargetSource directionSource, MessageTargetSource directionTarget) {
+    public static DomibusConnectorMessageDirection mapFromPersistenceToDomain(
+            MessageTargetSource directionSource, MessageTargetSource directionTarget) {
         return DomibusConnectorMessageDirection.fromMessageTargetSource(directionSource, directionTarget);
     }
 }

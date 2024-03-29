@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-
-
-    <!-- all the 4.4.0 changesets -->
-
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
     <!-- all the 4.4.0 changesets -->
 
-    <include file="upgrade-4_3-to-4_4-create_dc_keystore.xml" relativeToChangelogFile="true" />
-    <include file="upgrade-4_3-to-4_4-update_dc_pmode_set.xml" relativeToChangelogFile="true" />
-    <include file="upgrade-4_3-to-4_4-update_action.xml" relativeToChangelogFile="true" />
-    <include file="upgrade-4_3-to-4_4-update_party.xml" relativeToChangelogFile="true" />
-    <include file="upgrade-4_3-to-4_4-repair_issue_msg_cont_table.xml" relativeToChangelogFile="true" />
+    <!-- all the 4.4.0 changesets -->
+
+    <include file="upgrade-4_3-to-4_4-create_dc_keystore.xml" relativeToChangelogFile="true"/>
+    <include file="upgrade-4_3-to-4_4-update_dc_pmode_set.xml" relativeToChangelogFile="true"/>
+    <include file="upgrade-4_3-to-4_4-update_action.xml" relativeToChangelogFile="true"/>
+    <include file="upgrade-4_3-to-4_4-update_party.xml" relativeToChangelogFile="true"/>
+    <include file="upgrade-4_3-to-4_4-repair_issue_msg_cont_table.xml" relativeToChangelogFile="true"/>
 
     <changeSet id="4.4_002_pre_setup_tag" author="BR" onValidationFail="MARK_RAN" failOnError="false">
         <insert tableName="DC_DB_VERSION">
-            <column name="TAG" value="V4.4.0" />
+            <column name="TAG" value="V4.4.0"/>
         </insert>
     </changeSet>
     <changeSet id="tag-db-domibus-4.4" author="SKS">

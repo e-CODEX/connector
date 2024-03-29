@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-
 
     <changeSet id="change_msg_cont_table" author="SKS" onValidationFail="MARK_RAN">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG > 'V4.3.0';]]></sqlCheck>
+                <![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG > 'V4.3.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Drop FK to message id, replace it with connector_message_id string</comment>
         <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT"
                                   constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_04"
         />
         <addColumn tableName="DOMIBUS_CONNECTOR_MSG_CONT">
-            <column name="CONNECTOR_MESSAGE_ID" type="java.sql.Types.VARCHAR(512)" />
+            <column name="CONNECTOR_MESSAGE_ID" type="java.sql.Types.VARCHAR(512)"/>
         </addColumn>
-        <dropNotNullConstraint tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnName="MESSAGE_ID" />
+        <dropNotNullConstraint tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnName="MESSAGE_ID"/>
     </changeSet>
 
     <changeSet id="change_bigdata_table" author="SKS" onValidationFail="MARK_RAN">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
-                <![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG > 'V4.3.0';]]></sqlCheck>
+                <![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG > 'V4.3.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Drop FK to message id, replace it with connector_message_id string</comment>
         <dropForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BIGDATA"
-                                  constraintName="FK_DOMIBUS_CONNECTOR_BIGDATA" />
-        <dropNotNullConstraint tableName="DOMIBUS_CONNECTOR_BIGDATA" columnName="MESSAGE_ID" />
+                                  constraintName="FK_DOMIBUS_CONNECTOR_BIGDATA"/>
+        <dropNotNullConstraint tableName="DOMIBUS_CONNECTOR_BIGDATA" columnName="MESSAGE_ID"/>
 
         <addColumn tableName="DOMIBUS_CONNECTOR_BIGDATA">
-            <column name="CONNECTOR_MESSAGE_ID" type="java.sql.Types.VARCHAR(512)" />
+            <column name="CONNECTOR_MESSAGE_ID" type="java.sql.Types.VARCHAR(512)"/>
         </addColumn>
     </changeSet>
 

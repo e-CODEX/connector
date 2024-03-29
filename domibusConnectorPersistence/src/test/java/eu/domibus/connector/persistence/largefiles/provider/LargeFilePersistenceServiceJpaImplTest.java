@@ -1,7 +1,5 @@
 package eu.domibus.connector.persistence.largefiles.provider;
 
-import eu.domibus.connector.domain.enums.DomibusConnectorMessageDirection;
-import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.domain.model.LargeFileReference;
 import eu.domibus.connector.persistence.dao.CommonPersistenceTest;
@@ -27,19 +25,16 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @CommonPersistenceTest
 class LargeFilePersistenceServiceJpaImplTest {
-
     private static final Logger LOGGER = LogManager.getLogger(LargeFilePersistenceServiceJpaImplTest.class);
 
     @Autowired
     LargeFilePersistenceServiceJpaImpl largeFilePersistenceServiceJpa;
-
     @Autowired
     TransactionTemplate transactionTemplate;
-
     @Autowired
     DataSource dataSource;
 
@@ -55,16 +50,19 @@ class LargeFilePersistenceServiceJpaImplTest {
      * and ensure, that everything is written
      */
     @Test
-    public void testPersistMessageWithBigFiles() throws SQLException, DataSetException {
+    void testPersistMessageWithBigFiles() throws SQLException, DataSetException {
         Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
             LOGGER.info("run test testPersistMessageWithBigFiles");
             final DomibusConnectorMessageId connectorMessageId = new DomibusConnectorMessageId("myid0091");
             final byte[] CONTENT = "content".getBytes(StandardCharsets.UTF_8);
 
-
             LargeFileReference name1 = transactionTemplate.execute((TransactionStatus status) -> {
-                LargeFileReference ref = largeFilePersistenceServiceJpa.createDomibusConnectorBigDataReference(connectorMessageId, "name1", MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE);
-                try (java.io.OutputStream os = ref.getOutputStream();) {
+                LargeFileReference ref = largeFilePersistenceServiceJpa.createDomibusConnectorBigDataReference(
+                        connectorMessageId,
+                        "name1",
+                        MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE
+                );
+                try (java.io.OutputStream os = ref.getOutputStream()) {
                     os.write(CONTENT);
                     return ref;
                 } catch (IOException ioe) {
@@ -72,7 +70,7 @@ class LargeFilePersistenceServiceJpaImplTest {
                 }
             });
 
-            //check database....
+            // check database....
             ITable bigdata = conn.createQueryTable("BIGDATA", "SELECT * FROM DOMIBUS_CONNECTOR_BIGDATA");
             int rowCount = bigdata.getRowCount();
 
@@ -87,16 +85,19 @@ class LargeFilePersistenceServiceJpaImplTest {
         });
     }
 
-
     @Test
-    public void testGetAllReferences() throws SQLException, DataSetException {
+    void testGetAllReferences() throws SQLException, DataSetException {
 
         final DomibusConnectorMessageId connectorMessageId = new DomibusConnectorMessageId("myid0095");
         final byte[] CONTENT = "content".getBytes(StandardCharsets.UTF_8);
 
         LargeFileReference name1 = transactionTemplate.execute((TransactionStatus status) -> {
-            LargeFileReference ref = largeFilePersistenceServiceJpa.createDomibusConnectorBigDataReference(connectorMessageId, "name1", MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE);
-            try (java.io.OutputStream os = ref.getOutputStream();) {
+            LargeFileReference ref = largeFilePersistenceServiceJpa.createDomibusConnectorBigDataReference(
+                    connectorMessageId,
+                    "name1",
+                    MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE
+            );
+            try (java.io.OutputStream os = ref.getOutputStream()) {
                 os.write(CONTENT);
                 return ref;
             } catch (IOException ioe) {
@@ -104,10 +105,10 @@ class LargeFilePersistenceServiceJpaImplTest {
             }
         });
 
-        Map<DomibusConnectorMessageId, List<LargeFileReference>> allAvailableReferences = largeFilePersistenceServiceJpa.getAllAvailableReferences();
+        Map<DomibusConnectorMessageId, List<LargeFileReference>> allAvailableReferences =
+                largeFilePersistenceServiceJpa.getAllAvailableReferences();
         assertThat(allAvailableReferences.get(connectorMessageId))
                 .as("For the connector id mus exist one reference")
                 .hasSize(1);
     }
-
 }

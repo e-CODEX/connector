@@ -1,7 +1,6 @@
 package eu.domibus.connector.persistence.testutil;
 
 public class MysqlTestDatabaseFactory extends AbstractTestDatabaseFactory implements TestDatabaseFactory {
-
     @Override
     public String getDatabaseType() {
         return "mysql";

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <property name="text.type" value="TEXT" dbms="h2,postgresql"/>
     <property name="text.type" value="CLOB" dbms="oracle"/>
     <property name="text.type" value="longtext" dbms="mysql"/>
     <property name="varchar255.type" value="VARCHAR(255)"/>
     <property name="varchar255.type" value="VARCHAR2(255 CHAR)" dbms="oracle"/>
 
-
     <changeSet id="addPropertyIdTechnicalKey" author="domibusConnector">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1.5';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1.5';
+                ]]></sqlCheck>
         </preConditions>
         <addColumn tableName="DOMIBUS_CONNECTOR_PROPERTY">
             <column name="ID" type="BIGINT">
@@ -20,14 +25,20 @@
     <!-- UNIQUE does not work on mysql, because key size is too big (2048bytes of column PROPERTY_NAME is too big) -->
     <changeSet id="createNewConstraints" author="domibusConnector" dbms="h2,postgresql,oracle">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.1.5';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.1.5';
+                ]]></sqlCheck>
         </preConditions>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_PROPERTY" columnNames="PROPERTY_NAME" constraintName="unq_con_property_name"/>
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_PROPERTY" columnNames="PROPERTY_NAME"
+                             constraintName="unq_con_property_name"/>
     </changeSet>
 
-    <changeSet id="up1_up1_changelog-domibus-4.1_002_pre_setup_tag" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet id="up1_up1_changelog-domibus-4.1_002_pre_setup_tag" author="SKS" onValidationFail="MARK_RAN"
+               failOnError="false">
         <insert tableName="DC_DB_VERSION">
-            <column name="TAG" value="V4.1.5" />
+            <column name="TAG" value="V4.1.5"/>
         </insert>
     </changeSet>
 

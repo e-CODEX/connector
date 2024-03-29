@@ -1,6 +1,5 @@
 package eu.domibus.connector.persistence.dao;
 
-import com.github.database.rider.core.api.dataset.DataSet;
 import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.persistence.model.PDomibusConnectorLinkPartner;
 import org.junit.jupiter.api.Disabled;
@@ -12,14 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.github.database.rider.core.api.dataset.SeedStrategy.CLEAN_INSERT;
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 //@CommonPersistenceTest
 //@DataSet(value = "/database/testdata/dbunit/DomibusConnectorLinkPartner.xml", strategy = CLEAN_INSERT)
 @Disabled("Tests is failing on win10 maven build")
 class DomibusConnectorLinkPartnerDaoTest {
-
     @Autowired
     DomibusConnectorLinkPartnerDao dao;
 
@@ -28,16 +26,15 @@ class DomibusConnectorLinkPartnerDaoTest {
         PDomibusConnectorLinkPartner linkInfo = new PDomibusConnectorLinkPartner();
         linkInfo.setDescription("test description");
         linkInfo.setLinkName("name");
-//
+        //
         HashMap<String, String> props = new HashMap<>();
-        props.put("test","test");
+        props.put("test", "test");
         linkInfo.setProperties(props);
 
         dao.save(linkInfo);
 
-        //TODO: check db
+        // TODO: check db
     }
-
 
     @Test
     void findByExample() {
@@ -61,10 +58,9 @@ class DomibusConnectorLinkPartnerDaoTest {
         Optional<PDomibusConnectorLinkPartner> test2 = dao.findOneByLinkName("test2");
         assertThat(test2).isNotEmpty();
 
-        assertThat(test2.get().getProperties()).as("must have property entry with [test=test]").hasEntrySatisfying("test", (k) -> k.equals("test"));
-
+        assertThat(test2.get().getProperties()).as("must have property entry with [test=test]")
+                                               .hasEntrySatisfying("test", (k) -> k.equals("test"));
     }
-
 
     @Test
     void findHighestId() {

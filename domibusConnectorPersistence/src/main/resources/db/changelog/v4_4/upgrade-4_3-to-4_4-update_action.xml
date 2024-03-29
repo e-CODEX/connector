@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-	<changeSet id="update_pmode-set_table" author="BR">
- 
- 		<preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.4.0';]]></sqlCheck>
+    <changeSet id="update_pmode-set_table" author="BR">
+
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>dropping the column PDF_required</comment>
-        <dropColumn tableName="DOMIBUS_CONNECTOR_ACTION" columnName="PDF_REQUIRED" />
-	</changeSet>
+        <dropColumn tableName="DOMIBUS_CONNECTOR_ACTION" columnName="PDF_REQUIRED"/>
+    </changeSet>
 
 </databaseChangeLog>

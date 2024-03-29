@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <changeSet id="01_drop_all_old_qrtz_tables_DCON_QRTZ_BLOB_TRIGGERS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_BLOB_TRIGGERS"/>
         </preConditions>
         <comment>dropping all old quartz trigger tables to create them again under control of liquibase</comment>
@@ -10,70 +16,110 @@
     </changeSet>
     <changeSet id="02_drop_all_old_qrtz_tables_DCON_QRTZ_CALENDARS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_CALENDARS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_CALENDARS"/>
     </changeSet>
     <changeSet id="03_drop_all_old_qrtz_tables_DCON_QRTZ_CRON_TRIGGERS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_CRON_TRIGGERS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_CRON_TRIGGERS"/>
     </changeSet>
     <changeSet id="04_drop_all_old_qrtz_tables_DCON_QRTZ_FIRED_TRIGGERS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_FIRED_TRIGGERS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_FIRED_TRIGGERS"/>
     </changeSet>
     <changeSet id="05_drop_all_old_qrtz_tables_DCON_QRTZ_LOCKS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_LOCKS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_LOCKS"/>
     </changeSet>
     <changeSet id="06_drop_all_old_qrtz_tables_DCON_QRTZ_PAUSED_TRIGGER_GRPS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_PAUSED_TRIGGER_GRPS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_PAUSED_TRIGGER_GRPS"/>
     </changeSet>
     <changeSet id="07_drop_all_old_qrtz_tables_DCON_QRTZ_SCHEDULER_STATE" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_SCHEDULER_STATE"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_SCHEDULER_STATE"/>
     </changeSet>
     <changeSet id="08_drop_all_old_qrtz_tables_DCON_QRTZ_SIMPLE_TRIGGERS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_SIMPLE_TRIGGERS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_SIMPLE_TRIGGERS"/>
     </changeSet>
     <changeSet id="09_drop_all_old_qrtz_tables_DCON_QRTZ_SIMPROP_TRIGGERS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_SIMPROP_TRIGGERS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_SIMPROP_TRIGGERS"/>
     </changeSet>
     <changeSet id="10_drop_all_old_qrtz_tables_DCON_QRTZ_TRIGGERS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_TRIGGERS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_TRIGGERS"/>
     </changeSet>
     <changeSet id="11_drop_all_old_qrtz_tables_DCON_QRTZ_JOB_DETAILS" author="StephanSpindler">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <tableExists tableName="DCON_QRTZ_JOB_DETAILS"/>
         </preConditions>
         <dropTable tableName="DCON_QRTZ_JOB_DETAILS"/>

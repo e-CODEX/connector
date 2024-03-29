@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-	<changeSet id="update_pmode-set_table" author="BR">
- 
- 		<preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.4.0';]]></sqlCheck>
+    <changeSet id="update_pmode-set_table" author="BR">
+
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Adding columns PMODES and FK_CONNECTORSTORE and FK constraint to DC_KEYSTORE</comment>
         <addColumn tableName="DC_PMODE_SET">
-            <column name="PMODES" type="${blob}" />
+            <column name="PMODES" type="${blob}"/>
         </addColumn>
         <addColumn tableName="DC_PMODE_SET">
-            <column name="FK_CONNECTORSTORE" type="${id.type}" />
+            <column name="FK_CONNECTORSTORE" type="${id.type}"/>
         </addColumn>
         <addForeignKeyConstraint baseTableName="DC_PMODE_SET"
                                  baseColumnNames="FK_CONNECTORSTORE"
                                  constraintName="FK_DC_PMODE_SET_02"
                                  referencedTableName="DC_KEYSTORE"
                                  referencedColumnNames="ID"/>
-	</changeSet>
+    </changeSet>
 
 </databaseChangeLog>

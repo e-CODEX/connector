@@ -16,17 +16,15 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
 
 @Service
 public class DCLinkPersistenceService {
-
     private static final Logger LOGGER = LogManager.getLogger(DCLinkPersistenceService.class);
-
     private static final String CONFIG_PROPERTY_PREFIX = "prop.";
     private static final String PULL_INTERVAL_PROPERTY = "pull-interval";
     private static final String SEND_LINK_MODE_PROPERTY = "send-link-mode";
@@ -35,27 +33,19 @@ public class DCLinkPersistenceService {
     private final DomibusConnectorLinkPartnerDao linkPartnerDao;
     private final DomibusConnectorLinkConfigurationDao linkConfigurationDao;
 
-    public DCLinkPersistenceService(DomibusConnectorLinkPartnerDao linkPartnerDao,
-                                    DomibusConnectorLinkConfigurationDao linkConfigurationDao) {
+    public DCLinkPersistenceService(
+            DomibusConnectorLinkPartnerDao linkPartnerDao, DomibusConnectorLinkConfigurationDao linkConfigurationDao) {
         this.linkPartnerDao = linkPartnerDao;
         this.linkConfigurationDao = linkConfigurationDao;
     }
 
-
     public List<DomibusConnectorLinkPartner> getAllEnabledLinks() {
-        return linkPartnerDao
-                .findAllByEnabledIsTrue()
-                .stream()
-                .map(this::mapToLinkPartner)
-                .collect(Collectors.toList());
+        return linkPartnerDao.findAllByEnabledIsTrue().stream().map(this::mapToLinkPartner)
+                             .collect(Collectors.toList());
     }
 
     public List<DomibusConnectorLinkConfiguration> getAllLinkConfigurations() {
-        return linkConfigurationDao.
-                findAll()
-                .stream()
-                .map(this::mapToLinkConfiguration)
-                .collect(Collectors.toList());
+        return linkConfigurationDao.findAll().stream().map(this::mapToLinkConfiguration).collect(Collectors.toList());
     }
 
     private DomibusConnectorLinkPartner mapToLinkPartner(PDomibusConnectorLinkPartner dbLinkInfo) {
@@ -83,7 +73,6 @@ public class DCLinkPersistenceService {
         return LinkMode.ofDbName(s).orElse(null);
     }
 
-
     private DomibusConnectorLinkConfiguration mapToLinkConfiguration(PDomibusConnectorLinkConfiguration dbLinkConfig) {
         if (dbLinkConfig == null) {
             return null;
@@ -99,24 +88,22 @@ public class DCLinkPersistenceService {
         return configuration;
     }
 
-
-
-
-//    @Transactional
+    // @Transactional
     public void addLinkPartner(DomibusConnectorLinkPartner linkPartner) {
         if (linkPartner.getLinkConfiguration() == null) {
             throw new IllegalArgumentException("Cannot add a LinkPartner without an LinkConfiguration!");
         }
         PDomibusConnectorLinkPartner dbLinkPartner = mapToDbLinkPartner(linkPartner);
 
-        PDomibusConnectorLinkConfiguration dbLinkConfiguration = mapToDbLinkConfiguration(linkPartner.getLinkConfiguration());
+        PDomibusConnectorLinkConfiguration dbLinkConfiguration =
+                mapToDbLinkConfiguration(linkPartner.getLinkConfiguration());
         dbLinkConfiguration = linkConfigurationDao.save(dbLinkConfiguration);
         dbLinkPartner.setLinkConfiguration(dbLinkConfiguration);
 
         linkPartnerDao.save(dbLinkPartner);
         LOGGER.debug("Saving [{}] to database", dbLinkPartner);
 
-        //check for only one gw link config...
+        // check for only one gw link config...
         PDomibusConnectorLinkPartner gatewayExample = new PDomibusConnectorLinkPartner();
         gatewayExample.setLinkType(LinkType.GATEWAY);
         gatewayExample.setEnabled(true);
@@ -129,14 +116,14 @@ public class DCLinkPersistenceService {
         }
 
         LOGGER.debug("Successfully saved [{}] to database", dbLinkPartner);
-
     }
 
     private PDomibusConnectorLinkPartner mapToDbLinkPartner(DomibusConnectorLinkPartner linkPartner) {
         if (linkPartner == null) {
             return null;
         }
-        String linkName = linkPartner.getLinkPartnerName() == null ? null : linkPartner.getLinkPartnerName().getLinkName();
+        String linkName =
+                linkPartner.getLinkPartnerName() == null ? null : linkPartner.getLinkPartnerName().getLinkName();
 
         Optional<PDomibusConnectorLinkPartner> oneByLinkName = linkPartnerDao.findOneByLinkName(linkName);
         PDomibusConnectorLinkPartner dbLinkPartner = oneByLinkName.orElse(new PDomibusConnectorLinkPartner());
@@ -158,22 +145,29 @@ public class DCLinkPersistenceService {
         return dbLinkPartner;
     }
 
-    private PDomibusConnectorLinkConfiguration mapToDbLinkConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
+    private PDomibusConnectorLinkConfiguration mapToDbLinkConfiguration(
+            DomibusConnectorLinkConfiguration linkConfiguration) {
         if (linkConfiguration == null) {
             return null;
         }
-        String configName = linkConfiguration.getConfigName() == null ? null : linkConfiguration.getConfigName().getConfigName();
+        String configName =
+                linkConfiguration.getConfigName() == null ? null : linkConfiguration.getConfigName().getConfigName();
 
-        Optional<PDomibusConnectorLinkConfiguration> oneByConfigName = linkConfigurationDao.getOneByConfigName(configName);
+        Optional<PDomibusConnectorLinkConfiguration> oneByConfigName =
+                linkConfigurationDao.getOneByConfigName(configName);
 
-        PDomibusConnectorLinkConfiguration dbLinkConfig = oneByConfigName.orElse(new PDomibusConnectorLinkConfiguration());
+        PDomibusConnectorLinkConfiguration dbLinkConfig =
+                oneByConfigName.orElse(new PDomibusConnectorLinkConfiguration());
         dbLinkConfig.setConfigName(configName);
         dbLinkConfig.setLinkImpl(linkConfiguration.getLinkImpl());
-    
-        Map<String, String> collect = linkConfiguration.getProperties().entrySet()
-                .stream().filter(e -> StringUtils.hasText(e.getValue()))
+
+        Map<String, String> collect = linkConfiguration
+                .getProperties()
+                .entrySet()
+                .stream()
+                .filter(e -> StringUtils.hasText(e.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        
+
         dbLinkConfig.setProperties(collect);
 
         return dbLinkConfig;
@@ -183,40 +177,45 @@ public class DCLinkPersistenceService {
         if (properties == null) {
             return new HashMap<>();
         }
-        Map<String, String> map = properties.entrySet().stream()
+        return properties
+                .entrySet()
+                .stream()
                 .filter(e -> StringUtils.hasText(e.getValue()))
                 .collect(Collectors.toMap(e -> CONFIG_PROPERTY_PREFIX + e.getKey(), Map.Entry::getValue));
-        return map;
     }
 
     private Map<String, String> mapToLinkPartnerProperties(Map<String, String> properties) {
-        Map<String, String> map = properties.entrySet().stream()
+        return properties
+                .entrySet()
+                .stream()
                 .filter(e -> e.getKey().startsWith(CONFIG_PROPERTY_PREFIX))
-                .collect(Collectors.toMap(e -> e.getKey().substring(CONFIG_PROPERTY_PREFIX.length()), Map.Entry::getValue));
-        return map;
+                .collect(Collectors.toMap(
+                        e -> e.getKey().substring(CONFIG_PROPERTY_PREFIX.length()),
+                        Map.Entry::getValue
+                ));
     }
 
     public Optional<DomibusConnectorLinkConfiguration> getLinkConfiguration(DomibusConnectorLinkConfiguration.LinkConfigName configName) {
-        Optional<PDomibusConnectorLinkConfiguration> oneByConfigName = linkConfigurationDao.getOneByConfigName(configName.getConfigName());
+        Optional<PDomibusConnectorLinkConfiguration> oneByConfigName =
+                linkConfigurationDao.getOneByConfigName(configName.getConfigName());
         return Optional.ofNullable(this.mapToLinkConfiguration(oneByConfigName.orElse(null)));
     }
 
     public Optional<DomibusConnectorLinkPartner> getLinkPartner(DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) {
-        Optional<PDomibusConnectorLinkPartner> linkPartner = linkPartnerDao.findOneByLinkName(linkPartnerName.getLinkName());
+        Optional<PDomibusConnectorLinkPartner> linkPartner =
+                linkPartnerDao.findOneByLinkName(linkPartnerName.getLinkName());
         return Optional.ofNullable(this.mapToLinkPartner(linkPartner.orElse(null)));
     }
 
     public void deleteLinkPartner(DomibusConnectorLinkPartner linkPartner) {
         DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName = linkPartner.getLinkPartnerName();
-        Optional<PDomibusConnectorLinkPartner> dbEntity = linkPartnerDao.findOneByLinkName(linkPartnerName.getLinkName());
+        Optional<PDomibusConnectorLinkPartner> dbEntity =
+                linkPartnerDao.findOneByLinkName(linkPartnerName.getLinkName());
         dbEntity.ifPresent(pDomibusConnectorLinkPartner -> linkPartnerDao.delete(pDomibusConnectorLinkPartner));
     }
 
     public List<DomibusConnectorLinkPartner> getAllLinks() {
-        return linkPartnerDao.findAll()
-                .stream()
-                .map(this::mapToLinkPartner)
-                .collect(Collectors.toList());
+        return linkPartnerDao.findAll().stream().map(this::mapToLinkPartner).collect(Collectors.toList());
     }
 
     public void updateLinkPartner(DomibusConnectorLinkPartner linkPartner) {
@@ -226,7 +225,7 @@ public class DCLinkPersistenceService {
 
     @Transactional
     public void updateLinkConfig(DomibusConnectorLinkConfiguration linkConfig) {
-    	PDomibusConnectorLinkConfiguration dbLinkConfig = mapToDbLinkConfiguration(linkConfig);
+        PDomibusConnectorLinkConfiguration dbLinkConfig = mapToDbLinkConfiguration(linkConfig);
         linkConfigurationDao.save(dbLinkConfig);
     }
 
@@ -236,11 +235,10 @@ public class DCLinkPersistenceService {
     }
 
     public void deleteLinkConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
-        getAllLinks()
-                .stream()
-                .filter(l -> Objects.equals(l.getLinkConfiguration(), linkConfiguration))
-                .forEach(this::deleteLinkPartner);
-        PDomibusConnectorLinkConfiguration pDomibusConnectorLinkConfiguration = mapToDbLinkConfiguration(linkConfiguration);
+        getAllLinks().stream().filter(l -> Objects.equals(l.getLinkConfiguration(), linkConfiguration))
+                     .forEach(this::deleteLinkPartner);
+        PDomibusConnectorLinkConfiguration pDomibusConnectorLinkConfiguration =
+                mapToDbLinkConfiguration(linkConfiguration);
         linkConfigurationDao.delete(pDomibusConnectorLinkConfiguration);
     }
 }

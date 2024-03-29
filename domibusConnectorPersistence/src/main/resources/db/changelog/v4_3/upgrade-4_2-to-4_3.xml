@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <!-- all the 4.3.0 changesets -->
 
 
     <!-- all the 4.3.0 changesets -->
 
-
-    <!-- all the 4.3.0 changesets -->
-
-<!--    <include file="upgrade-4_2-to-4_3-change_evidence_table.xml" relativeToChangelogFile="true" />-->
-    <include file="upgrade-4_2-to-4_3-change_transport_table.xml" relativeToChangelogFile="true" />
-    <include file="upgrade-4_2-to-4_3-update_service_table.xml" relativeToChangelogFile="true" />
-    <include file="upgrade-4_2-to-4_3-change_msg_cont_table.xml" relativeToChangelogFile="true" />
+    <!--    <include file="upgrade-4_2-to-4_3-change_evidence_table.xml" relativeToChangelogFile="true" />-->
+    <include file="upgrade-4_2-to-4_3-change_transport_table.xml" relativeToChangelogFile="true"/>
+    <include file="upgrade-4_2-to-4_3-update_service_table.xml" relativeToChangelogFile="true"/>
+    <include file="upgrade-4_2-to-4_3-change_msg_cont_table.xml" relativeToChangelogFile="true"/>
 
     <changeSet id="4.3_002_pre_setup_tag" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
         <insert tableName="DC_DB_VERSION">
-            <column name="TAG" value="V4.3.0" />
+            <column name="TAG" value="V4.3.0"/>
         </insert>
     </changeSet>
     <changeSet id="tag-db-domibus-4.3" author="SKS">

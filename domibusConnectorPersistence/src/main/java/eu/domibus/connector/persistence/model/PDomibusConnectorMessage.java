@@ -1,96 +1,76 @@
 package eu.domibus.connector.persistence.model;
 
 
+import eu.domibus.connector.domain.enums.MessageTargetSource;
+import eu.domibus.connector.persistence.model.converter.ZonedDateTimeToTimestampJpaConverter;
+import org.springframework.core.style.ToStringCreator;
+
+import javax.annotation.Nonnull;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.persistence.*;
-
-import eu.domibus.connector.domain.enums.MessageTargetSource;
-
-import java.io.Serializable;
-
-import eu.domibus.connector.persistence.model.converter.ZonedDateTimeToTimestampJpaConverter;
-import org.springframework.core.style.ToStringCreator;
 
 @Entity
 @Table(name = PDomibusConnectorMessage.TABLE_NAME)
 public class PDomibusConnectorMessage implements Serializable {
-
     public static final String TABLE_NAME = "DOMIBUS_CONNECTOR_MESSAGE";
 
     @Id
-    @Column(name="ID")
-    @TableGenerator(name = "seq" + TABLE_NAME,
-            table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
-            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME,
-            pkColumnValue = TABLE_NAME + ".ID",
+    @Column(name = "ID")
+    @TableGenerator(
+            name = "seq" + TABLE_NAME, table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
+            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME, pkColumnValue = TABLE_NAME + ".ID",
             valueColumnName = PDomibusConnectorPersistenceModel.SEQ_VALUE_COLUMN_NAME,
             initialValue = PDomibusConnectorPersistenceModel.INITIAL_VALUE,
-            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK)
+            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK
+    )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq" + TABLE_NAME)
     private Long id;
-
     @Column(name = "EBMS_MESSAGE_ID", unique = true, length = 255)
     private String ebmsMessageId;
-
     @Column(name = "BACKEND_MESSAGE_ID", unique = true, length = 255)
     private String backendMessageId;
-
     @Column(name = "BACKEND_NAME", length = 255)
     private String backendName;
-
     @Column(name = "GATEWAY_NAME", length = 255)
     private String gatewayName;
-
     @Column(name = "CONNECTOR_MESSAGE_ID", unique = true, nullable = false, length = 255)
     private String connectorMessageId;
-    
     @Column(name = "CONVERSATION_ID", length = 255)
     private String conversationId;
-
     @Column(name = "DIRECTION_SOURCE", length = 20)
     private MessageTargetSource directionSource;
-
     @Column(name = "DIRECTION_TARGET", length = 20)
     private MessageTargetSource directionTarget;
-
     @Lob
     @Column(name = "HASH_VALUE")
     private String hashValue;
-
     @Column(name = "DELIVERED_BACKEND")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredToNationalSystem;
-
     @Column(name = "DELIVERED_GW")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredToGateway;
-
     @Convert(converter = ZonedDateTimeToTimestampJpaConverter.class)
     @Column(name = "CONFIRMED")
-//    @Temporal(TemporalType.TIMESTAMP)
+    //    @Temporal(TemporalType.TIMESTAMP)
     private ZonedDateTime confirmed;
-
     @Convert(converter = ZonedDateTimeToTimestampJpaConverter.class)
     @Column(name = "REJECTED")
-//    @Temporal(TemporalType.TIMESTAMP)
+    //    @Temporal(TemporalType.TIMESTAMP)
     private ZonedDateTime rejected;
-
     @Column(name = "UPDATED", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
-
     @Column(name = "CREATED", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
-
     @OneToOne(mappedBy = "message", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private PDomibusConnectorMessageInfo messageInfo;
-
     /**
      * This messages here are related to the BusinessMessage
      */
@@ -100,22 +80,21 @@ public class PDomibusConnectorMessage implements Serializable {
     /**
      * This evidences here are transported with the message
      */
-//    @OneToMany(mappedBy = "transportMessage", fetch = FetchType.EAGER)
-//    private Set<PDomibusConnectorEvidence> transportedEvidences = new HashSet<>();
-
-    @PrePersist    
+    // @OneToMany(mappedBy = "transportMessage", fetch = FetchType.EAGER)
+    // private Set<PDomibusConnectorEvidence> transportedEvidences = new HashSet<>();
+    @PrePersist
     public void prePersist() {
         this.updated = new Date();
         if (this.created == null) {
             this.created = this.updated;
         }
     }
-    
+
     @PreUpdate
     public void preUpdate() {
         this.updated = new Date();
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -147,14 +126,6 @@ public class PDomibusConnectorMessage implements Serializable {
     public void setConversationId(String conversationId) {
         this.conversationId = conversationId;
     }
-
-//    public Set<PDomibusConnectorEvidence> getTransportedEvidences() {
-//        return transportedEvidences;
-//    }
-
-//    public void setTransportedEvidences(Set<PDomibusConnectorEvidence> transportedEvidences) {
-//        this.transportedEvidences = transportedEvidences;
-//    }
 
     public String getHashValue() {
         return hashValue;
@@ -270,12 +241,12 @@ public class PDomibusConnectorMessage implements Serializable {
 
     @Override
     public String toString() {
-        ToStringCreator builder = new ToStringCreator(this)
-                .append("dbId", this.id)
-                .append("connectorMessageid", this.connectorMessageId)
-                .append("ebmsId", this.ebmsMessageId)
-                .append("backendMessageId", this.backendMessageId);
-        return builder.toString();        
+        ToStringCreator builder =
+                new ToStringCreator(this)
+                        .append("dbId", this.id)
+                        .append("connectorMessageid", this.connectorMessageId)
+                        .append("ebmsId", this.ebmsMessageId)
+                        .append("backendMessageId", this.backendMessageId);
+        return builder.toString();
     }
-    
 }

@@ -9,7 +9,7 @@
             ID="202"
             FK_PMODE_SET="1"
             SERVICE="SmallClaims"
-            SERVICE_TYPE="e-codex" />
+            SERVICE_TYPE="e-codex"/>
     <DOMIBUS_CONNECTOR_SERVICE
             ID="203"
             FK_PMODE_SET="1"
@@ -25,9 +25,12 @@
             SERVICE="LOCAL-CONNECTOR-TEST"
             SERVICE_TYPE="e-codex"/>
 
-    <DOMIBUS_CONNECTOR_BACKEND_INFO ID="88" BACKEND_NAME="not_enabled" BACKEND_KEY_ALIAS="not_enabled" BACKEND_KEY_PASS="12345" BACKEND_ENABLED="false"/>
-    <DOMIBUS_CONNECTOR_BACKEND_INFO ID="89" BACKEND_NAME="bob" BACKEND_KEY_ALIAS="bob" BACKEND_KEY_PASS="12345" BACKEND_ENABLED="true"/>
-    <DOMIBUS_CONNECTOR_BACKEND_INFO ID="90" BACKEND_NAME="alice" BACKEND_KEY_ALIAS="alice" BACKEND_KEY_PASS="[null]" BACKEND_ENABLED="true"/>
+    <DOMIBUS_CONNECTOR_BACKEND_INFO ID="88" BACKEND_NAME="not_enabled" BACKEND_KEY_ALIAS="not_enabled"
+                                    BACKEND_KEY_PASS="12345" BACKEND_ENABLED="false"/>
+    <DOMIBUS_CONNECTOR_BACKEND_INFO ID="89" BACKEND_NAME="bob" BACKEND_KEY_ALIAS="bob" BACKEND_KEY_PASS="12345"
+                                    BACKEND_ENABLED="true"/>
+    <DOMIBUS_CONNECTOR_BACKEND_INFO ID="90" BACKEND_NAME="alice" BACKEND_KEY_ALIAS="alice" BACKEND_KEY_PASS="[null]"
+                                    BACKEND_ENABLED="true"/>
     <!-- client bob is mapped to EPO SERVICE -->
     <DOMIBUS_CONNECTOR_BACK_2_S DOMIBUS_CONNECTOR_BACKEND_ID="89" DOMIBUS_CONNECTOR_SERVICE_ID="EPO"/>
     <!-- the data model allows multiple bindings for one SERVICE! -->

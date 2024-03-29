@@ -10,31 +10,28 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-//import static eu.domibus.connector.persistence.model.test.util.PersistenceEntityCreator.createPartyPKforPartyAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
+
 
 @Disabled("Currently out of order - mocks must be repaired!")
-public class DomibusConnectorPartyPersistenceServiceImplTest {
-
+class DomibusConnectorPartyPersistenceServiceImplTest {
     @Mock
     DomibusConnectorPartyDao domibusConnectorPartyDao;
-
     DomibusConnectorPartyPersistenceServiceImpl partyPersistenceService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        DomibusConnectorPartyPersistenceServiceImpl partyPersistenceServiceImpl = new DomibusConnectorPartyPersistenceServiceImpl();
+        DomibusConnectorPartyPersistenceServiceImpl partyPersistenceServiceImpl =
+                new DomibusConnectorPartyPersistenceServiceImpl();
         partyPersistenceServiceImpl.setPartyDao(domibusConnectorPartyDao);
         partyPersistenceService = partyPersistenceServiceImpl;
     }
 
     @Test
-    public void testGetParty() {
-
-//        Mockito.when(this.domibusConnectorPartyDao.findById(eq(createPartyPKforPartyAT())))
-//                .thenReturn(Optional.of(createPartyAT()));
+    void testGetParty() {
+        //        Mockito.when(this.domibusConnectorPartyDao.findById(eq(createPartyPKforPartyAT())))
+        //                .thenReturn(Optional.of(createPartyAT()));
 
         eu.domibus.connector.domain.model.DomibusConnectorParty party = partyPersistenceService.getParty("AT", "GW");
 
@@ -45,10 +42,9 @@ public class DomibusConnectorPartyPersistenceServiceImplTest {
     }
 
     @Test
-    public void testGetPartyByPartyId() {
-
-//        Mockito.when(this.domibusConnectorPartyDao.findOneByPartyId(eq("AT")))
-//                .thenReturn(createPartyAT());
+    void testGetPartyByPartyId() {
+        //        Mockito.when(this.domibusConnectorPartyDao.findOneByPartyId(eq("AT")))
+        //                .thenReturn(createPartyAT());
 
         eu.domibus.connector.domain.model.DomibusConnectorParty party = partyPersistenceService.getPartyByPartyId("AT");
 
@@ -56,12 +52,10 @@ public class DomibusConnectorPartyPersistenceServiceImplTest {
         assertThat(party.getPartyId()).isEqualTo("AT");
         assertThat(party.getRole()).isEqualTo("GW");
         assertThat(party.getPartyIdType()).isEqualTo("urn:oasis:names:tc:ebcore:partyid-type:iso3166-1");
-
     }
 
-
     @Test
-    public void mapPartyToDomain() throws Exception {
+    void mapPartyToDomain() throws Exception {
         PDomibusConnectorParty dbParty = new PDomibusConnectorParty();
         dbParty.setPartyId("partyId");
         dbParty.setPartyIdType("partyIdType");
@@ -75,14 +69,14 @@ public class DomibusConnectorPartyPersistenceServiceImplTest {
     }
 
     @Test
-    public void mapPartyToDomain_mapNull_shouldRetNull() throws Exception {
+    void mapPartyToDomain_mapNull_shouldRetNull() throws Exception {
         assertThat(partyPersistenceService.mapPartyToDomain(null)).isNull();
     }
 
-
     @Test
-    public void mapPartyToPersistence() throws Exception {
-        DomibusConnectorParty domainParty = DomibusConnectorPartyBuilder.createBuilder()
+    void mapPartyToPersistence() throws Exception {
+        DomibusConnectorParty domainParty = DomibusConnectorPartyBuilder
+                .createBuilder()
                 .setPartyId("partyId")
                 .setRole("role")
                 .setPartyIdType("partyIdType")
@@ -96,8 +90,7 @@ public class DomibusConnectorPartyPersistenceServiceImplTest {
     }
 
     @Test
-    public void mapPartyToPersistence_mapNull_shouldRetNull() {
+    void mapPartyToPersistence_mapNull_shouldRetNull() {
         assertThat(partyPersistenceService.mapPartyToPersistence(null)).isNull();
     }
-
 }

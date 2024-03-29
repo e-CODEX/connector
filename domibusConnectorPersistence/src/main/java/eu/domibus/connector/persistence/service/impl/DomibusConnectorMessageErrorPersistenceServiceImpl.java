@@ -9,8 +9,6 @@ import eu.domibus.connector.persistence.model.PDomibusConnectorMessage;
 import eu.domibus.connector.persistence.model.PDomibusConnectorMessageError;
 import eu.domibus.connector.persistence.service.DomibusConnectorMessageErrorPersistenceService;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +20,9 @@ import java.util.Optional;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
+
 @Service
 public class DomibusConnectorMessageErrorPersistenceServiceImpl implements DomibusConnectorMessageErrorPersistenceService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DomibusConnectorMessageErrorPersistenceServiceImpl.class);
-
     DomibusConnectorMessageErrorDao messageErrorDao;
     DomibusConnectorMessageDao messageDao;
 
@@ -39,9 +35,34 @@ public class DomibusConnectorMessageErrorPersistenceServiceImpl implements Domib
     public void setMessageDao(DomibusConnectorMessageDao messageDao) {
         this.messageDao = messageDao;
     }
+    @Override
+    public List<DomibusConnectorMessageError> getMessageErrors(DomibusConnectorMessage message)
+            throws PersistenceException {
+        Optional<PDomibusConnectorMessage> dbMessage =
+                messageDao.findOneByConnectorMessageId(message.getConnectorMessageIdAsString());
+        if (!dbMessage.isPresent()) {
+            // no message reference
+            return new ArrayList<>();
+        }
+        List<PDomibusConnectorMessageError> dbErrorsForMessage =
+                this.messageErrorDao.findByMessage(dbMessage.get().getId());
+        if (!CollectionUtils.isEmpty(dbErrorsForMessage)) {
+            List<DomibusConnectorMessageError> messageErrors = new ArrayList<>(dbErrorsForMessage.size());
+            for (PDomibusConnectorMessageError dbMsgError : dbErrorsForMessage) {
+                DomibusConnectorMessageError msgError = DomibusConnectorMessageErrorBuilder
+                        .createBuilder().setSource(dbMsgError.getErrorSource())
+                        .setText(dbMsgError.getErrorMessage())
+                        .setDetails(dbMsgError.getDetailedText()).build();
+                messageErrors.add(msgError);
+            }
+
+            return messageErrors;
+        }
+        return new ArrayList<>();
+    }
 
     @Override
-    @Transactional(propagation = REQUIRES_NEW) //run in new transaction...so error gets recorded
+    @Transactional(propagation = REQUIRES_NEW) // run in new transaction...so error gets recorded
     public void persistMessageError(String connectorMessageId, DomibusConnectorMessageError messageError) {
         PDomibusConnectorMessageError dbError = new PDomibusConnectorMessageError();
 
@@ -54,31 +75,5 @@ public class DomibusConnectorMessageErrorPersistenceServiceImpl implements Domib
 
             this.messageErrorDao.save(dbError);
         }
-
     }
-
-    @Override
-    public List<DomibusConnectorMessageError> getMessageErrors(DomibusConnectorMessage message) throws PersistenceException {
-        Optional<PDomibusConnectorMessage> dbMessage = messageDao.findOneByConnectorMessageId(message.getConnectorMessageIdAsString());
-        if (!dbMessage.isPresent()) {
-            //no message reference
-            return new ArrayList<>();
-        }
-        List<PDomibusConnectorMessageError> dbErrorsForMessage = this.messageErrorDao.findByMessage(dbMessage.get().getId());
-        if (!CollectionUtils.isEmpty(dbErrorsForMessage)) {
-            List<DomibusConnectorMessageError> messageErrors = new ArrayList<>(dbErrorsForMessage.size());
-            for (PDomibusConnectorMessageError dbMsgError : dbErrorsForMessage) {
-                DomibusConnectorMessageError msgError = DomibusConnectorMessageErrorBuilder.createBuilder()
-                        .setSource(dbMsgError.getErrorSource())
-                        .setText(dbMsgError.getErrorMessage())
-                        .setDetails(dbMsgError.getDetailedText())
-                        .build();
-                messageErrors.add(msgError);
-            }
-
-            return messageErrors;
-        }
-        return new ArrayList<>();
-    }
-
 }

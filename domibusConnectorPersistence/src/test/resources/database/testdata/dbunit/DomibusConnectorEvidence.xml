@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="8dbba1fc-41ff-4d93-ae38-462bb3c5a1d2@domibus.eu" backend_message_id="20171103080259732_domibus-blue" direction_target="GATEWAY" direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32" updated="2017-12-12 12:34:23.000000000" connector_message_id="msg73"/>
-    <DOMIBUS_CONNECTOR_MESSAGE id="74" ebms_message_id="8dbbaf-4d93-ae38-462bb3c5a1d2@domibus.eu" backend_message_id="209732_domibus-blue" direction_target="BACKEND" direction_source="GATEWAY" hash_value="31fb9a1239e9640c4723cbd101adafd32" updated="2017-12-12 14:34:23.000000000" connector_message_id="msg74"/>
-    <DOMIBUS_CONNECTOR_MESSAGE id="75" ebms_message_id="8dbdfsadf-4d93-ae38-462bb3c5a1d2@domibus.eu" backend_message_id="209732_dom123sasfbus-blue" direction_target="BACKEND" direction_source="GATEWAY" hash_value="31fb9a1239e13240c4723cbd101adafd32" updated="2017-12-12 14:34:23.000000000" connector_message_id="msg75"/>
-    <DOMIBUS_CONNECTOR_EVIDENCE id="81" message_id="73" type="NON_DELIVERY" evidence="EVIDENCE1" delivered_gw="[null]" delivered_nat="2017-12-12 12:34:23.000000000" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_EVIDENCE id="82" message_id="73" type="SUBMISSION_REJECTION" evidence="EVIDENCE1" delivered_gw="[null]" delivered_nat="2017-12-12 12:34:23.000000000" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_EVIDENCE id="83" message_id="73" type="SUBMISSION_ACCEPTANCE" evidence="EVIDENCE1" delivered_gw="2017-12-12 12:34:23.000000000" delivered_nat="[null]" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_EVIDENCE id="84" message_id="74" type="NON_DELIVERY" evidence="EVIDENCE1" delivered_gw="2017-12-12 12:34:23.000000000" delivered_nat="[null]" updated="2017-12-12 12:34:23.000000000"/>
-    <DOMIBUS_CONNECTOR_EVIDENCE id="85" message_id="74" type="SUBMISSION_ACCEPTANCE" evidence="EVIDENCE1" delivered_gw="2017-12-12 12:34:23.000000000" delivered_nat="[null]" updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="73" ebms_message_id="8dbba1fc-41ff-4d93-ae38-462bb3c5a1d2@domibus.eu"
+                               backend_message_id="20171103080259732_domibus-blue" direction_target="GATEWAY"
+                               direction_source="BACKEND" hash_value="31fb9a629e9640c4723cbd101adafd32"
+                               updated="2017-12-12 12:34:23.000000000" connector_message_id="msg73"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="74" ebms_message_id="8dbbaf-4d93-ae38-462bb3c5a1d2@domibus.eu"
+                               backend_message_id="209732_domibus-blue" direction_target="BACKEND"
+                               direction_source="GATEWAY" hash_value="31fb9a1239e9640c4723cbd101adafd32"
+                               updated="2017-12-12 14:34:23.000000000" connector_message_id="msg74"/>
+    <DOMIBUS_CONNECTOR_MESSAGE id="75" ebms_message_id="8dbdfsadf-4d93-ae38-462bb3c5a1d2@domibus.eu"
+                               backend_message_id="209732_dom123sasfbus-blue" direction_target="BACKEND"
+                               direction_source="GATEWAY" hash_value="31fb9a1239e13240c4723cbd101adafd32"
+                               updated="2017-12-12 14:34:23.000000000" connector_message_id="msg75"/>
+    <DOMIBUS_CONNECTOR_EVIDENCE id="81" message_id="73" type="NON_DELIVERY" evidence="EVIDENCE1" delivered_gw="[null]"
+                                delivered_nat="2017-12-12 12:34:23.000000000" updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_EVIDENCE id="82" message_id="73" type="SUBMISSION_REJECTION" evidence="EVIDENCE1"
+                                delivered_gw="[null]" delivered_nat="2017-12-12 12:34:23.000000000"
+                                updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_EVIDENCE id="83" message_id="73" type="SUBMISSION_ACCEPTANCE" evidence="EVIDENCE1"
+                                delivered_gw="2017-12-12 12:34:23.000000000" delivered_nat="[null]"
+                                updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_EVIDENCE id="84" message_id="74" type="NON_DELIVERY" evidence="EVIDENCE1"
+                                delivered_gw="2017-12-12 12:34:23.000000000" delivered_nat="[null]"
+                                updated="2017-12-12 12:34:23.000000000"/>
+    <DOMIBUS_CONNECTOR_EVIDENCE id="85" message_id="74" type="SUBMISSION_ACCEPTANCE" evidence="EVIDENCE1"
+                                delivered_gw="2017-12-12 12:34:23.000000000" delivered_nat="[null]"
+                                updated="2017-12-12 12:34:23.000000000"/>
 </dataset>

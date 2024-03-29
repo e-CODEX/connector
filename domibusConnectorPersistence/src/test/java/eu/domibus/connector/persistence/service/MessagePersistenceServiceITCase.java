@@ -4,7 +4,6 @@ package eu.domibus.connector.persistence.service;
 import eu.domibus.connector.domain.enums.DomibusConnectorEvidenceType;
 import eu.domibus.connector.domain.enums.DomibusConnectorMessageDirection;
 import eu.domibus.connector.domain.model.*;
-import eu.domibus.connector.domain.model.builder.DomibusConnectorPartyBuilder;
 import eu.domibus.connector.domain.test.util.DomainEntityCreatorForPersistenceTests;
 import eu.domibus.connector.domain.testutil.DomainEntityCreator;
 import eu.domibus.connector.domain.transformer.util.LargeFileReferenceMemoryBacked;
@@ -15,8 +14,8 @@ import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -25,6 +24,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Integration Test for testing persistence service
@@ -42,23 +42,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at>}
  */
 @CommonPersistenceTest
-public class MessagePersistenceServiceITCase {
-
+class MessagePersistenceServiceITCase {
     @Autowired
     private DataSource ds;
-
     @Autowired
     private DCMessagePersistenceService messagePersistenceService;
-
     @Autowired
     private TransactionTemplate txTemplate;
-
 
     /**
      * Test if an the test EpoMessage can be persisted into database
      */
     @Test
-    public void testPersistEpoMessageIntoDatabase() throws PersistenceException, SQLException, AmbiguousTableNameException, DataSetException {
+    void testPersistEpoMessageIntoDatabase() throws PersistenceException, SQLException,
+            AmbiguousTableNameException, DataSetException {
         String connectorMessageId = "msgid8972_epo";
         DomibusConnectorMessage epoMessage = DomainEntityCreator.createEpoMessage();
         epoMessage.setConnectorMessageId(connectorMessageId);
@@ -71,11 +68,16 @@ public class MessagePersistenceServiceITCase {
 
         assertThat(epoMessage).isNotNull();
 
-        //check result in DB
+        // check result in DB
         DatabaseDataSourceConnection conn = new DatabaseDataSourceConnection(ds);
         QueryDataSet dataSet = new QueryDataSet(conn);
-        dataSet.addTable("DOMIBUS_CONNECTOR_MESSAGE",
-                String.format("SELECT * FROM DOMIBUS_CONNECTOR_MESSAGE WHERE CONNECTOR_MESSAGE_ID='%s'", connectorMessageId));
+        dataSet.addTable(
+                "DOMIBUS_CONNECTOR_MESSAGE",
+                String.format(
+                        "SELECT * FROM DOMIBUS_CONNECTOR_MESSAGE WHERE CONNECTOR_MESSAGE_ID='%s'",
+                        connectorMessageId
+                )
+        );
 
         ITable domibusConnectorTable = dataSet.getTable("DOMIBUS_CONNECTOR_MESSAGE");
 
@@ -84,7 +86,6 @@ public class MessagePersistenceServiceITCase {
 
         String conversationId = (String) domibusConnectorTable.getValue(0, "conversation_id");
         assertThat(conversationId).isEqualTo("conversation4000");
-
     }
 
     /*
@@ -95,14 +96,16 @@ public class MessagePersistenceServiceITCase {
      *
      */
     @Test
-    public void testPersistMessageIntoDatabase_serviceNotInDatabase_shouldThrowException() throws PersistenceException, SQLException, AmbiguousTableNameException, DataSetException {
+    void testPersistMessageIntoDatabase_serviceNotInDatabase_shouldThrowException() throws PersistenceException,
+            SQLException, AmbiguousTableNameException, DataSetException {
         Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
             Assertions.assertThrows(PersistenceException.class, () -> {
                 String connectorMessageId = "msg0021";
 
-                DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createMessage(connectorMessageId);
-                //message.setDbMessageId(null);
-                //PMessageDirection messageDirection = PMessageDirection.GATEWAY_TO_BACKEND;
+                DomibusConnectorMessage message =
+                        DomainEntityCreatorForPersistenceTests.createMessage(connectorMessageId);
+                // message.setDbMessageId(null);
+                // PMessageDirection messageDirection = PMessageDirection.GATEWAY_TO_BACKEND;
                 DomibusConnectorMessageDetails messageDetails = message.getMessageDetails();
 
                 messageDetails.setConversationId("conversation421");
@@ -111,15 +114,13 @@ public class MessagePersistenceServiceITCase {
                 messageDetails.setDirection(DomibusConnectorMessageDirection.GATEWAY_TO_BACKEND);
 
                 DomibusConnectorService serviceUnkown = DomainEntityCreatorForPersistenceTests.createServiceUnknown();
-                messageDetails.setService(serviceUnkown); //set Unknown service
+                messageDetails.setService(serviceUnkown); // set Unknown service
 
-                //should throw exception, because UknownService is not configured in DB!
+                // should throw exception, because UknownService is not configured in DB!
                 messagePersistenceService.persistBusinessMessageIntoDatabase(message);
             });
         });
-
     }
-
 
     /**
      * tests complete message, if can be stored to DB
@@ -128,7 +129,8 @@ public class MessagePersistenceServiceITCase {
      * test restore evidenceMessage!
      */
     @Test
-    public void testPersistMessageIntoDatabase_testContentPersist() throws PersistenceException, SQLException, AmbiguousTableNameException, DataSetException {
+    void testPersistMessageIntoDatabase_testContentPersist() throws PersistenceException, SQLException,
+            AmbiguousTableNameException, DataSetException {
         Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
             String ebmsId = "aztebamHUGO1";
             DomibusConnectorMessageDirection messageDirection = DomibusConnectorMessageDirection.GATEWAY_TO_BACKEND;
@@ -137,22 +139,23 @@ public class MessagePersistenceServiceITCase {
             message.getMessageDetails().setBackendMessageId("fklwefa");
             message.getMessageDetails().setDirection(messageDirection);
 
-
             LargeFileReferenceMemoryBacked attachRef =
                     new LargeFileReferenceMemoryBacked("hallo welt".getBytes());
             DomibusConnectorMessageAttachment attach1 =
                     new DomibusConnectorMessageAttachment(attachRef, "idf");
             message.addAttachment(attach1);
 
-            DomibusConnectorMessageConfirmation confirmation = new DomibusConnectorMessageConfirmation(DomibusConnectorEvidenceType.DELIVERY, "hallowelt".getBytes());
+            DomibusConnectorMessageConfirmation confirmation = new DomibusConnectorMessageConfirmation(
+                    DomibusConnectorEvidenceType.DELIVERY,
+                    "hallowelt".getBytes()
+            );
             message.addTransportedMessageConfirmation(confirmation);
-
 
             messagePersistenceService.persistMessageIntoDatabase(message, messageDirection);
 
-
-            //load persisted message again from db and run checks
-            DomibusConnectorMessage messageToCheck = messagePersistenceService.findMessageByEbmsIdAndDirection(ebmsId, messageDirection).orElse(null);
+            // load persisted message again from db and run checks
+            DomibusConnectorMessage messageToCheck =
+                    messagePersistenceService.findMessageByEbmsIdAndDirection(ebmsId, messageDirection).orElse(null);
             assertThat(messageToCheck).as("message must exist").isNotNull();
             assertThat(messageToCheck.getMessageContent()).as("message must have content!").isNotNull();
 
@@ -163,78 +166,82 @@ public class MessagePersistenceServiceITCase {
                     .filter(a -> "idf".equals(a.getIdentifier()))
                     .findFirst()
                     .get();
-
         });
     }
 
-//    @Test
-//    public void testMergeMessageWithDatabase() throws PersistenceException, SQLException, AmbiguousTableNameException, DataSetException {
-//        Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-//            DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createMessage("superid");
-//            message.getMessageDetails().setEbmsMessageId("ebamdsafae3");
-//            message.getMessageDetails().setBackendMessageId("adfsöljabafklwefa");
-//
-//            DomibusConnectorMessageDirection messageDirection = DomibusConnectorMessageDirection.GATEWAY_TO_BACKEND;
-//            messagePersistenceService.persistMessageIntoDatabase(message, messageDirection);
-//
-//            //TODO: make changes to message
-//
-//            message = messagePersistenceService.mergeMessageWithDatabase(message);
-//
-//
-//            //message.getMessageDetails()
-//        });
-//    }
+    //    @Test
+    //    void testMergeMessageWithDatabase() throws PersistenceException, SQLException, 
+    //    AmbiguousTableNameException, DataSetException {
+    //        Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+    //            DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createMessage("superid");
+    //            message.getMessageDetails().setEbmsMessageId("ebamdsafae3");
+    //            message.getMessageDetails().setBackendMessageId("adfsöljabafklwefa");
+    //
+    //            DomibusConnectorMessageDirection messageDirection = DomibusConnectorMessageDirection
+    //            .GATEWAY_TO_BACKEND;
+    //            messagePersistenceService.persistMessageIntoDatabase(message, messageDirection);
+    //
+    //            //TODO: make changes to message
+    //
+    //            message = messagePersistenceService.mergeMessageWithDatabase(message);
+    //
+    //
+    //            //message.getMessageDetails()
+    //        });
+    //    }
 
-//    @Test
-//    public void testMergeMessageWithDatabase_doesNotExistInDatabase() throws PersistenceException {
-//        Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-//            Assertions.assertThrows(PersistenceException.class, () -> {
-//                DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createMessage();
-//                messagePersistenceService.mergeMessageWithDatabase(message);
-//            });
-//        });
-//    }
+    //    @Test
+    //    void testMergeMessageWithDatabase_doesNotExistInDatabase() throws PersistenceException {
+    //        Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+    //            Assertions.assertThrows(PersistenceException.class, () -> {
+    //                DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createMessage();
+    //                messagePersistenceService.mergeMessageWithDatabase(message);
+    //            });
+    //        });
+    //    }
 
     @Test
-    public void testFindMessageByNationalId_doesNotExist_shouldBeNull() {
+    void testFindMessageByNationalId_doesNotExist_shouldBeNull() {
         Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
             String nationalIdString = "TEST1";
             DomibusConnectorMessage findMessageByNationalId = messagePersistenceService
-                    .findMessageByNationalIdAndDirection(nationalIdString, DomibusConnectorMessageDirection.BACKEND_TO_GATEWAY)
+                    .findMessageByNationalIdAndDirection(
+                            nationalIdString,
+                            DomibusConnectorMessageDirection.BACKEND_TO_GATEWAY
+                    )
                     .orElse(null);
 
             assertThat(findMessageByNationalId).isNull();
         });
     }
 
+    // TODO: test find message & check fromParty, toParty, service, action
 
-    //TODO: test find message & check fromParty, toParty, service, action
+    //    @Test
+    //    void findMessageBy() {
+    //        Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+    //            String ebmsId = "ebamHUGO1";
+    //            DomibusConnectorMessageDirection messageDirection = DomibusConnectorMessageDirection
+    //            .GATEWAY_TO_BACKEND;
+    //            DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createMessage("msg665");
+    //            message.getMessageDetails().setEbmsMessageId(ebmsId);
+    //            message.getMessageDetails().setBackendMessageId("fklwefa");
+    //            message.getMessageDetails().setDirection(messageDirection);
+    //
+    //            LargeFileReferenceMemoryBacked attachRef =
+    //                    new LargeFileReferenceMemoryBacked("hallo welt".getBytes());
+    //            DomibusConnectorMessageAttachment attach1 =
+    //                    new DomibusConnectorMessageAttachment(attachRef, "idf");
+    //            message.addAttachment(attach1);
+    //            messagePersistenceService.persistMessageIntoDatabase(message, DomibusConnectorMessageDirection
+    //            .BACKEND_TO_GATEWAY);
+    //
+    //            DomibusConnectorMessage msg1 = messagePersistenceService.findMessageByConnectorMessageId("msg665");
+    //            assertThat(msg1).as("message cannot be null!").isNotNull();
+    //        });
+    //    }
 
-//    @Test
-//    public void findMessageBy() {
-//        Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-//            String ebmsId = "ebamHUGO1";
-//            DomibusConnectorMessageDirection messageDirection = DomibusConnectorMessageDirection.GATEWAY_TO_BACKEND;
-//            DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createMessage("msg665");
-//            message.getMessageDetails().setEbmsMessageId(ebmsId);
-//            message.getMessageDetails().setBackendMessageId("fklwefa");
-//            message.getMessageDetails().setDirection(messageDirection);
-//
-//            LargeFileReferenceMemoryBacked attachRef =
-//                    new LargeFileReferenceMemoryBacked("hallo welt".getBytes());
-//            DomibusConnectorMessageAttachment attach1 =
-//                    new DomibusConnectorMessageAttachment(attachRef, "idf");
-//            message.addAttachment(attach1);
-//            messagePersistenceService.persistMessageIntoDatabase(message, DomibusConnectorMessageDirection.BACKEND_TO_GATEWAY);
-//
-//            DomibusConnectorMessage msg1 = messagePersistenceService.findMessageByConnectorMessageId("msg665");
-//            assertThat(msg1).as("message cannot be null!").isNotNull();
-//        });
-//    }
-
-
-    //TODO: test other methods/use cases
+    // TODO: test other methods/use cases
     /**
      *  void persistMessageIntoDatabase(Message message, PMessageDirection direction) throws PersistenceException;
 

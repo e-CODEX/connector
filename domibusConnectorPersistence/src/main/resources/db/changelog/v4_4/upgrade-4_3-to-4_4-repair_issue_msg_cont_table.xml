@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-	<changeSet id="add_fk_on_message_cont_table" author="SKS">
- 
- 		<preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.4.0';]]></sqlCheck>
+    <changeSet id="add_fk_on_message_cont_table" author="SKS">
+
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Fix missing FK within DOMIBUS_CONNECTOR_MSG_CONT table</comment>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT" baseColumnNames="MESSAGE_ID" constraintName="FK_DC_CON_01"
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT" baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DC_CON_01"
                                  referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
-                                 referencedColumnNames="ID" />
-	</changeSet>
+                                 referencedColumnNames="ID"/>
+    </changeSet>
     <changeSet id="add_not_null_constraint_on_msg_cont_table" author="SKS">
 
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.4.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Fix missing NOT NULL constraint on table DOMIBUS_CONNECTOR_MSG_CONT column MESSAGE_ID</comment>
-        <addNotNullConstraint tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnName="MESSAGE_ID" />
+        <addNotNullConstraint tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnName="MESSAGE_ID"/>
     </changeSet>
 
 </databaseChangeLog>

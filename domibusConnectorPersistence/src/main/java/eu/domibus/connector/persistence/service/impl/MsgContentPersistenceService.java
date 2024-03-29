@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 /**
  * Service for persisting message content like:
  * <ul>
@@ -43,64 +44,72 @@ import java.util.stream.Collectors;
 @Component
 @Transactional
 public class MsgContentPersistenceService implements DCMessageContentManager {
-
     public static final String BUSINESS_XML_DOCUMENT_IDENTIFIER = "BusinessDocumentXML";
     public static final String BUSINESS_XML_DOCUMENT_NAME = "BusinessDocument.xml";
-
     public static final String BUSINESS_DOCUMENT_IDENTIFIER = "BusinessDocument";
-
     private final static Logger LOGGER = LoggerFactory.getLogger(MsgContentPersistenceService.class);
 
     private final LargeFilePersistenceService largeFilePersistenceService;
     private final DomibusConnectorMsgContDao msgContDao;
     private final DomibusConnectorMessageDao messageDao;
 
-    public MsgContentPersistenceService(LargeFilePersistenceService largeFilePersistenceService,
-                                        DomibusConnectorMsgContDao msgContDao,
-                                        DomibusConnectorMessageDao messageDao) {
+    public MsgContentPersistenceService(
+            LargeFilePersistenceService largeFilePersistenceService,
+            DomibusConnectorMsgContDao msgContDao,
+            DomibusConnectorMessageDao messageDao) {
         this.largeFilePersistenceService = largeFilePersistenceService;
         this.msgContDao = msgContDao;
         this.messageDao = messageDao;
     }
 
     /**
-     * loads Message Content from Database, deserializes the stored objects back to java objects, and puts them back into the message
+     * loads Message Content from Database, deserializes the stored objects back to java objects, and puts them back
+     * into the message
      *
      * @param messageBuilder - message builder
      * @param dbMessage      - the  dbMessage object
      * @throws PersistenceException - throws persistenceException in case of failure
      */
-    public void loadMessagePayloads(final @Nonnull DomibusConnectorMessageBuilder messageBuilder, final PDomibusConnectorMessage dbMessage) throws PersistenceException {
-        List<PDomibusConnectorMsgCont> findByMessage = this.msgContDao.findByMessage(dbMessage.getConnectorMessageId());
+    public void loadMessagePayloads(
+            final @Nonnull DomibusConnectorMessageBuilder messageBuilder,
+            final PDomibusConnectorMessage dbMessage) throws PersistenceException {
+        List<PDomibusConnectorMsgCont> findByMessage =
+                this.msgContDao.findByMessage(dbMessage.getConnectorMessageId());
 
-        //map fromDbToDomain business XML, businessDoc
+        // map fromDbToDomain business XML, businessDoc
         loadMsgDocs(messageBuilder, findByMessage);
 
-        //mapFromDbToDomain attachments back
+        // mapFromDbToDomain attachments back
         loadAttachments(messageBuilder, findByMessage);
     }
 
-    private void loadAttachments(DomibusConnectorMessageBuilder messageBuilder, List<PDomibusConnectorMsgCont> findByMessage) {
-        findByMessage.stream()
-                .filter(s -> StoreType.MESSAGE_ATTACHMENT_CONTENT.equals(s.getContentType()))
+    private void loadAttachments(
+            DomibusConnectorMessageBuilder messageBuilder, List<PDomibusConnectorMsgCont> findByMessage) {
+        findByMessage
+                .stream().filter(s -> StoreType.MESSAGE_ATTACHMENT_CONTENT.equals(s.getContentType()))
                 .forEach(c -> {
-                    messageBuilder.addAttachment(
-                            DomibusConnectorMessageAttachmentBuilder.createBuilder()
-                                    .setAttachment(loadLargeFileReference(c))
-                                    .setIdentifier(c.getPayloadIdentifier())
-                                    .withDescription(c.getPayloadDescription())
-                                    .withName(c.getPayloadName())
-                                    .build());
+                    messageBuilder
+                            .addAttachment(
+                                    DomibusConnectorMessageAttachmentBuilder
+                                            .createBuilder()
+                                            .setAttachment(loadLargeFileReference(c))
+                                            .setIdentifier(c.getPayloadIdentifier())
+                                            .withDescription(c.getPayloadDescription())
+                                            .withName(c.getPayloadName())
+                                            .build()
+                            );
                 });
     }
 
-    private void loadMsgDocs(DomibusConnectorMessageBuilder messageBuilder, List<PDomibusConnectorMsgCont> findByMessage) {
-
-        DomibusConnectorMessageContentBuilder messageContentBuilder = DomibusConnectorMessageContentBuilder.createBuilder();
-        Optional<PDomibusConnectorMsgCont> foundXmlContent = findByMessage.stream()
-                .filter(s -> StoreType.MESSAGE_BUSINESSS_CONTENT_XML.equals(s.getContentType()))
-                .findFirst();
-        Optional<PDomibusConnectorMsgCont> foundDocumentContent = findByMessage.stream()
+    private void loadMsgDocs(
+            DomibusConnectorMessageBuilder messageBuilder, List<PDomibusConnectorMsgCont> findByMessage) {
+        DomibusConnectorMessageContentBuilder messageContentBuilder =
+                DomibusConnectorMessageContentBuilder.createBuilder();
+        Optional<PDomibusConnectorMsgCont> foundXmlContent =
+                findByMessage.stream().filter(s -> StoreType.MESSAGE_BUSINESSS_CONTENT_XML.equals(s.getContentType()))
+                             .findFirst();
+        Optional<PDomibusConnectorMsgCont> foundDocumentContent = findByMessage
+                .stream()
                 .filter(s -> StoreType.MESSAGE_BUSINESS_CONTENT_DOCUMENT.equals(s.getContentType()))
                 .findFirst();
 
@@ -109,28 +118,31 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
 
             messageContentBuilder.setXmlContent(xmlContent.getContent());
 
-            foundDocumentContent.ifPresent(pDomibusConnectorMsgCont -> loadDocumentContent(messageContentBuilder, pDomibusConnectorMsgCont));
+            foundDocumentContent.ifPresent(pDomibusConnectorMsgCont -> loadDocumentContent(
+                    messageContentBuilder,
+                    pDomibusConnectorMsgCont
+            ));
             messageBuilder.setMessageContent(messageContentBuilder.build());
         } else {
             LOGGER.debug("#loadMsgDocs: No message content!");
         }
-
     }
 
-    private void loadDocumentContent(DomibusConnectorMessageContentBuilder messageContent, PDomibusConnectorMsgCont pDomibusConnectorMsgCont) {
+    private void loadDocumentContent(
+            DomibusConnectorMessageContentBuilder messageContent, PDomibusConnectorMsgCont pDomibusConnectorMsgCont) {
         LargeFileReference largeFileReference = loadLargeFileReference(pDomibusConnectorMsgCont);
 
-        DomibusConnectorMessageDocumentBuilder documentBuilder = DomibusConnectorMessageDocumentBuilder.createBuilder();
+        DomibusConnectorMessageDocumentBuilder documentBuilder =
+                DomibusConnectorMessageDocumentBuilder.createBuilder();
         documentBuilder.setContent(largeFileReference);
         documentBuilder.setName(pDomibusConnectorMsgCont.getPayloadName());
 
         PDomibusConnectorDetachedSignature dbDetachedSignature = pDomibusConnectorMsgCont.getDetachedSignature();
         if (pDomibusConnectorMsgCont.getDetachedSignature() != null) {
-            DetachedSignature sig = DetachedSignatureBuilder.createBuilder()
-                    .setMimeType(dbDetachedSignature.getMimeType())
-                    .setSignature(dbDetachedSignature.getDetachedSignature())
-                    .setName(dbDetachedSignature.getDetachedSignatureName())
-                    .build();
+            DetachedSignature sig =
+                    DetachedSignatureBuilder.createBuilder().setMimeType(dbDetachedSignature.getMimeType())
+                                            .setSignature(dbDetachedSignature.getDetachedSignature())
+                                            .setName(dbDetachedSignature.getDetachedSignatureName()).build();
             documentBuilder.withDetachedSignature(sig);
         }
         messageContent.setDocument(documentBuilder.build());
@@ -149,15 +161,15 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
         return largeFileReference;
     }
 
-
     /**
      * takes a message and stores all content into the database
      * deletes all old content regarding the message and persists it again in the database
      *
      * @param message the message
      */
-    public void saveMessagePayloads(@Nonnull DomibusConnectorMessage message, PDomibusConnectorMessage dbMsg) throws PersistenceException {
-        //handle document
+    public void saveMessagePayloads(
+            @Nonnull DomibusConnectorMessage message, PDomibusConnectorMessage dbMsg) throws PersistenceException {
+        // handle document
         List<PDomibusConnectorMsgCont> toStoreList = new ArrayList<>();
         DomibusConnectorMessageContent messageContent = message.getMessageContent();
         if (messageContent != null && messageContent.getDocument() != null) {
@@ -166,15 +178,14 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
         if (messageContent != null) {
             toStoreList.add(mapXmlContentToDB(dbMsg, messageContent.getXmlContent()));
         }
-        //handle attachments
+        // handle attachments
         for (DomibusConnectorMessageAttachment attachment : message.getMessageAttachments()) {
             toStoreList.add(mapAttachment(dbMsg, attachment));
         }
-        //load old content
-        List<PDomibusConnectorMsgCont> oldContent =
-                this.msgContDao.findByMessage(dbMsg.getConnectorMessageId());
-        this.msgContDao.saveAll(toStoreList); //save new contents
-        this.msgContDao.deleteAll(oldContent); //delete old contents
+        // load old content
+        List<PDomibusConnectorMsgCont> oldContent = this.msgContDao.findByMessage(dbMsg.getConnectorMessageId());
+        this.msgContDao.saveAll(toStoreList); // save new contents
+        this.msgContDao.deleteAll(oldContent); // delete old contents
     }
 
     PDomibusConnectorMsgCont mapXmlContentToDB(PDomibusConnectorMessage dbMessage, byte[] xmlDocument) {
@@ -182,22 +193,25 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
             throw new IllegalArgumentException("Xml content is not allowed to be null!");
         }
 
-        PDomibusConnectorMsgCont pDomibusConnectorMsgCont = storeObjectIntoMsgCont(dbMessage, StoreType.MESSAGE_BUSINESSS_CONTENT_XML, null);
+        PDomibusConnectorMsgCont pDomibusConnectorMsgCont =
+                storeObjectIntoMsgCont(dbMessage, StoreType.MESSAGE_BUSINESSS_CONTENT_XML, null);
         pDomibusConnectorMsgCont.setPayloadIdentifier(BUSINESS_XML_DOCUMENT_IDENTIFIER);
         pDomibusConnectorMsgCont.setPayloadName(BUSINESS_XML_DOCUMENT_NAME);
         pDomibusConnectorMsgCont.setPayloadMimeType(MimeTypeUtils.APPLICATION_XML_VALUE);
 
-        //Business XML doc is stored as clob in DB
+        // Business XML doc is stored as clob in DB
         pDomibusConnectorMsgCont.setContent(xmlDocument);
 
         return pDomibusConnectorMsgCont;
     }
 
-    PDomibusConnectorMsgCont mapDocumentToDb(PDomibusConnectorMessage messageId, DomibusConnectorMessageDocument document) {
+    PDomibusConnectorMsgCont mapDocumentToDb(
+            PDomibusConnectorMessage messageId, DomibusConnectorMessageDocument document) {
         if (document == null) {
             throw new IllegalArgumentException("document is not allowed to be null!");
         }
-        PDomibusConnectorMsgCont pDomibusConnectorMsgCont = storeObjectIntoMsgCont(messageId, StoreType.MESSAGE_BUSINESS_CONTENT_DOCUMENT, document.getDocument());
+        PDomibusConnectorMsgCont pDomibusConnectorMsgCont =
+                storeObjectIntoMsgCont(messageId, StoreType.MESSAGE_BUSINESS_CONTENT_DOCUMENT, document.getDocument());
         pDomibusConnectorMsgCont.setPayloadName(document.getDocumentName());
         pDomibusConnectorMsgCont.setDigest(document.getHashValue());
         pDomibusConnectorMsgCont.setPayloadIdentifier(BUSINESS_DOCUMENT_IDENTIFIER);
@@ -214,8 +228,10 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
         return pDomibusConnectorMsgCont;
     }
 
-    PDomibusConnectorMsgCont mapAttachment(PDomibusConnectorMessage dbMessage, DomibusConnectorMessageAttachment attachment) {
-        PDomibusConnectorMsgCont pDomibusConnectorMsgCont = storeObjectIntoMsgCont(dbMessage, StoreType.MESSAGE_ATTACHMENT_CONTENT, attachment.getAttachment());
+    PDomibusConnectorMsgCont mapAttachment(
+            PDomibusConnectorMessage dbMessage, DomibusConnectorMessageAttachment attachment) {
+        PDomibusConnectorMsgCont pDomibusConnectorMsgCont =
+                storeObjectIntoMsgCont(dbMessage, StoreType.MESSAGE_ATTACHMENT_CONTENT, attachment.getAttachment());
         pDomibusConnectorMsgCont.setPayloadIdentifier(attachment.getIdentifier());
         pDomibusConnectorMsgCont.setPayloadName(attachment.getName());
         pDomibusConnectorMsgCont.setPayloadDescription(attachment.getDescription());
@@ -228,8 +244,8 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
      * a PDomibusConnectorMsgCont out of it
      *
      * @param dbMessage - the db message
-     * @param type               - the StorageType (is it a attachment, content, ...)
-     * @param ref                - the large file reference
+     * @param type      - the StorageType (is it a attachment, content, ...)
+     * @param ref       - the large file reference
      */
     PDomibusConnectorMsgCont storeObjectIntoMsgCont(
             PDomibusConnectorMessage dbMessage,
@@ -246,16 +262,23 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
         msgCont.setMessage(dbMessage);
 
         if (ref != null && !StringUtils.hasText(ref.getStorageProviderName())) {
-            LOGGER.debug("No storage provider is set for the large file reference [{}]!\nWill be converted to default Storage provider!", ref);
+            LOGGER.debug(
+                    "No storage provider is set for the large file reference [{}]!\nWill be converted to default " +
+                            "Storage provider!",
+                    ref
+            );
             ref = convertToDefaultStorageProvider(dbMessage.getConnectorMessageId(), ref);
         }
         if (ref != null && !StringUtils.hasText(ref.getStorageIdReference())) {
             throw new PersistenceException("No storage id reference is set for the large file reference!");
         }
-        if (ref != null && ref.getStorageProviderName() != null && !largeFilePersistenceService.isStorageProviderAvailable(ref)) {
-            LOGGER.warn("Storage Provider [{}] is not available, will be converted to default provider [{}]",
+        if (ref != null && ref.getStorageProviderName() != null &&
+                !largeFilePersistenceService.isStorageProviderAvailable(ref)) {
+            LOGGER.warn(
+                    "Storage Provider [{}] is not available, will be converted to default provider [{}]",
                     ref.getStorageProviderName(),
-                    largeFilePersistenceService.getDefaultProvider());
+                    largeFilePersistenceService.getDefaultProvider()
+            );
             ref = convertToDefaultStorageProvider(dbMessage.getConnectorMessageId(), ref);
         }
         if (ref != null) {
@@ -272,57 +295,64 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
     }
 
     private LargeFileReference convertToDefaultStorageProvider(String connectorMessageId, LargeFileReference ref) {
-        LargeFileReference newRef = this.largeFilePersistenceService.createDomibusConnectorBigDataReference(connectorMessageId, ref.getName(), ref.getContentType());
+        LargeFileReference newRef = this.largeFilePersistenceService.createDomibusConnectorBigDataReference(
+                connectorMessageId,
+                ref.getName(),
+                ref.getContentType()
+        );
         try (InputStream is = ref.getInputStream(); OutputStream os = newRef.getOutputStream()) {
             StreamUtils.copy(is, os);
         } catch (IOException e) {
-            String error = String.format("Copying from unsupported LargeFileReference [%s] to default LargeFileReference failed due", ref);
+            String error = String.format(
+                    "Copying from unsupported LargeFileReference [%s] to default LargeFileReference failed due",
+                    ref
+            );
             throw new RuntimeException(error, e);
         }
-        //also set storage name and provider for the "old" large file reference
+        // also set storage name and provider for the "old" large file reference
         ref.setStorageProviderName(newRef.getStorageProviderName());
         ref.setStorageIdReference(newRef.getStorageIdReference());
         return newRef;
     }
-
 
     @Override
     @Transactional
     public void cleanForMessage(DomibusConnectorMessage message) {
         List<PDomibusConnectorMsgCont> byMessage = findByMessage(message);
 
-        //delete msg content fields within database
-        byMessage
-                .stream()
-                .filter(msgCont -> msgCont.getContentType() != StoreType.MESSAGE_CONFIRMATION_XML) //do not delete evidences...
-                .forEach(this::deleteMsgContent);
+        // delete msg content fields within database
+        byMessage.stream()
+                 .filter(msgCont -> msgCont.getContentType() != StoreType.MESSAGE_CONFIRMATION_XML) // do not delete
+                 // evidences...
+                 .forEach(this::deleteMsgContent);
 
-        //delete large file references, by calling the responsible LargeFilePersistenceProvider
+        // delete large file references, by calling the responsible LargeFilePersistenceProvider
         List<LargeFileDeletionException> deletionExceptions = new ArrayList<>();
-        byMessage
-                .stream()
-                .filter(msgCont -> msgCont.getStorageProviderName() != null)
-                .map(this::loadLargeFileReference)
-                .forEach(ref -> {
-                    try {
-                        largeFilePersistenceService.deleteDomibusConnectorBigDataReference(ref);
-                    } catch (LargeFileDeletionException deletionException) {
-                        deletionExceptions.add(deletionException);
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug(String.format("The following largeFile Reference [%s] will be deleted later by timer jobs.\n" +
-                                    "Because I was unable to delete it now due the following exception:", ref), deletionException);
-                        }
-                    }
-                });
+        byMessage.stream().filter(msgCont -> msgCont.getStorageProviderName() != null).map(this::loadLargeFileReference)
+                 .forEach(ref -> {
+                     try {
+                         largeFilePersistenceService.deleteDomibusConnectorBigDataReference(ref);
+                     } catch (LargeFileDeletionException deletionException) {
+                         deletionExceptions.add(deletionException);
+                         if (LOGGER.isDebugEnabled()) {
+                             LOGGER.debug(String.format(
+                                     "The following largeFile Reference [%s] will be deleted later by timer jobs.\n" +
+                                             "Because I was unable to delete it now due the following exception:",
+                                     ref
+                             ), deletionException);
+                         }
+                     }
+                 });
 
-        String storageRefs = deletionExceptions.stream()
-                .map(LargeFileDeletionException::getReferenceFailedToDelete)
-                .filter(Objects::nonNull)
-                .map(LargeFileReference::getStorageIdReference)
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining(","));
-        LOGGER.info("The following storage references [{}] failed to be deleted immediately. The will be deleted later by timer jobs.", storageRefs);
-
+        String storageRefs = deletionExceptions
+                .stream().map(LargeFileDeletionException::getReferenceFailedToDelete)
+                .filter(Objects::nonNull).map(LargeFileReference::getStorageIdReference)
+                .filter(Objects::nonNull).collect(Collectors.joining(","));
+        LOGGER.info(
+                "The following storage references [{}] failed to be deleted immediately. The will be deleted later " +
+                        "by timer jobs.",
+                storageRefs
+        );
     }
 
     /**
@@ -346,5 +376,4 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
     public List<PDomibusConnectorMsgCont> findByMessage(DomibusConnectorMessage message) {
         return this.msgContDao.findByMessage(message.getConnectorMessageId().getConnectorMessageId());
     }
-
 }

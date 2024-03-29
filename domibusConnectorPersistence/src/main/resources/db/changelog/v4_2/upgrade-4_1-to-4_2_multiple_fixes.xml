@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
-
-
-
-
 
     <changeSet id="update_message_error_tables_datatypes_1" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Make sure that the datatypes of the columns of DomibusConnectorMessage error are correct</comment>
-<!--        <renameColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR" oldColumnName="ERROR_MESSAGE" newColumnName="ERROR_MESSAGE_OLD" />-->
+        <!--        <renameColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR" oldColumnName="ERROR_MESSAGE" newColumnName="ERROR_MESSAGE_OLD" />-->
         <addColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR">
             <column name="ERROR_MESSAGE_T" type="java.sql.Types.CLOB"></column>
         </addColumn>
-        <sql>UPDATE DOMIBUS_CONNECTOR_MSG_ERROR SET ERROR_MESSAGE_T=ERROR_MESSAGE;</sql>
-        <dropColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR" columnName="ERROR_MESSAGE" />
+        <sql>UPDATE DOMIBUS_CONNECTOR_MSG_ERROR
+             SET ERROR_MESSAGE_T=ERROR_MESSAGE;</sql>
+        <dropColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR" columnName="ERROR_MESSAGE"/>
         <addColumn tableName="DOMIBUS_CONNECTOR_MSG_ERROR">
             <column name="ERROR_MESSAGE" type="java.sql.Types.CLOB"></column>
         </addColumn>
-        <sql>UPDATE DOMIBUS_CONNECTOR_MSG_ERROR SET ERROR_MESSAGE=ERROR_MESSAGE_T;</sql>
+        <sql>UPDATE DOMIBUS_CONNECTOR_MSG_ERROR
+             SET ERROR_MESSAGE=ERROR_MESSAGE_T;</sql>
     </changeSet>
-
-
-
 
     <changeSet id="add_deleted_column_to_msg_content" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Add a timestamp to mark if a msg content was deleted</comment>
         <addColumn tableName="DOMIBUS_CONNECTOR_MSG_CONT">
             <column name="DELETED" type="java.sql.Types.TIMESTAMP"></column>
         </addColumn>
-
     </changeSet>
-
 
 </databaseChangeLog>
 

@@ -5,7 +5,6 @@ import eu.domibus.connector.domain.model.LargeFileReference;
 import eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceServiceFilesystemImpl.FileBasedLargeFileReference;
 import eu.domibus.connector.persistence.spring.DomibusConnectorFilesystemPersistenceProperties;
 import eu.domibus.connector.testutil.assertj.DomibusByteArrayAssert;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -28,32 +27,27 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class LargeFilePersistenceServiceFilesystemImplTest {
-
-    private LargeFilePersistenceServiceFilesystemImpl filesystemImpl;
-
+class LargeFilePersistenceServiceFilesystemImplTest {
     private static final byte[] input1 = "Hallo Welt, ich bin ein Testtext".getBytes();
-
+    private LargeFilePersistenceServiceFilesystemImpl filesystemImpl;
     private File testStorageLocation;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws IOException {
-
         String methodName = testInfo.getTestMethod().get().getName();
 
         testStorageLocation = new File("./target/tests/"
-                + LargeFilePersistenceServiceFilesystemImplTest.class.getSimpleName() + "/"
-                + methodName
-                +  "/fsstorage/");
+                                               + LargeFilePersistenceServiceFilesystemImplTest.class.getSimpleName() + "/"
+                                               + methodName
+                                               + "/fsstorage/");
 
         FileSystemUtils.deleteRecursively(testStorageLocation);
         testStorageLocation.mkdirs();
 
         File src = new File("./target/test-classes/testdata/fsstorage/");
 
-        //copy testdata to testfolder
+        // copy testdata to testfolder
         FileSystemUtils.copyRecursively(src, testStorageLocation);
-
 
         DomibusConnectorFilesystemPersistenceProperties fsProps = new DomibusConnectorFilesystemPersistenceProperties();
         fsProps.setStoragePath(Paths.get(testStorageLocation.getAbsolutePath()));
@@ -64,12 +58,13 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
     }
 
     @Test
-    public void getReadableDataSource() throws IOException {
-        LargeFilePersistenceServiceFilesystemImpl.FileBasedLargeFileReference fsRef = new LargeFilePersistenceServiceFilesystemImpl.FileBasedLargeFileReference(filesystemImpl);
+    void getReadableDataSource() throws IOException {
+        LargeFilePersistenceServiceFilesystemImpl.FileBasedLargeFileReference fsRef =
+                new LargeFilePersistenceServiceFilesystemImpl.FileBasedLargeFileReference(filesystemImpl);
         fsRef.setStorageIdReference("testmsg1" + File.separator + "file1");
         fsRef.setName("file1");
         fsRef.setMimetype("text");
-        //fsRef.setEncryptionKey();FileBasedDomibusConnectorBigDataReference
+        // fsRef.setEncryptionKey();FileBasedDomibusConnectorBigDataReference
 
         LargeFileReference readableDataSource = filesystemImpl.getReadableDataSource(fsRef);
 
@@ -80,32 +75,37 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
         DomibusByteArrayAssert.assertThat(bytes).containsUTF8String("Hallo Welt!");
     }
 
-//    @Test
-//    public void getReadableDataSource() throws IOException {
-//        FileBasedDomibusConnectorBigDataReference fsRef = new FileBasedDomibusConnectorBigDataReference();
-//        fsRef.setStorageIdReference("testmsg1" + File.separator + "file1");
-//        fsRef.setName("file1");
-//        fsRef.setMimetype("text");
-//        //fsRef.setEncryptionKey();
-//
-//        DomibusConnectorBigDataReference readableDataSource = filesystemImpl.getReadableDataSource(fsRef);
-//
-//        assertThat(readableDataSource).isNotNull();
-//        assertThat(readableDataSource.getInputStream()).isNotNull();
-//
-//        byte[] bytes = IOUtils.toByteArray(readableDataSource.getInputStream());
-//        DomibusByteArrayAssert.assertThat(bytes).containsUTF8String("Hallo Welt!");
-//    }
+    //    @Test
+    //    public void getReadableDataSource() throws IOException {
+    //        FileBasedDomibusConnectorBigDataReference fsRef = new FileBasedDomibusConnectorBigDataReference();
+    //        fsRef.setStorageIdReference("testmsg1" + File.separator + "file1");
+    //        fsRef.setName("file1");
+    //        fsRef.setMimetype("text");
+    //        //fsRef.setEncryptionKey();
+    //
+    //        DomibusConnectorBigDataReference readableDataSource = filesystemImpl.getReadableDataSource(fsRef);
+    //
+    //        assertThat(readableDataSource).isNotNull();
+    //        assertThat(readableDataSource.getInputStream()).isNotNull();
+    //
+    //        byte[] bytes = IOUtils.toByteArray(readableDataSource.getInputStream());
+    //        DomibusByteArrayAssert.assertThat(bytes).containsUTF8String("Hallo Welt!");
+    //    }
 
     @Test
-    public void createDomibusConnectorBigDataReference() {
-        LargeFileReference largeFileReference = filesystemImpl.createDomibusConnectorBigDataReference(new ByteArrayInputStream(input1), "msg1", "file1", "text/utf-8");
+    void createDomibusConnectorBigDataReference() {
+        LargeFileReference largeFileReference =
+                filesystemImpl.createDomibusConnectorBigDataReference(new ByteArrayInputStream(input1),
+                                                                      "msg1",
+                                                                      "file1",
+                                                                      "text/utf-8"
+                );
         assertThat(largeFileReference).isNotNull();
 
         String storageIdReference = largeFileReference.getStorageIdReference();
         assertThat(storageIdReference).isNotNull();
 
-        //TODO: assert file exists in FS
+        // TODO: assert file exists in FS
         File f = new File(testStorageLocation + File.separator + storageIdReference);
         assertThat(f.exists()).as(String.format("A file <%s> should exist", f.getAbsolutePath())).isTrue();
 
@@ -113,9 +113,8 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
         System.out.println("key: " + fRef.getEncryptionKey() + " iv: " + fRef.getInitVector() + " cipher-suite: " + fRef.getCipherSuite());
     }
 
-
     @Test
-    public void readEncryptedBigDataReference() throws IOException {
+    void readEncryptedBigDataReference() throws IOException {
         FileBasedLargeFileReference fRef = new FileBasedLargeFileReference(filesystemImpl);
         fRef.setEncryptionKey("AES#@#kC6lanKld+xuiVfarsZNLQ==");
         fRef.setInitVector("cO+U0ufVjzCheGnXYkfvXg==");
@@ -131,30 +130,30 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
     }
 
     @Test
-    public void deleteDomibusConnectorBigDataReference() {
+    void deleteDomibusConnectorBigDataReference() {
         String msgId = "testmsg2";
-        FileBasedLargeFileReference fsRef = new LargeFilePersistenceServiceFilesystemImpl.FileBasedLargeFileReference(filesystemImpl);
+        FileBasedLargeFileReference fsRef =
+                new LargeFilePersistenceServiceFilesystemImpl.FileBasedLargeFileReference(filesystemImpl);
         String storageRef = msgId + File.separator + "file1";
         fsRef.setStorageIdReference(storageRef);
 
-//        DomibusConnectorMessage msg = DomainEntityCreator.createMessage();
-//        msg.setConnectorMessageId(msgId);
+        //        DomibusConnectorMessage msg = DomainEntityCreator.createMessage();
+        //        msg.setConnectorMessageId(msgId);
         filesystemImpl.deleteDomibusConnectorBigDataReference(fsRef);
 
-//        assertThat(fileExists(storageRef)).isFalse();
+        //        assertThat(fileExists(storageRef)).isFalse();
         String filePath = testStorageLocation.getAbsolutePath() + File.separator + msgId + File.separator + "file1";
         File f = new File(filePath);
         assertThat(f.exists()).as("file " + filePath + " should be deleted").isFalse();
-
     }
 
-//    private boolean fileExists(String storageRef) {
-//        File f = new File(testStorageLocation + File.separator + storageRef);
-//        return f.exists();
-//    }
+    //    private boolean fileExists(String storageRef) {
+    //        File f = new File(testStorageLocation + File.separator + storageRef);
+    //        return f.exists();
+    //    }
 
     @Test
-    public void testConvertSecretKeyToString() throws NoSuchAlgorithmException {
+    void testConvertSecretKeyToString() throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
         KeyGenerator kg = KeyGenerator.getInstance("AES");
         kg.init(random);
@@ -166,18 +165,17 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
         assertThat(s).isEqualTo("AES#@#sJ0kZ3pVBcG75ar4ADWwgg==");
     }
 
-//    @Test
-//    public void testLoadFromKeyString() {
-//
-//    }
+    //    @Test
+    //    public void testLoadFromKeyString() {
+    //
+    //    }
 
     @Test
-    public void testGetAllAvailableReferences() {
+    void testGetAllAvailableReferences() {
         Map<DomibusConnectorMessageId, List<LargeFileReference>> allAvailableReferences =
                 filesystemImpl.getAllAvailableReferences();
 
         assertThat(allAvailableReferences).hasSize(2);
         assertThat(allAvailableReferences.get(new DomibusConnectorMessageId("testmsg2"))).hasSize(2);
     }
-
 }

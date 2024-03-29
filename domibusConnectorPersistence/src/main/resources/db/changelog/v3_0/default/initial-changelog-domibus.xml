@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
     <changeSet author="StephanSpindler" id="changelog-domibus-1.0">
         <createTable tableName="DOMIBUS_CONNECTOR_SEQ_STORE">
             <column name="SEQ_NAME" type="VARCHAR(255)">
@@ -29,7 +31,8 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="MESSAGE_ID" type="BIGINT">
-                <constraints references="DOMIBUS_CONNECTOR_MESSAGES(ID)" foreignKeyName="fk_domibus_connector_messages_id"/>
+                <constraints references="DOMIBUS_CONNECTOR_MESSAGES(ID)"
+                             foreignKeyName="fk_domibus_connector_messages_id"/>
             </column>
             <column name="TYPE" type="VARCHAR(255)"/>
             <column name="EVIDENCE" type="TEXT"/>
@@ -84,17 +87,30 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="MESSAGE_ID" constraintName="fk_message_to_domibus_connector_messages" referencedColumnNames="ID" referencedTableName="DOMIBUS_CONNECTOR_MESSAGES"/>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="FROM_PARTY_ID, FROM_PARTY_ROLE" constraintName="fk_from_party_to_domibus_connector_party" referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE"/>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="TO_PARTY_ID, TO_PARTY_ROLE" constraintName="fk_to_party_to_domibus_connector_party" referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE"/>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="SERVICE" constraintName="fk_service_to_domibus_connector_service" referencedTableName="DOMIBUS_CONNECTOR_SERVICE" referencedColumnNames="service"/>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="ACTION" constraintName="fk_action_to_domibus_connector_action" referencedTableName="DOMIBUS_CONNECTOR_ACTION" referencedColumnNames="ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="MESSAGE_ID"
+                                 constraintName="fk_message_to_domibus_connector_messages" referencedColumnNames="ID"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGES"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="FROM_PARTY_ID, FROM_PARTY_ROLE"
+                                 constraintName="fk_from_party_to_domibus_connector_party"
+                                 referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="TO_PARTY_ID, TO_PARTY_ROLE"
+                                 constraintName="fk_to_party_to_domibus_connector_party"
+                                 referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="SERVICE"
+                                 constraintName="fk_service_to_domibus_connector_service"
+                                 referencedTableName="DOMIBUS_CONNECTOR_SERVICE" referencedColumnNames="service"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="ACTION"
+                                 constraintName="fk_action_to_domibus_connector_action"
+                                 referencedTableName="DOMIBUS_CONNECTOR_ACTION" referencedColumnNames="ACTION"/>
         <createTable tableName="DOMIBUS_CONNECTOR_MSG_ERROR">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="MESSAGE_ID" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_message_to_domibus_connector_message" references="DOMIBUS_CONNECTOR_MESSAGES(ID)"/>
+                <constraints nullable="false" foreignKeyName="fk_message_to_domibus_connector_message"
+                             references="DOMIBUS_CONNECTOR_MESSAGES(ID)"/>
             </column>
             <column name="ERROR_MESSAGE" type="VARCHAR(255)"/>
             <column name="DETAILED_TEXT" type="VARCHAR(2048)"/>

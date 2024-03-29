@@ -1,14 +1,11 @@
 package eu.domibus.connector.persistence.model;
 
-import eu.domibus.connector.domain.enums.TransportState;
-
 import java.io.Serializable;
+import java.util.Objects;
 
 
 public class PDomibusConnectorTransportStepStatusUpdateIdClass implements Serializable {
-
     Long transportStep;
-
     String transportStateString;
 
     public Long getTransportStep() {
@@ -26,6 +23,12 @@ public class PDomibusConnectorTransportStepStatusUpdateIdClass implements Serial
     public void setTransportStateString(String transportStateTransportState) {
         this.transportStateString = transportStateTransportState;
     }
+    @Override
+    public int hashCode() {
+        int result = transportStep != null ? transportStep.hashCode() : 0;
+        result = 31 * result + (transportStateString != null ? transportStateString.hashCode() : 0);
+        return result;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -34,15 +37,8 @@ public class PDomibusConnectorTransportStepStatusUpdateIdClass implements Serial
 
         PDomibusConnectorTransportStepStatusUpdateIdClass that = (PDomibusConnectorTransportStepStatusUpdateIdClass) o;
 
-        if (transportStep != null ? !transportStep.equals(that.transportStep) : that.transportStep != null)
+        if (!Objects.equals(transportStep, that.transportStep))
             return false;
-        return transportStateString != null ? transportStateString.equals(that.transportStateString) : that.transportStateString == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = transportStep != null ? transportStep.hashCode() : 0;
-        result = 31 * result + (transportStateString != null ? transportStateString.hashCode() : 0);
-        return result;
+        return Objects.equals(transportStateString, that.transportStateString);
     }
 }

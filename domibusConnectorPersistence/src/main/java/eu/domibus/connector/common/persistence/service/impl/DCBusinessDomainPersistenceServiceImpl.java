@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
 @Transactional
 public class DCBusinessDomainPersistenceServiceImpl implements DCBusinessDomainPersistenceService {
-
     private final DomibusConnectorBusinessDomainDao businessDomainDao;
 
     public DCBusinessDomainPersistenceServiceImpl(DomibusConnectorBusinessDomainDao businessDomainDao) {
@@ -40,13 +40,17 @@ public class DCBusinessDomainPersistenceServiceImpl implements DCBusinessDomainP
         if (domibusConnectorBusinessDomain == null) {
             throw new IllegalArgumentException("domibusConnectorBusinessDomain is not allowed to be null!");
         }
-        Optional<PDomibusConnectorMessageLane> lane = businessDomainDao.findByName(domibusConnectorBusinessDomain.getId());
+        Optional<PDomibusConnectorMessageLane> lane =
+                businessDomainDao.findByName(domibusConnectorBusinessDomain.getId());
         if (lane.isPresent()) {
             PDomibusConnectorMessageLane dbBusinessDomain = this.mapToDb(domibusConnectorBusinessDomain, lane.get());
             PDomibusConnectorMessageLane save = businessDomainDao.save(dbBusinessDomain);
             return this.mapToDomain(save);
         } else {
-            throw new IllegalArgumentException(String.format("No BusinessDomain configured with id [%s]", domibusConnectorBusinessDomain.getId()));
+            throw new IllegalArgumentException(String.format(
+                    "No BusinessDomain configured with id [%s]",
+                    domibusConnectorBusinessDomain.getId()
+            ));
         }
     }
 
@@ -58,13 +62,16 @@ public class DCBusinessDomainPersistenceServiceImpl implements DCBusinessDomainP
         if (businessDomain.getId() == null) {
             throw new IllegalArgumentException("Null is not allowed for businessDomainId!");
         }
-        PDomibusConnectorMessageLane dbBusinessDomain = this.mapToDb(businessDomain, new PDomibusConnectorMessageLane());
+        PDomibusConnectorMessageLane dbBusinessDomain =
+                this.mapToDb(businessDomain, new PDomibusConnectorMessageLane());
         dbBusinessDomain.setName(businessDomain.getId());
         PDomibusConnectorMessageLane save = businessDomainDao.save(dbBusinessDomain);
         return this.mapToDomain(save);
     }
 
-    private PDomibusConnectorMessageLane mapToDb(DomibusConnectorBusinessDomain businessDomain, PDomibusConnectorMessageLane dbDomain) {
+    private PDomibusConnectorMessageLane mapToDb(
+            DomibusConnectorBusinessDomain businessDomain,
+            PDomibusConnectorMessageLane dbDomain) {
         Map<String, String> map = new HashMap<>(businessDomain.getMessageLaneProperties());
         dbDomain.setProperties(map);
         dbDomain.setDescription(businessDomain.getDescription());
@@ -81,5 +88,4 @@ public class DCBusinessDomainPersistenceServiceImpl implements DCBusinessDomainP
         lane.setMessageLaneProperties(p);
         return lane;
     }
-
 }

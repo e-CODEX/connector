@@ -6,7 +6,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
-import org.testcontainers.containers.MySQLContainer;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MariaDbContainerTestDatabaseFactory extends AbstractContainerTestDatabaseFactory implements TestDatabaseFactory {
 
+public class MariaDbContainerTestDatabaseFactory extends AbstractContainerTestDatabaseFactory implements TestDatabaseFactory {
     private static final Logger LOGGER = LogManager.getLogger(MariaDbContainerTestDatabaseFactory.class);
 
     List<String> availableVersions = Stream.of("4.1.x", "3.5.x").collect(Collectors.toList());
@@ -30,14 +29,6 @@ public class MariaDbContainerTestDatabaseFactory extends AbstractContainerTestDa
         return "Mysql within Docker";
     }
 
-    protected JdbcDatabaseContainer getDatabaseContainer(String version) {
-
-        MariaDBContainer mysql = new MariaDBContainer();
-
-        return mysql;
-    }
-
-
     public TestDatabase createNewDatabase(String version) {
         TestDatabase newDatabase = super.createNewDatabase(version);
 
@@ -45,7 +36,7 @@ public class MariaDbContainerTestDatabaseFactory extends AbstractContainerTestDa
             String scriptFile = "/dbscripts/test/mysql/mysql_" + version + ".sql";
             LOGGER.info("Loading initial script from [{}]", scriptFile);
             try {
-//            Connection connection = newDatabase.getDataSource().getConnection("test", "test");
+                //            Connection connection = newDatabase.getDataSource().getConnection("test", "test");
                 Connection connection = newDatabase.getDataSource().getConnection();
 
                 ScriptUtils.executeSqlScript(connection, new ClassPathResource(scriptFile));
@@ -55,7 +46,10 @@ public class MariaDbContainerTestDatabaseFactory extends AbstractContainerTestDa
         }
 
         return newDatabase;
+    }
 
+    protected JdbcDatabaseContainer getDatabaseContainer(String version) {
+        return new MariaDBContainer();
     }
 
     @Override
@@ -63,6 +57,4 @@ public class MariaDbContainerTestDatabaseFactory extends AbstractContainerTestDa
 
         return (availableVersions.contains(version) || version == null) && super.isDockerAndDriverAvailable(version);
     }
-
-
 }

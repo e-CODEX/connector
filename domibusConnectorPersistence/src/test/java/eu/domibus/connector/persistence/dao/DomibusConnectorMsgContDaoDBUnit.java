@@ -1,8 +1,6 @@
-
 package eu.domibus.connector.persistence.dao;
 
 import com.github.database.rider.core.api.dataset.DataSet;
-import eu.domibus.connector.persistence.model.PDomibusConnectorMessage;
 import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.QueryDataSet;
@@ -15,39 +13,32 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.SQLException;
 import java.time.Duration;
-import java.util.Optional;
 
 import static com.github.database.rider.core.api.dataset.SeedStrategy.CLEAN_INSERT;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 /**
- *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 @CommonPersistenceTest
 @DataSet(value = "/database/testdata/dbunit/DomibusConnectorMsgContent.xml", strategy = CLEAN_INSERT)
-public class DomibusConnectorMsgContDaoDBUnit extends CommonPersistenceDBUnitITCase {
-
+class DomibusConnectorMsgContDaoDBUnit extends CommonPersistenceDBUnitITCase {
     @Autowired
     private DomibusConnectorMsgContDao msgContDao;
-
     @Autowired
     private DomibusConnectorMessageDao messageDao;
-
     @Autowired
     private DatabaseDataSourceConnection ddsc;
-
     @Autowired
     private TransactionTemplate txTemplate;
 
     @Test
-    public void testDeleteByMessage() throws SQLException, AmbiguousTableNameException, DataSetException {
+    void testDeleteByMessage() throws SQLException, DataSetException {
         Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-//            Optional<PDomibusConnectorMessage> message = messageDao.findOneByConnectorMessageId("conn1");
-
+            //            Optional<PDomibusConnectorMessage> message = messageDao.findOneByConnectorMessageId("conn1");
             txTemplate.executeWithoutResult(t -> msgContDao.deleteByMessage("conn1"));
-
-            //check result in DB
+            // check result in DB
             DatabaseDataSourceConnection conn = ddsc;
             QueryDataSet dataSet = new QueryDataSet(conn);
             dataSet.addTable("DOMIBUS_CONNECTOR_MSG_CONT", "SELECT * FROM DOMIBUS_CONNECTOR_MSG_CONT");
@@ -59,10 +50,4 @@ public class DomibusConnectorMsgContDaoDBUnit extends CommonPersistenceDBUnitITC
             assertThat(rows).isEqualTo(3);
         });
     }
-
-
-    
-    
-    
-    
 }

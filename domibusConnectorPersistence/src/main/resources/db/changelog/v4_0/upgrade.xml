@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
-
     <include file="/db/changelog/v4_0/upgrade_qrtz_tables.xml"/>
-    <include file="upgrade-3to4_prepare.xml" relativeToChangelogFile="true" />
+    <include file="upgrade-3to4_prepare.xml" relativeToChangelogFile="true"/>
 
-    <include file="initial-changelog-domibus.xml" relativeToChangelogFile="true" />
-    <include file="initial-changelog-webadmin.xml" relativeToChangelogFile="true" />
+    <include file="initial-changelog-domibus.xml" relativeToChangelogFile="true"/>
+    <include file="initial-changelog-webadmin.xml" relativeToChangelogFile="true"/>
 
-    <include file="upgrade-3to4_finish.xml" relativeToChangelogFile="true" />
+    <include file="upgrade-3to4_finish.xml" relativeToChangelogFile="true"/>
 
-    <changeSet id="up1_changelog-domibus-4.0_001_post_setup_tag" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet id="up1_changelog-domibus-4.0_001_post_setup_tag" author="SKS" onValidationFail="MARK_RAN"
+               failOnError="false">
         <insert tableName="DC_DB_VERSION">
-            <column name="TAG" value="V4.0" />
+            <column name="TAG" value="V4.0"/>
         </insert>
     </changeSet>
 

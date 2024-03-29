@@ -2,23 +2,92 @@ package eu.domibus.connector.persistence.testutil;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assumptions;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
-import org.testcontainers.containers.wait.strategy.WaitStrategy;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Properties;
 
-public abstract class AbstractContainerTestDatabaseFactory implements TestDatabaseFactory {
 
+public abstract class AbstractContainerTestDatabaseFactory implements TestDatabaseFactory {
     private static final Logger LOGGER = LogManager.getLogger(AbstractContainerTestDatabaseFactory.class);
 
-    class ContainerTestDatabase implements TestDatabase {
+    protected abstract JdbcDatabaseContainer getDatabaseContainer(String version);
 
+    @Override
+    public boolean isAvailable(String version) {
+        boolean available = isDockerAndDriverAvailable(version);
+        if (!available) {
+            return false;
+        }
+
+        if (version != null) {
+            //            throw new RuntimeException("Cannot provide db with data in version " + version);
+            LOGGER.warn("Cannot provide db with data in version " + version);
+            //            Assumptions.assumeTrue(false, "Cannot provide db with data in version " + version);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public TestDatabase createNewDatabase(String version) {
+        ContainerTestDatabase testDatabase = new ContainerTestDatabase();
+        JdbcDatabaseContainer dbContainer = getDatabaseContainer(version);
+        try {
+            dbContainer.withDatabaseName("test");
+        } catch (UnsupportedOperationException e) {
+            // ignore it, if not supported...
+        }
+        dbContainer.withUsername("test");
+        dbContainer.withPassword("test");
+        dbContainer.start();
+
+        testDatabase.jdbcDatabaseContainer = dbContainer;
+        testDatabase.version = version;
+
+        String driverClassName = dbContainer.getDriverClassName();
+
+        return testDatabase;
+    }
+
+    protected boolean isDockerAndDriverAvailable(String version) {
+        boolean docker = true;
+        String command = "docker ps";
+        try {
+            Process child = Runtime.getRuntime().exec(command);
+            child.waitFor();
+            if (child.exitValue() != 0) {
+                LOGGER.warn("Docker not available!, calling 'docker ps' failed with exit code != 0");
+                return false;
+            }
+        } catch (IOException e) {
+            //            Assumptions.assumeTrue(false, "Docker not available!, calling 'docker ps' failed");
+            LOGGER.warn("Docker not available!, calling 'docker ps' failed", e);
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        JdbcDatabaseContainer databaseContainer = getDatabaseContainer(version);
+        String driverClassName = databaseContainer.getDriverClassName();
+
+        try {
+            Class.forName(driverClassName);
+        } catch (ClassNotFoundException e) {
+            LOGGER.warn("SQL Driver [{}] is not available on classpath!", driverClassName);
+            return false;
+        }
+        return true;
+    }
+
+    public String toString() {
+        return this.getName();
+    }
+
+    class ContainerTestDatabase implements TestDatabase {
         JdbcDatabaseContainer jdbcDatabaseContainer;
         String version = null;
 
@@ -53,86 +122,5 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
         public void close() throws Exception {
             jdbcDatabaseContainer.stop();
         }
-    }
-
-    @Override
-    public TestDatabase createNewDatabase(String version) {
-        ContainerTestDatabase testDatabase = new ContainerTestDatabase();
-        JdbcDatabaseContainer dbContainer = getDatabaseContainer(version);
-        try {
-            dbContainer.withDatabaseName("test");
-        } catch (UnsupportedOperationException e) {
-            //ignore it, if not supported...
-        }
-        dbContainer.withUsername("test");
-        dbContainer.withPassword("test");
-        dbContainer.start();
-
-
-        testDatabase.jdbcDatabaseContainer = dbContainer;
-        testDatabase.version = version;
-
-        String driverClassName = dbContainer.getDriverClassName();
-
-
-
-        return testDatabase;
-    }
-
-    protected abstract JdbcDatabaseContainer getDatabaseContainer(String version);
-
-
-
-    @Override
-    public boolean isAvailable(String version) {
-
-        boolean available = isDockerAndDriverAvailable(version);
-        if (!available) {
-            return false;
-        }
-
-        if (version != null) {
-//            throw new RuntimeException("Cannot provide db with data in version " + version);
-            LOGGER.warn("Cannot provide db with data in version " + version);
-//            Assumptions.assumeTrue(false, "Cannot provide db with data in version " + version);
-            return false;
-        }
-        return true;
-    }
-
-    protected boolean isDockerAndDriverAvailable(String version) {
-        boolean docker = true;
-        String command = "docker ps";
-        try {
-            Process child = Runtime.getRuntime().exec(command);
-            child.waitFor();
-            if(child.exitValue() != 0) {
-                LOGGER.warn("Docker not available!, calling 'docker ps' failed with exit code != 0");
-                return false;
-            }
-        } catch (IOException e) {
-//            Assumptions.assumeTrue(false, "Docker not available!, calling 'docker ps' failed");
-            LOGGER.warn("Docker not available!, calling 'docker ps' failed", e);
-            e.printStackTrace();
-            return false;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        JdbcDatabaseContainer databaseContainer = getDatabaseContainer(version);
-        String driverClassName = databaseContainer.getDriverClassName();
-
-        try {
-            Class.forName(driverClassName);
-        } catch (ClassNotFoundException e) {
-            LOGGER.warn("SQL Driver [{}] is not available on classpath!", driverClassName);
-            return false;
-        }
-        return true;
-    }
-
-    public String toString() {
-        return this.getName();
     }
 }

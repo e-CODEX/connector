@@ -1,46 +1,40 @@
 package eu.domibus.connector.persistence.model;
 
+import eu.domibus.connector.domain.model.DomibusConnectorParty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import eu.domibus.connector.domain.model.DomibusConnectorParty;
-
 import javax.persistence.*;
+
 
 @Entity
 //@IdClass(PDomibusConnectorPartyPK.class)
 @Table(name = PDomibusConnectorParty.TABLE_NAME)
 public class PDomibusConnectorParty {
-
     public static final String TABLE_NAME = "DOMIBUS_CONNECTOR_PARTY";
 
     @Id
-    @Column(name="ID")
-    @TableGenerator(name = "seq" + TABLE_NAME,
-            table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
-            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME,
-            pkColumnValue = TABLE_NAME + ".ID",
+    @Column(name = "ID")
+    @TableGenerator(
+            name = "seq" + TABLE_NAME, table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
+            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME, pkColumnValue = TABLE_NAME + ".ID",
             valueColumnName = PDomibusConnectorPersistenceModel.SEQ_VALUE_COLUMN_NAME,
             initialValue = PDomibusConnectorPersistenceModel.INITIAL_VALUE,
-            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE)
+            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE
+    )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq" + TABLE_NAME)
     private Long id;
-
     @Column(name = "IDENTIFIER")
     private String pmodePartyIdentifier;
-
     @Column(name = "PARTY_ID", nullable = false)
     private String partyId;
-
     @Column(name = "ROLE")
     private String role;
 
     @Column(name = "PARTY_ID_TYPE", nullable = false, length = 512)
     private String partyIdType;
-    
     @Column(name = "ROLE_TYPE", length = 50)
-//    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
     private DomibusConnectorParty.PartyRoleType roleType;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_PMODE_SET", referencedColumnName = "ID")
     private PDomibusConnectorPModeSet pModeSet;
@@ -101,7 +95,7 @@ public class PDomibusConnectorParty {
         this.roleType = roleType;
     }
 
-	@Override
+    @Override
     public String toString() {
         ToStringBuilder toString = new ToStringBuilder(this);
         toString.append("id", partyId);

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-
 
     <!-- TODO Quartz -->
 
     <changeSet id="create_domibus_connector_seq_store" author="sks">
         <createTable tableName="DOMIBUS_CONNECTOR_SEQ_STORE">
-            <column name="SEQ_NAME" type="java.sql.Types.VARCHAR(256)"><constraints nullable="false"/></column>
-            <column name="SEQ_VALUE" type="java.sql.Types.BIGINT" defaultValue="1000"><constraints nullable="false"/></column>
+            <column name="SEQ_NAME" type="java.sql.Types.VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SEQ_VALUE" type="java.sql.Types.BIGINT" defaultValue="1000">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
@@ -48,7 +51,6 @@
         </preConditions>
         <addPrimaryKey tableName="DC_PMODE_SET" columnNames="ID" constraintName="PK_DC_PMODE_SET"/>
     </changeSet>
-
 
     <!-- action -->
     <changeSet id="create_domibus_connector_action_table" author="sks">
@@ -152,7 +154,6 @@
                                  referencedColumnNames="ID"
         />
     </changeSet>
-
 
     <!-- party -->
     <changeSet id="create_domibus_connector_party_table" author="sks">
@@ -435,8 +436,8 @@
         <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="CONNECTOR_MESSAGE_ID"
                              constraintName="UN_DC_MSG_ID"/>
 
-<!--        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="BACKEND_MESSAGE_ID,BACKEND_NAME"-->
-<!--                             constraintName="UN_DC_MSG_NAT_MSG_01"/>-->
+        <!--        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="BACKEND_MESSAGE_ID,BACKEND_NAME"-->
+        <!--                             constraintName="UN_DC_MSG_NAT_MSG_01"/>-->
     </changeSet>
 
 
@@ -458,7 +459,9 @@
             </column>
             <column name="CONNECTOR_MESSAGE_ID" type="${connector_message_id.type}"/>
             <column name="TYPE" type="${varchar255.type}"/>
-            <column name="EVIDENCE" type="${text.type}"> <constraints nullable="true" /></column>
+            <column name="EVIDENCE" type="${text.type}">
+                <constraints nullable="true"/>
+            </column>
             <column name="DELIVERED_NAT" type="${timestamp.type}"/>
             <column name="DELIVERED_GW" type="${timestamp.type}"/>
             <column name="UPDATED" type="${timestamp.type}"/>
@@ -533,7 +536,6 @@
                                  referencedColumnNames="ID"/>
     </changeSet>
 
-
     <changeSet id="add_foreign_keys_message_info" author="sks">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0"><![CDATA[
@@ -589,7 +591,6 @@
                                  referencedColumnNames="ID"/>
     </changeSet>
 
-
     <changeSet id="create_foreign_key_constraints_bigdata" author="sks">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0"><![CDATA[
@@ -604,7 +605,6 @@
                                  referencedTableName="DOMIBUS_CONNECTOR_MESSAGE"
                                  referencedColumnNames="ID"/>
     </changeSet>
-
 
     <changeSet id="create_keystore_table" author="BR">
         <preConditions onFail="MARK_RAN">
@@ -629,7 +629,6 @@
             <column name="UPLOADED" type="TIMESTAMP"/>
             <column name="DESCRIPTION" type="java.sql.Types.VARCHAR(512)"/>
             <column name="TYPE" type="java.sql.Types.VARCHAR(50)"/>
-
 
         </createTable>
     </changeSet>
@@ -659,7 +658,6 @@
                                  referencedTableName="DC_KEYSTORE"
                                  referencedColumnNames="ID"/>
     </changeSet>
-
 
     <!-- DOMIBUS CONNECTOR PROPERTY TABLE -->
     <changeSet id="create_domibus_connector_property_table" author="sks">
@@ -796,7 +794,6 @@
                                  referencedColumnNames="ID"/>
     </changeSet>
 
-
     <changeSet id="create_dc_transport_step_table" author="sks">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0"><![CDATA[
@@ -891,7 +888,6 @@
                                  referencedColumnNames="ID"/>
     </changeSet>
 
-
     <changeSet id="create_dc_link_configuration_table" author="sks">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0"><![CDATA[
@@ -977,7 +973,6 @@
                                  referencedTableName="DC_LINK_CONFIGURATION"
                                  referencedColumnNames="ID"/>
     </changeSet>
-
 
     <changeSet id="create_dc_link_partner" author="sks">
         <preConditions onFail="MARK_RAN">
@@ -1120,7 +1115,6 @@
         <addUniqueConstraint tableName="DC_MESSAGE_LANE" columnNames="NAME" constraintName="UNQ_MSG_LANE_NAME"/>
     </changeSet>
 
-
     <changeSet id="create_dc_message_lane_property_table" author="sks">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0"><![CDATA[
@@ -1165,7 +1159,6 @@
                                  referencedColumnNames="ID"/>
     </changeSet>
 
-
     <changeSet id="create_dc_msgcnt_detsig" author="sks">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0"><![CDATA[
@@ -1183,7 +1176,6 @@
             <column name="SIGNATURE_TYPE" type="java.sql.Types.VARCHAR(255)"/>
         </createTable>
     </changeSet>
-
 
     <changeSet id="4.4_002_pre_setup_tag" author="BR" onValidationFail="MARK_RAN" failOnError="false">
         <insert tableName="DC_DB_VERSION">

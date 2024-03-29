@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-
     <changeSet id="create_DC_DB_VERSION_TABLE" author="SKS" onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="DC_DB_VERSION" />
+                <tableExists tableName="DC_DB_VERSION"/>
             </not>
         </preConditions>
         <createTable tableName="DC_DB_VERSION">
-            <column name="TAG" type="java.sql.Types.VARCHAR(255)" >
-                <constraints primaryKey="true" />
+            <column name="TAG" type="java.sql.Types.VARCHAR(255)">
+                <constraints primaryKey="true"/>
             </column>
         </createTable>
     </changeSet>
-
 </databaseChangeLog>

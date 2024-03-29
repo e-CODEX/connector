@@ -10,18 +10,12 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class MessageConfirmationMapperTest {
-
-
-
-
-
+class MessageConfirmationMapperTest {
     @Test
-    public void mapFromDbToDomain() throws Exception {
+    void mapFromDbToDomain() throws Exception {
         PDomibusConnectorEvidence evidence = new PDomibusConnectorEvidence();
         evidence.setEvidence("test");
         evidence.setType(EvidenceType.DELIVERY);
-
 
         DomibusConnectorMessageConfirmation confirmation = MessageConfirmationMapper.mapFromDbToDomain(evidence);
 
@@ -30,7 +24,7 @@ public class MessageConfirmationMapperTest {
     }
 
     @Test
-    public void mapFromDbToDomain_evidenceIsNull() throws Exception {
+    void mapFromDbToDomain_evidenceIsNull() throws Exception {
         PDomibusConnectorEvidence evidence = new PDomibusConnectorEvidence();
         evidence.setEvidence(null);
         evidence.setType(EvidenceType.DELIVERY);
@@ -43,12 +37,11 @@ public class MessageConfirmationMapperTest {
 
     @Test
     @Disabled
-    public void mapFromDomainIntoDb() throws Exception {
+    void mapFromDomainIntoDb() throws Exception {
     }
 
     @Test
     @Disabled
-    public void mapFromDomainToDb() throws Exception {
+    void mapFromDomainToDb() throws Exception {
     }
-
 }

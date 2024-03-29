@@ -13,15 +13,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 public class OracleContainerTestDatabaseFactory extends AbstractContainerTestDatabaseFactory implements TestDatabaseFactory {
-
     private static final Logger LOGGER = LogManager.getLogger(OracleContainerTestDatabaseFactory.class);
-
-    List<String> availableVersions = Stream.of("4.1.x", "3.5.x").collect(Collectors.toList());
-
     public static final String SID = "testsid";
     public static final String DB_DOMAIN = "example.com";
     public static final String DB_PASSWORD = "test";
+
+    List<String> availableVersions = Stream.of("4.1.x", "3.5.x").collect(Collectors.toList());
 
     @Override
     public String getDatabaseType() {
@@ -32,20 +31,6 @@ public class OracleContainerTestDatabaseFactory extends AbstractContainerTestDat
     public String getName() {
         return "Oracle within Docker";
     }
-
-
-    protected JdbcDatabaseContainer getDatabaseContainer(String version) {
-
-        OracleContainer oracle = new OracleContainer("oracleinanutshell/oracle-xe-11g:1.0.0");
-
-        oracle
-            .withUsername("system")
-            .withPassword("oracle");
-
-
-        return oracle;
-    }
-
 
     public TestDatabase createNewDatabase(String version) {
         ContainerTestDatabase testDatabase = new ContainerTestDatabase();
@@ -71,11 +56,15 @@ public class OracleContainerTestDatabaseFactory extends AbstractContainerTestDat
         return testDatabase;
     }
 
-    @Override
-    public boolean isAvailable(String version) {
+    protected JdbcDatabaseContainer getDatabaseContainer(String version) {
+        OracleContainer oracle = new OracleContainer("oracleinanutshell/oracle-xe-11g:1.0.0");
+        oracle.withUsername("system").withPassword("oracle");
 
-        return (availableVersions.contains(version) || version == null) && super.isDockerAndDriverAvailable(version);
+        return oracle;
     }
 
-
+    @Override
+    public boolean isAvailable(String version) {
+        return (availableVersions.contains(version) || version == null) && super.isDockerAndDriverAvailable(version);
+    }
 }

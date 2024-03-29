@@ -3,66 +3,56 @@ package eu.domibus.connector.persistence.model;
 import eu.domibus.connector.persistence.model.enums.EvidenceType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Date;
-
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
 @Table(name = PDomibusConnectorEvidence.TABLE_NAME)
 public class PDomibusConnectorEvidence {
-
     public static final String TABLE_NAME = "DOMIBUS_CONNECTOR_EVIDENCE";
 
     @Id
-    @Column(name="ID")
-    @TableGenerator(name = "seq" + TABLE_NAME,
-            table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
-            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME,
-            pkColumnValue = TABLE_NAME + ".ID",
+    @Column(name = "ID")
+    @TableGenerator(
+            name = "seq" + TABLE_NAME, table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
+            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME, pkColumnValue = TABLE_NAME + ".ID",
             valueColumnName = PDomibusConnectorPersistenceModel.SEQ_VALUE_COLUMN_NAME,
             initialValue = PDomibusConnectorPersistenceModel.INITIAL_VALUE,
-            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK)
+            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK
+    )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq" + TABLE_NAME)
     private Long id;
-
     /**
      * the message this evidence is referencing
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MESSAGE_ID", nullable = false)
     private PDomibusConnectorMessage businessMessage;
-
-
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private EvidenceType type;
-
     @Lob
     @Column(name = "EVIDENCE")
     private String evidence;
-
     @Column(name = "DELIVERED_NAT")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredToBackend;
-
     @Column(name = "DELIVERED_GW")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredToGateway;
-
     @Column(name = "UPDATED", nullable = false)
     private Date updated;
-
     @PrePersist
     public void prePersist() {
         updated = new Date();
     }
-    
+
     @PreUpdate
     public void preUpdate() {
         updated = new Date();
     }
-    
+
     public Long getId() {
         return id;
     }

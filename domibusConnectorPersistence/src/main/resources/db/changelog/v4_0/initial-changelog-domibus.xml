@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-
-
-
-
-
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
 
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_1">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_SEQ_STORE" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_SEQ_STORE"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_SEQ_STORE">
@@ -25,18 +26,27 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_1_primary_key_for_seq_store">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_SEQ_STORE" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_SEQ_STORE"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_SEQ_STORE" columnNames="SEQ_NAME" constraintName="PK_DOMIBUS_CONNECTOR_SEQ_STORE"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_SEQ_STORE" columnNames="SEQ_NAME"
+                       constraintName="PK_DOMIBUS_CONNECTOR_SEQ_STORE"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_2">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_SERVICE" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_SERVICE"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_SERVICE">
@@ -50,19 +60,28 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_2_primary_key_for_connector_service">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_SERVICE" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_SERVICE"/>
             </not>
         </preConditions>
         <comment>Creating Primary Key for DOMIBUS_CONNECTOR_SERVICE</comment>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_SERVICE" columnNames="SERVICE" constraintName="PK_DOMIBUS_CONNECTOR_SERVICE"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_SERVICE" columnNames="SERVICE"
+                       constraintName="PK_DOMIBUS_CONNECTOR_SERVICE"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_3">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_PARTY" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_PARTY"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_PARTY">
@@ -77,18 +96,27 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_3_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
-<!--            <not>-->
-<!--                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_PARTY" />-->
-<!--            </not>-->
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
+            <!--            <not>-->
+            <!--                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_PARTY" />-->
+            <!--            </not>-->
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_PARTY" columnNames="PARTY_ID, ROLE" constraintName="PK_DOMIBUS_CONNECTOR_PARTY"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_PARTY" columnNames="PARTY_ID, ROLE"
+                       constraintName="PK_DOMIBUS_CONNECTOR_PARTY"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_4">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_MSG_ERROR" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_MSG_ERROR"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_MSG_ERROR">
@@ -110,18 +138,26 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_4_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MSG_ERROR" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MSG_ERROR"/>
             </not>
         </preConditions>
         <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MSG_ERROR" columnNames="ID" constraintName="PK_MSG_ERROR"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_5">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_MSG_CONT" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_MSG_CONT"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_MSG_CONT">
@@ -139,18 +175,27 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_5_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MSG_CONT" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MSG_CONT"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnNames="ID" constraintName="PK_DOMIBUS_CONNECTOR_MSG__01"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MSG_CONT" columnNames="ID"
+                       constraintName="PK_DOMIBUS_CONNECTOR_MSG__01"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_6">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_BIGDATA" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_BIGDATA"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_BIGDATA">
@@ -168,18 +213,26 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_6_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_BIGDATA" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_BIGDATA"/>
             </not>
         </preConditions>
         <addPrimaryKey tableName="DOMIBUS_CONNECTOR_BIGDATA" columnNames="ID"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_7">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO">
@@ -207,19 +260,28 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_7_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnNames="ID" constraintName="PK_CONNECTOR_MESSAGE_INFO"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" columnNames="ID"
+                       constraintName="PK_CONNECTOR_MESSAGE_INFO"/>
     </changeSet>
 
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_MESSAGE" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_MESSAGE"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_MESSAGE">
@@ -247,61 +309,100 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MESSAGE" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_MESSAGE"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="ID" constraintName="PK_DOMIBUS_CONNECTOR_MESSAGE"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="ID"
+                       constraintName="PK_DOMIBUS_CONNECTOR_MESSAGE"/>
     </changeSet>
 
-    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_delete_unique_connector_message_id" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_delete_unique_connector_message_id"
+               onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Drop unique constraint to readd it under liquibase changeset</comment>
         <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" constraintName="UNIQUE_CONNECTOR_MESSAGE_ID"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_unique_connector_message_id">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="CONNECTOR_MESSAGE_ID" constraintName="UNIQUE_CONNECTOR_MESSAGE_ID"/>
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="CONNECTOR_MESSAGE_ID"
+                             constraintName="UNIQUE_CONNECTOR_MESSAGE_ID"/>
     </changeSet>
 
-    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_delete_unique_ebms_id" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_delete_unique_ebms_id"
+               onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Drop unique constraint to readd it under liquibase changeset</comment>
         <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" constraintName="UQ_DOMIBUS_CONNE_EBMS_MESSAGE"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_unique_ebms_id" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="EBMS_MESSAGE_ID" constraintName="UQ_DOMIBUS_CONNE_EBMS_MESSAGE"/>
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="EBMS_MESSAGE_ID"
+                             constraintName="UQ_DOMIBUS_CONNE_EBMS_MESSAGE"/>
     </changeSet>
 
-    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_delete_unique_backend_message_id" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_delete_unique_backend_message_id"
+               onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
         <comment>Drop unique constraint to readd it under liquibase changeset</comment>
         <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" constraintName="UQ_DOMIBUS_CONNE_NAT_MESSAGE_"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_8_unique_backend_message_id">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="BACKEND_MESSAGE_ID" constraintName="UQ_DOMIBUS_CONNE_NAT_MESSAGE_"/>
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_MESSAGE" columnNames="BACKEND_MESSAGE_ID"
+                             constraintName="UQ_DOMIBUS_CONNE_NAT_MESSAGE_"/>
     </changeSet>
 
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_9">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_EVIDENCE" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_EVIDENCE"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_EVIDENCE">
@@ -322,19 +423,28 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_9_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_EVIDENCE" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_EVIDENCE"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_EVIDENCE" columnNames="ID" constraintName="PK_DOMIBUS_CONNECTOR_EVIDENCE"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_EVIDENCE" columnNames="ID"
+                       constraintName="PK_DOMIBUS_CONNECTOR_EVIDENCE"/>
     </changeSet>
 
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_10">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_CONT_TYPE" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_CONT_TYPE"/>
             </not>
         </preConditions>
         <comment>Create Content Type Table</comment>
@@ -346,18 +456,27 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_10_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_CONT_TYPE" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_CONT_TYPE"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_CONT_TYPE" columnNames="MESSAGE_CONTENT_TYPE" constraintName="PK_DOMIBUS_CONN_02"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_CONT_TYPE" columnNames="MESSAGE_CONTENT_TYPE"
+                       constraintName="PK_DOMIBUS_CONN_02"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_10_1">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_ACTION" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_ACTION"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_ACTION">
@@ -371,18 +490,27 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_10_1_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_ACTION" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_ACTION"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_ACTION" columnNames="ACTION" constraintName="PK_DOMIBUS_CONNECTOR_ACTION"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_ACTION" columnNames="ACTION"
+                       constraintName="PK_DOMIBUS_CONNECTOR_ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_backend_info">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_BACKEND_INFO"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_BACKEND_INFO">
@@ -405,45 +533,74 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_primary_key_backend_info">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_BACKEND_INFO"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" columnNames="ID" constraintName="PK_DOMIBUS_CONNECTOR_BACK_01"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" columnNames="ID"
+                       constraintName="PK_DOMIBUS_CONNECTOR_BACK_01"/>
     </changeSet>
 
-    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_delete_backend_info_unique_backend_name" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_delete_backend_info_unique_backend_name"
+               onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
         <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" constraintName="UN_DOMIBUS_CONNECTOR_BACK_01"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_backend_info_unique_backend_name">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" columnNames="BACKEND_NAME" constraintName="UN_DOMIBUS_CONNECTOR_BACK_01"/>
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" columnNames="BACKEND_NAME"
+                             constraintName="UN_DOMIBUS_CONNECTOR_BACK_01"/>
     </changeSet>
 
-    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_delete_backend_info_unique_key_alias" onValidationFail="MARK_RAN" failOnError="false">
+    <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_delete_backend_info_unique_key_alias"
+               onValidationFail="MARK_RAN" failOnError="false">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
         <dropUniqueConstraint tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" constraintName="UN_DOMIBUS_CONNECTOR_BACK_02"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_11_backend_info_unique_key_alias">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
         </preConditions>
-        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" columnNames="BACKEND_KEY_ALIAS" constraintName="UN_DOMIBUS_CONNECTOR_BACK_02"/>
+        <addUniqueConstraint tableName="DOMIBUS_CONNECTOR_BACKEND_INFO" columnNames="BACKEND_KEY_ALIAS"
+                             constraintName="UN_DOMIBUS_CONNECTOR_BACK_02"/>
     </changeSet>
 
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_12_connector_to_service_rel">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <tableExists tableName="DOMIBUS_CONNECTOR_BACK_2_S" />
+                <tableExists tableName="DOMIBUS_CONNECTOR_BACK_2_S"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_CONNECTOR_BACK_2_S">
@@ -457,114 +614,197 @@
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_12_connector_to_service_rel_primary_key">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_BACK_2_S" />
+                <primaryKeyExists tableName="DOMIBUS_CONNECTOR_BACK_2_S"/>
             </not>
         </preConditions>
-        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_BACK_2_S" columnNames="DOMIBUS_CONNECTOR_SERVICE_ID, DOMIBUS_CONNECTOR_BACKEND_ID" constraintName="PK_DOMIBUS_CONN_01"/>
+        <addPrimaryKey tableName="DOMIBUS_CONNECTOR_BACK_2_S"
+                       columnNames="DOMIBUS_CONNECTOR_SERVICE_ID, DOMIBUS_CONNECTOR_BACKEND_ID"
+                       constraintName="PK_DOMIBUS_CONN_01"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_13">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONNECTOR_MSG_ERROR" />
+                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONNECTOR_MSG_ERROR"/>
             </not>
         </preConditions>
         <comment>Foreign Key between Message error and Message</comment>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_ERROR" baseColumnNames="MESSAGE_ID" constraintName="FK_DOMIBUS_CONNECTOR_MSG_ERROR" referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_ERROR" baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONNECTOR_MSG_ERROR"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_14">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONN_DOMIBUS_CON_04" />
+                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONN_DOMIBUS_CON_04"/>
             </not>
         </preConditions>
         <comment>Foreign key between message content and message</comment>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT" baseColumnNames="MESSAGE_ID" constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_04" referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MSG_CONT" baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_04"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_15">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_ACTION" />
+                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_ACTION"/>
             </not>
         </preConditions>
         <comment>Foreign key between message info and message</comment>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="ACTION" constraintName="FK_MSGI_ACTION" referencedTableName="DOMIBUS_CONNECTOR_ACTION" referencedColumnNames="ACTION" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="ACTION"
+                                 constraintName="FK_MSGI_ACTION" referencedTableName="DOMIBUS_CONNECTOR_ACTION"
+                                 referencedColumnNames="ACTION" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_16">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_SERVICE" />
+                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_SERVICE"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="SERVICE" constraintName="FK_MSGI_SERVICE" referencedTableName="DOMIBUS_CONNECTOR_SERVICE" referencedColumnNames="service" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="SERVICE"
+                                 constraintName="FK_MSGI_SERVICE" referencedTableName="DOMIBUS_CONNECTOR_SERVICE"
+                                 referencedColumnNames="service" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_17">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_FROM_PARTY" />
+                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_FROM_PARTY"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="FROM_PARTY_ID, FROM_PARTY_ROLE" constraintName="FK_MSGI_FROM_PARTY" referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="FROM_PARTY_ID, FROM_PARTY_ROLE" constraintName="FK_MSGI_FROM_PARTY"
+                                 referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_18">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_TO_PARTY" />
+                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_TO_PARTY"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="TO_PARTY_ID, TO_PARTY_ROLE" constraintName="FK_MSGI_TO_PARTY" referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO"
+                                 baseColumnNames="TO_PARTY_ID, TO_PARTY_ROLE" constraintName="FK_MSGI_TO_PARTY"
+                                 referencedTableName="DOMIBUS_CONNECTOR_PARTY" referencedColumnNames="PARTY_ID, ROLE"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_19">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_MSGID" />
+                <foreignKeyConstraintExists foreignKeyName="FK_MSGI_MSGID"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="MESSAGE_ID" constraintName="FK_MSGI_MSGID" referencedColumnNames="ID" referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_MESSAGE_INFO" baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_MSGI_MSGID" referencedColumnNames="ID"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_20">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONNECTOR_EVIDENCES" />
+                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONNECTOR_EVIDENCES"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_EVIDENCE" baseColumnNames="MESSAGE_ID" constraintName="FK_DOMIBUS_CONNECTOR_EVIDENCES" referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_EVIDENCE" baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONNECTOR_EVIDENCES"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_21">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONN_DOMIBUS_CON_01" />
+                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONN_DOMIBUS_CON_01"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S" baseColumnNames="DOMIBUS_CONNECTOR_BACKEND_ID" constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_01" referencedTableName="DOMIBUS_CONNECTOR_BACKEND_INFO" referencedColumnNames="ID" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S"
+                                 baseColumnNames="DOMIBUS_CONNECTOR_BACKEND_ID"
+                                 constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_01"
+                                 referencedTableName="DOMIBUS_CONNECTOR_BACKEND_INFO" referencedColumnNames="ID"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_22">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONN_DOMIBUS_CON_02" />
+                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONN_DOMIBUS_CON_02"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S" baseColumnNames="DOMIBUS_CONNECTOR_SERVICE_ID" constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_02" referencedTableName="DOMIBUS_CONNECTOR_SERVICE" referencedColumnNames="SERVICE" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BACK_2_S"
+                                 baseColumnNames="DOMIBUS_CONNECTOR_SERVICE_ID"
+                                 constraintName="FK_DOMIBUS_CONN_DOMIBUS_CON_02"
+                                 referencedTableName="DOMIBUS_CONNECTOR_SERVICE" referencedColumnNames="SERVICE"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
     <changeSet author="StephanSpindler" id="up1_changelog-domibus-4.0_23">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.0';
+                ]]></sqlCheck>
             <not>
-                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONNECTOR_BIGDATA" />
+                <foreignKeyConstraintExists foreignKeyName="FK_DOMIBUS_CONNECTOR_BIGDATA"/>
             </not>
         </preConditions>
-        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BIGDATA" baseColumnNames="MESSAGE_ID" constraintName="FK_DOMIBUS_CONNECTOR_BIGDATA" referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="DOMIBUS_CONNECTOR_BIGDATA" baseColumnNames="MESSAGE_ID"
+                                 constraintName="FK_DOMIBUS_CONNECTOR_BIGDATA"
+                                 referencedTableName="DOMIBUS_CONNECTOR_MESSAGE" referencedColumnNames="ID"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
 

@@ -5,17 +5,16 @@ import eu.domibus.connector.persistence.model.PDomibusConnectorParty;
 
 import javax.annotation.Nullable;
 
-public class PartyMapper {
 
-    static @Nullable
-    DomibusConnectorParty mapPartyToDomain(@Nullable PDomibusConnectorParty persistenceParty) {
+public class PartyMapper {
+    static @Nullable DomibusConnectorParty mapPartyToDomain(@Nullable PDomibusConnectorParty persistenceParty) {
         if (persistenceParty != null) {
-            eu.domibus.connector.domain.model.DomibusConnectorParty p
-                    = new eu.domibus.connector.domain.model.DomibusConnectorParty(
-                    persistenceParty.getPartyId(),
-                    persistenceParty.getPartyIdType(),
-                    persistenceParty.getRole()
-            );
+            eu.domibus.connector.domain.model.DomibusConnectorParty p =
+                    new eu.domibus.connector.domain.model.DomibusConnectorParty(
+                            persistenceParty.getPartyId(),
+                            persistenceParty.getPartyIdType(),
+                            persistenceParty.getRole()
+                    );
             p.setPartyName(persistenceParty.getPmodePartyIdentifier());
             p.setRoleType(persistenceParty.getRoleType());
             p.setDbKey(persistenceParty.getId());
@@ -24,8 +23,7 @@ public class PartyMapper {
         return null;
     }
 
-    static @Nullable
-    PDomibusConnectorParty mapPartyToPersistence(@Nullable DomibusConnectorParty party) {
+    static @Nullable PDomibusConnectorParty mapPartyToPersistence(@Nullable DomibusConnectorParty party) {
         if (party != null) {
             PDomibusConnectorParty persistenceParty = new PDomibusConnectorParty();
             persistenceParty.setPartyId(party.getPartyId());
@@ -38,5 +36,4 @@ public class PartyMapper {
         }
         return null;
     }
-
 }

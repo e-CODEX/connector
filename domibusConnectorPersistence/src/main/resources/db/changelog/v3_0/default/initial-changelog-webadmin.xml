@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
     <changeSet author="StephanSpindler" id="changelog-1.0">
         <createTable tableName="DOMIBUS_WEBADMIN_USER">
             <column name="USERNAME" type="VARCHAR(30)">
@@ -16,7 +18,8 @@
         <comment>Create default admin user with username admin and password admin</comment>
         <insert tableName="DOMIBUS_WEBADMIN_USER">
             <column name="USERNAME" value="admin"/>
-            <column name="PASSWORD" value="2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306"/>
+            <column name="PASSWORD"
+                    value="2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306"/>
             <column name="SALT" value="5b424031616564356639"/>
             <column name="ROLE" value="admin"/>
         </insert>

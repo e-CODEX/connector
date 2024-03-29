@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-<!--    <property name="varchar255.type" value="VARCHAR(255)"/>-->
-<!--    <property name="varchar255.type" value="VARCHAR2(255 CHAR)" dbms="oracle"/>-->
-<!--    <property name="varchar512.type" value="VARCHAR(512)"/>-->
-<!--    <property name="varchar512.type" value="VARCHAR2(512 CHAR)" dbms="oracle"/>-->
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <!--    <property name="varchar255.type" value="VARCHAR(255)"/>-->
+    <!--    <property name="varchar255.type" value="VARCHAR2(255 CHAR)" dbms="oracle"/>-->
+    <!--    <property name="varchar512.type" value="VARCHAR(512)"/>-->
+    <!--    <property name="varchar512.type" value="VARCHAR2(512 CHAR)" dbms="oracle"/>-->
 
     <changeSet author="domibusConnector" id="up1_changelog-1.0_create_tbl_webadmin_user_pk">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="DOMIBUS_WEBADMIN_USER" />
+                <tableExists tableName="DOMIBUS_WEBADMIN_USER"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_WEBADMIN_USER">
@@ -29,7 +31,7 @@
     <changeSet author="domibusConnector" id="up1_changelog-1.0_create_webadmin_user_pk">
         <preConditions onFail="MARK_RAN">
             <not>
-                <primaryKeyExists tableName="DOMIBUS_WEBADMIN_USER" />
+                <primaryKeyExists tableName="DOMIBUS_WEBADMIN_USER"/>
             </not>
         </preConditions>
         <addPrimaryKey tableName="DOMIBUS_WEBADMIN_USER" columnNames="USERNAME" constraintName="PK_WEBADMIN_USER"/>
@@ -37,7 +39,7 @@
     <changeSet author="domibusConnector" id="up1_changelog-1.1_create_tbl_webadmin_property">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="DOMIBUS_WEBADMIN_PROPERTY" />
+                <tableExists tableName="DOMIBUS_WEBADMIN_PROPERTY"/>
             </not>
         </preConditions>
         <createTable tableName="DOMIBUS_WEBADMIN_PROPERTY">
@@ -50,19 +52,22 @@
     <changeSet author="domibusConnector" id="up1_changelog-1.1_create_tbl_webadmin_property_pk">
         <preConditions onFail="MARK_RAN">
             <not>
-                <primaryKeyExists tableName="DOMIBUS_WEBADMIN_PROPERTY" />
+                <primaryKeyExists tableName="DOMIBUS_WEBADMIN_PROPERTY"/>
             </not>
         </preConditions>
         <addPrimaryKey tableName="DOMIBUS_WEBADMIN_PROPERTY" columnNames="KEY" constraintName="PK_WEBAMDIN_PROPERTY"/>
     </changeSet>
     <changeSet author="domibusConnector" id="up1_changelog-1.0_create_default_user_password">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM DOMIBUS_WEBADMIN_USER WHERE USERNAME='admin';</sqlCheck>
+            <sqlCheck expectedResult="0">SELECT COUNT(*)
+                                         FROM DOMIBUS_WEBADMIN_USER
+                                         WHERE USERNAME = 'admin';</sqlCheck>
         </preConditions>
         <comment>Create default admin user with username admin and password admin</comment>
         <insert tableName="DOMIBUS_WEBADMIN_USER">
             <column name="USERNAME" value="admin"/>
-            <column name="PASSWORD" value="2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306"/>
+            <column name="PASSWORD"
+                    value="2bf5e637d0d82a75ca43e3be85df2c23febffc0cc221f5e010937005df478a19b5eaab59fe7e4e97f6b43ba648c169effd432e19817f386987d058c239236306"/>
             <column name="SALT" value="5b424031616564356639"/>
             <column name="ROLE" value="admin"/>
         </insert>

@@ -8,8 +8,8 @@ import eu.domibus.connector.persistence.model.PDomibusConnectorMessage;
 import eu.domibus.connector.persistence.model.PDomibusConnectorMessageError;
 import eu.domibus.connector.persistence.model.test.util.PersistenceEntityCreator;
 import eu.domibus.connector.persistence.service.DomibusConnectorMessageErrorPersistenceService;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -24,48 +24,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
-public class DomibusConnectorMessageErrorPersistenceServiceImplTest {
 
+class DomibusConnectorMessageErrorPersistenceServiceImplTest {
     @Mock
     DomibusConnectorMessageDao messageDao;
-
     @Mock
     DomibusConnectorMessageErrorDao errorDao;
-
     DomibusConnectorMessageErrorPersistenceService messageErrorPersistenceService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        DomibusConnectorMessageErrorPersistenceServiceImpl impl = new DomibusConnectorMessageErrorPersistenceServiceImpl();
+        DomibusConnectorMessageErrorPersistenceServiceImpl impl =
+                new DomibusConnectorMessageErrorPersistenceServiceImpl();
         impl.setMessageDao(messageDao);
         impl.setMessageErrorDao(errorDao);
         messageErrorPersistenceService = impl;
     }
 
-
     /**
      * Message Error related
      */
     @Test
-    public void testPersistMessageError() {
+    void testPersistMessageError() {
         DomibusConnectorMessageError messageError = DomainEntityCreatorForPersistenceTests.createMessageError();
-        
-        
+
         PDomibusConnectorMessage dbMessage = PersistenceEntityCreator.createSimpleDomibusConnectorMessage();
         Mockito.when(this.messageDao.findOneByConnectorMessageId(eq("msg72"))).thenReturn(Optional.of(dbMessage));
 
         Mockito.when(this.errorDao.save(any(PDomibusConnectorMessageError.class)))
-                .thenAnswer(new Answer<PDomibusConnectorMessageError>() {
-                    @Override
-                    public PDomibusConnectorMessageError answer(InvocationOnMock invocation) throws Throwable {
-                        PDomibusConnectorMessageError msgError = invocation.getArgument(0);
-                        assertThat(msgError.getDetailedText()).isEqualTo("error detail message");
-                        assertThat(msgError.getErrorSource()).isEqualTo("error source");
-                        assertThat(msgError.getErrorMessage()).isEqualTo("error message");
-                        return msgError;
-                    }
-                });
+               .thenAnswer(new Answer<PDomibusConnectorMessageError>() {
+                   @Override
+                   public PDomibusConnectorMessageError answer(InvocationOnMock invocation) throws Throwable {
+                       PDomibusConnectorMessageError msgError = invocation.getArgument(0);
+                       assertThat(msgError.getDetailedText()).isEqualTo("error detail message");
+                       assertThat(msgError.getErrorSource()).isEqualTo("error source");
+                       assertThat(msgError.getErrorMessage()).isEqualTo("error message");
+                       return msgError;
+                   }
+               });
 
         messageErrorPersistenceService.persistMessageError("msg72", messageError);
 
@@ -76,79 +73,81 @@ public class DomibusConnectorMessageErrorPersistenceServiceImplTest {
      * Message Error related
      */
     @Test
-    public void testPersistMessageError_messageDoesNotExistInDb_shouldNotPersist() {
+    void testPersistMessageError_messageDoesNotExistInDb_shouldNotPersist() {
         DomibusConnectorMessageError messageError = DomainEntityCreatorForPersistenceTests.createMessageError();
 
         PDomibusConnectorMessage dbMessage = PersistenceEntityCreator.createSimpleDomibusConnectorMessage();
         Mockito.when(this.messageDao.findById(eq(47L))).thenReturn(Optional.empty());
-
 
         messageErrorPersistenceService.persistMessageError("msg72", messageError);
 
         Mockito.verify(this.errorDao, Mockito.times(0)).save(any(PDomibusConnectorMessageError.class));
     }
 
-//    @Test
-//    public void testPersistMessageErrorFromException() {
-//        eu.domibus.connector.domain.model.DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
-//        //message.setDbMessageId(47L);
-//        Exception ex = new RuntimeException("hallo welt!");
-//        Class source = Integer.class;
-//
-//        PDomibusConnectorMessage dbMessage = PersistenceEntityCreator.createSimpleDomibusConnectorMessage();
-//        Mockito.when(this.messageDao.findOneByConnectorMessageId(eq("msgid"))).thenReturn(dbMessage);
-//        Mockito.when(this.messageDao.findById(eq(47L))).thenReturn(Optional.of(dbMessage));
-//
-//        messageErrorPersistenceService.persistMessageErrorFromException(message, ex, source);
-//
-//        Mockito.verify(this.errorDao, Mockito.times(1)).save(any(PDomibusConnectorMessageError.class));
-//    }
+    //    @Test
+    //    public void testPersistMessageErrorFromException() {
+    //        eu.domibus.connector.domain.model.DomibusConnectorMessage message =
+    //        DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
+    //        //message.setDbMessageId(47L);
+    //        Exception ex = new RuntimeException("hallo welt!");
+    //        Class source = Integer.class;
+    //
+    //        PDomibusConnectorMessage dbMessage = PersistenceEntityCreator.createSimpleDomibusConnectorMessage();
+    //        Mockito.when(this.messageDao.findOneByConnectorMessageId(eq("msgid"))).thenReturn(dbMessage);
+    //        Mockito.when(this.messageDao.findById(eq(47L))).thenReturn(Optional.of(dbMessage));
+    //
+    //        messageErrorPersistenceService.persistMessageErrorFromException(message, ex, source);
+    //
+    //        Mockito.verify(this.errorDao, Mockito.times(1)).save(any(PDomibusConnectorMessageError.class));
+    //    }
 
-//    @Test(expected=RuntimeException.class)
-//    public void testPersistMessageErrorFromException_messageHasNoId_shouldThrowException() {
-//        eu.domibus.connector.domain.model.DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
-//        //message.setDbMessageId(null);
-//        Exception ex = new RuntimeException("hallo welt!");
-//        Class source = Integer.class;
-//
-//        PDomibusConnectorMessage dbMessage = PersistenceEntityCreator.createSimpleDomibusConnectorMessage();
-//        Mockito.when(this.messageDao.findById(eq(47L))).thenReturn(Optional.of(dbMessage));
-//
-//        messageErrorPersistenceService.persistMessageErrorFromException(message, ex, source);
-//
-//        Mockito.verify(this.errorDao, Mockito.times(1)).save(any(PDomibusConnectorMessageError.class));
-//    }
+    //    @Test(expected=RuntimeException.class)
+    //    public void testPersistMessageErrorFromException_messageHasNoId_shouldThrowException() {
+    //        eu.domibus.connector.domain.model.DomibusConnectorMessage message =
+    //        DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
+    //        //message.setDbMessageId(null);
+    //        Exception ex = new RuntimeException("hallo welt!");
+    //        Class source = Integer.class;
+    //
+    //        PDomibusConnectorMessage dbMessage = PersistenceEntityCreator.createSimpleDomibusConnectorMessage();
+    //        Mockito.when(this.messageDao.findById(eq(47L))).thenReturn(Optional.of(dbMessage));
+    //
+    //        messageErrorPersistenceService.persistMessageErrorFromException(message, ex, source);
+    //
+    //        Mockito.verify(this.errorDao, Mockito.times(1)).save(any(PDomibusConnectorMessageError.class));
+    //    }
 
     @Test
-    public void testGetMessageErrors() throws Exception {
-        eu.domibus.connector.domain.model.DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
-        //message.setDbMessageId(47L);
+    void testGetMessageErrors() throws Exception {
+        eu.domibus.connector.domain.model.DomibusConnectorMessage message =
+                DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
+        // message.setDbMessageId(47L);
 
-        List<PDomibusConnectorMessageError> errorList = Arrays.asList(new PDomibusConnectorMessageError[] {
+        List<PDomibusConnectorMessageError> errorList = Arrays.asList(
                 PersistenceEntityCreator.createMessageError(),
                 PersistenceEntityCreator.createMessageError()
-        });
+        );
 
         PDomibusConnectorMessage dbMessage = PersistenceEntityCreator.createSimpleDomibusConnectorMessage();
         Mockito.when(messageDao.findOneByConnectorMessageId(eq("msgid"))).thenReturn(Optional.of(dbMessage));
 
-
         Mockito.when(this.errorDao.findByMessage(eq(47L))).thenReturn(errorList);
 
-        List<eu.domibus.connector.domain.model.DomibusConnectorMessageError> messageErrors = messageErrorPersistenceService.getMessageErrors(message);
+        List<eu.domibus.connector.domain.model.DomibusConnectorMessageError> messageErrors =
+                messageErrorPersistenceService.getMessageErrors(message);
 
         assertThat(messageErrors).hasSize(2);
     }
 
     @Test
-    public void testGetMessageErrors_noResult_shouldReturnEmptyList() throws Exception {
-        eu.domibus.connector.domain.model.DomibusConnectorMessage message = DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
-        //message.setDbMessageId(47L);
+    void testGetMessageErrors_noResult_shouldReturnEmptyList() throws Exception {
+        eu.domibus.connector.domain.model.DomibusConnectorMessage message =
+                DomainEntityCreatorForPersistenceTests.createSimpleTestMessage();
+        // message.setDbMessageId(47L);
 
-        List<eu.domibus.connector.domain.model.DomibusConnectorMessageError> messageErrors = messageErrorPersistenceService.getMessageErrors(message);
+        List<eu.domibus.connector.domain.model.DomibusConnectorMessageError> messageErrors =
+                messageErrorPersistenceService.getMessageErrors(message);
 
         assertThat(messageErrors).hasSize(0);
     }
-
-
 }

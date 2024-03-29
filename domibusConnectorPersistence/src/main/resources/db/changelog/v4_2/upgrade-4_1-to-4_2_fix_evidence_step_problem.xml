@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-
-
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
     <changeSet id="drop_fk_constraint" author="SKS" failOnError="false" onValidationFail="MARK_RAN">
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <dropForeignKeyConstraint baseTableName="DC_TRANSPORT_STEP" constraintName="FK_messagestep_message" />
+        <dropForeignKeyConstraint baseTableName="DC_TRANSPORT_STEP" constraintName="FK_messagestep_message"/>
     </changeSet>
     <changeSet id="drop_foreign_key" author="SKS">
         <preConditions onFail="MARK_RAN">
-            <changeSetExecuted id="drop_fk_constraint" author="SKS" changeLogFile="/db/changelog/v4_2/upgrade-4_1-to-4_2_fix_evidence_step_problem.xml" />
-            <sqlCheck expectedResult="0"><![CDATA[SELECT COUNT(TAG) FROM DC_DB_VERSION WHERE TAG >= 'V4.2.0';]]></sqlCheck>
+            <changeSetExecuted id="drop_fk_constraint" author="SKS"
+                               changeLogFile="/db/changelog/v4_2/upgrade-4_1-to-4_2_fix_evidence_step_problem.xml"/>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(TAG)
+                FROM DC_DB_VERSION
+                WHERE TAG >= 'V4.2.0';
+                ]]></sqlCheck>
         </preConditions>
-        <dropColumn tableName="DC_TRANSPORT_STEP" columnName="MESSAGE_ID" />
+        <dropColumn tableName="DC_TRANSPORT_STEP" columnName="MESSAGE_ID"/>
         <addColumn tableName="DC_TRANSPORT_STEP">
-            <column name="CONNECTOR_MESSAGE_ID" type="java.sql.Types.varchar(255)" />
+            <column name="CONNECTOR_MESSAGE_ID" type="java.sql.Types.varchar(255)"/>
         </addColumn>
     </changeSet>
 

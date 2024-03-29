@@ -8,8 +8,8 @@ import eu.domibus.connector.persistence.model.PDomibusConnectorTransportStep;
 import eu.domibus.connector.persistence.model.PDomibusConnectorTransportStepStatusUpdate;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,31 +25,31 @@ import java.util.stream.Stream;
 import static com.github.database.rider.core.api.dataset.SeedStrategy.CLEAN_INSERT;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @CommonPersistenceTest
 @DataSet(value = "/database/testdata/dbunit/DomibusConnectorTransportStep.xml", strategy = CLEAN_INSERT)
-public class DomibusConnectorTransportStepDaoTest {
-
+class DomibusConnectorTransportStepDaoTest {
     @Autowired
     DomibusConnectorTransportStepDao dao;
-
     @Autowired
     DomibusConnectorMessageDao msgDao;
 
     @Test
     void getHighestAttemptBy() {
-        Optional<Integer> highestAttemptBy = dao.getHighestAttemptBy("msg1", new DomibusConnectorLinkPartner.LinkPartnerName("partner1"));
+        Optional<Integer> highestAttemptBy =
+                dao.getHighestAttemptBy("msg1", new DomibusConnectorLinkPartner.LinkPartnerName("partner1"));
         assertThat(highestAttemptBy.get()).isEqualTo(4);
     }
 
     @Test
     void getHighestAttemptBy_noPartner() {
-        Optional<Integer> highestAttemptBy = dao.getHighestAttemptBy("msg1", new DomibusConnectorLinkPartner.LinkPartnerName("notexistant"));
+        Optional<Integer> highestAttemptBy =
+                dao.getHighestAttemptBy("msg1", new DomibusConnectorLinkPartner.LinkPartnerName("notexistant"));
         assertThat(highestAttemptBy).isEmpty();
     }
 
     @Test
     void testSaveRetrieve() {
-
         PDomibusConnectorTransportStep transportStep = new PDomibusConnectorTransportStep();
         transportStep.setAttempt(1);
         transportStep.setConnectorMessageId("msg1");
@@ -70,68 +70,78 @@ public class DomibusConnectorTransportStepDaoTest {
         PDomibusConnectorTransportStep byId = dao.findById(id).get();
 
         byId.getStatusUpdates().forEach(s -> System.out.println(s));
-
     }
 
     @Test
-    public void testFindStepByLastState() {
+    void testFindStepByLastState() {
         Pageable pageable = Pageable.ofSize(20);
-        DomibusConnectorLinkPartner.LinkPartnerName[] lp = {new DomibusConnectorLinkPartner.LinkPartnerName("partner1")};
+        DomibusConnectorLinkPartner.LinkPartnerName[] lp =
+                {new DomibusConnectorLinkPartner.LinkPartnerName("partner1")};
 
         Assertions.assertAll(
                 () -> assertThat(dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
-                        new String[]{TransportState.FAILED.getDbName()},
-                                lp,
-                                pageable)
-                        .getTotalElements()).isEqualTo(2), //there should be 2 entries where the last updated state is failed
+                                            new String[]{TransportState.FAILED.getDbName()},
+                                            lp,
+                                            pageable
+                                    )
+                                    .getTotalElements()).isEqualTo(2),
+                // there should be 2 entries where the last updated state is failed
                 () -> assertThat(dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
-                        new String[]{TransportState.PENDING.getDbName(), TransportState.FAILED.getDbName()},
-                                lp,
-                                pageable)
-                        .getTotalElements()).isEqualTo(3), //there should be 3 entries where the last updated state is failed OR pending
+                                            new String[]{TransportState.PENDING.getDbName(),
+                                                    TransportState.FAILED.getDbName()},
+                                            lp,
+                                            pageable
+                                    )
+                                    .getTotalElements()).isEqualTo(3),
+                // there should be 3 entries where the last updated state is failed OR pending
                 () -> assertThat(dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
-                        new String[]{TransportState.PENDING.getDbName()},
-                                lp,
-                                pageable)
-                        .getTotalElements()).isEqualTo(1) //there should be 1 entry where the last updated state is pending
-        );
-
-    }
-
-
-    @Test
-    public void testFindStepByLastState_Pending() {
-        Pageable pageable = Pageable.ofSize(20);
-        DomibusConnectorLinkPartner.LinkPartnerName[] lp = {new DomibusConnectorLinkPartner.LinkPartnerName("partner2")};
-
-        Assertions.assertAll(
-                () -> assertThat(dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
-                                new String[]{TransportState.PENDING.getDbName()},
-                                lp,
-                                pageable)
-                        .getTotalElements()).isEqualTo(1) //there should be 1 entry with last state of pending
+                                            new String[]{TransportState.PENDING.getDbName()},
+                                            lp,
+                                            pageable
+                                    )
+                                    .getTotalElements()).isEqualTo(1)
+                // there should be 1 entry where the last updated state is pending
         );
     }
 
     @Test
-    public void testFindStepByLastState_Sorting() {
+    void testFindStepByLastState_Pending() {
+        Pageable pageable = Pageable.ofSize(20);
+        DomibusConnectorLinkPartner.LinkPartnerName[] lp =
+                {new DomibusConnectorLinkPartner.LinkPartnerName("partner2")};
+
+        Assertions.assertAll(
+                () -> assertThat(dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
+                                            new String[]{TransportState.PENDING.getDbName()},
+                                            lp,
+                                            pageable
+                                    )
+                                    .getTotalElements()).isEqualTo(1)
+                // there should be 1 entry with last state of pending
+        );
+    }
+
+    @Test
+    void testFindStepByLastState_Sorting() {
         Pageable pageable = PageRequest.of(0, 20, Sort.by("created").descending());
 
-        DomibusConnectorLinkPartner.LinkPartnerName[] lp = {new DomibusConnectorLinkPartner.LinkPartnerName("partner2")};
+        DomibusConnectorLinkPartner.LinkPartnerName[] lp =
+                {new DomibusConnectorLinkPartner.LinkPartnerName("partner2")};
 
         Assertions.assertAll(
                 () -> assertThat(dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
-                                new String[]{TransportState.PENDING.getDbName()},
-                                lp,
-                                pageable)
-                        .getTotalElements()).isEqualTo(1) //there should be 1 entry with last state of pending
+                                            new String[]{TransportState.PENDING.getDbName()},
+                                            lp,
+                                            pageable
+                                    )
+                                    .getTotalElements()).isEqualTo(1)
+                // there should be 1 entry with last state of pending
         );
     }
 
     @Test
     @Sql(statements = {"DELETE FROM DC_TRANSPORT_STEP_STATUS;", "DELETE FROM DC_TRANSPORT_STEP;"})
-    public void testFindLastAttemptStepByLastStateAndLinkPartnerIsOneOf_withEmptyDB() {
-
+    void testFindLastAttemptStepByLastStateAndLinkPartnerIsOneOf_withEmptyDB() {
         Page<PDomibusConnectorTransportStep> hallo = dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
                 Stream.of(TransportState.values()).map(Enum::toString).toArray(String[]::new),
                 Arrays.array(new DomibusConnectorLinkPartner.LinkPartnerName("hallo")), Pageable.ofSize(20)
@@ -141,26 +151,25 @@ public class DomibusConnectorTransportStepDaoTest {
                 new String[]{},
                 Arrays.array(new DomibusConnectorLinkPartner.LinkPartnerName("hallo")), Pageable.ofSize(20)
         );
-
     }
-
 
     @Test
     @Disabled
-    @Sql(scripts = {
-            "classpath:/database/testdata/sql/DC_TRANSPORT_STEP_STATUS_CLEAN.sql",
-            "classpath:/database/testdata/sql/DC_TRANSPORT_STEP_CLEAN.sql",
-            "classpath:/database/testdata/sql/DC_TRANSPORT_STEP.sql",
-            "classpath:/database/testdata/sql/DC_TRANSPORT_STEP_STATUS.sql"
-    })
-    public void testLotData() {
-
-
+    @Sql(
+            scripts = {
+                    "classpath:/database/testdata/sql/DC_TRANSPORT_STEP_STATUS_CLEAN.sql",
+                    "classpath:/database/testdata/sql/DC_TRANSPORT_STEP_CLEAN.sql",
+                    "classpath:/database/testdata/sql/DC_TRANSPORT_STEP.sql",
+                    "classpath:/database/testdata/sql/DC_TRANSPORT_STEP_STATUS.sql"
+            }
+    )
+    void testLotData() {
         Page<PDomibusConnectorTransportStep> allStates = dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
                 Stream.of(TransportState.values()).map(Enum::toString).toArray(String[]::new),
-                Arrays.array(new DomibusConnectorLinkPartner.LinkPartnerName("CN=mla_connector_client")), Pageable.ofSize(20)
+                Arrays.array(new DomibusConnectorLinkPartner.LinkPartnerName("CN=mla_connector_client")),
+                Pageable.ofSize(20)
         );
-//        assertThat(allStates.getTotalElements()).isEqualTo(560);
+        //        assertThat(allStates.getTotalElements()).isEqualTo(560);
 
         Page<PDomibusConnectorTransportStep> pending = dao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
                 Stream.of(TransportState.PENDING).map(Enum::toString).toArray(String[]::new),
@@ -169,12 +178,10 @@ public class DomibusConnectorTransportStepDaoTest {
         assertThat(pending.getTotalElements()).isEqualTo(0);
 
         List<PDomibusConnectorTransportStep> lastStateIsPending =
-                dao.findByMsgLinkPartnerAndLastStateIs(new DomibusConnectorLinkPartner.LinkPartnerName("mla"), TransportState.PENDING.getDbName());
+                dao.findByMsgLinkPartnerAndLastStateIs(
+                        new DomibusConnectorLinkPartner.LinkPartnerName("mla"),
+                        TransportState.PENDING.getDbName()
+                );
         assertThat(lastStateIsPending).hasSize(0);
-
-
     }
-
-
-
 }

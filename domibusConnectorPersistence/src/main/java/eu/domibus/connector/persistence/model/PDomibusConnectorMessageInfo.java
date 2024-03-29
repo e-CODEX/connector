@@ -2,57 +2,47 @@ package eu.domibus.connector.persistence.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.*;
 import java.util.Date;
 
-import javax.persistence.*;
 
 @Entity
 @Table(name = PDomibusConnectorMessageInfo.TABLE_NAME)
 public class PDomibusConnectorMessageInfo {
-
     public static final String TABLE_NAME = "DOMIBUS_CONNECTOR_MESSAGE_INFO";
 
     @Id
-    @Column(name="ID")
-    @TableGenerator(name = "seq" + TABLE_NAME,
-            table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
-            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME,
-            pkColumnValue = TABLE_NAME + ".ID",
+    @Column(name = "ID")
+    @TableGenerator(
+            name = "seq" + TABLE_NAME, table = PDomibusConnectorPersistenceModel.SEQ_STORE_TABLE_NAME,
+            pkColumnName = PDomibusConnectorPersistenceModel.SEQ_NAME_COLUMN_NAME, pkColumnValue = TABLE_NAME + ".ID",
             valueColumnName = PDomibusConnectorPersistenceModel.SEQ_VALUE_COLUMN_NAME,
             initialValue = PDomibusConnectorPersistenceModel.INITIAL_VALUE,
-            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK)
+            allocationSize = PDomibusConnectorPersistenceModel.ALLOCATION_SIZE_BULK
+    )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq" + TABLE_NAME)
     private Long id;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MESSAGE_ID", nullable = false)
     private PDomibusConnectorMessage message;
-
     @ManyToOne
     @JoinColumn(name = "FK_FROM_PARTY_ID", referencedColumnName = "ID")
     private PDomibusConnectorParty from;
-
     @ManyToOne
     @JoinColumn(name = "FK_TO_PARTY_ID", referencedColumnName = "ID")
     private PDomibusConnectorParty to;
-
     @Column(name = "ORIGINAL_SENDER", length = 2048)
     private String originalSender;
-
     @Column(name = "FINAL_RECIPIENT", length = 2048)
     private String finalRecipient;
-
     @ManyToOne
     @JoinColumn(name = "FK_SERVICE")
     private PDomibusConnectorService service;
-
     @ManyToOne
     @JoinColumn(name = "FK_ACTION")
     private PDomibusConnectorAction action;
-
     @Column(name = "CREATED", nullable = false)
     private Date created;
-
     @Column(name = "UPDATED", nullable = false)
     private Date updated;
 
@@ -61,12 +51,12 @@ public class PDomibusConnectorMessageInfo {
         this.updated = new Date();
         this.created = new Date();
     }
-    
+
     @PreUpdate
     public void preUpdate() {
         this.updated = new Date();
     }
-        
+
     public Long getId() {
         return id;
     }
@@ -159,5 +149,4 @@ public class PDomibusConnectorMessageInfo {
         toString.append("action", this.action);
         return toString.build();
     }
-
 }

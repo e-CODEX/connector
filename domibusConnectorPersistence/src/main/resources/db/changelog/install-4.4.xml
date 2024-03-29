@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
+    <include file="db/changelog/properties.xml"/>
+    <include file="db/changelog/v4_0/create_dc_db_version_table.xml"/>
 
+    <!--    <include file="/db/changelog/install-4.1.xml"/>-->
+    <!--    <include file="/db/changelog/install-4.2.xml"/>-->
+    <!--    <include file="/db/changelog/install-4.3.xml"/>-->
+    <!--    <include file="/db/changelog/v4_4/upgrade-4_3-to-4_4.xml" />-->
 
-    <include file="db/changelog/properties.xml" />
-    <include file="db/changelog/v4_0/create_dc_db_version_table.xml" />
-
-<!--    <include file="/db/changelog/install-4.1.xml"/>-->
-<!--    <include file="/db/changelog/install-4.2.xml"/>-->
-<!--    <include file="/db/changelog/install-4.3.xml"/>-->
-<!--    <include file="/db/changelog/v4_4/upgrade-4_3-to-4_4.xml" />-->
-
-    <include file="/db/changelog/v4_4/initial-4.4.xml" />
+    <include file="/db/changelog/v4_4/initial-4.4.xml"/>
 
 
 </databaseChangeLog>

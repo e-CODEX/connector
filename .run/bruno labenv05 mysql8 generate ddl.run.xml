@@ -1,39 +1,40 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="bruno labenv05 mysql8 generate ddl" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <option name="ACTIVE_PROFILES" />
-    <additionalParameters>
-      <param>
-        <option name="enabled" value="true" />
-        <option name="name" value="spring.datasource.url" />
-        <option name="value" value="jdbc:mysql://localhost:3310/connector?pinGlobalTxToPhysicalConnection=true" />
-      </param>
-      <param>
-        <option name="enabled" value="true" />
-        <option name="name" value="spring.datasource.username" />
-        <option name="value" value="connector" />
-      </param>
-      <param>
-        <option name="enabled" value="true" />
-        <option name="name" value="spring.datasource.password" />
-        <option name="value" value="password" />
-      </param>
-      <param>
-        <option name="enabled" value="true" />
-        <option name="name" value="spring.jpa.generate-ddl" />
-        <option name="value" value="true" />
-      </param>
-    </additionalParameters>
-    <option name="DEBUG_MODE" value="true" />
-    <option name="ENABLE_JMX_AGENT" value="false" />
-    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <module name="domibusConnectorBuilderStandalone" />
-    <option name="SHORTEN_COMMAND_LINE" value="CLASSPATH_FILE" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="eu.domibus.connector.starter.DomibusConnectorStarter" />
-    <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <option name="WORKING_DIRECTORY" value="file://../../running_labboxes/bruno/labenv05/domibus-connector" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="mysql8 4.4.0 grant xa recover" run_configuration_type="DatabaseScript" />
-    </method>
-  </configuration>
+    <configuration default="false" name="bruno labenv05 mysql8 generate ddl"
+                   type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+        <option name="ACTIVE_PROFILES"/>
+        <additionalParameters>
+            <param>
+                <option name="enabled" value="true"/>
+                <option name="name" value="spring.datasource.url"/>
+                <option name="value"
+                        value="jdbc:mysql://localhost:3310/connector?pinGlobalTxToPhysicalConnection=true"/>
+            </param>
+            <param>
+                <option name="enabled" value="true"/>
+                <option name="name" value="spring.datasource.username"/>
+                <option name="value" value="connector"/>
+            </param>
+            <param>
+                <option name="enabled" value="true"/>
+                <option name="name" value="spring.datasource.password"/>
+                <option name="value" value="password"/>
+            </param>
+            <param>
+                <option name="enabled" value="true"/>
+                <option name="name" value="spring.jpa.generate-ddl"/>
+                <option name="value" value="true"/>
+            </param>
+        </additionalParameters>
+        <option name="DEBUG_MODE" value="true"/>
+        <option name="ENABLE_JMX_AGENT" value="false"/>
+        <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources"/>
+        <module name="domibusConnectorBuilderStandalone"/>
+        <option name="SHORTEN_COMMAND_LINE" value="CLASSPATH_FILE"/>
+        <option name="SPRING_BOOT_MAIN_CLASS" value="eu.domibus.connector.starter.DomibusConnectorStarter"/>
+        <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources"/>
+        <option name="WORKING_DIRECTORY" value="file://../../running_labboxes/bruno/labenv05/domibus-connector"/>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+        </method>
+    </configuration>
 </component>

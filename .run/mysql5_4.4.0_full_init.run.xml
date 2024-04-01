@@ -1,10 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mysql5_4.4.0_full_init" type="DatabaseScript" folderName="MySQL" editBeforeRun="true">
-    <script-file value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MySQL/mysql_4.4.0_initial.ddl" />
-    <script-file value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MySQL/mysql_4.4.0_initial-data.sql" />
-    <script-file value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MySQL/mysql_4.4.0_quartz.sql" />
-    <script-mode>FILE</script-mode>
-    <data-source id="10296128-fa02-4a91-8cc9-e11a5a199c81" />
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="mysql5_4.4.0_full_init" type="DatabaseScript" folderName="MySQL"
+                   editBeforeRun="true">
+        <script-file
+                value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MySQL/mysql_4.4.0_initial.ddl"/>
+        <script-file
+                value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MySQL/mysql_4.4.0_initial-data.sql"/>
+        <script-file
+                value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MySQL/mysql_4.4.0_quartz.sql"/>
+        <script-mode>FILE</script-mode>
+        <data-source id="10296128-fa02-4a91-8cc9-e11a5a199c81"/>
+        <method v="2"/>
+    </configuration>
 </component>

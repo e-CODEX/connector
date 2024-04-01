@@ -1,41 +1,42 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mysql8_connector" type="docker-deploy" factoryName="docker-image" server-name="Docker">
-    <deployment type="docker-image">
-      <settings>
-        <option name="imageTag" value="mysql:latest" />
-        <option name="containerName" value="mysql8_connector" />
-        <option name="envVars">
-          <list>
-            <DockerEnvVarImpl>
-              <option name="name" value="MYSQL_DATABASE" />
-              <option name="value" value="connector" />
-            </DockerEnvVarImpl>
-            <DockerEnvVarImpl>
-              <option name="name" value="MYSQL_PASSWORD" />
-              <option name="value" value="password" />
-            </DockerEnvVarImpl>
-            <DockerEnvVarImpl>
-              <option name="name" value="MYSQL_ROOT_PASSWORD" />
-              <option name="value" value="secret" />
-            </DockerEnvVarImpl>
-            <DockerEnvVarImpl>
-              <option name="name" value="MYSQL_USER" />
-              <option name="value" value="connector" />
-            </DockerEnvVarImpl>
-          </list>
-        </option>
-        <option name="portBindings">
-          <list>
-            <DockerPortBindingImpl>
-              <option name="containerPort" value="3306" />
-              <option name="hostIp" value="127.0.0.1" />
-              <option name="hostPort" value="3310" />
-            </DockerPortBindingImpl>
-          </list>
-        </option>
-        <option name="showCommandPreview" value="true" />
-      </settings>
-    </deployment>
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="mysql8_connector" type="docker-deploy" factoryName="docker-image"
+                   server-name="Docker">
+        <deployment type="docker-image">
+            <settings>
+                <option name="imageTag" value="mysql:latest"/>
+                <option name="containerName" value="mysql8_connector"/>
+                <option name="envVars">
+                    <list>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MYSQL_DATABASE"/>
+                            <option name="value" value="connector"/>
+                        </DockerEnvVarImpl>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MYSQL_PASSWORD"/>
+                            <option name="value" value="password"/>
+                        </DockerEnvVarImpl>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MYSQL_ROOT_PASSWORD"/>
+                            <option name="value" value="secret"/>
+                        </DockerEnvVarImpl>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MYSQL_USER"/>
+                            <option name="value" value="connector"/>
+                        </DockerEnvVarImpl>
+                    </list>
+                </option>
+                <option name="portBindings">
+                    <list>
+                        <DockerPortBindingImpl>
+                            <option name="containerPort" value="3306"/>
+                            <option name="hostIp" value="127.0.0.1"/>
+                            <option name="hostPort" value="3310"/>
+                        </DockerPortBindingImpl>
+                    </list>
+                </option>
+                <option name="showCommandPreview" value="true"/>
+            </settings>
+        </deployment>
+        <method v="2"/>
+    </configuration>
 </component>

@@ -1,9 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mariadb 4.4.0 full dev setup" type="DatabaseScript" folderName="MariaDB">
-    <data-source id="d9c22fc5-81bd-4385-8d55-f3dfb149fb63" />
-    <script-text>UPDATE DOMIBUS_CONNECTOR_USER_PWD SET INITIAL_PWD=0 WHERE ID=1;</script-text>
-    <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="mariadb_4.4.0_full_init" run_configuration_type="DatabaseScript" />
-    </method>
-  </configuration>
+    <configuration default="false" name="mariadb 4.4.0 full dev setup" type="DatabaseScript" folderName="MariaDB">
+        <data-source id="d9c22fc5-81bd-4385-8d55-f3dfb149fb63"/>
+        <script-text>UPDATE DOMIBUS_CONNECTOR_USER_PWD SET INITIAL_PWD=0 WHERE ID=1;</script-text>
+        <method v="2">
+            <option name="RunConfigurationTask" enabled="true" run_configuration_name="mariadb_4.4.0_full_init"
+                    run_configuration_type="DatabaseScript"/>
+        </method>
+    </configuration>
 </component>

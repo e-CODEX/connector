@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mysql8 4.4.0 grant xa recover" type="DatabaseScript" folderName="MySQL">
-    <data-source id="573a5e3d-deeb-4e0e-9c3e-7f2bb7382a86" />
-    <script-text>GRANT XA_RECOVER_ADMIN ON *.* TO connector;
-FLUSH PRIVILEGES;</script-text>
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="mysql8 4.4.0 grant xa recover" type="DatabaseScript" folderName="MySQL">
+        <data-source id="573a5e3d-deeb-4e0e-9c3e-7f2bb7382a86"/>
+        <script-text>GRANT XA_RECOVER_ADMIN ON *.* TO connector;
+            FLUSH PRIVILEGES;
+        </script-text>
+        <method v="2"/>
+    </configuration>
 </component>

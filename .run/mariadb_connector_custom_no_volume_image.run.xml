@@ -1,41 +1,42 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mariadb_connector_custom_no_volume_image" type="docker-deploy" factoryName="docker-image" server-name="Docker">
-    <deployment type="docker-image">
-      <settings>
-        <option name="imageTag" value="mariadb_no_volume" />
-        <option name="containerName" value="mariadb_connector_no_volume" />
-        <option name="envVars">
-          <list>
-            <DockerEnvVarImpl>
-              <option name="name" value="MARIADB_PASSWORD" />
-              <option name="value" value="password" />
-            </DockerEnvVarImpl>
-            <DockerEnvVarImpl>
-              <option name="name" value="MARIADB_ROOT_PASSWORD" />
-              <option name="value" value="secret" />
-            </DockerEnvVarImpl>
-            <DockerEnvVarImpl>
-              <option name="name" value="MARIADB_USER" />
-              <option name="value" value="connector" />
-            </DockerEnvVarImpl>
-            <DockerEnvVarImpl>
-              <option name="name" value="MARIADB_DATABASE" />
-              <option name="value" value="connector" />
-            </DockerEnvVarImpl>
-          </list>
-        </option>
-        <option name="portBindings">
-          <list>
-            <DockerPortBindingImpl>
-              <option name="containerPort" value="3306" />
-              <option name="hostIp" value="127.0.0.1" />
-              <option name="hostPort" value="3311" />
-            </DockerPortBindingImpl>
-          </list>
-        </option>
-        <option name="showCommandPreview" value="true" />
-      </settings>
-    </deployment>
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="mariadb_connector_custom_no_volume_image" type="docker-deploy"
+                   factoryName="docker-image" server-name="Docker">
+        <deployment type="docker-image">
+            <settings>
+                <option name="imageTag" value="mariadb_no_volume"/>
+                <option name="containerName" value="mariadb_connector_no_volume"/>
+                <option name="envVars">
+                    <list>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MARIADB_PASSWORD"/>
+                            <option name="value" value="password"/>
+                        </DockerEnvVarImpl>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MARIADB_ROOT_PASSWORD"/>
+                            <option name="value" value="secret"/>
+                        </DockerEnvVarImpl>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MARIADB_USER"/>
+                            <option name="value" value="connector"/>
+                        </DockerEnvVarImpl>
+                        <DockerEnvVarImpl>
+                            <option name="name" value="MARIADB_DATABASE"/>
+                            <option name="value" value="connector"/>
+                        </DockerEnvVarImpl>
+                    </list>
+                </option>
+                <option name="portBindings">
+                    <list>
+                        <DockerPortBindingImpl>
+                            <option name="containerPort" value="3306"/>
+                            <option name="hostIp" value="127.0.0.1"/>
+                            <option name="hostPort" value="3311"/>
+                        </DockerPortBindingImpl>
+                    </list>
+                </option>
+                <option name="showCommandPreview" value="true"/>
+            </settings>
+        </deployment>
+        <method v="2"/>
+    </configuration>
 </component>

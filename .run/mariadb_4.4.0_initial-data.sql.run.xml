@@ -1,9 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mariadb_4.4.0_full_init" type="DatabaseScript" folderName="MariaDB" editBeforeRun="true">
-    <script-file value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MariaDB/mariadb_initial_4.4.5_jpa_generated.sql" />
-    <script-file value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MariaDB/mariadb_initial_data_4.4.5.sql" />
-    <script-mode>FILE</script-mode>
-    <data-source id="d9c22fc5-81bd-4385-8d55-f3dfb149fb63" />
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="mariadb_4.4.0_full_init" type="DatabaseScript" folderName="MariaDB"
+                   editBeforeRun="true">
+        <script-file
+                value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MariaDB/mariadb_initial_4.4.5_jpa_generated.sql"/>
+        <script-file
+                value="$PROJECT_DIR$/domibusConnectorPersistence/src/main/resources/dbscripts/initial/MariaDB/mariadb_initial_data_4.4.5.sql"/>
+        <script-mode>FILE</script-mode>
+        <data-source id="d9c22fc5-81bd-4385-8d55-f3dfb149fb63"/>
+        <method v="2"/>
+    </configuration>
 </component>

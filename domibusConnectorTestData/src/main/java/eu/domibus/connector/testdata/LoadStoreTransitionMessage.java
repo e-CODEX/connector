@@ -3,29 +3,25 @@ package eu.domibus.connector.testdata;
 
 import eu.domibus.connector.domain.transition.*;
 import eu.domibus.connector.domain.transition.tools.ConversionTools;
-
-import org.apache.cxf.helpers.FileUtils;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StreamUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.StreamResult;
+import javax.annotation.Nullable;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+
 
 /**
  * Load and store a Transition Message to the FileSystem
@@ -34,11 +30,7 @@ import javax.annotation.Nullable;
  * TODO: refactor this class to reduce file size
  */
 public class LoadStoreTransitionMessage {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoadStoreTransitionMessage.class);
-
     public static final String READ_LOCK_FILE_NAME = "edit.lock";
-
     public static final String MESSAGE_PROPERTIES_PROPERTY_FILE_NAME = "message.properties";
     public static final String SERVICE_NAME_PROP_NAME = "service";
     public static final String SERVICE_TYPE_PROP_NAME = "service.type";
@@ -64,7 +56,7 @@ public class LoadStoreTransitionMessage {
     public static final String FINAL_RECIPIENT_PROP_NAME = "message.final-recipient";
     public static final String ORIGINAL_SENDER_NAME_PROP_NAME = "message.original-sender";
     public static final String REF_TO_MESSAGE_ID_PROP_NAME = "message.ref-to-msg.id";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoadStoreTransitionMessage.class);
     public static String MESSAGE_CONFIRMATIONS_PREFIX = "message.confirmation";
     public static String MESSAGE_ATTACHMENT_PREFIX = "message.attachment";
 
@@ -72,6 +64,13 @@ public class LoadStoreTransitionMessage {
 
     private Properties messageProperties;
 
+    private LoadStoreTransitionMessage() {
+    }
+
+    private LoadStoreTransitionMessage(Path basicFolder) {
+        messageProperties = new Properties();
+        this.basicFolder = basicFolder;
+    }
     public static DomibusConnectorMessageType loadMessageFrom(Resource resource) {
         LOGGER.info("Load message from path [{}]", resource);
         try {
@@ -82,7 +81,6 @@ public class LoadStoreTransitionMessage {
             throw new RuntimeException(ioe);
         }
     }
-
     public static DomibusConnectorMessageType loadMessageFrom(Path path) {
         LOGGER.info("Load message from path [{}]", path);
         try {
@@ -92,8 +90,6 @@ public class LoadStoreTransitionMessage {
             throw new RuntimeException(ioe);
         }
     }
-
-
     public static void storeMessageTo(Path path, DomibusConnectorMessageType message, boolean overwrite) {
         LOGGER.debug("storeMessageTo [{}]", path);
         try {
@@ -103,7 +99,6 @@ public class LoadStoreTransitionMessage {
             throw new RuntimeException(ioe);
         }
     }
-
     public static void storeMessageTo(Resource resourcePath, DomibusConnectorMessageType message, boolean overwrite) {
         LOGGER.debug("storeMessageTo [{}]", resourcePath);
         try {
@@ -114,19 +109,20 @@ public class LoadStoreTransitionMessage {
             throw new RuntimeException(ioe);
         }
     }
-
-    //TODO: java locking
+    // TODO: java locking
     private void storeMessageTo(DomibusConnectorMessageType message, boolean overwrite) throws IOException {
         LOGGER.debug("storeMessage to [{}] with overwrite [{}]", basicFolder, overwrite);
 
         if (Files.exists(basicFolder) && !overwrite) {
-            throw new RuntimeException(String.format("Overwrite is false, cannot overwrite message in folder %s", basicFolder));
+            throw new RuntimeException(String.format(
+                    "Overwrite is false, cannot overwrite message in folder %s",
+                    basicFolder
+            ));
         }
 
         if (!Files.exists(basicFolder)) {
             Files.createDirectory(basicFolder);
         }
-
 
         Path propertiesResource = basicFolder.resolve(MESSAGE_PROPERTIES_PROPERTY_FILE_NAME);
         File f = propertiesResource.toFile();
@@ -145,10 +141,7 @@ public class LoadStoreTransitionMessage {
         } catch (IOException ioe) {
 
         }
-
-
     }
-
     private void storeMessageDetails(DomibusConnectorMessageDetailsType messageDetails) {
         putIfNotNull(NATIONAL_ID_PROP_NAME, messageDetails.getBackendMessageId());
         putIfNotNull(EBMS_ID_PROP_NAME, messageDetails.getEbmsMessageId());
@@ -175,9 +168,7 @@ public class LoadStoreTransitionMessage {
         if (messageDetails.getAction() != null) {
             putIfNotNull(ACTION_PROP_NAME, messageDetails.getAction().getAction());
         }
-
     }
-
     private void putIfNotNull(String key, Object value) {
         if (value != null) {
             messageProperties.put(key, value);
@@ -185,13 +176,13 @@ public class LoadStoreTransitionMessage {
             LOGGER.trace("Not putting [{}] into message properties, because it's null!", key);
         }
     }
-
     private void storeMessageAttachments(List<DomibusConnectorMessageAttachmentType> messageAttachments) {
         for (int i = 0; i < messageAttachments.size(); i++) {
-//            try {
+            //            try {
             DomibusConnectorMessageAttachmentType a = messageAttachments.get(i);
 
-            String attachmentPropertyFile = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "file");
+            String attachmentPropertyFile =
+                    String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "file");
 
             String fileName = a.getName();
             if (fileName == null) {
@@ -201,21 +192,23 @@ public class LoadStoreTransitionMessage {
             writeBigDataReferenceToResource(attachmentOutputResource, a.getAttachment());
             messageProperties.put(attachmentPropertyFile, fileName);
 
-            String attachmentPropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "identifier");
+            String attachmentPropertyName =
+                    String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "identifier");
             messageProperties.put(attachmentPropertyName, a.getIdentifier());
-//            } catch (IOException ioe) {
-//                throw new RuntimeException(ioe);
-//            }
+            //            } catch (IOException ioe) {
+            //                throw new RuntimeException(ioe);
+            //            }
         }
     }
-
     private void storeMessageConfirmations(List<DomibusConnectorMessageConfirmationType> messageConfirmations) {
         for (int i = 0; i < messageConfirmations.size(); i++) {
             try {
                 DomibusConnectorMessageConfirmationType confirmation = messageConfirmations.get(i);
 
-                String evidenceFilePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "file");
-                String evidenceTypePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "type");
+                String evidenceFilePropertyName =
+                        String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "file");
+                String evidenceTypePropertyName =
+                        String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "type");
 
                 messageProperties.put(evidenceTypePropertyName, confirmation.getConfirmationType().name());
 
@@ -224,42 +217,49 @@ public class LoadStoreTransitionMessage {
 
                 Path r = basicFolder.resolve(fileName);
                 writeXmlSourceToResource(r, confirmation.getConfirmation());
-
             } catch (IOException ioe) {
                 throw new RuntimeException(ioe);
             }
         }
     }
-
     private void storeMessageContent(DomibusConnectorMessageContentType content) throws IOException {
         if (content == null) {
             return;
         }
         Source xmlContent = content.getXmlContent();
         Path r = basicFolder.resolve(DEFAULT_CONTENT_XML_FILE_NAME);
-        messageProperties.put(LoadStoreTransitionMessage.MESSAGE_CONTENT_XML_PROP_NAME, LoadStoreTransitionMessage.DEFAULT_CONTENT_XML_FILE_NAME);
+        messageProperties.put(
+                LoadStoreTransitionMessage.MESSAGE_CONTENT_XML_PROP_NAME,
+                LoadStoreTransitionMessage.DEFAULT_CONTENT_XML_FILE_NAME
+        );
 
         writeXmlSourceToResource(r, xmlContent);
 
-        //store message document
+        // store message document
         DomibusConnectorMessageDocumentType messageDocument = content.getDocument();
         if (messageDocument != null) {
             messageDocument.getDocument();
-            String fileName = messageDocument.getDocumentName() == null ? "document.pdf" : messageDocument.getDocumentName();
+            String fileName =
+                    messageDocument.getDocumentName() == null ? "document.pdf" : messageDocument.getDocumentName();
             Path d = basicFolder.resolve(fileName);
             writeBigDataReferenceToResource(d, messageDocument.getDocument());
 
             messageProperties.put(LoadStoreTransitionMessage.MESSAGE_DOCUMENT_FILE_PROP_NAME, fileName);
 
             if (messageDocument.getDocumentName() != null) {
-                messageProperties.put(LoadStoreTransitionMessage.MESSAGE_DOCUMENT_NAME_PROP_NAME, messageDocument.getDocumentName());
+                messageProperties.put(
+                        LoadStoreTransitionMessage.MESSAGE_DOCUMENT_NAME_PROP_NAME,
+                        messageDocument.getDocumentName()
+                );
             }
 
             DomibusConnectorDetachedSignatureType detachedSignature = messageDocument.getDetachedSignature();
             if (detachedSignature != null) {
                 byte[] detachedSignatureBytes = detachedSignature.getDetachedSignature();
                 DomibusConnectorDetachedSignatureMimeType detachedSignatureMimeType = detachedSignature.getMimeType();
-                String detachedSignatureName = detachedSignature.getDetachedSignatureName() == null ? "detachedSignature" : detachedSignature.getDetachedSignatureName();
+                String detachedSignatureName =
+                        detachedSignature.getDetachedSignatureName() == null ? "detachedSignature" :
+                                detachedSignature.getDetachedSignatureName();
 
                 String appendix = detachedSignatureMimeType.name().toLowerCase();
                 String detachedResourceFilename = detachedSignatureName + "." + appendix;
@@ -267,15 +267,23 @@ public class LoadStoreTransitionMessage {
 
                 writeByteArrayToFile(res, detachedSignatureBytes);
 
-                messageProperties.put(LoadStoreTransitionMessage.MESSAGE_DOCUMENT_SIGNATURE_FILE_PROP_NAME, detachedResourceFilename);
-                messageProperties.put(LoadStoreTransitionMessage.MESSAGE_DOCUMENT_SIGNATURE_TYPE_PROP_NAME, detachedSignatureMimeType.value());
+                messageProperties.put(
+                        LoadStoreTransitionMessage.MESSAGE_DOCUMENT_SIGNATURE_FILE_PROP_NAME,
+                        detachedResourceFilename
+                );
+                messageProperties.put(
+                        LoadStoreTransitionMessage.MESSAGE_DOCUMENT_SIGNATURE_TYPE_PROP_NAME,
+                        detachedSignatureMimeType.value()
+                );
                 if (detachedSignatureName != null) {
-                    messageProperties.put(LoadStoreTransitionMessage.MESSAGE_DOCUMENT_SIGNATURE_NAME_PROP_NAME, detachedSignatureName);
+                    messageProperties.put(
+                            LoadStoreTransitionMessage.MESSAGE_DOCUMENT_SIGNATURE_NAME_PROP_NAME,
+                            detachedSignatureName
+                    );
                 }
             }
         }
     }
-
     private void writeByteArrayToFile(Path res, byte[] bytes) {
         try (FileOutputStream fout = new FileOutputStream(res.toFile())) {
             StreamUtils.copy(bytes, fout);
@@ -285,7 +293,6 @@ public class LoadStoreTransitionMessage {
             throw new RuntimeException(e);
         }
     }
-
     private void writeBigDataReferenceToResource(Path d, DataHandler document) {
         try (FileOutputStream fout = new FileOutputStream(d.toFile())) {
             StreamUtils.copy(document.getInputStream(), fout);
@@ -295,38 +302,26 @@ public class LoadStoreTransitionMessage {
             throw new RuntimeException(e);
         }
     }
-
     private void writeXmlSourceToResource(Path r, Source xmlContent) throws IOException {
-//        File f = r.getFile();
-    	FileOutputStream out = new FileOutputStream(r.toFile());
-    	out.write(ConversionTools.convertXmlSourceToByteArray(xmlContent));
-    	out.flush();
-    	out.close();
-//        try (FileOutputStream fout = new FileOutputStream(r.toFile())) {
-//            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-//            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-//            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//            StreamResult xmlOutput = new StreamResult(new OutputStreamWriter(fout));
-//            transformer.transform(xmlContent, xmlOutput);
-//        } catch (TransformerConfigurationException e) {
-//            LOGGER.error("Exception occured", e);
-//            throw new RuntimeException(e);
-//        } catch (TransformerException e) {
-//            throw new RuntimeException(e);
-//        }
+        //        File f = r.getFile();
+        FileOutputStream out = new FileOutputStream(r.toFile());
+        out.write(ConversionTools.convertXmlSourceToByteArray(xmlContent));
+        out.flush();
+        out.close();
+        //        try (FileOutputStream fout = new FileOutputStream(r.toFile())) {
+        //            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        //            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        //            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        //            StreamResult xmlOutput = new StreamResult(new OutputStreamWriter(fout));
+        //            transformer.transform(xmlContent, xmlOutput);
+        //        } catch (TransformerConfigurationException e) {
+        //            LOGGER.error("Exception occured", e);
+        //            throw new RuntimeException(e);
+        //        } catch (TransformerException e) {
+        //            throw new RuntimeException(e);
+        //        }
     }
-
-
-    private LoadStoreTransitionMessage() {
-    }
-
-    private LoadStoreTransitionMessage(Path basicFolder) {
-        messageProperties = new Properties();
-        this.basicFolder = basicFolder;
-    }
-
-
-    //TODO: java locking
+    // TODO: java locking
     private DomibusConnectorMessageType loadMessage() throws IOException {
         DomibusConnectorMessageType message = new DomibusConnectorMessageType();
 
@@ -339,13 +334,14 @@ public class LoadStoreTransitionMessage {
 
         message.setMessageDetails(loadMessageDetails());
 
-        Resource contentResource = createRelativeResource(messageProperties.getProperty(MESSAGE_CONTENT_XML_PROP_NAME));
+        Resource contentResource =
+                createRelativeResource(messageProperties.getProperty(MESSAGE_CONTENT_XML_PROP_NAME));
         if (contentResource != null && contentResource.exists()) {
             DomibusConnectorMessageContentType content = new DomibusConnectorMessageContentType();
             content.setXmlContent(loadResourceAsSource(contentResource));
 
             message.setMessageContent(content);
-            //load document
+            // load document
             String docFileName = messageProperties.getProperty(MESSAGE_DOCUMENT_FILE_PROP_NAME);
             if (docFileName != null) {
                 DomibusConnectorMessageDocumentType messageDoc = new DomibusConnectorMessageDocumentType();
@@ -355,18 +351,18 @@ public class LoadStoreTransitionMessage {
                 String docName = messageProperties.getProperty(MESSAGE_DOCUMENT_NAME_PROP_NAME);
                 messageDoc.setDocumentName(docName);
 
-                //TODO: load signature
+                // TODO: load signature
                 String signatureFileName = messageProperties.getProperty(MESSAGE_DOCUMENT_SIGNATURE_FILE_PROP_NAME);
                 if (signatureFileName != null) {
-                    DomibusConnectorDetachedSignatureType detachedSignature = new DomibusConnectorDetachedSignatureType();
-
+                    DomibusConnectorDetachedSignatureType detachedSignature =
+                            new DomibusConnectorDetachedSignatureType();
 
                     String mimeTypeString = messageProperties.getProperty(MESSAGE_DOCUMENT_SIGNATURE_TYPE_PROP_NAME);
                     DomibusConnectorDetachedSignatureMimeType detachedSignatureMimeType =
                             DomibusConnectorDetachedSignatureMimeType.fromValue(mimeTypeString);
 
-
-//                    DetachedSignatureMimeType mimeType = DetachedSignatureMimeType.valueOf(messageProperties.getProperty("MESSAGE_DOCUMENT_SIGNATURE_TYPE_PROP_NAME"));
+                    //                    DetachedSignatureMimeType mimeType = DetachedSignatureMimeType.valueOf
+                    //                    (messageProperties.getProperty("MESSAGE_DOCUMENT_SIGNATURE_TYPE_PROP_NAME"));
                     String name = messageProperties.getProperty(MESSAGE_DOCUMENT_SIGNATURE_NAME_PROP_NAME);
                     Path fResource = basicFolder.resolve(signatureFileName);
                     byte[] signatureBytes = loadResourceAsByteArray(new FileSystemResource(fResource.toFile()));
@@ -379,52 +375,62 @@ public class LoadStoreTransitionMessage {
                 }
 
                 content.setDocument(messageDoc);
-
             }
-
         }
 
-
-        //load attachments
+        // load attachments
         message.getMessageAttachments().addAll(loadMessageAttachments());
 
-        //load confirmations
+        // load confirmations
         message.getMessageConfirmations().addAll(loadMessageConfirmations());
-
 
         return message;
     }
 
     private List<? extends DomibusConnectorMessageConfirmationType> loadMessageConfirmations() {
         return messageProperties.stringPropertyNames()
-                .stream()
-                .sorted()
-                .filter((k) -> k.startsWith(LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX))
-                .map((k) -> k.split("\\.")[2])
-                .distinct()
-                .map((k) -> {
+                                .stream()
+                                .sorted()
+                                .filter((k) -> k.startsWith(LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX))
+                                .map((k) -> k.split("\\.")[2])
+                                .distinct()
+                                .map((k) -> {
 
+                                    String evidenceFilePropertyName = String.format(
+                                            "%s.%s.%s",
+                                            LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
+                                            k,
+                                            "file"
+                                    );
+                                    String evidenceTypePropertyName = String.format(
+                                            "%s.%s.%s",
+                                            LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
+                                            k,
+                                            "type"
+                                    );
 
-                    String evidenceFilePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, k, "file");
-                    String evidenceTypePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, k, "type");
+                                    Resource resEvidenceFile = createRelativeResource(messageProperties.getProperty(
+                                            evidenceFilePropertyName));
 
-                    Resource resEvidenceFile = createRelativeResource(messageProperties.getProperty(evidenceFilePropertyName));
+                                    // TODO: determine evidence type!
+                                    // DomibusConnectorMessageC domibusConnectorEvidenceType =
+                                    // DomibusConnectorEvidenceType.valueOf(messageProperties.getProperty
+                                    // (evidenceTypePropertyName));
 
-                    //TODO: determine evidence type!
-                    //DomibusConnectorMessageC domibusConnectorEvidenceType = DomibusConnectorEvidenceType.valueOf(messageProperties.getProperty(evidenceTypePropertyName));
+                                    DomibusConnectorConfirmationType domibusConnectorConfirmationType =
+                                            DomibusConnectorConfirmationType.fromValue(messageProperties.getProperty(
+                                                    evidenceTypePropertyName));
 
-                    DomibusConnectorConfirmationType domibusConnectorConfirmationType = DomibusConnectorConfirmationType.fromValue(messageProperties.getProperty(evidenceTypePropertyName));
+                                    DomibusConnectorMessageConfirmationType confirmation =
+                                            new DomibusConnectorMessageConfirmationType();
+                                    confirmation.setConfirmation(loadResourceAsSource(resEvidenceFile));
+                                    confirmation.setConfirmationType(domibusConnectorConfirmationType);
+                                    // confirmation.setEvidenceType(domibusConnectorEvidenceType);
+                                    // confirmation.setConfirmationType(DomibusConnectorConfirmationType.valueOf());
 
-                    DomibusConnectorMessageConfirmationType confirmation = new DomibusConnectorMessageConfirmationType();
-                    confirmation.setConfirmation(loadResourceAsSource(resEvidenceFile));
-                    confirmation.setConfirmationType(domibusConnectorConfirmationType);
-                    //confirmation.setEvidenceType(domibusConnectorEvidenceType);
-                    //confirmation.setConfirmationType(DomibusConnectorConfirmationType.valueOf());
-
-                    return confirmation;
-
-                })
-                .collect(Collectors.toList());
+                                    return confirmation;
+                                })
+                                .collect(Collectors.toList());
     }
 
     private Source loadResourceAsSource(Resource resEvidenceFile) {
@@ -437,29 +443,38 @@ public class LoadStoreTransitionMessage {
 
     private List<DomibusConnectorMessageAttachmentType> loadMessageAttachments() {
 
-
         return messageProperties.stringPropertyNames()
-                .stream()
-                .sorted()
-                .filter((k) -> k.startsWith(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX))
-                .map((k) -> k.split("\\.")[2])
-                .distinct()
-                .map((k) -> {
-//                    try {
-                    DomibusConnectorMessageAttachmentType attachment = new DomibusConnectorMessageAttachmentType();
-                    String filePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, k, "file");
-                    String identifierPropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, k, "identifier");
-                    Path res = basicFolder.resolve(messageProperties.getProperty(filePropertyName));
-                    attachment.setAttachment(loadResourceAsDataHandler(new FileSystemResource(res.toFile())));
-                    attachment.setIdentifier(messageProperties.getProperty(identifierPropertyName));
-                    return attachment;
+                                .stream()
+                                .sorted()
+                                .filter((k) -> k.startsWith(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX))
+                                .map((k) -> k.split("\\.")[2])
+                                .distinct()
+                                .map((k) -> {
+                                    //                    try {
+                                    DomibusConnectorMessageAttachmentType attachment =
+                                            new DomibusConnectorMessageAttachmentType();
+                                    String filePropertyName = String.format(
+                                            "%s.%s.%s",
+                                            LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
+                                            k,
+                                            "file"
+                                    );
+                                    String identifierPropertyName = String.format(
+                                            "%s.%s.%s",
+                                            LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
+                                            k,
+                                            "identifier"
+                                    );
+                                    Path res = basicFolder.resolve(messageProperties.getProperty(filePropertyName));
+                                    attachment.setAttachment(loadResourceAsDataHandler(new FileSystemResource(res.toFile())));
+                                    attachment.setIdentifier(messageProperties.getProperty(identifierPropertyName));
+                                    return attachment;
 
-//                    } catch (IOException ioe) {
-//                        throw new RuntimeException(ioe);
-//                    }
-                })
-                .collect(Collectors.toList());
-
+                                    //                    } catch (IOException ioe) {
+                                    //                        throw new RuntimeException(ioe);
+                                    //                    }
+                                })
+                                .collect(Collectors.toList());
     }
 
     private DataHandler loadResourceAsDataHandler(Resource res) {
@@ -488,8 +503,6 @@ public class LoadStoreTransitionMessage {
             throw new RuntimeException(ioe);
         }
     }
-
-
 
 
     private DomibusConnectorMessageDetailsType loadMessageDetails() {
@@ -541,29 +554,22 @@ public class LoadStoreTransitionMessage {
                 throw new RuntimeException(e);
             }
         }
-
-        @Override
-        public String getContentType() {
-            //return new MimetypesFileTypeMap().getContentType(name);
-            return "application/octet-stream";
-        }
-
         @Override
         public InputStream getInputStream() throws IOException {
             return new ByteArrayInputStream(buffer.toByteArray());
         }
-
-        @Override
-        public String getName() {
-            return "";
-        }
-
         @Override
         public OutputStream getOutputStream() throws IOException {
             throw new IOException("Read-only data");
         }
-
+        @Override
+        public String getContentType() {
+            // return new MimetypesFileTypeMap().getContentType(name);
+            return "application/octet-stream";
+        }
+        @Override
+        public String getName() {
+            return "";
+        }
     }
-
-
 }

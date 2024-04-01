@@ -6,8 +6,9 @@ import org.slf4j.MDC;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-public class SetMdcContextExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
 
+public class SetMdcContextExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback,
+        AfterEachCallback {
     public static final String MDC_PROPERTY_KEY_TEST_CLZ = "TEST_CLASS";
     public static final String MDC_PROPERTY_KEY_TEST_METHOD = "TEST_METHOD";
 
@@ -36,5 +37,4 @@ public class SetMdcContextExtension implements BeforeAllCallback, AfterAllCallba
             MDC.put(MDC_PROPERTY_KEY_TEST_METHOD, testMethod.get().getName());
         }
     }
-
 }

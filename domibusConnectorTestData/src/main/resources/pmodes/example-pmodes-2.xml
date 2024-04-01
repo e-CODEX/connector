@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <db:configuration xmlns:db="http://domibus.eu/configuration"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://domibus.eu/configuration file:/C:/development/git-repos/domibus/Domibus-MSH/domibus-configuration.xsd" party="service_at">
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://domibus.eu/configuration file:/C:/development/git-repos/domibus/Domibus-MSH/domibus-configuration.xsd"
+                  party="service_at">
     <mpcs>
-        <mpc name="defaultMpc" qualifiedName="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultMPC" enabled="true" default="true" retention_downloaded="0" retention_undownloaded="60"/>
+        <mpc name="defaultMpc" qualifiedName="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultMPC"
+             enabled="true" default="true" retention_downloaded="0" retention_undownloaded="60"/>
     </mpcs>
     <businessProcesses>
         <roles>
             <role name="eCODEXRole" value="GW"/>
-            <role name="eCODEXMLARole" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultRole"/>
-            <role name="eCODEXFPRole" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultRole"/>
+            <role name="eCODEXMLARole"
+                  value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultRole"/>
+            <role name="eCODEXFPRole"
+                  value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultRole"/>
         </roles>
         <parties>
             <partyIdTypes>
@@ -42,13 +47,16 @@
             <party name="service_it" endpoint="https://example.com/domibus/services/msh" allowChunking="false">
                 <identifier partyId="IT" partyIdType="iso3166_1"/>
             </party>
-            <party name="service_zb" endpoint="https://example.com/eevidence/pluto_gateway/services/msh/" allowChunking="false">
+            <party name="service_zb" endpoint="https://example.com/eevidence/pluto_gateway/services/msh/"
+                   allowChunking="false">
                 <identifier partyId="ZB" partyIdType="iso3166_1"/>
             </party>
-            <party name="service_zc" endpoint="https://example.com/eevidence/jupiter_gateway/services/msh/" allowChunking="false">
+            <party name="service_zc" endpoint="https://example.com/eevidence/jupiter_gateway/services/msh/"
+                   allowChunking="false">
                 <identifier partyId="ZC" partyIdType="iso3166_1"/>
             </party>
-            <party name="service_zd" endpoint="https://example.com/eevidence/venus_gateway/services/msh/" allowChunking="false">
+            <party name="service_zd" endpoint="https://example.com/eevidence/venus_gateway/services/msh/"
+                   allowChunking="false">
                 <identifier partyId="ZD" partyIdType="iso3166_1"/>
             </party>
             <party name="service_lu" endpoint="https://example.com/domibus/services/msh" allowChunking="false">
@@ -84,7 +92,8 @@
         </parties>
         <meps>
             <mep name="twoway" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/twoWay"/>
-            <binding name="pushAndPush" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push-and-push"/>
+            <binding name="pushAndPush"
+                     value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push-and-push"/>
         </meps>
         <properties>
             <property name="originalSenderProperty" key="originalSender" datatype="string" required="true"/>
@@ -96,10 +105,11 @@
         </properties>
         <payloadProfiles></payloadProfiles>
         <securities>
-            <security name="eDeliveryAS4Policy" policy="eDeliveryAS4Policy.xml" signatureMethod="RSA_SHA256" />
+            <security name="eDeliveryAS4Policy" policy="eDeliveryAS4Policy.xml" signatureMethod="RSA_SHA256"/>
         </securities>
         <errorHandlings>
-            <errorHandling name="eCODEXErrorHandling" errorAsResponse="true" businessErrorNotifyProducer="false" businessErrorNotifyConsumer="false" deliveryFailureNotifyProducer="false"/>
+            <errorHandling name="eCODEXErrorHandling" errorAsResponse="true" businessErrorNotifyProducer="false"
+                           businessErrorNotifyConsumer="false" deliveryFailureNotifyProducer="false"/>
         </errorHandlings>
         <agreements>
             <agreement name="agreementEmpty" value="" type=""/>
@@ -134,33 +144,125 @@
             <reliability name="MLAAS4Reliability" nonRepudiation="true" replyPattern="response"/>
         </as4>
         <legConfigurations>
-            <legConfiguration name="MLAServiceMLAActionIssueAssistance" service="MLAService" action="MLAActionIssueAssistance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionAdditionalInformation" service="MLAService" action="MLAActionAdditionalInformation" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionLegalConformance" service="MLAService" action="MLAActionLegalConformance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionStatus" service="MLAService" action="MLAActionStatus" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionWithdrawalLegalAssistance" service="MLAService" action="MLAActionWithdrawalLegalAssistance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionOutcome" service="MLAService" action="MLAActionOutcome" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionRequestForAdditionalInformation" service="MLAService" action="MLAActionRequestForAdditionalInformation" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionRegisterAssistance" service="MLAService" action="MLAActionRegisterAssistance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionChangeAssistance" service="MLAService" action="MLAActionChangeAssistance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionTakeMeasure" service="MLAService" action="MLAActionTakeMeasure" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceMLAActionVerifyLegalBasis" service="MLAService" action="MLAActionVerifyLegalBasis" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceeCODEXEvidenceSubmissionAcceptanceRejection" service="MLAService" action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceeCODEXEvidenceRelayREMMDAcceptanceRejection" service="MLAService" action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="MLAService" action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="MLAServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient" service="MLAService" action="eCODEXEvidenceRetrievalNonRetrievalToRecipient" defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="GWTESTServiceGWTESTActionTestForm" service="GWTESTService" action="GWTESTActionTestForm" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="GWTESTServiceeCODEXEvidenceSubmissionAcceptanceRejection" service="GWTESTService" action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="GWTESTServiceeCODEXEvidenceRelayREMMDAcceptanceRejection" service="GWTESTService" action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="GWTESTServiceeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="GWTESTService" action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="GWTESTServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient" service="GWTESTService" action="eCODEXEvidenceRetrievalNonRetrievalToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="ConTESTServiceConTESTActionTestForm" service="ConTESTService" action="ConTESTActionTestForm" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="ConTESTServiceeCODEXEvidenceSubmissionAcceptanceRejection" service="ConTESTService" action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="ConTESTServiceeCODEXEvidenceRelayREMMDAcceptanceRejection" service="ConTESTService" action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="ConTESTServiceeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="ConTESTService" action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
-            <legConfiguration name="ConTESTServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient" service="ConTESTService" action="eCODEXEvidenceRetrievalNonRetrievalToRecipient" defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionIssueAssistance" service="MLAService"
+                              action="MLAActionIssueAssistance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability"
+                              security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionAdditionalInformation" service="MLAService"
+                              action="MLAActionAdditionalInformation" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionLegalConformance" service="MLAService"
+                              action="MLAActionLegalConformance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability"
+                              security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionStatus" service="MLAService" action="MLAActionStatus"
+                              defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionWithdrawalLegalAssistance" service="MLAService"
+                              action="MLAActionWithdrawalLegalAssistance" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionOutcome" service="MLAService" action="MLAActionOutcome"
+                              defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionRequestForAdditionalInformation" service="MLAService"
+                              action="MLAActionRequestForAdditionalInformation" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionRegisterAssistance" service="MLAService"
+                              action="MLAActionRegisterAssistance" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionChangeAssistance" service="MLAService"
+                              action="MLAActionChangeAssistance" defaultMpc="defaultMpc" reliability="MLAAS4Reliability"
+                              security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionTakeMeasure" service="MLAService" action="MLAActionTakeMeasure"
+                              defaultMpc="defaultMpc" reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceMLAActionVerifyLegalBasis" service="MLAService"
+                              action="MLAActionVerifyLegalBasis" defaultMpc="defaultMpc" reliability="MLAAS4Reliability"
+                              security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceeCODEXEvidenceSubmissionAcceptanceRejection" service="MLAService"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceeCODEXEvidenceRelayREMMDAcceptanceRejection" service="MLAService"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="MLAService"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="MLAServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient" service="MLAService"
+                              action="eCODEXEvidenceRetrievalNonRetrievalToRecipient" defaultMpc="defaultMpc"
+                              reliability="MLAAS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="GWTESTServiceGWTESTActionTestForm" service="GWTESTService"
+                              action="GWTESTActionTestForm" defaultMpc="defaultMpc" reliability="AS4Reliability"
+                              security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
+            <legConfiguration name="GWTESTServiceeCODEXEvidenceSubmissionAcceptanceRejection" service="GWTESTService"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc"
+                              reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="GWTESTServiceeCODEXEvidenceRelayREMMDAcceptanceRejection" service="GWTESTService"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc"
+                              reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="GWTESTServiceeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="GWTESTService"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc"
+                              reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="GWTESTServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient" service="GWTESTService"
+                              action="eCODEXEvidenceRetrievalNonRetrievalToRecipient" defaultMpc="defaultMpc"
+                              reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="ConTESTServiceConTESTActionTestForm" service="ConTESTService"
+                              action="ConTESTActionTestForm" defaultMpc="defaultMpc" reliability="AS4Reliability"
+                              security="eDeliveryAS4Policy" receptionAwareness="receptionAwareness"
+                              errorHandling="eCODEXErrorHandling" compressPayloads="false"></legConfiguration>
+            <legConfiguration name="ConTESTServiceeCODEXEvidenceSubmissionAcceptanceRejection" service="ConTESTService"
+                              action="eCODEXEvidenceSubmissionAcceptanceRejection" defaultMpc="defaultMpc"
+                              reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="ConTESTServiceeCODEXEvidenceRelayREMMDAcceptanceRejection" service="ConTESTService"
+                              action="eCODEXEvidenceRelayREMMDAcceptanceRejection" defaultMpc="defaultMpc"
+                              reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="ConTESTServiceeCODEXEvidenceDeliveryNonDeliveryToRecipient" service="ConTESTService"
+                              action="eCODEXEvidenceDeliveryNonDeliveryToRecipient" defaultMpc="defaultMpc"
+                              reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
+            <legConfiguration name="ConTESTServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              service="ConTESTService" action="eCODEXEvidenceRetrievalNonRetrievalToRecipient"
+                              defaultMpc="defaultMpc" reliability="AS4Reliability" security="eDeliveryAS4Policy"
+                              receptionAwareness="receptionAwareness" errorHandling="eCODEXErrorHandling"
+                              compressPayloads="false"></legConfiguration>
         </legConfigurations>
-        <process name="MLAProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush" initiatorRole="eCODEXMLARole" responderRole="eCODEXMLARole">
+        <process name="MLAProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush"
+                 initiatorRole="eCODEXMLARole" responderRole="eCODEXMLARole">
             <initiatorParties>
                 <initiatorParty name="service_hr"/>
                 <initiatorParty name="service_zs"/>
@@ -227,7 +329,8 @@
                 <leg name="MLAServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
             </legs>
         </process>
-        <process name="GWTESTProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush" initiatorRole="eCODEXRole" responderRole="eCODEXRole">
+        <process name="GWTESTProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush"
+                 initiatorRole="eCODEXRole" responderRole="eCODEXRole">
             <initiatorParties>
                 <initiatorParty name="service_hr"/>
                 <initiatorParty name="service_zs"/>
@@ -284,7 +387,8 @@
                 <leg name="GWTESTServiceeCODEXEvidenceRetrievalNonRetrievalToRecipient"/>
             </legs>
         </process>
-        <process name="CONTESTProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush" initiatorRole="eCODEXRole" responderRole="eCODEXRole">
+        <process name="CONTESTProcess" agreement="agreementEmpty" mep="twoway" binding="pushAndPush"
+                 initiatorRole="eCODEXRole" responderRole="eCODEXRole">
             <initiatorParties>
                 <initiatorParty name="service_hr"/>
                 <initiatorParty name="service_zs"/>

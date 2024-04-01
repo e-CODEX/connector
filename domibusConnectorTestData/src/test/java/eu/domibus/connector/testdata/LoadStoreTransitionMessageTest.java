@@ -15,10 +15,9 @@ import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @Log4j2
 public class LoadStoreTransitionMessageTest {
-
-
     public static final String TEST_DIR = "./target/teststore/";
 
     @BeforeAll
@@ -29,8 +28,9 @@ public class LoadStoreTransitionMessageTest {
     }
 
     @Test
-    public void loadMessageFrom() throws Exception {
-        DomibusConnectorMessageType msg1 = LoadStoreTransitionMessage.loadMessageFrom(new ClassPathResource("endtoendtest/messages/epo_forma_backend_to_gw/"));
+    void loadMessageFrom() throws Exception {
+        DomibusConnectorMessageType msg1 = LoadStoreTransitionMessage.loadMessageFrom(new ClassPathResource(
+                "endtoendtest/messages/epo_forma_backend_to_gw/"));
 
         assertThat(msg1).isNotNull();
 
@@ -40,18 +40,17 @@ public class LoadStoreTransitionMessageTest {
     }
 
     @Test
-    public void testStoreMessage() throws Exception {
+    void testStoreMessage() throws Exception {
         Path p = Paths.get(TEST_DIR).resolve("testmsg1").normalize();
 
         FileSystemResource resource = new FileSystemResource(p.toFile());
         DomibusConnectorMessageType testmessage = TransitionCreator.createMessage();
 
         LoadStoreTransitionMessage.storeMessageTo(resource, testmessage, true);
-
     }
 
     @Test
-    public void testStoreThanLoad() throws Exception {
+    void testStoreThanLoad() throws Exception {
         DomibusConnectorMessageType testmessage = TransitionCreator.createMessage();
 
         Path p = Paths.get(TEST_DIR).resolve("testmsg2").normalize();
@@ -62,28 +61,25 @@ public class LoadStoreTransitionMessageTest {
         assertThat(testmsg2.getMessageDetails()).isEqualToComparingFieldByFieldRecursively(testmessage.getMessageDetails());
         assertThat(testmsg2.getMessageContent().getXmlContent()).isNotNull();
 
-
         Path p2 = Paths.get(TEST_DIR).resolve("testmsg3");
         LoadStoreTransitionMessage.storeMessageTo(p2, testmsg2, true);
-
-
     }
 
-//    @Test
-//    public void testStoreThenLoadChangeThenStore() throws Exception {
-//        DomibusConnectorMessageType testmessage = TransitionCreator.createMessage();
-//
-//        Path p = Paths.get(TEST_DIR).resolve("testmsg4");
-//        LoadStoreTransitionMessage.storeMessageTo(p, testmessage, true);
-//
-//        DomibusConnectorMessageType testmsg2 = LoadStoreTransitionMessage.loadMessageFrom(p);
-//
-//        assertThat(testmsg2.getMessageDetails()).isEqualToComparingFieldByFieldRecursively(testmessage.getMessageDetails());
-//        assertThat(testmsg2.getMessageContent().getXmlContent()).isNotNull();
-//
-//        testmsg2.getMessageConfirmations().add(TransitionCreator.createMessageConfirmationType_NON_DELIVERY());
-//
-//        LoadStoreTransitionMessage.storeMessageTo(p, testmsg2, true);
-//    }
-
+    //    @Test
+    //    public void testStoreThenLoadChangeThenStore() throws Exception {
+    //        DomibusConnectorMessageType testmessage = TransitionCreator.createMessage();
+    //
+    //        Path p = Paths.get(TEST_DIR).resolve("testmsg4");
+    //        LoadStoreTransitionMessage.storeMessageTo(p, testmessage, true);
+    //
+    //        DomibusConnectorMessageType testmsg2 = LoadStoreTransitionMessage.loadMessageFrom(p);
+    //
+    //        assertThat(testmsg2.getMessageDetails()).isEqualToComparingFieldByFieldRecursively(testmessage
+    //        .getMessageDetails());
+    //        assertThat(testmsg2.getMessageContent().getXmlContent()).isNotNull();
+    //
+    //        testmsg2.getMessageConfirmations().add(TransitionCreator.createMessageConfirmationType_NON_DELIVERY());
+    //
+    //        LoadStoreTransitionMessage.storeMessageTo(p, testmsg2, true);
+    //    }
 }

@@ -6,19 +6,17 @@ import eu.domibus.connector.persistence.testutils.LargeFileProviderMemoryImpl;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
 
 
 /**
  * A memory based impl for handling files
- *  this impl is intended to be used only within tests!
+ * this impl is intended to be used only within tests!
+ *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public class LargeFileReferenceGetSetBased extends LargeFileReference {
-
     byte[] bytes;
     boolean readable;
     boolean writeable;
@@ -58,12 +56,12 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
         return writeable;
     }
 
-    public void setReadable(boolean readable) {
-        this.readable = readable;
-    }
-
     public void setWriteable(boolean writeable) {
         this.writeable = writeable;
+    }
+
+    public void setReadable(boolean readable) {
+        this.readable = readable;
     }
 
     public byte[] getBytes() {
@@ -77,8 +75,7 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
     }
 
     private static class OnClassCallbackByteArrayOutputStream extends ByteArrayOutputStream {
-
-        private LargeFileReferenceGetSetBased ref;
+        private final LargeFileReferenceGetSetBased ref;
 
         public OnClassCallbackByteArrayOutputStream(LargeFileReferenceGetSetBased ref) {
             this.ref = ref;
@@ -93,9 +90,7 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
         public void flush() {
             ref.setBytes(this.toByteArray());
         }
-
     }
-
 }
 
 

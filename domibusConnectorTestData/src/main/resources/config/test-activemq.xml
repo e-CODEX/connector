@@ -1,35 +1,36 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-				http://www.springframework.org/schema/beans
-				http://www.springframework.org/schema/beans/spring-beans.xsd
-				http://activemq.apache.org/schema/core
-				http://activemq.apache.org/schema/core/activemq-core-5.4.0.xsd
-		">
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://activemq.apache.org/schema/core
+       http://activemq.apache.org/schema/core/activemq-core-5.4.0.xsd
+">
 
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="broker1" persistent="false" dataDirectory="./data/broker" schedulerSupport="true">
-<!--        <plugins>-->
-<!--            <redeliveryPlugin fallbackToDeadLetter="true"-->
-<!--                              sendToDlqIfMaxRetriesExceeded="true">-->
-<!--                <redeliveryPolicyMap>-->
-<!--                    <redeliveryPolicyMap>-->
-<!--                        <redeliveryPolicyEntries>-->
-<!--                            &lt;!&ndash; a destination specific policy &ndash;&gt;-->
-<!--                            <redeliveryPolicy queue="SpecialQueue"-->
-<!--                                              maximumRedeliveries="4"-->
-<!--                                              redeliveryDelay="10000"/>-->
-<!--                        </redeliveryPolicyEntries>-->
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="broker1" persistent="false"
+            dataDirectory="./data/broker" schedulerSupport="true">
+        <!--        <plugins>-->
+        <!--            <redeliveryPlugin fallbackToDeadLetter="true"-->
+        <!--                              sendToDlqIfMaxRetriesExceeded="true">-->
+        <!--                <redeliveryPolicyMap>-->
+        <!--                    <redeliveryPolicyMap>-->
+        <!--                        <redeliveryPolicyEntries>-->
+        <!--                            &lt;!&ndash; a destination specific policy &ndash;&gt;-->
+        <!--                            <redeliveryPolicy queue="SpecialQueue"-->
+        <!--                                              maximumRedeliveries="4"-->
+        <!--                                              redeliveryDelay="10000"/>-->
+        <!--                        </redeliveryPolicyEntries>-->
 
-<!--                        <defaultEntry>-->
-<!--                            &lt;!&ndash; the fallback policy for all other destinations &ndash;&gt;-->
-<!--                            <redeliveryPolicy maximumRedeliveries="2"-->
-<!--                                              initialRedeliveryDelay="500"-->
-<!--                                              redeliveryDelay="10"/>-->
-<!--                        </defaultEntry>-->
-<!--                    </redeliveryPolicyMap>-->
-<!--                </redeliveryPolicyMap>-->
-<!--            </redeliveryPlugin>-->
-<!--        </plugins>-->
+        <!--                        <defaultEntry>-->
+        <!--                            &lt;!&ndash; the fallback policy for all other destinations &ndash;&gt;-->
+        <!--                            <redeliveryPolicy maximumRedeliveries="2"-->
+        <!--                                              initialRedeliveryDelay="500"-->
+        <!--                                              redeliveryDelay="10"/>-->
+        <!--                        </defaultEntry>-->
+        <!--                    </redeliveryPolicyMap>-->
+        <!--                </redeliveryPolicyMap>-->
+        <!--            </redeliveryPlugin>-->
+        <!--        </plugins>-->
 
         <destinationPolicy>
             <policyMap>
@@ -56,9 +57,9 @@
                 the JVM. For more information, see:
                 http://activemq.apache.org/jmx.html
         -->
-<!--        <managementContext>-->
-<!--            <managementContext createConnector="true"/>-->
-<!--        </managementContext>-->
+        <!--        <managementContext>-->
+        <!--            <managementContext createConnector="true"/>-->
+        <!--        </managementContext>-->
 
         <!--
             The systemUsage controls the maximum amount of space the broker will
@@ -68,7 +69,7 @@
         <systemUsage>
             <systemUsage>
                 <memoryUsage>
-                    <memoryUsage limit="100 mb" />
+                    <memoryUsage limit="100 mb"/>
                 </memoryUsage>
                 <storeUsage>
                     <storeUsage limit="50 mb"/>
@@ -90,7 +91,8 @@
 
         <!-- destroy the spring context on shutdown to stop jetty -->
         <shutdownHooks>
-            <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook" />
+            <bean xmlns="http://www.springframework.org/schema/beans"
+                  class="org.apache.activemq.hooks.SpringContextHook"/>
         </shutdownHooks>
 
     </broker>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <db:configuration xmlns:db="http://domibus.eu/configuration"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xsi:schemaLocation="http://domibus.eu/configuration file:/C:/development/git-repos/domibus/Domibus-MSH/domibus-configuration.xsd" party="service_ctp">
+                  xsi:schemaLocation="http://domibus.eu/configuration file:/C:/development/git-repos/domibus/Domibus-MSH/domibus-configuration.xsd"
+                  party="service_ctp">
     <mpcs>
         <mpc name="defaultMpc"
              qualifiedName="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultMPC"
@@ -94,7 +95,8 @@
         </parties>
         <meps>
             <mep name="twoway" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/twoWay"/>
-            <binding name="pushAndPush" value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push-and-push"/>
+            <binding name="pushAndPush"
+                     value="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/push-and-push"/>
         </meps>
         <properties>
             <property name="originalSenderProperty"
@@ -115,10 +117,10 @@
         <securities>
             <security name="signBodyHeader"
                       policy="policy-sign-body-header.xml"
-                      signatureMethod="RSA_SHA1" />
+                      signatureMethod="RSA_SHA1"/>
             <security name="signEncryptMessage"
                       policy="signEncryptPolicy.xml"
-                      signatureMethod="RSA_SHA256" />
+                      signatureMethod="RSA_SHA256"/>
         </securities>
         <errorHandlings>
             <errorHandling name="eCODEXErrorHandling"

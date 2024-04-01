@@ -21,21 +21,9 @@ package eu.domibus.connector.testutil.logger;
  * copied from log4j2 sources, to avoid including log4j2-tests.jar which is not managed by spring
  * will also include some additional methods for tests
  *
-*/
+ */
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.Core;
-import org.apache.logging.log4j.core.Filter;
-import org.apache.logging.log4j.core.Layout;
-import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.*;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginBuilderAttribute;
@@ -44,33 +32,32 @@ import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.impl.MutableLogEvent;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+
 /**
  * This appender is primarily used for testing. Use in a real environment is discouraged as the List could eventually
  * grow to cause an OutOfMemoryError.
- *
+ * <p>
  * This appender is not thread-safe.
- *
+ * <p>
  * This appender will use {@link Layout#toByteArray(LogEvent)}.
- *
- *
  */
 @Plugin(name = "List", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
 public class ListAppender extends AbstractAppender {
-
     // Use CopyOnWriteArrayList?
-
-    final List<LogEvent> events = new ArrayList<>();
-
-    private final List<String> messages = new ArrayList<>();
-
-    final List<byte[]> data = new ArrayList<>();
-
-    private final boolean newLine;
-
-    private final boolean raw;
-
     private static final String WINDOWS_LINE_SEP = "\r\n";
 
+    final List<LogEvent> events = new ArrayList<>();
+    final List<byte[]> data = new ArrayList<>();
+    private final List<String> messages = new ArrayList<>();
+    private final boolean newLine;
+    private final boolean raw;
     /**
      * CountDownLatch for asynchronous logging tests. Example usage:
      *
@@ -106,8 +93,9 @@ public class ListAppender extends AbstractAppender {
         raw = false;
     }
 
-    public ListAppender(final String name, final Filter filter, final Layout<? extends Serializable> layout,
-                        final boolean newline, final boolean raw) {
+    public ListAppender(
+            final String name, final Filter filter, final Layout<? extends Serializable> layout,
+            final boolean newline, final boolean raw) {
         super(name, filter, layout);
         this.newLine = newline;
         this.raw = raw;
@@ -117,6 +105,26 @@ public class ListAppender extends AbstractAppender {
                 write(bytes);
             }
         }
+    }
+    public static ListAppender createAppender(
+            final String name, final boolean newLine, final boolean raw,
+            final Layout<? extends Serializable> layout, final Filter filter) {
+        return new ListAppender(name, filter, layout, newLine, raw);
+    }
+
+    @PluginBuilderFactory
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    /**
+     * Gets the named ListAppender if it has been registered.
+     *
+     * @param name the name of the ListAppender
+     * @return the named ListAppender or {@code null} if it does not exist
+     */
+    public static ListAppender getListAppender(final String name) {
+        return (LoggerContext.getContext(false)).getConfiguration().getAppender(name);
     }
 
     @Override
@@ -221,18 +229,15 @@ public class ListAppender extends AbstractAppender {
         return Collections.unmodifiableList(data);
     }
 
-    public static ListAppender createAppender(final String name, final boolean newLine, final boolean raw,
-                                              final Layout<? extends Serializable> layout, final Filter filter) {
-        return new ListAppender(name, filter, layout, newLine, raw);
-    }
-
-    @PluginBuilderFactory
-    public static Builder newBuilder() {
-        return new Builder();
+    @Override
+    public String toString() {
+        return "ListAppender [events=" + events + ", messages=" + messages + ", data=" + data + ", newLine=" + newLine
+                + ", raw=" + raw + ", countDownLatch=" + countDownLatch + ", getHandler()=" + getHandler()
+                + ", getLayout()=" + getLayout() + ", getName()=" + getName() + ", ignoreExceptions()="
+                + ignoreExceptions() + ", getFilter()=" + getFilter() + ", getState()=" + getState() + "]";
     }
 
     public static class Builder implements org.apache.logging.log4j.core.util.Builder<ListAppender> {
-
         @PluginBuilderAttribute
         @Required
         private String name;
@@ -278,25 +283,5 @@ public class ListAppender extends AbstractAppender {
         public ListAppender build() {
             return new ListAppender(name, filter, layout, entryPerNewLine, raw);
         }
-    }
-
-    /**
-     * Gets the named ListAppender if it has been registered.
-     *
-     * @param name
-     *            the name of the ListAppender
-     * @return the named ListAppender or {@code null} if it does not exist
-     *
-     */
-    public static ListAppender getListAppender(final String name) {
-        return ((ListAppender) (LoggerContext.getContext(false)).getConfiguration().getAppender(name));
-    }
-
-    @Override
-    public String toString() {
-        return "ListAppender [events=" + events + ", messages=" + messages + ", data=" + data + ", newLine=" + newLine
-                + ", raw=" + raw + ", countDownLatch=" + countDownLatch + ", getHandler()=" + getHandler()
-                + ", getLayout()=" + getLayout() + ", getName()=" + getName() + ", ignoreExceptions()="
-                + ignoreExceptions() + ", getFilter()=" + getFilter() + ", getState()=" + getState() + "]";
     }
 }

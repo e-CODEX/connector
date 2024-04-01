@@ -5,25 +5,20 @@ import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.domain.model.LargeFileReference;
 import eu.domibus.connector.domain.testutil.LargeFileReferenceGetSetBased;
 import eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceProvider;
-import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Component
 @ConditionalOnMissingBean(LargeFileProviderMemoryImpl.class)
 @Profile(SpringProfiles.TEST)
 public class LargeFileProviderMemoryImpl implements LargeFilePersistenceProvider {
-
-
     public static final String PROVIDER_NAME = "MEMORY";
 
     @Override
@@ -38,15 +33,19 @@ public class LargeFileProviderMemoryImpl implements LargeFilePersistenceProvider
     }
 
     @Override
-    public LargeFileReference createDomibusConnectorBigDataReference(InputStream input, String connectorMessageId, String documentName,
-                                                                     String documentContentType) {
+    public LargeFileReference createDomibusConnectorBigDataReference(
+            InputStream input, String connectorMessageId, String documentName,
+            String documentContentType) {
         return createDomibusConnectorBigDataReference(connectorMessageId, documentName, documentContentType);
     }
 
     @Override
-    public LargeFileReference createDomibusConnectorBigDataReference(String connectorMessageId, String documentName, String documentContentType) {
+    public LargeFileReference createDomibusConnectorBigDataReference(
+            String connectorMessageId,
+            String documentName,
+            String documentContentType) {
         LargeFileReferenceGetSetBased dataRef = new LargeFileReferenceGetSetBased();
-//        dataRef.setOutputStream(new MyOutputStream(dataRef));
+        //        dataRef.setOutputStream(new MyOutputStream(dataRef));
         dataRef.setWriteable(true);
         dataRef.setReadable(false);
         return dataRef;
@@ -54,43 +53,41 @@ public class LargeFileProviderMemoryImpl implements LargeFilePersistenceProvider
 
     @Override
     public void deleteDomibusConnectorBigDataReference(LargeFileReference ref) {
-        //Just do nothing!
+        // Just do nothing!
     }
 
     @Override
     public Map<DomibusConnectorMessageId, List<LargeFileReference>> getAllAvailableReferences() {
-        //just return empty map
+        // just return empty map
         return new HashMap<>();
     }
 
-//    @Override
-//    public boolean isStorageProviderAvailable(LargeFileReference toCopy) {
-//        return true;
-//    }
-//
-//    @Override
-//    public LargeFilePersistenceProvider getDefaultProvider() {
-//        return this;
-//    }
+    //    @Override
+    //    public boolean isStorageProviderAvailable(LargeFileReference toCopy) {
+    //        return true;
+    //    }
+    //
+    //    @Override
+    //    public LargeFilePersistenceProvider getDefaultProvider() {
+    //        return this;
+    //    }
 
-//    public static class MyOutputStream extends ByteArrayOutputStream {
-//
-//        private final LargeFileReferenceGetSetBased reference;
-//
-//        public MyOutputStream(LargeFileReferenceGetSetBased reference) {
-//            this.reference = reference;
-//        }
-//
-//        @Override
-//        public void close() throws IOException {
-//            flush();
-//            reference.setWriteable(false);
-//            reference.setBytes(this.toByteArray());
-////            reference.setOutputStream(null);
-//            super.close();
-//        }
-//
-//    }
-
-
+    //    public static class MyOutputStream extends ByteArrayOutputStream {
+    //
+    //        private final LargeFileReferenceGetSetBased reference;
+    //
+    //        public MyOutputStream(LargeFileReferenceGetSetBased reference) {
+    //            this.reference = reference;
+    //        }
+    //
+    //        @Override
+    //        public void close() throws IOException {
+    //            flush();
+    //            reference.setWriteable(false);
+    //            reference.setBytes(this.toByteArray());
+    ////            reference.setOutputStream(null);
+    //            super.close();
+    //        }
+    //
+    //    }
 }

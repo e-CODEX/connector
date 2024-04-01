@@ -10,7 +10,6 @@ import java.util.List;
 
 
 public class WebQueue {
-
     @Setter
     private String name;
     @Getter

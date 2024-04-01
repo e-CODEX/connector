@@ -81,7 +81,8 @@
                                                                 name="partyIdType">
                                                         <xs:complexType>
                                                             <xs:attribute id="partyIdType" name="name"
-                                                                          type="max255-non-empty-string" use="required"/>
+                                                                          type="max255-non-empty-string"
+                                                                          use="required"/>
                                                             <xs:attribute name="value" type="xs:anyURI"
                                                                           use="required"/>
                                                         </xs:complexType>
@@ -105,7 +106,8 @@
                                                         <xs:complexType>
                                                             <xs:attribute name="partyId" type="max255-non-empty-string"
                                                                           use="required"/>
-                                                            <xs:attribute name="partyIdType" type="max255-non-empty-string"
+                                                            <xs:attribute name="partyIdType"
+                                                                          type="max255-non-empty-string"
                                                                           use="required"/>
                                                         </xs:complexType>
                                                     </xs:element>

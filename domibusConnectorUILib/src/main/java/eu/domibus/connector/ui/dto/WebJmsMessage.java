@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import javax.jms.Message;
 
+
 @Getter
 public class WebJmsMessage {
     private Message jmsMessage;

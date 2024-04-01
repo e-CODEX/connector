@@ -21,45 +21,75 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Date;
+
 
 /**
  * This bean will be run on first startup (for details see FirstStartupCondition)
- *
- *  It requires a already initialized database
- *  It creates an initial admin user with a random password. Password
- *  will be logged to console
- *
- *
- *
+ * <p>
+ * It requires a already initialized database
+ * It creates an initial admin user with a random password. Password
+ * will be logged to console
  */
 @Configuration
-@ConditionalOnProperty(prefix = InitializeAdminUserProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+        prefix = InitializeAdminUserProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true
+)
 @EnableConfigurationProperties(InitializeAdminUserProperties.class)
 public class InitializeAdminUser {
-
     private static final Logger LOGGER = LogManager.getLogger(InitializeAdminUser.class);
 
     private final InitializeAdminUserProperties initializeAdminUserProperties;
 
-    //instead of the DAOs the service (WebUserPersistenceService) should be used here.
-    //But this requires some refactoring, because the service is deeply integrated in
-    //the webLib Module
+    // instead of the DAOs the service (WebUserPersistenceService) should be used here.
+    // But this requires some refactoring, because the service is deeply integrated in
+    // the webLib Module
     private final DomibusConnectorUserDao userDao;
     private final DomibusConnectorUserPasswordDao userPasswordDao;
 
-
-    public InitializeAdminUser(InitializeAdminUserProperties initializeAdminUserProperties,
-                               DomibusConnectorUserDao userDao,
-                               DomibusConnectorUserPasswordDao userPasswordDao) {
+    public InitializeAdminUser(
+            InitializeAdminUserProperties initializeAdminUserProperties,
+            DomibusConnectorUserDao userDao,
+            DomibusConnectorUserPasswordDao userPasswordDao) {
         this.initializeAdminUserProperties = initializeAdminUserProperties;
         this.userDao = userDao;
         this.userPasswordDao = userPasswordDao;
     }
 
+    // should be done by user service!
+    private static String generatePasswordHashWithSaltOnlyPW(String password, String saltParam)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        int iterations = 1000;
+        char[] chars = password.toCharArray();
+        byte[] salt = DatatypeConverter.parseHexBinary(saltParam);
+        PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = skf.generateSecret(spec).getEncoded();
+        return toHex(hash);
+    }
+
+    // should be done by user service!
+    private static String getHexSalt() throws NoSuchAlgorithmException {
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return toHex(salt);
+    }
+
+    // should be done by user service!
+    private static String toHex(byte[] array) throws NoSuchAlgorithmException {
+        BigInteger bi = new BigInteger(1, array);
+        String hex = bi.toString(16);
+        int paddingLength = (array.length * 2) - hex.length();
+        if (paddingLength > 0) {
+            return String.format("%0" + paddingLength + "d", 0) + hex;
+        } else {
+            return hex;
+        }
+    }
+
     /**
      * check if the admin user exists in DB
-     *  if not - create it
+     * if not - create it
      */
     @PostConstruct
     @Transactional
@@ -68,7 +98,11 @@ public class InitializeAdminUser {
 
         PDomibusConnectorUser adminUser = userDao.findOneByUsernameIgnoreCase(adminUserName);
         if (adminUser != null) {
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Admin user [{}] already exists in DB", adminUser.getUsername());
+            LOGGER.info(
+                    LoggingMarker.Log4jMarker.CONFIG,
+                    "Admin user [{}] already exists in DB",
+                    adminUser.getUsername()
+            );
             return;
         }
         String newUserPassword = initializeAdminUserProperties.getInitialUserPassword();
@@ -93,47 +127,13 @@ public class InitializeAdminUser {
 
         if (initializeAdminUserProperties.isLogInitialToConsole()) {
             LOGGER.info(LoggingMarker.Log4jMarker.CONFIG,
-                    "\n###############################" +
-                            "\nSuccessfully created initial admin user [{}] with pw [{}]" +
-                            "\n###############################\n", adminUserName, newUserPassword);
+                        "\n###############################" +
+                                "\nSuccessfully created initial admin user [{}] with pw [{}]" +
+                                "\n###############################\n", adminUserName, newUserPassword
+            );
         }
 
         userDao.save(newAdminUser);
         userPasswordDao.save(userPassword);
-
     }
-
-
-    //should be done by user service!
-    private static String generatePasswordHashWithSaltOnlyPW(String password, String saltParam)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
-        int iterations = 1000;
-        char[] chars = password.toCharArray();
-        byte[] salt = DatatypeConverter.parseHexBinary(saltParam);
-        PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] hash = skf.generateSecret(spec).getEncoded();
-        return toHex(hash);
-    }
-
-    //should be done by user service!
-    private static String getHexSalt() throws NoSuchAlgorithmException {
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return toHex(salt);
-    }
-
-    //should be done by user service!
-    private static String toHex(byte[] array) throws NoSuchAlgorithmException {
-        BigInteger bi = new BigInteger(1, array);
-        String hex = bi.toString(16);
-        int paddingLength = (array.length * 2) - hex.length();
-        if (paddingLength > 0) {
-            return String.format("%0" + paddingLength + "d", 0) + hex;
-        } else {
-            return hex;
-        }
-    }
-
 }

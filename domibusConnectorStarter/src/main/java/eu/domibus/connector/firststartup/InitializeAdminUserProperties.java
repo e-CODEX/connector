@@ -4,19 +4,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.UUID;
 
+
 @ConfigurationProperties(prefix = InitializeAdminUserProperties.PREFIX)
 public class InitializeAdminUserProperties {
-
     public static final String PREFIX = "connector.init.user";
 
     private boolean enabled;
-
     private boolean initialChangeRequired = true;
-
     private String initialUserName = "admin";
-
     private boolean logInitialToConsole = true;
-
     private String initialUserPassword = UUID.randomUUID().toString();
 
     public boolean isEnabled() {
@@ -31,16 +27,16 @@ public class InitializeAdminUserProperties {
         return initialChangeRequired;
     }
 
+    public void setInitialChangeRequired(boolean initialChangeRequired) {
+        this.initialChangeRequired = initialChangeRequired;
+    }
+
     public boolean isLogInitialToConsole() {
         return logInitialToConsole;
     }
 
     public void setLogInitialToConsole(boolean logInitialToConsole) {
         this.logInitialToConsole = logInitialToConsole;
-    }
-
-    public void setInitialChangeRequired(boolean initialChangeRequired) {
-        this.initialChangeRequired = initialChangeRequired;
     }
 
     public String getInitialUserName() {

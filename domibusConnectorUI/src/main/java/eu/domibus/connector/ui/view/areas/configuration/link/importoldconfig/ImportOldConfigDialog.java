@@ -28,7 +28,6 @@ import java.util.Properties;
 
 
 public abstract class ImportOldConfigDialog extends Dialog {
-
     private static final Logger LOGGER = LogManager.getLogger(ImportOldConfigDialog.class);
 
     protected final ObjectProvider<DCLinkConfigurationField> linkConfigurationFieldObjectProvider;
@@ -41,24 +40,24 @@ public abstract class ImportOldConfigDialog extends Dialog {
 
     VerticalLayout layout = new VerticalLayout();
 
-    //Upload
+    // Upload
     MemoryBuffer buffer = new MemoryBuffer();
     Upload upload = new Upload(buffer);
-    //upload result area
+    // upload result area
     VerticalLayout resultArea = new VerticalLayout();
     private ConfigurationPanelFactory.DialogCloseCallback dialogCloseCallback;
 
-    public ImportOldConfigDialog(ObjectProvider<DCLinkConfigurationField> linkConfigurationFieldObjectProvider,
-                                 ObjectProvider<DCLinkPartnerField> linkPartnerFieldObjectProvider,
-                                 BeanToPropertyMapConverter beanToPropertyMapConverter,
-                                 DCLinkFacade dcLinkFacade, JdbcTemplate jdbcTemplate) {
+    public ImportOldConfigDialog(
+            ObjectProvider<DCLinkConfigurationField> linkConfigurationFieldObjectProvider,
+            ObjectProvider<DCLinkPartnerField> linkPartnerFieldObjectProvider,
+            BeanToPropertyMapConverter beanToPropertyMapConverter,
+            DCLinkFacade dcLinkFacade, JdbcTemplate jdbcTemplate) {
         this.linkConfigurationFieldObjectProvider = linkConfigurationFieldObjectProvider;
         this.linkPartnerFieldObjectProvider = linkPartnerFieldObjectProvider;
         this.beanToPropertyMapConverter = beanToPropertyMapConverter;
         this.dcLinkFacade = dcLinkFacade;
         this.jdbcTemplate = jdbcTemplate;
         initUi();
-
     }
 
     private void initUi() {
@@ -82,17 +81,23 @@ public abstract class ImportOldConfigDialog extends Dialog {
             Properties properties = new Properties();
             properties.load(inputStream);
             Connector42LinkConfigTo43LinkConfigConverter connector42LinkConfigTo43LinkConfigConverter =
-                    new Connector42LinkConfigTo43LinkConfigConverter(beanToPropertyMapConverter, jdbcTemplate, properties);
+                    new Connector42LinkConfigTo43LinkConfigConverter(
+                            beanToPropertyMapConverter,
+                            jdbcTemplate,
+                            properties
+                    );
 
-            List<DomibusConnectorLinkPartner> linkPartners = getLinkPartners(connector42LinkConfigTo43LinkConfigConverter);
-            DomibusConnectorLinkConfiguration domibusConnectorLinkConfiguration = linkPartners.stream().findFirst().map(p -> p.getLinkConfiguration()).get();
+            List<DomibusConnectorLinkPartner> linkPartners =
+                    getLinkPartners(connector42LinkConfigTo43LinkConfigConverter);
+            DomibusConnectorLinkConfiguration domibusConnectorLinkConfiguration =
+                    linkPartners.stream().findFirst().map(p -> p.getLinkConfiguration()).get();
 
             DCLinkConfigurationField linkConfigPanel = linkConfigurationFieldObjectProvider.getIfAvailable();
             linkConfigPanel.setReadOnly(true);
             linkConfigPanel.setValue(domibusConnectorLinkConfiguration);
             resultArea.add(linkConfigPanel);
 
-            //show partners....
+            // show partners....
             for (DomibusConnectorLinkPartner lp : linkPartners) {
                 DCLinkPartnerField linkPartnerField = linkPartnerFieldObjectProvider.getIfAvailable();
                 linkPartnerField.setReadOnly(true);
@@ -100,21 +105,19 @@ public abstract class ImportOldConfigDialog extends Dialog {
                 resultArea.add(linkPartnerField);
             }
 
-
             Button saveButton = new Button("Save Imported Config");
             saveButton.addClickListener(event -> {
                 this.save(linkPartners, domibusConnectorLinkConfiguration);
             });
             resultArea.add(saveButton);
-
-
         } catch (IOException e) {
             throw new RuntimeException("Unable to parse uploaded file", e);
         }
-
     }
 
-    protected void save(List<DomibusConnectorLinkPartner> linkPartners, DomibusConnectorLinkConfiguration linkConfiguration) {
+    protected void save(
+            List<DomibusConnectorLinkPartner> linkPartners,
+            DomibusConnectorLinkConfiguration linkConfiguration) {
         try {
             dcLinkFacade.createNewLinkConfiguration(linkConfiguration);
             for (DomibusConnectorLinkPartner linkPartner : linkPartners) {
@@ -139,7 +142,7 @@ public abstract class ImportOldConfigDialog extends Dialog {
         }
     }
 
-            //TODO: refactor this...
-    protected abstract List<DomibusConnectorLinkPartner> getLinkPartners(Connector42LinkConfigTo43LinkConfigConverter connector42LinkConfigTo43LinkConfigConverter);
-
+    // TODO: refactor this...
+    protected abstract List<DomibusConnectorLinkPartner> getLinkPartners(
+            Connector42LinkConfigTo43LinkConfigConverter connector42LinkConfigTo43LinkConfigConverter);
 }

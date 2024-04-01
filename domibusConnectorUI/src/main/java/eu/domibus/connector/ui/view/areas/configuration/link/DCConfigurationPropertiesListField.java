@@ -4,39 +4,34 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.binder.*;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.Setter;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.shared.Registration;
 import eu.domibus.connector.ui.utils.field.FindFieldService;
 import eu.domibus.connector.utils.service.BeanToPropertyMapConverter;
 import eu.domibus.connector.utils.service.PropertyMapToBeanConverter;
 import eu.ecodex.utils.configuration.domain.ConfigurationProperty;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 
 import java.util.*;
 
+
 @org.springframework.stereotype.Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class DCConfigurationPropertiesListField extends CustomField<Map<String, String>>
-{
-
-    private static final Logger LOGGER = LogManager.getLogger(eu.ecodex.utils.configuration.ui.vaadin.tools.views.ListConfigurationPropertiesComponent.class);
-
+public class DCConfigurationPropertiesListField extends CustomField<Map<String, String>> {
     private final BeanToPropertyMapConverter beanToPropertyMapConverter;
     private final PropertyMapToBeanConverter propertyMapToBeanConverter;
     private final FindFieldService findFieldService;
     private final javax.validation.Validator jsrValidator;
-//    private final SpringBeanValidationBinderFactory springBeanValidationBinderFactory;
 
-    private VerticalLayout layout = new VerticalLayout();
+    private final VerticalLayout layout = new VerticalLayout();
 
     private List<Class<?>> configurationClasses = new ArrayList<>();
     private Binder<Map<String, String>> binder = new Binder<>();
     private Map<String, String> value;
-    private Map<Class<?>, Component> fields = new HashMap<>();
+    private final Map<Class<?>, Component> fields = new HashMap<>();
     private boolean readOnly;
     private Map<String, String> presentationValue;
 
@@ -59,13 +54,15 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
         updateUI();
     }
 
-    public Map<String, String> getEmptyValue() {
-        return new HashMap<>();
+    @Override
+    public Registration addValueChangeListener(
+            ValueChangeListener<?
+                    super ComponentValueChangeEvent<CustomField<Map<String, String>>, Map<String, String>>> listener) {
+        return super.addValueChangeListener(listener);
     }
 
-    @Override
-    public Registration addValueChangeListener(ValueChangeListener<? super ComponentValueChangeEvent<CustomField<Map<String, String>>, Map<String, String>>> listener) {
-        return super.addValueChangeListener(listener);
+    public Map<String, String> getEmptyValue() {
+        return new HashMap<>();
     }
 
     public Collection<ConfigurationProperty> getConfigurationProperties() {
@@ -83,14 +80,13 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
         updateUI();
     }
 
-
     private void updateUI() {
         layout.removeAll();
         fields.clear();
         binder = new Binder<>();
 
         binder.addValueChangeListener(this::valueChanged);
-        //generate fields
+        // generate fields
         configurationClasses.forEach(this::processConfigCls);
 
         binder.readBean(presentationValue);
@@ -106,16 +102,21 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
         layout.add(field);
 
         binder.forField(field)
-                .withStatusLabel(statusLabel)
-                .bind(
-                    (ValueProvider<Map<String, String>, T>) stringStringMap -> propertyMapToBeanConverter.loadConfigurationOnlyFromMap(stringStringMap, cls, ""),
-                    (Setter<Map<String, String>, T>) (o, o2) -> {
-                        Map<String, String> stringStringMap = beanToPropertyMapConverter.readBeanPropertiesToMap(o2, "");
-                        o.putAll(stringStringMap);
-                    });
-
+              .withStatusLabel(statusLabel)
+              .bind(
+                      (ValueProvider<Map<String, String>, T>) stringStringMap ->
+                              propertyMapToBeanConverter.loadConfigurationOnlyFromMap(
+                                      stringStringMap,
+                                      cls,
+                                      ""
+                              ),
+                      (Setter<Map<String, String>, T>) (o, o2) -> {
+                          Map<String, String> stringStringMap =
+                                  beanToPropertyMapConverter.readBeanPropertiesToMap(o2, "");
+                          o.putAll(stringStringMap);
+                      }
+              );
     }
-
 
     private void valueChanged(ValueChangeEvent<?> valueChangeEvent) {
         Map<String, String> changedValue = new HashMap<>();
@@ -134,7 +135,6 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
         presentationValue = value;
         updateUI();
     }
-
 }
 
 

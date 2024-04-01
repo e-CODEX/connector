@@ -5,7 +5,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
 import eu.domibus.connector.domain.enums.AdvancedElectronicSystemType;
 import eu.domibus.connector.ui.fields.AuthenticationValidationConfigurationField;
 import eu.domibus.connector.ui.fields.SignatureValidationConfigurationField;
@@ -20,24 +19,24 @@ import java.util.stream.Stream;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class BusinessDocumentValidationConfigForm extends FormLayout {
-
     private final TextField country = new TextField();
     private final TextField serviceProvider = new TextField();
-
     private final Select<AdvancedElectronicSystemType> defaultAdvancedSystemType = new Select<>();
     private final Checkbox allowSystemTypeOverrideByClient = new Checkbox();
 
     private final MultiSelectListBox<AdvancedElectronicSystemType> allowedAdvancedSystemTypes;
 
-    //field must be a member to use bind instance fields!
+    // field must be a member to use bind instance fields!
     @SuppressWarnings("FieldCanBeLocal")
     private final SignatureValidationConfigurationField signatureValidation;
     private final AuthenticationValidationConfigurationField authenticationValidation;
 
-    public BusinessDocumentValidationConfigForm(SignatureValidationConfigurationField signatureValidation,
-                                                AuthenticationValidationConfigurationField authenticationValidation) {
+    public BusinessDocumentValidationConfigForm(
+            SignatureValidationConfigurationField signatureValidation,
+            AuthenticationValidationConfigurationField authenticationValidation) {
         allowedAdvancedSystemTypes = new MultiSelectListBox<>();
-        allowedAdvancedSystemTypes.setItems(Stream.of(AdvancedElectronicSystemType.values()).collect(Collectors.toSet()));
+        allowedAdvancedSystemTypes.setItems(Stream.of(AdvancedElectronicSystemType.values())
+                                                  .collect(Collectors.toSet()));
         allowedAdvancedSystemTypes.setWidth("100%");
 
         defaultAdvancedSystemType.setItems(AdvancedElectronicSystemType.values());
@@ -54,6 +53,4 @@ public class BusinessDocumentValidationConfigForm extends FormLayout {
         addFormItem(this.authenticationValidation, "Authentication Based Config");
         addFormItem(this.signatureValidation, "Signature Validation Config");
     }
-
-
 }

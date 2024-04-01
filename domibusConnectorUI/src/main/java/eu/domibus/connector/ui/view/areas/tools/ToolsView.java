@@ -6,8 +6,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.domibus.connector.ui.utils.RoleRequired;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
-import eu.domibus.connector.ui.view.areas.tools.ecxcontainer.ECodexContainerCreatorView;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @UIScope
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @RoleRequired(role = "ADMIN")
 @TabMetadata(title = "Tools", tabGroup = ToolsLayout.TAB_GROUP_NAME)
 public class ToolsView extends VerticalLayout {
-
     public static final String ROUTE = "tools";
 
     public ToolsView() {

@@ -1,7 +1,6 @@
 package eu.domibus.connector.ui.view.areas.configuration;
 
 import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -19,19 +18,20 @@ import com.vaadin.flow.router.AfterNavigationObserver;
 import eu.domibus.connector.common.service.ConfigurationPropertyManagerService;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
-import eu.domibus.connector.ui.view.areas.configuration.security.EcxContainerConfigForm;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 @Component
 public class ConfigurationPanelFactory {
-
     private final ConfigurationPropertyManagerService configurationPropertyManagerService;
     private final SpringBeanValidationBinderFactory springBeanValidationBinderFactory;
 
-    public ConfigurationPanelFactory(ConfigurationPropertyManagerService configurationPropertyManagerService, SpringBeanValidationBinderFactory springBeanValidationBinderFactory) {
+    public ConfigurationPanelFactory(
+            ConfigurationPropertyManagerService configurationPropertyManagerService,
+            SpringBeanValidationBinderFactory springBeanValidationBinderFactory) {
         this.configurationPropertyManagerService = configurationPropertyManagerService;
         this.springBeanValidationBinderFactory = springBeanValidationBinderFactory;
     }
@@ -44,15 +44,13 @@ public class ConfigurationPanelFactory {
         return showChangedPropertiesDialog(boundConfigValue, null);
     }
 
-    public interface DialogCloseCallback {
-        public void dialogHasBeenClosed();
-    }
-
     public Dialog showChangedPropertiesDialog(Object boundConfigValue, DialogCloseCallback dialogCloseCallback) {
-        Map<String, String> updatedConfiguration = configurationPropertyManagerService.getUpdatedConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
-                boundConfigValue);
+        Map<String, String> updatedConfiguration = configurationPropertyManagerService.getUpdatedConfiguration(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                boundConfigValue
+        );
 
-        //use custom callback with overwriting setOpened because, addDialogCloseActionListener does not work
+        // use custom callback with overwriting setOpened because, addDialogCloseActionListener does not work
         final Dialog d = new Dialog() {
             public void setOpened(boolean opened) {
                 super.setOpened(opened);
@@ -68,7 +66,11 @@ public class ConfigurationPanelFactory {
         g.addColumn(Map.Entry::getValue).setHeader("value");
 
         Button saveButton = new Button(VaadinIcon.CHECK.create());
-        saveButton.addClickListener(clickEvent -> saveUpdatedProperties(d, boundConfigValue.getClass(), updatedConfiguration));
+        saveButton.addClickListener(clickEvent -> saveUpdatedProperties(
+                d,
+                boundConfigValue.getClass(),
+                updatedConfiguration
+        ));
 
         Button discardButton = new Button(VaadinIcon.CLOSE.create());
         discardButton.addClickListener(ev -> d.close());
@@ -86,15 +88,22 @@ public class ConfigurationPanelFactory {
         return d;
     }
 
-    //save changed properties and close dialog
-    private void saveUpdatedProperties(Dialog d, Class<?> configurationClazz, Map<String, String> updatedConfiguration) {
+    // save changed properties and close dialog
+    private void saveUpdatedProperties(
+            Dialog d,
+            Class<?> configurationClazz,
+            Map<String, String> updatedConfiguration) {
         configurationPropertyManagerService.updateConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
-                configurationClazz, updatedConfiguration);
+                                                                configurationClazz, updatedConfiguration
+        );
         d.close();
     }
 
-    public class ConfigurationPanel<T> extends VerticalLayout implements AfterNavigationObserver {
+    public interface DialogCloseCallback {
+        void dialogHasBeenClosed();
+    }
 
+    public class ConfigurationPanel<T> extends VerticalLayout implements AfterNavigationObserver {
         private final Label errorField;
         private final FormLayout form;
         private final Class<T> configurationClazz;
@@ -138,13 +147,14 @@ public class ConfigurationPanelFactory {
 
         private void resetButtonClicked(ClickEvent<Button> buttonClickEvent) {
             T currentConfig = readConfigFromPropertyService();
-            binder.readBean(currentConfig); //reset config
+            binder.readBean(currentConfig); // reset config
         }
 
         private T readConfigFromPropertyService() {
             return configurationPropertyManagerService.loadConfiguration(
                     DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
-                    configurationClazz);
+                    configurationClazz
+            );
         }
 
         private void saveChangesButtonClicked(ClickEvent<Button> buttonClickEvent) {
@@ -154,23 +164,19 @@ public class ConfigurationPanelFactory {
                 try {
                     binder.writeBean(this.boundConfigValue);
                 } catch (ValidationException e) {
-                    //should not occur since validate.isOk()
+                    // should not occur since validate.isOk()
                     throw new RuntimeException(e);
                 }
 
                 showChangedPropertiesDialog(boundConfigValue);
-
             } else {
                 Notification.show("Error, cannot save due:\n" + validate.getBeanValidationErrors()
-                        .stream()
-                        .map(vr -> vr.getErrorMessage())
-                        .collect(Collectors.joining("\n"))
+                                                                        .stream()
+                                                                        .map(vr -> vr.getErrorMessage())
+                                                                        .collect(Collectors.joining("\n"))
                 );
             }
-
         }
-
-
 
         @Override
         public void afterNavigation(AfterNavigationEvent event) {
@@ -179,9 +185,7 @@ public class ConfigurationPanelFactory {
 
         public void refreshUI() {
             this.boundConfigValue = readConfigFromPropertyService();
-            binder.setBean(boundConfigValue); //bind bean
+            binder.setBean(boundConfigValue); // bind bean
         }
     }
-
-
 }

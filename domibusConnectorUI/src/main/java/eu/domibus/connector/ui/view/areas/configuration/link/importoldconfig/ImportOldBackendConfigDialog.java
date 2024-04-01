@@ -15,23 +15,29 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Lazy
 public class ImportOldBackendConfigDialog extends ImportOldConfigDialog {
-
-
-    public ImportOldBackendConfigDialog(ObjectProvider<DCLinkConfigurationField> linkConfigurationFieldObjectProvider,
-                                        ObjectProvider<DCLinkPartnerField> linkPartnerFieldObjectProvider,
-                                        BeanToPropertyMapConverter beanToPropertyMapConverter,
-                                        DCLinkFacade dcLinkFacade,
-                                        JdbcTemplate jdbcTemplate) {
-        super(linkConfigurationFieldObjectProvider, linkPartnerFieldObjectProvider, beanToPropertyMapConverter, dcLinkFacade, jdbcTemplate);
+    public ImportOldBackendConfigDialog(
+            ObjectProvider<DCLinkConfigurationField> linkConfigurationFieldObjectProvider,
+            ObjectProvider<DCLinkPartnerField> linkPartnerFieldObjectProvider,
+            BeanToPropertyMapConverter beanToPropertyMapConverter,
+            DCLinkFacade dcLinkFacade,
+            JdbcTemplate jdbcTemplate) {
+        super(
+                linkConfigurationFieldObjectProvider,
+                linkPartnerFieldObjectProvider,
+                beanToPropertyMapConverter,
+                dcLinkFacade,
+                jdbcTemplate
+        );
     }
 
     @Override
-    protected List<DomibusConnectorLinkPartner> getLinkPartners(Connector42LinkConfigTo43LinkConfigConverter connector42LinkConfigTo43LinkConfigConverter) {
+    protected List<DomibusConnectorLinkPartner> getLinkPartners(
+            Connector42LinkConfigTo43LinkConfigConverter connector42LinkConfigTo43LinkConfigConverter) {
         return connector42LinkConfigTo43LinkConfigConverter.getBackendPartners();
     }
-
 }

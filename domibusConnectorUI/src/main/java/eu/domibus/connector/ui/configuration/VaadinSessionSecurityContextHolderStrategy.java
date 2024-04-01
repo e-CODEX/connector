@@ -6,16 +6,21 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.context.SecurityContextImpl;
 
-//import com.vaadin.server.VaadinSession;
 
 /**
  * A custom {@link SecurityContextHolderStrategy} that stores the {@link SecurityContext} in the Vaadin Session.
  */
 public class VaadinSessionSecurityContextHolderStrategy implements SecurityContextHolderStrategy {
+    private static VaadinSession getSession() {
+        VaadinSession session = SpringVaadinSession.getCurrent();
+        if (session == null) {
+            throw new IllegalStateException("No VaadinSession bound to current thread");
+        }
+        return session;
+    }
 
     @Override
     public void clearContext() {
-
         getSession().setAttribute(SecurityContext.class, null);
     }
 
@@ -38,13 +43,5 @@ public class VaadinSessionSecurityContextHolderStrategy implements SecurityConte
     @Override
     public SecurityContext createEmptyContext() {
         return new SecurityContextImpl();
-    }
-
-    private static VaadinSession getSession() {
-        VaadinSession session = SpringVaadinSession.getCurrent();
-        if (session == null) {
-            throw new IllegalStateException("No VaadinSession bound to current thread");
-        }
-        return session;
     }
 }

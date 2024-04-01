@@ -5,8 +5,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import eu.domibus.connector.controller.routing.RoutingRule;
 import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.service.DCLinkFacade;
@@ -19,10 +17,10 @@ import java.util.stream.Collectors;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+
 @Component
 @Scope(SCOPE_PROTOTYPE)
 public class RoutingRuleForm extends FormLayout {
-
     private final DCLinkFacade dcLinkFacade;
     private final WebPModeService webPModeService;
 
@@ -62,12 +60,11 @@ public class RoutingRuleForm extends FormLayout {
         routingRuleId = new TextField("RoutingRuleId");
         routingRuleId.setReadOnly(true);
         this.add(routingRuleId);
-
     }
 
-
     private ComboBox<String> getBackendNameEditorComponent() {
-        Set<String> collect = dcLinkFacade.getAllLinksOfType(LinkType.BACKEND)
+        Set<String> collect = dcLinkFacade
+                .getAllLinksOfType(LinkType.BACKEND)
                 .stream()
                 .map(DomibusConnectorLinkPartner::getLinkPartnerName)
                 .map(DomibusConnectorLinkPartner.LinkPartnerName::getLinkName)
@@ -79,12 +76,11 @@ public class RoutingRuleForm extends FormLayout {
             comboBox.setValue(event.getDetail());
         });
 
-//        if (StringUtils.hasText(routingRule.getLinkName())) {
-//            collect.add(routingRule.getLinkName()); //add current value...
-//            comboBox.setValue(routingRule.getLinkName());
-//        }
+        //        if (StringUtils.hasText(routingRule.getLinkName())) {
+        //            collect.add(routingRule.getLinkName()); //add current value...
+        //            comboBox.setValue(routingRule.getLinkName());
+        //        }
 
         return comboBox;
     }
-
 }

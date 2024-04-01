@@ -5,10 +5,11 @@ import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
 
+import java.util.Objects;
 import java.util.Optional;
 
-public abstract class WebLinkItem {
 
+public abstract class WebLinkItem {
     private LinkPlugin linkPlugin;
 
     public DomibusConnectorLinkPartner getLinkPartner() {
@@ -57,18 +58,18 @@ public abstract class WebLinkItem {
         }
 
         @Override
+        public int hashCode() {
+            return linkConfiguration != null ? linkConfiguration.hashCode() : 0;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof WebLinkConfigurationItem)) return false;
 
             WebLinkConfigurationItem that = (WebLinkConfigurationItem) o;
 
-            return linkConfiguration != null ? linkConfiguration.equals(that.linkConfiguration) : that.linkConfiguration == null;
-        }
-
-        @Override
-        public int hashCode() {
-            return linkConfiguration != null ? linkConfiguration.hashCode() : 0;
+            return Objects.equals(linkConfiguration, that.linkConfiguration);
         }
     }
 
@@ -99,19 +100,18 @@ public abstract class WebLinkItem {
         }
 
         @Override
+        public int hashCode() {
+            return linkPartner != null ? linkPartner.hashCode() : 0;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof WebLinkPartnerItem)) return false;
 
             WebLinkPartnerItem that = (WebLinkPartnerItem) o;
 
-            return linkPartner != null ? linkPartner.equals(that.linkPartner) : that.linkPartner == null;
-        }
-
-        @Override
-        public int hashCode() {
-            return linkPartner != null ? linkPartner.hashCode() : 0;
+            return Objects.equals(linkPartner, that.linkPartner);
         }
     }
-
 }

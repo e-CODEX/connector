@@ -5,9 +5,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class FindFieldService {
-
     private final ApplicationContext applicationContext;
 
     public FindFieldService(ApplicationContext applicationContext) {
@@ -22,5 +22,4 @@ public class FindFieldService {
         }
         return (CustomField<T>) applicationContext.getBean(beanNamesForType[0]);
     }
-
 }

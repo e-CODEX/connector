@@ -9,23 +9,22 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import eu.domibus.connector.lib.spring.configuration.StoreConfigurationProperties;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
-
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Component
 public class StoreConfigurationField extends CustomField<StoreConfigurationProperties> {
+    private final Label statusLabel = new Label();
+    private final FormLayout formLayout = new FormLayout();
 
-    private Label statusLabel = new Label();
-    private FormLayout formLayout = new FormLayout();
+    private final TextField path = new TextField();
+    private final PasswordField password = new PasswordField();
+    private final Select<String> type = new Select();
 
-    private TextField path = new TextField();
-    private PasswordField password = new PasswordField();
-    private Select<String> type = new Select();
-
-    private Binder<StoreConfigurationProperties> binder;
+    private final Binder<StoreConfigurationProperties> binder;
     private StoreConfigurationProperties value;
 
     public StoreConfigurationField(SpringBeanValidationBinderFactory validationBinderFactory) {
@@ -33,9 +32,13 @@ public class StoreConfigurationField extends CustomField<StoreConfigurationPrope
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
 
-        //TODO: add button to show content of key/truststore
+        // TODO: add button to show content of key/truststore
         formLayout.addFormItem(path, "Store Location");
         formLayout.addFormItem(password, "Store password");
         formLayout.addFormItem(type, "Store Type");
@@ -45,7 +48,6 @@ public class StoreConfigurationField extends CustomField<StoreConfigurationPrope
         binder.bindInstanceFields(this);
         binder.addValueChangeListener(this::valueChanged);
         binder.setStatusLabel(statusLabel);
-
     }
 
     @Override
@@ -62,7 +64,6 @@ public class StoreConfigurationField extends CustomField<StoreConfigurationPrope
         value = changedValue;
     }
 
-
     @Override
     protected StoreConfigurationProperties generateModelValue() {
         return value;
@@ -71,10 +72,6 @@ public class StoreConfigurationField extends CustomField<StoreConfigurationPrope
     @Override
     protected void setPresentationValue(StoreConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
 }

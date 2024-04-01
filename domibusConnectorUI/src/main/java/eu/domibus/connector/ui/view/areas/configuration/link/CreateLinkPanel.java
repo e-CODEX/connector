@@ -1,6 +1,8 @@
 package eu.domibus.connector.ui.view.areas.configuration.link;
 
-import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.notification.Notification;
@@ -24,18 +26,17 @@ import eu.domibus.connector.ui.view.areas.configuration.link.wizard.CreateLinkPa
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import java.time.Duration;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
+
 @Scope(SCOPE_PROTOTYPE)
 @org.springframework.stereotype.Component
 @Route("createlink")
 public class CreateLinkPanel extends VerticalLayout {
-
     private static final Logger LOGGER = LogManager.getLogger(CreateLinkPanel.class);
 
     private final DCLinkPersistenceService dcLinkPersistenceService;
@@ -43,12 +44,18 @@ public class CreateLinkPanel extends VerticalLayout {
     private final ObjectProvider<CreateLinkPartnerStep> createLinkPartnerStepProvider;
     private final ObjectProvider<CreateLinkConfigurationStep> createLinkConfigurationStepProvider;
     private LinkType linkType;
+    private WizardComponent wizard;
+    private Dialog parentDialog;
+    private final Binder<LnkConfigItem> linkConfigItemBinder = new Binder<>();
+    private LnkConfigItem linkConfigItem;
+    private DomibusConnectorLinkConfiguration linkConfiguration;
+    private DomibusConnectorLinkPartner linkPartner;
 
     public CreateLinkPanel(
-                           DCLinkPersistenceService dcLinkPersistenceService,
-                           DCLinkFacade dcLinkFacade,
-                           ObjectProvider<CreateLinkPartnerStep> createLinkPartnerStepProvider,
-                           ObjectProvider<CreateLinkConfigurationStep> createLinkConfigurationStepProvider
+            DCLinkPersistenceService dcLinkPersistenceService,
+            DCLinkFacade dcLinkFacade,
+            ObjectProvider<CreateLinkPartnerStep> createLinkPartnerStepProvider,
+            ObjectProvider<CreateLinkConfigurationStep> createLinkConfigurationStepProvider
     ) {
         this.dcLinkFacade = dcLinkFacade;
         this.createLinkPartnerStepProvider = createLinkPartnerStepProvider;
@@ -56,14 +63,6 @@ public class CreateLinkPanel extends VerticalLayout {
         this.dcLinkPersistenceService = dcLinkPersistenceService;
         init();
     }
-
-    private WizardComponent wizard;
-    private Dialog parentDialog;
-
-    private Binder<LnkConfigItem> linkConfigItemBinder = new Binder<>();
-    private LnkConfigItem linkConfigItem;
-    private DomibusConnectorLinkConfiguration linkConfiguration;
-    private DomibusConnectorLinkPartner linkPartner;
 
     private void init() {
         linkConfigItem = new LnkConfigItem();
@@ -83,33 +82,34 @@ public class CreateLinkPanel extends VerticalLayout {
         return this.linkType;
     }
 
-    private void initUI() {
-        //TODO: use binder...
+    public void setLinkType(LinkType linkType) {
+        this.linkType = linkType;
+    }
 
+    private void initUI() {
+        // TODO: use binder...
         ChooseImplStep chooseImplStep = new ChooseImplStep(dcLinkFacade, linkConfigItemBinder);
 
-
-
-
         CreateLinkConfigurationStep createLinkConfigurationStep = createLinkConfigurationStepProvider.getObject();
-        linkConfigItemBinder.bind(createLinkConfigurationStep,
+        linkConfigItemBinder.bind(
+                createLinkConfigurationStep,
                 (ValueProvider<LnkConfigItem, DomibusConnectorLinkConfiguration>) LnkConfigItem::getLinkConfiguration,
                 (Setter<LnkConfigItem, DomibusConnectorLinkConfiguration>) LnkConfigItem::setLinkConfiguration
         );
 
         CreateLinkPartnerStep createLinkPartnerStep = createLinkPartnerStepProvider.getObject();
-        linkConfigItemBinder.bind(createLinkPartnerStep,
+        linkConfigItemBinder.bind(
+                createLinkPartnerStep,
                 (ValueProvider<LnkConfigItem, DomibusConnectorLinkPartner>) LnkConfigItem::getLinkPartner,
                 (Setter<LnkConfigItem, DomibusConnectorLinkPartner>) LnkConfigItem::setLinkPartner
         );
 
-
         wizard = WizardComponent.getBuilder()
-                .addStep(chooseImplStep)
-                .addStep(createLinkConfigurationStep)
-                .addStep(createLinkPartnerStep)
-                .addFinishedListener(this::wizardFinished)
-                .build();
+                                .addStep(chooseImplStep)
+                                .addStep(createLinkConfigurationStep)
+                                .addStep(createLinkPartnerStep)
+                                .addFinishedListener(this::wizardFinished)
+                                .build();
         add(wizard);
     }
 
@@ -124,9 +124,17 @@ public class CreateLinkPanel extends VerticalLayout {
             dcLinkPersistenceService.addLinkPartner(linkPartner);
         } catch (RuntimeException e) {
             LOGGER.error("Exception occured while creating a new Link Configuration", e);
-            Notification.show("No Link Configuration was created due: " + e.getMessage(), (int) Duration.ofSeconds(5).toMillis(), Notification.Position.TOP_CENTER);
+            Notification.show(
+                    "No Link Configuration was created due: " + e.getMessage(),
+                    (int) Duration.ofSeconds(5).toMillis(),
+                    Notification.Position.TOP_CENTER
+            );
         }
-        Notification.show("New LinkPartner configuration successfully created", (int) Duration.ofSeconds(5).toMillis(), Notification.Position.TOP_CENTER);
+        Notification.show(
+                "New LinkPartner configuration successfully created",
+                (int) Duration.ofSeconds(5).toMillis(),
+                Notification.Position.TOP_CENTER
+        );
         if (parentDialog != null) {
             parentDialog.close();
         }
@@ -136,13 +144,7 @@ public class CreateLinkPanel extends VerticalLayout {
         return this.wizard;
     }
 
-    public void setLinkType(LinkType linkType) {
-        this.linkType = linkType;
-    }
-
-
     public static class ChooseOrCreateLinkConfigurationStep extends VerticalLayout implements WizardStep {
-
         private static final Logger LOGGER = LogManager.getLogger(ChooseOrCreateLinkConfigurationStep.class);
         private static final String EXISTING_LINK_CONFIG = "Use existing Link Configuration";
         private static final String NEW_LINK_CONFIG = "Create new Link Configuration";
@@ -154,25 +156,18 @@ public class CreateLinkPanel extends VerticalLayout {
 
         public ChooseOrCreateLinkConfigurationStep() {
             initUI();
-
-//            linkConfigPanel.setNewConfiguration(true);
         }
 
-
-
         private void initUI() {
-
-
-
-            //the radio button group to switch mode between new or existing link config
+            // the radio button group to switch mode between new or existing link config
             newLinkConfiguration.setItems(EXISTING_LINK_CONFIG, NEW_LINK_CONFIG);
             newLinkConfiguration.setValue(NEW_LINK_CONFIG);
             newLinkConfiguration.addValueChangeListener(this::newExistingLinkConfigChanged);
 
-            //choose an existing link configuration
+            // choose an existing link configuration
             linkConfigurationChooser.addValueChangeListener(this::linkConfigChanged);
             linkConfigurationChooser.setAllowCustomValue(false);
-//            linkConfigurationChooser.setItems(dcLinkPersistenceService.getAllLinkConfigurations());
+            //            linkConfigurationChooser.setItems(dcLinkPersistenceService.getAllLinkConfigurations());
             linkConfigurationChooser.setRequired(true);
             linkConfigurationChooser.setItemLabelGenerator(item -> {
                 if (item != null) {
@@ -180,10 +175,6 @@ public class CreateLinkPanel extends VerticalLayout {
                 }
                 return "No Configuration set";
             });
-
-            //the link configuration panel
-//            linkConfigPanel = applicationContext.getBean(DCLinkConfigurationField.class);
-//            linkConfigPanel.setValue(linkConfiguration);
 
             add(newLinkConfiguration);
             add(linkConfigurationChooser);
@@ -197,11 +188,10 @@ public class CreateLinkPanel extends VerticalLayout {
                 linkConfigPanel.setReadOnly(false);
                 linkConfigurationChooser.setReadOnly(true);
                 DomibusConnectorLinkConfiguration newLinkConfig = new DomibusConnectorLinkConfiguration();
-//                linkPartner.setLinkConfiguration(newLinkConfig);
+                //                linkPartner.setLinkConfiguration(newLinkConfig);
                 newLinkConfig.setConfigName(new DomibusConnectorLinkConfiguration.LinkConfigName("changeme"));
-//                linkConfiguration = newLinkConfig;
-//                linkConfigPanel.setValue(linkConfiguration);
-
+                //                linkConfiguration = newLinkConfig;
+                //                linkConfigPanel.setValue(linkConfiguration);
             } else if (EXISTING_LINK_CONFIG.equals(valueChangeEvent.getValue())) {
                 linkConfigPanel.setReadOnly(true);
                 linkConfigurationChooser.setReadOnly(false);
@@ -210,13 +200,7 @@ public class CreateLinkPanel extends VerticalLayout {
 
         private void linkConfigChanged(AbstractField.ComponentValueChangeEvent<ComboBox<DomibusConnectorLinkConfiguration>, DomibusConnectorLinkConfiguration> changeEvent) {
             DomibusConnectorLinkConfiguration value = changeEvent.getValue();
-            if (value != null) {
-//                linkConfiguration = value;
-//                linkConfigPanel.setValue(linkConfiguration);
-                linkConfigPanel.setVisible(true);
-            } else {
-                linkConfigPanel.setVisible(false);
-            }
+            linkConfigPanel.setVisible(value != null);
         }
 
         @Override
@@ -224,46 +208,13 @@ public class CreateLinkPanel extends VerticalLayout {
             return this;
         }
 
-
-
-        @Override
-        public void onForward(Command success) {
-//            BinderValidationStatus<DomibusConnectorLinkConfiguration> validate;
-//            validate = linkConfigPanel.validate();
-//
-//            if (validate.hasErrors()) {
-//                String errorMessages = validate.getValidationErrors()
-//                        .stream()
-//                        .map(ValidationResult::getErrorMessage)
-//                        .collect(Collectors.joining(","));
-//                ConfirmDialogBuilder.getBuilder()
-//                        .setMessage(errorMessages)
-//                        .setOnConfirmCallback(() -> {
-//                            linkConfigPanel.writeBeanAsDraft(linkConfiguration);
-//                            success.execute();
-//                        })
-//                        .setOnCancelCallback(() -> {
-//                            LOGGER.debug("Saving with errors has been canceled!");
-//                        })
-//                        .show();
-//            } else {
-//                try {
-//                    linkConfigPanel.writeBean(linkConfiguration);
-//                    success.execute();
-//
-//                } catch (ValidationException e) {
-//                    LOGGER.error("Validation Exception", e);
-//
-//                }
-//            }
-        }
-
         @Override
         public String getStepTitle() {
             return "Configure Link Implementation";
         }
+
+        @Override
+        public void onForward(Command success) {
+        }
     }
-
-
-
 }

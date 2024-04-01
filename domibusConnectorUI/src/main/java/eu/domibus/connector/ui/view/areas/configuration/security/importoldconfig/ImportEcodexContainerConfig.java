@@ -13,16 +13,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Lazy
 public class ImportEcodexContainerConfig extends AImportOldConfigDialog {
-
-
     private final ObjectProvider<EcxContainerConfigForm> formFactory;
 
-    public ImportEcodexContainerConfig(ConfigurationPanelFactory configurationPanelFactory,
-                                   ObjectProvider<EcxContainerConfigForm> formFactory) {
+    public ImportEcodexContainerConfig(
+            ConfigurationPanelFactory configurationPanelFactory,
+            ObjectProvider<EcxContainerConfigForm> formFactory) {
         super(configurationPanelFactory);
         this.formFactory = formFactory;
     }
@@ -42,6 +42,4 @@ public class ImportEcodexContainerConfig extends AImportOldConfigDialog {
 
         return properties;
     }
-
-
 }

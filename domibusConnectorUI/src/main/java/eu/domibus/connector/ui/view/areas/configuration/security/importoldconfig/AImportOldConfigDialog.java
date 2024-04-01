@@ -1,6 +1,5 @@
 package eu.domibus.connector.ui.view.areas.configuration.security.importoldconfig;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
@@ -20,20 +19,14 @@ import java.util.stream.Collectors;
 
 
 public abstract class AImportOldConfigDialog extends Dialog {
-
-    private static final Logger LOGGER = LogManager.getLogger(AImportOldConfigDialog.class);
-
     private final ConfigurationPanelFactory configurationPanelFactory;
-
     private ConfigurationPanelFactory.DialogCloseCallback dialogCloseCallback;
-
-    private VerticalLayout layout = new VerticalLayout();
-    //upload result area
-    private VerticalLayout resultArea = new VerticalLayout();
-    //Upload
-    private MemoryBuffer buffer = new MemoryBuffer();
-    private Upload upload = new Upload(buffer);
-
+    private final VerticalLayout layout = new VerticalLayout();
+    // upload result area
+    private final VerticalLayout resultArea = new VerticalLayout();
+    // Upload
+    private final MemoryBuffer buffer = new MemoryBuffer();
+    private final Upload upload = new Upload(buffer);
 
     public AImportOldConfigDialog(ConfigurationPanelFactory configurationPanelFactory) {
         this.configurationPanelFactory = configurationPanelFactory;
@@ -62,25 +55,25 @@ public abstract class AImportOldConfigDialog extends Dialog {
             Properties properties = new Properties();
             properties.load(inputStream);
             Map<String, String> p = properties.entrySet().stream()
-                    .collect(Collectors.toMap(e -> e.getKey().toString(), e -> e.getValue().toString()));
+                                              .collect(Collectors.toMap(
+                                                      e -> e.getKey().toString(),
+                                                      e -> e.getValue().toString()
+                                              ));
 
-            //show imported config...
+            // show imported config...
             Div div = new Div();
             Object configBean = showImportedConfig(div, p);
 
-            //add save button...
+            // add save button...
             Button saveButton = new Button("Save Imported Config");
             saveButton.addClickListener(event -> {
                 this.save(configBean);
             });
             resultArea.add(saveButton);
             resultArea.add(div);
-
-
         } catch (IOException e) {
             throw new RuntimeException("Unable to parse uploaded file", e);
         }
-
     }
 
     protected abstract Object showImportedConfig(Div div, Map<String, String> p);
@@ -99,5 +92,4 @@ public abstract class AImportOldConfigDialog extends Dialog {
             dialogCloseCallback.dialogHasBeenClosed();
         }
     }
-
 }

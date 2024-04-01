@@ -20,22 +20,19 @@ import eu.domibus.connector.ui.view.areas.messages.MessageOverview;
 import eu.domibus.connector.ui.view.areas.monitoring.JmsMonitoringView;
 import eu.domibus.connector.ui.view.areas.pmodes.PmodeOverview;
 import eu.domibus.connector.ui.view.areas.testing.ConnectorTestsOverview;
-import eu.domibus.connector.ui.view.areas.tools.ToolsLayout;
 import eu.domibus.connector.ui.view.areas.tools.ToolsView;
 import eu.domibus.connector.ui.view.areas.users.UserOverview;
+
 
 @UIScope
 @org.springframework.stereotype.Component
 @Push
 public class DCMainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
-
-    private Tabs tabs;
-    private DCTabHandler tabManager = new DCTabHandler();
+    private final Tabs tabs;
+    private final DCTabHandler tabManager = new DCTabHandler();
 
     public DCMainLayout(DomibusConnectorAdminHeader header) {
-
         setPrimarySection(Section.DRAWER);
-
         VerticalLayout topBar = new VerticalLayout();
         topBar.add(header);
         addToNavbar(topBar);
@@ -65,18 +62,17 @@ public class DCMainLayout extends AppLayout implements RouterLayout, BeforeEnter
                 .withIcon(new Icon(VaadinIcon.DASHBOARD))
                 .addForComponent(JmsMonitoringView.class);
 
-
         tabManager
                 .createTab()
                 .withLabel("Users")
                 .withIcon(new Icon(VaadinIcon.USERS))
                 .addForComponent(UserOverview.class);
-        
+
         tabManager
-        		.createTab()
-        		.withLabel("Connector Tests")
-        		.withIcon(new Icon(VaadinIcon.MAILBOX))
-        		.addForComponent(ConnectorTestsOverview.class);
+                .createTab()
+                .withLabel("Connector Tests")
+                .withIcon(new Icon(VaadinIcon.MAILBOX))
+                .addForComponent(ConnectorTestsOverview.class);
 
         tabManager
                 .createTab()
@@ -106,8 +102,6 @@ public class DCMainLayout extends AppLayout implements RouterLayout, BeforeEnter
         tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
 
         topBar.add(tabs);
-
-//        addToDrawer(menuTabs);
     }
 
     public void beforeEnter(BeforeEnterEvent event) {

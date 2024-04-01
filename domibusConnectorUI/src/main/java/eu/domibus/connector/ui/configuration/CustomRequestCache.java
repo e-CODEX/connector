@@ -1,10 +1,10 @@
 package eu.domibus.connector.ui.configuration;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * HttpSessionRequestCache that avoids saving internal framework requests.
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 class CustomRequestCache extends HttpSessionRequestCache {
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * If the method is considered an internal request from the framework, we skip
      * saving it.
      *
@@ -24,5 +24,4 @@ class CustomRequestCache extends HttpSessionRequestCache {
             super.saveRequest(request, response);
         }
     }
-
 }

@@ -8,8 +8,8 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.server.Command;
 import org.springframework.util.StringUtils;
 
-public class ConfirmDialogBuilder {
 
+public class ConfirmDialogBuilder {
     private String messageText;
     private Command onConfirmCallback;
     private Command onCancelCallback;
@@ -42,7 +42,6 @@ public class ConfirmDialogBuilder {
             throw new IllegalArgumentException("Message Text is not allowed to be null!");
         }
 
-
         Dialog dialog = new Dialog();
         dialog.add(new Text("The Form contains errors"));
         dialog.setCloseOnEsc(false);
@@ -72,6 +71,5 @@ public class ConfirmDialogBuilder {
 
         dialog.open();
     }
-
 }
 

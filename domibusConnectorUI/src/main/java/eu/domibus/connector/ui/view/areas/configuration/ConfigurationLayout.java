@@ -15,7 +15,6 @@ import eu.domibus.connector.persistence.service.DomibusConnectorPropertiesPersis
 import eu.domibus.connector.ui.layout.DCMainLayout;
 import eu.domibus.connector.ui.utils.DCTabHandler;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -29,58 +28,51 @@ import java.util.Objects;
 @RoutePrefix(ConfigurationLayout.ROUTE)
 @ParentLayout(DCMainLayout.class)
 public class ConfigurationLayout extends VerticalLayout implements BeforeEnterObserver, RouterLayout {
-
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLayout.class);
     public static final String ROUTE = "configuration";
     public static final String TAB_GROUP_NAME = "Configuration";
-
-    protected final static Logger LOGGER = LoggerFactory.getLogger(ConfigurationLayout.class);
-    private Div pageContent;
-
-    Button saveConfiguration;
-    Button resetConfiguration;
-    Button reloadConfiguration;
-
-    private DCTabHandler DCTabHandler = new DCTabHandler();
-
 
     private final DomibusConnectorPropertiesPersistenceService propertiesPersistenceService;
     private final ConfigurationUtil util;
     private final ApplicationContext applicationContext;
+    Button saveConfiguration;
+    Button resetConfiguration;
+    Button reloadConfiguration;
+    private Div pageContent;
+    private final DCTabHandler DCTabHandler = new DCTabHandler();
 
-    public ConfigurationLayout(DomibusConnectorPropertiesPersistenceService propertiesPersistenceService, ConfigurationUtil util, ApplicationContext applicationContext) {
+    public ConfigurationLayout(
+            DomibusConnectorPropertiesPersistenceService propertiesPersistenceService,
+            ConfigurationUtil util,
+            ApplicationContext applicationContext) {
         this.propertiesPersistenceService = propertiesPersistenceService;
         this.util = util;
         this.applicationContext = applicationContext;
     }
 
-
     @PostConstruct
     public void init() {
-
         DCTabHandler.createTabs(applicationContext, TAB_GROUP_NAME);
 
         pageContent = new Div();
         pageContent.setSizeFull();
 
-//        add(createConfigurationButtonBar()); //deactivated, because does not work
+        //        add(createConfigurationButtonBar()); //deactivated, because does not work
         add(DCTabHandler.getTabs(), pageContent);
 
         this.expand(pageContent);
         this.setHeight("80vh");
     }
 
-
     public void showRouterLayoutContent(HasElement content) {
         if (content != null) {
             pageContent.getElement()
-                    .appendChild(Objects.requireNonNull(content.getElement()));
+                       .appendChild(Objects.requireNonNull(content.getElement()));
         }
     }
 
-
     private HorizontalLayout createConfigurationButtonBar() {
         HorizontalLayout configurationButtonBar = new HorizontalLayout();
-
 
         Div reset = new Div();
         String resetActionText = "Discard Changes";
@@ -114,8 +106,10 @@ public class ConfigurationLayout extends VerticalLayout implements BeforeEnterOb
             Dialog confirmDialog = createConfigurationConfirmDialog(
                     saveActionText,
                     confirmButton,
-                    "All changed configuration properties will be saved into the database table DOMIBUS_CONNECTOR_PROPERTIES.",
-                    "Be aware that changes to the configuration except backend client configuration will only take effect after restart of the domibusConnector.",
+                    "All changed configuration properties will be saved into the database table " +
+                            "DOMIBUS_CONNECTOR_PROPERTIES.",
+                    "Be aware that changes to the configuration except backend client configuration will only take " +
+                            "effect after restart of the domibusConnector.",
                     "Also take note that the configured properties in the property files will NOT be changed!"
             );
             confirmButton.addClickListener(e2 -> {
@@ -138,9 +132,14 @@ public class ConfigurationLayout extends VerticalLayout implements BeforeEnterOb
             Dialog confirmDialog = createConfigurationConfirmDialog(
                     reloadActionText,
                     confirmButton,
-                    "All configuration properties will be reloaded to the state they had when the domibusConnector was started the last time.",
-                    "Be aware that this also effects configuration properties that have already been changed and saved since the last start of the domibusConnector!",
-                    "If there are changed properties that are already saved, those changes will be reset in the database to the status of the last startup as well."
+                    "All configuration properties will be reloaded to the state they had when the domibusConnector " +
+                            "was" +
+                            " started the last time.",
+                    "Be aware that this also effects configuration properties that have already been changed and " +
+                            "saved" +
+                            " since the last start of the domibusConnector!",
+                    "If there are changed properties that are already saved, those changes will be reset in the " +
+                            "database to the status of the last startup as well."
             );
             confirmButton.addClickListener(e2 -> {
                 util.reloadConfiguration();
@@ -164,7 +163,6 @@ public class ConfigurationLayout extends VerticalLayout implements BeforeEnterOb
 
     private Dialog createConfigurationConfirmDialog(String headerString, Button confirmButton, String... infoStrings) {
         Dialog confirmDialog = new Dialog();
-
         Div headerContent = new Div();
         Label header = new Label(headerString);
         header.getStyle().set("font-weight", "bold");
@@ -205,17 +203,13 @@ public class ConfigurationLayout extends VerticalLayout implements BeforeEnterOb
         return confirmDialog;
     }
 
-
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         DCTabHandler.beforeEnter(event);
-
-//        boolean enabled = SecurityUtils.isUserInRole(UserRole.ADMIN.toString());
-//        saveConfiguration.setEnabled(enabled);
-//        reloadConfiguration.setEnabled(enabled);
-//        resetConfiguration.setEnabled(enabled);
+        //        boolean enabled = SecurityUtils.isUserInRole(UserRole.ADMIN.toString());
+        //        saveConfiguration.setEnabled(enabled);
+        //        reloadConfiguration.setEnabled(enabled);
+        //        resetConfiguration.setEnabled(enabled);
 
     }
-
-
 }

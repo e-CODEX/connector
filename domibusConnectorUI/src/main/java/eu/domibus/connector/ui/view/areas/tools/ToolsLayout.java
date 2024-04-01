@@ -15,21 +15,19 @@ import org.springframework.context.ApplicationContext;
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 
+
 @UIScope
 @org.springframework.stereotype.Component
 @RoutePrefix(ToolsLayout.ROUTE)
 @ParentLayout(DCMainLayout.class)
 public class ToolsLayout extends VerticalLayout implements BeforeEnterObserver, RouterLayout {
-
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationLayout.class);
     public static final String ROUTE = "tools";
     public static final String TAB_GROUP_NAME = "Tools";
 
-    protected final static Logger LOGGER = LoggerFactory.getLogger(ConfigurationLayout.class);
-
     private final ApplicationContext applicationContext;
-
     private Div pageContent;
-    private eu.domibus.connector.ui.utils.DCTabHandler DCTabHandler = new DCTabHandler();
+    private final eu.domibus.connector.ui.utils.DCTabHandler DCTabHandler = new DCTabHandler();
 
     public ToolsLayout(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -48,11 +46,9 @@ public class ToolsLayout extends VerticalLayout implements BeforeEnterObserver, 
         this.setHeight("80vh");
     }
 
-
     public void showRouterLayoutContent(HasElement content) {
         if (content != null) {
-            pageContent.getElement()
-                    .appendChild(Objects.requireNonNull(content.getElement()));
+            pageContent.getElement().appendChild(Objects.requireNonNull(content.getElement()));
         }
     }
 
@@ -60,5 +56,4 @@ public class ToolsLayout extends VerticalLayout implements BeforeEnterObserver, 
     public void beforeEnter(BeforeEnterEvent event) {
         DCTabHandler.beforeEnter(event);
     }
-
 }

@@ -1,18 +1,14 @@
 package eu.domibus.connector.ui.dialogs;
 
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.Command;
-import org.springframework.util.StringUtils;
+
 
 public class EditBeanDialogBuilder<T> {
-
     private Command onConfirmCallback;
     private Command onCancelCallback;
     private ValueCallback<T> onValueCallback;
@@ -21,11 +17,6 @@ public class EditBeanDialogBuilder<T> {
     private CustomField<T> field;
     private boolean closeOnEscape;
 
-
-    public interface ValueCallback<T> {
-        boolean onValue(T o);
-    }
-
     private EditBeanDialogBuilder() {
     }
 
@@ -33,9 +24,8 @@ public class EditBeanDialogBuilder<T> {
         return new EditBeanDialogBuilder<>();
     }
 
-
     public EditBeanDialogBuilder<T> setCloseOnEscape(boolean b) {
-        this.closeOnEscape =  b;
+        this.closeOnEscape = b;
         return this;
     }
 
@@ -60,12 +50,7 @@ public class EditBeanDialogBuilder<T> {
     }
 
     public void show() {
-//        if (StringUtils.isEmpty(messageText)) {
-//            throw new IllegalArgumentException("Message Text is not allowed to be null!");
-//        }
-
         Dialog dialog = new Dialog();
-//        dialog.add(new Text("The Form contains errors"));
         dialog.setCloseOnEsc(closeOnEscape);
         dialog.setCloseOnOutsideClick(false);
         VerticalLayout layout = new VerticalLayout();
@@ -75,9 +60,6 @@ public class EditBeanDialogBuilder<T> {
             if (onValueCallback != null) {
                 close = onValueCallback.onValue(field.getValue());
             }
-//            if (onConfirmCallback != null) {
-//                onConfirmCallback.execute();
-//            }
             dialog.close();
         });
         Button cancelButton = new Button("Cancel", event -> {
@@ -98,4 +80,7 @@ public class EditBeanDialogBuilder<T> {
         dialog.open();
     }
 
+    public interface ValueCallback<T> {
+        boolean onValue(T o);
+    }
 }

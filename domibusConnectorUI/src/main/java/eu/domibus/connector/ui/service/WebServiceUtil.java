@@ -1,5 +1,9 @@
 package eu.domibus.connector.ui.service;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,13 +11,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
 
 public class WebServiceUtil {
-
-
     public static InputStream getInputStreamWithWorkbook(HSSFWorkbook wb) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -28,29 +27,28 @@ public class WebServiceUtil {
 
     public static HSSFWorkbook createNewExcel(String initialSheetName) {
         HSSFWorkbook wb = new HSSFWorkbook();
-
-//        wb.setSheetName(0, sdf.format(fromDate) + " - " + sdf.format(toDate));
         HSSFSheet sheet = wb.createSheet(initialSheetName);
 
-        //turn off gridlines
+        // turn off gridlines
         sheet.setDisplayGridlines(false);
         sheet.setPrintGridlines(false);
         sheet.setFitToPage(true);
         sheet.setHorizontallyCenter(true);
         PrintSetup printSetup = sheet.getPrintSetup();
 
-        //the following three statements are required only for HSSF
+        // the following three statements are required only for HSSF
         sheet.setAutobreaks(true);
         printSetup.setFitHeight((short) 1);
         printSetup.setFitWidth((short) 1);
 
         return wb;
     }
+
     /**
      * create a library of cell styles
      */
     public static Map<String, CellStyle> createStyles(Workbook wb) {
-        Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
+        Map<String, CellStyle> styles = new HashMap<>();
 
         CellStyle style;
         Font headerFont = wb.createFont();
@@ -107,5 +105,4 @@ public class WebServiceUtil {
         style.setTopBorderColor(IndexedColors.BLACK.getIndex());
         return style;
     }
-
 }

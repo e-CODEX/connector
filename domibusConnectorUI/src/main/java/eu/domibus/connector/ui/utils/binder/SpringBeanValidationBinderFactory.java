@@ -10,9 +10,9 @@ import javax.validation.Validator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @Component
 public class SpringBeanValidationBinderFactory {
-
     private final Validator validator;
 
     public SpringBeanValidationBinderFactory(Validator validator) {
@@ -34,10 +34,10 @@ public class SpringBeanValidationBinderFactory {
                     return ValidationResult.ok();
                 } else {
                     String errorMessage = validate.stream()
-                            .map(cv -> {
-                                return cv.getPropertyPath().toString() + " " + cv.getMessage();
-                            })
-                            .collect(Collectors.joining("\n"));
+                                                  .map(cv -> {
+                                                      return cv.getPropertyPath().toString() + " " + cv.getMessage();
+                                                  })
+                                                  .collect(Collectors.joining("\n"));
                     return ValidationResult.create(errorMessage, ErrorLevel.ERROR);
                 }
             }
@@ -45,5 +45,4 @@ public class SpringBeanValidationBinderFactory {
 
         return binder;
     }
-
 }

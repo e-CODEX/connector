@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Scope;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
+
 @SpringComponent
 @Scope(SCOPE_PROTOTYPE)
 public class HomePartyConfigurationPropertiesField extends CustomField<HomePartyConfigurationProperties> {
-
     private final SpringBeanValidationBinderFactory validationBinderFactory;
 
     private final TextField name = new TextField();
@@ -33,7 +33,11 @@ public class HomePartyConfigurationPropertiesField extends CustomField<HomeParty
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(name, "Party Name");
         formLayout.addFormItem(endpointAddress, "Party Endpoint Address");
 
@@ -64,11 +68,6 @@ public class HomePartyConfigurationPropertiesField extends CustomField<HomeParty
     @Override
     protected void setPresentationValue(HomePartyConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
-
 }

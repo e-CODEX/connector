@@ -18,7 +18,6 @@ import eu.domibus.connector.link.service.DCLinkFacade;
 import eu.domibus.connector.ui.utils.RoleRequired;
 import eu.domibus.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.domibus.connector.ui.view.areas.configuration.ConfigurationOverview;
-
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -29,12 +28,12 @@ import java.util.Optional;
 import static eu.domibus.connector.ui.view.areas.configuration.link.DCLinkConfigurationView.EDIT_MODE_TYPE_QUERY_PARAM;
 import static eu.domibus.connector.ui.view.areas.configuration.link.DCLinkConfigurationView.LINK_TYPE_QUERY_PARAM;
 
+
 @Component
 @UIScope
 @Route(value = DCLinkPartnerView.ROUTE, layout = ConfigurationLayout.class)
 @RoleRequired(role = "ADMIN")
 public class DCLinkPartnerView extends VerticalLayout implements HasUrlParameter<String> {
-
     public static final String ROUTE = "linkPartner";
 
     public static final String CREATE_TITLE_LABEL_TEXT = "Create LinkPartner";
@@ -44,7 +43,7 @@ public class DCLinkPartnerView extends VerticalLayout implements HasUrlParameter
     private final DCLinkFacade dcLinkFacade;
     private final DCLinkPartnerField dcLinkPartnerField;
 
-    private Label titleLabel = new Label("Edit LinkPartner");
+    private final Label titleLabel = new Label("Edit LinkPartner");
     private Button discardButton;
     private Button saveButton;
 
@@ -95,7 +94,7 @@ public class DCLinkPartnerView extends VerticalLayout implements HasUrlParameter
             dcLinkFacade.createNewLinkPartner(value);
         }
         navigateBack();
-     }
+    }
 
     private void discardButtonClicked(ClickEvent<Button> buttonClickEvent) {
         navigateBack();
@@ -119,26 +118,26 @@ public class DCLinkPartnerView extends VerticalLayout implements HasUrlParameter
         Location location = event.getLocation();
         Map<String, List<String>> parameters = location.getQueryParameters().getParameters();
         this.editMode = parameters.getOrDefault(EDIT_MODE_TYPE_QUERY_PARAM, Collections.emptyList())
-                .stream().findFirst().map(EditMode::valueOf).orElse(EditMode.VIEW);
+                                  .stream().findFirst().map(EditMode::valueOf).orElse(EditMode.VIEW);
         this.linkType = parameters.getOrDefault(LINK_TYPE_QUERY_PARAM, Collections.emptyList())
-                .stream().findFirst().map(LinkType::valueOf).orElse(null);
+                                  .stream().findFirst().map(LinkType::valueOf).orElse(null);
         String linkConfigName = parameters.getOrDefault(LINK_CONFIGURATION_NAME, Collections.emptyList())
-                .stream().findFirst().orElse(null);
-
+                                          .stream().findFirst().orElse(null);
 
         DomibusConnectorLinkPartner.LinkPartnerName lp = new DomibusConnectorLinkPartner.LinkPartnerName(parameter);
         Optional<DomibusConnectorLinkPartner> optionalLinkPartner = dcLinkFacade.loadLinkPartner(lp);
         if (optionalLinkPartner.isPresent()) {
             DomibusConnectorLinkPartner linkPartner = optionalLinkPartner.get();
             this.lnkConfig = linkPartner.getLinkConfiguration();
-            dcLinkPartnerField.setValue(dcLinkPartnerField.getEmptyValue()); //force update event
+            dcLinkPartnerField.setValue(dcLinkPartnerField.getEmptyValue()); // force update event
             dcLinkPartnerField.setValue(linkPartner);
             linkType = linkPartner.getLinkType();
             dcLinkPartnerField.setVisible(true);
             titleLabel.setText(EDIT_TITLE_LABEL_TEXT + " " + parameter);
             saveButton.setEnabled(linkPartner.getConfigurationSource() == ConfigurationSource.DB);
         } else if (editMode == EditMode.CREATE && linkConfigName != null) {
-            Optional<DomibusConnectorLinkConfiguration> domibusConnectorLinkConfiguration = dcLinkFacade.loadLinkConfig(new DomibusConnectorLinkConfiguration.LinkConfigName(linkConfigName));
+            Optional<DomibusConnectorLinkConfiguration> domibusConnectorLinkConfiguration =
+                    dcLinkFacade.loadLinkConfig(new DomibusConnectorLinkConfiguration.LinkConfigName(linkConfigName));
             if (!domibusConnectorLinkConfiguration.isPresent()) {
                 throw new IllegalArgumentException("Illegal parameter supplied");
             }
@@ -169,5 +168,4 @@ public class DCLinkPartnerView extends VerticalLayout implements HasUrlParameter
             saveButton.setEnabled(linkPartner.getConfigurationSource() == ConfigurationSource.DB);
         }
     }
-
 }

@@ -13,6 +13,7 @@ import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @UIScope
 @Route(value = JmsMonitoringView.ROUTE, layout = MonitoringLayout.class)
@@ -20,15 +21,14 @@ import org.springframework.stereotype.Component;
 @TabMetadata(title = "Jms Queues", tabGroup = MonitoringLayout.TAB_GROUP_NAME)
 public class JmsMonitoringView extends DCVerticalLayoutWithTitleAndHelpButton implements AfterNavigationObserver {
     public static final String ROUTE = "queues";
-
     public static final String HELP_ID = "ui/monitoring/jms_monitoring.html";
     public static final String TITLE = "Jms Queues";
-    
+
     private final QueueController queueController;
-    private QueueGrid queueGrid;
+    private final QueueGrid queueGrid;
 
     public JmsMonitoringView(QueueController queueController) {
-    	super(HELP_ID, TITLE);
+        super(HELP_ID, TITLE);
         this.queueController = queueController;
         queueGrid = new QueueGrid();
         queueGrid.setItemDetailsRenderer(createDetailsRenderer());
@@ -37,8 +37,10 @@ public class JmsMonitoringView extends DCVerticalLayoutWithTitleAndHelpButton im
     }
 
     private ComponentRenderer<DetailsLayout, WebQueue> createDetailsRenderer() {
-        return new ComponentRenderer<>(() -> new DetailsLayout(queueController, this),
-                DetailsLayout::setData);
+        return new ComponentRenderer<>(
+                () -> new DetailsLayout(queueController, this),
+                DetailsLayout::setData
+        );
     }
 
     void updateData(WebQueue select) {

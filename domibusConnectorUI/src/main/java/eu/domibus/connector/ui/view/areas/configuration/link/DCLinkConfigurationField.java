@@ -6,9 +6,10 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.*;
+import com.vaadin.flow.data.binder.Setter;
+import com.vaadin.flow.data.binder.ValidationResult;
+import com.vaadin.flow.data.binder.Validator;
 import com.vaadin.flow.function.ValueProvider;
-import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.service.DCActiveLinkManagerService;
@@ -23,32 +24,34 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 @Component
 @Primary
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkConfiguration> {
-
     private static final Logger LOGGER = LogManager.getLogger(DCLinkConfigurationField.class);
 
     private final ApplicationContext applicationContext;
     private final DCActiveLinkManagerService linkManagerService;
 
-    private ComboBox<LinkPlugin> implChooser = new ComboBox<>();
+    private final ComboBox<LinkPlugin> implChooser = new ComboBox<>();
     private DCConfigurationPropertiesListField configPropsList;
     private TextField linkConfigName;
-    private SpringBeanValidationBinder<DomibusConnectorLinkConfiguration> binder;
+    private final SpringBeanValidationBinder<DomibusConnectorLinkConfiguration> binder;
     private boolean readOnly = false;
     private boolean implAndConfigNameReadOnly = true;
 
     private DomibusConnectorLinkConfiguration value;
-//    private List<LinkPlugin> linkPlugins;
 
-    public DCLinkConfigurationField(ApplicationContext applicationContext,
-                                    DCActiveLinkManagerService linkManagerService,
-                                    SpringBeanValidationBinderFactory springBeanValidationBinderFactory
-                                    ) {
+    public DCLinkConfigurationField(
+            ApplicationContext applicationContext,
+            DCActiveLinkManagerService linkManagerService,
+            SpringBeanValidationBinderFactory springBeanValidationBinderFactory
+    ) {
         this.applicationContext = applicationContext;
         this.linkManagerService = linkManagerService;
 
@@ -58,8 +61,6 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
         initUI();
     }
 
-
-
     private void initUI() {
         VerticalLayout layout = new VerticalLayout();
         this.add(layout);
@@ -67,14 +68,12 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
         linkConfigName = new TextField("Link Configuration Name");
         linkConfigName.setReadOnly(readOnly);
 
-
         implChooser.setItems(linkManagerService.getAvailableLinkPlugins());
         implChooser.setLabel("Link Implementation");
         implChooser.setItemLabelGenerator((ItemLabelGenerator<LinkPlugin>) LinkPlugin::getPluginName);
         implChooser.addValueChangeListener(this::choosenLinkImplChanged);
         implChooser.setMinWidth("10em");
         implChooser.setReadOnly(readOnly);
-
 
         binder
                 .forField(linkConfigName)
@@ -85,8 +84,14 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
                     return ValidationResult.ok();
                 })
                 .bind(
-                        (ValueProvider<DomibusConnectorLinkConfiguration, String>) linkConfiguration -> linkConfiguration.getConfigName() == null ? "" : linkConfiguration.getConfigName().toString(),
-                        (Setter<DomibusConnectorLinkConfiguration, String>) (linkConfiguration, configName) -> linkConfiguration.setConfigName(configName == null ? new DomibusConnectorLinkConfiguration.LinkConfigName("") : new DomibusConnectorLinkConfiguration.LinkConfigName(configName))
+                        (ValueProvider<DomibusConnectorLinkConfiguration, String>) linkConfiguration ->
+                                linkConfiguration.getConfigName() == null ? "" : linkConfiguration
+                                        .getConfigName().toString(),
+                        (Setter<DomibusConnectorLinkConfiguration, String>) (linkConfiguration, configName) ->
+                                linkConfiguration.setConfigName(
+                                        configName == null ? new DomibusConnectorLinkConfiguration.LinkConfigName("") :
+                                                new DomibusConnectorLinkConfiguration.LinkConfigName(
+                                                        configName))
                 );
 
         binder
@@ -99,7 +104,8 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
                 })
                 .bind(
                         (ValueProvider<DomibusConnectorLinkConfiguration, LinkPlugin>) linkConfiguration -> {
-                            Optional<LinkPlugin> linkPlugin = linkManagerService.getLinkPluginByName(linkConfiguration.getLinkImpl());
+                            Optional<LinkPlugin> linkPlugin =
+                                    linkManagerService.getLinkPluginByName(linkConfiguration.getLinkImpl());
                             if (linkPlugin.isPresent()) {
                                 return linkPlugin.get();
                             } else {
@@ -107,22 +113,25 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
                                 return null;
                             }
                         },
-                        (Setter<DomibusConnectorLinkConfiguration, LinkPlugin>) (linkConfiguration, linkPlugin) -> linkConfiguration.setLinkImpl(linkPlugin == null ? null : linkPlugin.getPluginName())
+                        (Setter<DomibusConnectorLinkConfiguration, LinkPlugin>) (linkConfiguration, linkPlugin) ->
+                                linkConfiguration.setLinkImpl(
+                                        linkPlugin == null ? null : linkPlugin.getPluginName())
                 );
 
         configPropsList = applicationContext.getBean(DCConfigurationPropertiesListField.class);
         configPropsList.setLabel("Link Configuration Properties");
         configPropsList.setSizeFull();
         binder
-            .forField(configPropsList)
-            .bind(DomibusConnectorLinkConfiguration::getProperties, DomibusConnectorLinkConfiguration::setProperties);
+                .forField(configPropsList)
+                .bind(
+                        DomibusConnectorLinkConfiguration::getProperties,
+                        DomibusConnectorLinkConfiguration::setProperties
+                );
 
         layout.add(linkConfigName, implChooser, configPropsList);
 
         updateUI();
-
     }
-
 
     private void updateUI() {
         implChooser.setReadOnly(readOnly || implAndConfigNameReadOnly);
@@ -146,11 +155,6 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
         this.implAndConfigNameReadOnly = implAndConfigNameReadOnly;
         updateUI();
     }
-
-//    public void setLinkPlugins(List<LinkPlugin> linkPlugins) {
-//        this.linkPlugins = linkPlugins;
-//        this.implChooser.setItems(linkPlugins);
-//    }
 
     private void choosenLinkImplChanged(HasValue.ValueChangeEvent<LinkPlugin> valueChangeEvent) {
         LinkPlugin value = valueChangeEvent.getValue();
@@ -176,7 +180,6 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
         updateUI();
     }
 
-
     private void valueChanged(ValueChangeEvent<?> valueChangeEvent) {
         DomibusConnectorLinkConfiguration changedValue = new DomibusConnectorLinkConfiguration();
         binder.writeBeanAsDraft(changedValue, true);
@@ -190,14 +193,10 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
     }
 
     @Override
-    public DomibusConnectorLinkConfiguration getValue() {
-        return value;
-    }
-
-    @Override
     protected void setPresentationValue(DomibusConnectorLinkConfiguration linkConfig) {
         if (linkConfig != null) {
-            linkManagerService.getLinkPluginByName(linkConfig.getLinkImpl()).ifPresent(this::updateConfigurationProperties);
+            linkManagerService.getLinkPluginByName(linkConfig.getLinkImpl())
+                              .ifPresent(this::updateConfigurationProperties);
         } else {
             this.updateConfigurationProperties(null);
         }
@@ -205,5 +204,8 @@ public class DCLinkConfigurationField extends CustomField<DomibusConnectorLinkCo
         updateUI();
     }
 
-
+    @Override
+    public DomibusConnectorLinkConfiguration getValue() {
+        return value;
+    }
 }

@@ -16,10 +16,10 @@ import eu.domibus.connectorplugins.link.gwwspullplugin.DCGatewayPullPluginConfig
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
+
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DCGatewayPullPluginConfigurationPropertiesField extends CustomField<DCGatewayPullPluginConfigurationProperties> implements AfterNavigationObserver {
-
     private final SpringBeanValidationBinder<DCGatewayPullPluginConfigurationProperties> binder;
 
     private final Label statusLabel = new Label();
@@ -32,9 +32,10 @@ public class DCGatewayPullPluginConfigurationPropertiesField extends CustomField
 
     private DCGatewayPullPluginConfigurationProperties value = new DCGatewayPullPluginConfigurationProperties();
 
-    public DCGatewayPullPluginConfigurationPropertiesField(SpringBeanValidationBinderFactory validationBinderFactory,
-                                                           CxfTrustKeyStoreConfigurationPropertiesField soap,
-                                                           SpringResourceField wsPolicy) {
+    public DCGatewayPullPluginConfigurationPropertiesField(
+            SpringBeanValidationBinderFactory validationBinderFactory,
+            CxfTrustKeyStoreConfigurationPropertiesField soap,
+            SpringResourceField wsPolicy) {
         binder = validationBinderFactory.create(DCGatewayPullPluginConfigurationProperties.class);
         this.soap = soap;
         this.wsPolicy = wsPolicy;
@@ -46,7 +47,11 @@ public class DCGatewayPullPluginConfigurationPropertiesField extends CustomField
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(gwAddress, "gwAddress");
         formLayout.addFormItem(soap, "Soap");
         formLayout.addFormItem(wsPolicy, "WS Policy");
@@ -80,7 +85,5 @@ public class DCGatewayPullPluginConfigurationPropertiesField extends CustomField
 
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
-
     }
-
 }

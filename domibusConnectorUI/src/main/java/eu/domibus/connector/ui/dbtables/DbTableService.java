@@ -1,20 +1,19 @@
 package eu.domibus.connector.ui.dbtables;
 
-import com.vaadin.flow.data.provider.*;
+import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
+import com.vaadin.flow.data.provider.DataProvider;
+import com.vaadin.flow.data.provider.Query;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
-import javax.persistence.TupleElement;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,68 +23,69 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 @RolesAllowed("ADMIN")
 public class DbTableService {
-
     private static final Logger LOGGER = LogManager.getLogger(DbTableService.class);
+
     private final DataSource ds;
     private final DbTableServiceConfigurationProperties config;
 
     private final EntityManager entityManager;
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public DbTableService(EntityManager entityManager,
-                          DataSource ds, DbTableServiceConfigurationProperties config) {
+    public DbTableService(
+            EntityManager entityManager,
+            DataSource ds, DbTableServiceConfigurationProperties config) {
         this.config = config;
         this.entityManager = entityManager;
         this.ds = ds;
         this.jdbcTemplate = new NamedParameterJdbcTemplate(ds);
     }
+
     public List<String> getTables() {
         return config.getTables();
     }
 
     public List<ColumnDefinition> getColumns(String table) {
-        return new ArrayList<>(getTableDefinition(table)
-                .columnDefinitionMap
-                .values());
+        return new ArrayList<>(getTableDefinition(table).columnDefinitionMap.values());
     }
 
     public TableDefinition getTableDefinition(String tableName) {
         TableDefinition tableDefinition = new TableDefinition(tableName);
-        //read columns
-        try (Connection conn = ds.getConnection();
-             ResultSet rs = conn
-                .getMetaData()
-                .getColumns(null, null, tableName, null);
-        ){
+        // read columns
+        try (
+                Connection conn = ds.getConnection();
+                ResultSet rs = conn
+                        .getMetaData()
+                        .getColumns(null, null, tableName, null)
+        ) {
 
             while (rs.next()) {
                 ColumnDefinition cd = new ColumnDefinition();
-                String columnName = rs.getString(4); //get column name
+                String columnName = rs.getString(4); // get column name
                 cd.setColumnName(columnName);
-                cd.setDataType(rs.getString(5)); //java.sql.Type
-                cd.setOrdinalPosition(rs.getInt(17)); //ORDINAL_POSITION
+                cd.setDataType(rs.getString(5)); // java.sql.Type
+                cd.setOrdinalPosition(rs.getInt(17)); // ORDINAL_POSITION
                 tableDefinition.columnDefinitionMap.put(columnName, cd);
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //read primary keys
-        try (Connection conn = ds.getConnection();
-             ResultSet rs = conn
-                     .getMetaData()
-                     .getPrimaryKeys(null, null, tableName);
-        ){
+        // read primary keys
+        try (
+                Connection conn = ds.getConnection();
+                ResultSet rs = conn
+                        .getMetaData()
+                        .getPrimaryKeys(null, null, tableName)
+        ) {
 
             while (rs.next()) {
                 String columnName = rs.getString(4);
-//                int keySequence = rs.getInt(5);
-//                String pkName = rs.getString(6);
+                // int keySequence = rs.getInt(5);
+                // String pkName = rs.getString(6);
                 tableDefinition.addPrimaryKey(columnName);
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,21 +96,22 @@ public class DbTableService {
         return new DbTableDataProvider(entityManager, tableDefinition);
     }
 
-
     public void deleteColumn(ColumnRow columnRow) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
         TableDefinition tableDefinition = columnRow.getTableDefinition();
 
-
-
-        //set key values
+        // set key values
         columnRow.getPrimaryKey()
-                .entrySet()
-                .forEach(entry -> {
-                    parameterSource.addValue("key_" + entry.getKey(), entry.getValue());
-                });
-        String sql = String.format("DELETE %s WHERE %s", tableDefinition.getTableName(), tableDefinition.getPrimaryKeyQuery());
+                 .entrySet()
+                 .forEach(entry -> {
+                     parameterSource.addValue("key_" + entry.getKey(), entry.getValue());
+                 });
+        String sql = String.format(
+                "DELETE %s WHERE %s",
+                tableDefinition.getTableName(),
+                tableDefinition.getPrimaryKeyQuery()
+        );
 
         jdbcTemplate.update(sql, parameterSource);
     }
@@ -119,72 +120,73 @@ public class DbTableService {
         TableDefinition tableDefinition = item.getTableDefinition();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
-        //create set part
-        String setPart = tableDefinition.getColumnDefinitionMap()
+        // create set part
+        String setPart = tableDefinition
+                .getColumnDefinitionMap()
                 .keySet()
                 .stream()
                 .map(c -> String.format("%s=:%s", c, c))
                 .collect(Collectors.joining(", "));
 
-        //set set values
+        // set set values
         tableDefinition.getColumnDefinitionMap()
-                .keySet()
-                .forEach(column -> {
-                    parameterSource.addValue(column, item.getCell(column));
-                });
+                       .keySet()
+                       .forEach(column -> {
+                           parameterSource.addValue(column, item.getCell(column));
+                       });
 
-
-        //define primary key query part
+        // define primary key query part
         String primaryKeyQueryPart = tableDefinition.getPrimaryKeyQuery();
 
-        //set key values
+        // set key values
         item.getPrimaryKey()
-                .entrySet()
-                .forEach(entry -> {
-                    parameterSource.addValue("key_" + entry.getKey(), entry.getValue());
-                });
+            .entrySet()
+            .forEach(entry -> {
+                parameterSource.addValue("key_" + entry.getKey(), entry.getValue());
+            });
 
-
-        String query = String.format("UPDATE %s SET %s WHERE %s", tableDefinition.getTableName(),
+        String query = String.format(
+                "UPDATE %s SET %s WHERE %s",
+                tableDefinition.getTableName(),
                 setPart,
-                primaryKeyQueryPart);
+                primaryKeyQueryPart
+        );
         LOGGER.debug("Created update Query: [{}]", query);
 
-
         jdbcTemplate.update(query, parameterSource);
-
-
     }
 
     public void createColumn(ColumnRow item) {
         TableDefinition tableDefinition = item.getTableDefinition();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
-        String columnList = tableDefinition.getColumnDefinitionMap()
+        String columnList = tableDefinition
+                .getColumnDefinitionMap()
                 .keySet()
                 .stream()
                 .collect(Collectors.joining(", "));
 
-        String paramList = tableDefinition.getColumnDefinitionMap()
+        String paramList = tableDefinition
+                .getColumnDefinitionMap()
                 .keySet()
                 .stream()
-                .map(s -> ":"+s)
+                .map(s -> ":" + s)
                 .collect(Collectors.joining(", "));
 
         tableDefinition.getColumnDefinitionMap()
-                .keySet()
-                .forEach(column -> {
-                    parameterSource.addValue(column, item.getCell(column));
-                });
+                       .keySet()
+                       .forEach(column -> {
+                           parameterSource.addValue(column, item.getCell(column));
+                       });
 
-        String insertQuery = String.format("INSERT INTO %s (%s) VALUES (%s)", tableDefinition.getTableName(), columnList, paramList);
+        String insertQuery =
+                String.format("INSERT INTO %s (%s) VALUES (%s)", tableDefinition.getTableName(), columnList, paramList);
 
         jdbcTemplate.update(insertQuery, parameterSource);
     }
 
     private static class DbTableDataProvider extends AbstractBackEndDataProvider<ColumnRow, Object>
             implements DataProvider<ColumnRow, Object> {
-
         private final transient EntityManager entityManager;
         private final TableDefinition tableDefinition;
 
@@ -192,7 +194,6 @@ public class DbTableService {
 
             this.entityManager = entityManager;
             this.tableDefinition = tableDefinition;
-
         }
 
 
@@ -201,35 +202,37 @@ public class DbTableService {
             int limit = query.getLimit();
             int offset = query.getOffset();
 
-            List<Tuple> resultList = entityManager.createNativeQuery("SELECT * FROM " + tableDefinition.getTableName(), Tuple.class)
+            List<Tuple> resultList = entityManager
+                    .createNativeQuery("SELECT * FROM " + tableDefinition.getTableName(), Tuple.class)
                     .setFirstResult(offset)
                     .setMaxResults(limit)
                     .getResultList();
 
             return resultList.stream()
-                    .map( tuple -> {
-                        final ColumnRow columnRow = new ColumnRow(tableDefinition);
-                        tableDefinition.getColumnDefinitionMap().entrySet()
-                                        .forEach(entry -> {
-                                            columnRow.setCell(entry.getKey(), tuple.get(entry.getKey()));
-                                            if (entry.getValue().isPrimaryKey()) {
-                                                columnRow.getPrimaryKey().put(entry.getKey(), tuple.get(entry.getKey()));
-                                            }
-                                        });
-                        return columnRow;
-                    });
+                             .map(tuple -> {
+                                 final ColumnRow columnRow = new ColumnRow(tableDefinition);
+                                 tableDefinition.getColumnDefinitionMap().entrySet()
+                                                .forEach(entry -> {
+                                                    columnRow.setCell(entry.getKey(), tuple.get(entry.getKey()));
+                                                    if (entry.getValue().isPrimaryKey()) {
+                                                        columnRow.getPrimaryKey()
+                                                                 .put(entry.getKey(), tuple.get(entry.getKey()));
+                                                    }
+                                                });
+                                 return columnRow;
+                             });
         }
 
         @Override
         protected int sizeInBackEnd(Query<ColumnRow, Object> query) {
 
-            Tuple singleResult = (Tuple) entityManager.createNativeQuery("SELECT count(*) FROM " + tableDefinition.getTableName(), Tuple.class).getSingleResult();
+            Tuple singleResult = (Tuple) entityManager
+                    .createNativeQuery("SELECT count(*) FROM " + tableDefinition.getTableName(), Tuple.class)
+                    .getSingleResult();
             BigInteger bigInteger = singleResult.get(0, BigInteger.class);
             return bigInteger.intValue();
-
         }
     }
-
 
     public static class ColumnRow {
         private final TableDefinition tableDefinition;
@@ -267,7 +270,6 @@ public class DbTableService {
             this.tableName = tableName;
         }
 
-
         public void addPrimaryKey(String columnName) {
             this.primaryKey.add(columnName);
             columnDefinitionMap.get(columnName).setPrimaryKey(true);
@@ -275,8 +277,8 @@ public class DbTableService {
 
         public String getPrimaryKeyQuery() {
             return primaryKey.stream()
-                    .map(s ->  String.format(" %s = :key_%s", s, s))
-                    .collect(Collectors.joining(" AND "));
+                             .map(s -> String.format(" %s = :key_%s", s, s))
+                             .collect(Collectors.joining(" AND "));
         }
 
         public String getTableName() {
@@ -326,14 +328,12 @@ public class DbTableService {
             this.ordinalPosition = ordinalPosition;
         }
 
-        public void setPrimaryKey(boolean b) {
-            this.primaryKey = b;
-        }
-
         public boolean isPrimaryKey() {
             return primaryKey;
         }
+
+        public void setPrimaryKey(boolean b) {
+            this.primaryKey = b;
+        }
     }
-
-
 }

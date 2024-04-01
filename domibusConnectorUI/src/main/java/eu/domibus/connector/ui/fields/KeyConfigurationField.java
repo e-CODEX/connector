@@ -8,15 +8,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import eu.domibus.connector.lib.spring.configuration.KeyConfigurationProperties;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
-
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class KeyConfigurationField extends CustomField<KeyConfigurationProperties> {
-
     private final SpringBeanValidationBinderFactory validationBinderFactory;
 
     private final TextField alias = new TextField();
@@ -37,7 +36,7 @@ public class KeyConfigurationField extends CustomField<KeyConfigurationPropertie
 
         formLayout.addFormItem(alias, "Key Alias");
         formLayout.addFormItem(password, "Key Password");
-        //TODO: add alternative view, when associated with keystore...some kind of select box...
+        // TODO: add alternative view, when associated with keystore...some kind of select box...
 
         binder = validationBinderFactory.create(KeyConfigurationProperties.class);
         binder.bindInstanceFields(this);
@@ -57,7 +56,6 @@ public class KeyConfigurationField extends CustomField<KeyConfigurationPropertie
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
-
     }
 
     @Override
@@ -68,11 +66,6 @@ public class KeyConfigurationField extends CustomField<KeyConfigurationPropertie
     @Override
     protected void setPresentationValue(KeyConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
-
 }

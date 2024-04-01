@@ -10,29 +10,26 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 @Component(KeyAndKeyStoreAndTrustStoreConfigurationField.BEAN_NAME)
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class KeyAndKeyStoreAndTrustStoreConfigurationField extends CustomField<KeyAndKeyStoreAndTrustStoreConfigurationProperties> {
-
     public static final String BEAN_NAME = "KeyAndKeyStoreAndTrustStoreConfigurationField";
 
     private final SpringBeanValidationBinderFactory validationBinderFactory;
-
     private final StoreConfigurationField trustStore;
     private final StoreConfigurationField keyStore;
     private final KeyConfigurationField privateKey;
-
     private final Label statusLabel = new Label();
     private final FormLayout formLayout = new FormLayout();
-
     private final SpringBeanValidationBinder<KeyAndKeyStoreAndTrustStoreConfigurationProperties> binder;
-
     KeyAndKeyStoreAndTrustStoreConfigurationProperties value;
 
-    public KeyAndKeyStoreAndTrustStoreConfigurationField(SpringBeanValidationBinderFactory validationBinderFactory,
-                                                         StoreConfigurationField trustStore,
-                                                         StoreConfigurationField keyStore,
-                                                         KeyConfigurationField privateKey) {
+    public KeyAndKeyStoreAndTrustStoreConfigurationField(
+            SpringBeanValidationBinderFactory validationBinderFactory,
+            StoreConfigurationField trustStore,
+            StoreConfigurationField keyStore,
+            KeyConfigurationField privateKey) {
         this.validationBinderFactory = validationBinderFactory;
         this.trustStore = trustStore;
         this.keyStore = keyStore;
@@ -41,13 +38,17 @@ public class KeyAndKeyStoreAndTrustStoreConfigurationField extends CustomField<K
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(this.trustStore, "Trust Store");
         formLayout.addFormItem(this.keyStore, "Key Store");
         formLayout.addFormItem(this.privateKey, "Private Key");
 
-//        formLayout.addFormItem(password, "Key Password");
-        //TODO: add alternative view, when associated with keystore...some kind of select box...
+        //        formLayout.addFormItem(password, "Key Password");
+        // TODO: add alternative view, when associated with keystore...some kind of select box...
 
         binder = validationBinderFactory.create(KeyAndKeyStoreAndTrustStoreConfigurationProperties.class);
         binder.bindInstanceFields(this);
@@ -57,7 +58,8 @@ public class KeyAndKeyStoreAndTrustStoreConfigurationField extends CustomField<K
     }
 
     private void valueChanged(ValueChangeEvent<?> valueChangeEvent) {
-        KeyAndKeyStoreAndTrustStoreConfigurationProperties changedValue = new KeyAndKeyStoreAndTrustStoreConfigurationProperties();
+        KeyAndKeyStoreAndTrustStoreConfigurationProperties changedValue =
+                new KeyAndKeyStoreAndTrustStoreConfigurationProperties();
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
@@ -78,11 +80,6 @@ public class KeyAndKeyStoreAndTrustStoreConfigurationField extends CustomField<K
     @Override
     protected void setPresentationValue(KeyAndKeyStoreAndTrustStoreConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
-
 }

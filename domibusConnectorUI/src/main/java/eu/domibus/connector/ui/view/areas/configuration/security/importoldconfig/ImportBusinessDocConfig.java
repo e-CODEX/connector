@@ -13,15 +13,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Lazy
 public class ImportBusinessDocConfig extends AImportOldConfigDialog {
-
     private final ObjectProvider<BusinessDocumentValidationConfigForm> formFactory;
 
-    public ImportBusinessDocConfig(ConfigurationPanelFactory configurationPanelFactory,
-                                   ObjectProvider<BusinessDocumentValidationConfigForm> formFactory) {
+    public ImportBusinessDocConfig(
+            ConfigurationPanelFactory configurationPanelFactory,
+            ObjectProvider<BusinessDocumentValidationConfigForm> formFactory) {
         super(configurationPanelFactory);
         this.formFactory = formFactory;
     }
@@ -29,9 +30,11 @@ public class ImportBusinessDocConfig extends AImportOldConfigDialog {
     @Override
     protected Object showImportedConfig(Div div, Map<String, String> p) {
         OldConfigMapper oldConfigMapper = new OldConfigMapper(p);
-        DCBusinessDocumentValidationConfigurationProperties properties = oldConfigMapper.migrateBusinessDocumentConfigurationProperties();
+        DCBusinessDocumentValidationConfigurationProperties properties =
+                oldConfigMapper.migrateBusinessDocumentConfigurationProperties();
 
-        Binder<DCBusinessDocumentValidationConfigurationProperties> b = new Binder<>(DCBusinessDocumentValidationConfigurationProperties.class);
+        Binder<DCBusinessDocumentValidationConfigurationProperties> b =
+                new Binder<>(DCBusinessDocumentValidationConfigurationProperties.class);
         BusinessDocumentValidationConfigForm form = formFactory.getIfAvailable();
         b.bindInstanceFields(form);
         b.setBean(properties);
@@ -41,5 +44,4 @@ public class ImportBusinessDocConfig extends AImportOldConfigDialog {
 
         return properties;
     }
-
 }

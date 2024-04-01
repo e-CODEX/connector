@@ -3,10 +3,10 @@ package eu.domibus.connector.ui.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @ConfigurationProperties(prefix = "connector.ui")
 public class ConnectorUiConfigurationProperties {
-
     /**
      * should the user be automaticall logged in
      * should only be used for development

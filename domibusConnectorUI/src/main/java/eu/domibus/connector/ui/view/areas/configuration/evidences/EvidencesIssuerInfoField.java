@@ -13,15 +13,13 @@ import org.springframework.context.annotation.Scope;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
+
 @SpringComponent
 @Scope(SCOPE_PROTOTYPE)
 public class EvidencesIssuerInfoField extends CustomField<EvidencesIssuerInfo> {
-
     private final SpringBeanValidationBinderFactory validationBinderFactory;
-
     private final PostalAdressConfigurationPropertiesField postalAddress;
     private final HomePartyConfigurationPropertiesField as4party;
-
     private final Label statusLabel = new Label();
     private final FormLayout formLayout = new FormLayout();
 
@@ -29,9 +27,10 @@ public class EvidencesIssuerInfoField extends CustomField<EvidencesIssuerInfo> {
 
     EvidencesIssuerInfo value;
 
-    public EvidencesIssuerInfoField(SpringBeanValidationBinderFactory validationBinderFactory,
-                                    PostalAdressConfigurationPropertiesField postalAddress,
-                                    HomePartyConfigurationPropertiesField as4party) {
+    public EvidencesIssuerInfoField(
+            SpringBeanValidationBinderFactory validationBinderFactory,
+            PostalAdressConfigurationPropertiesField postalAddress,
+            HomePartyConfigurationPropertiesField as4party) {
         this.validationBinderFactory = validationBinderFactory;
         this.postalAddress = postalAddress;
         this.as4party = as4party;
@@ -39,7 +38,11 @@ public class EvidencesIssuerInfoField extends CustomField<EvidencesIssuerInfo> {
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("30cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "30cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(postalAddress, "postal address");
         formLayout.addFormItem(this.as4party, "AS4 Party Info");
 
@@ -61,7 +64,6 @@ public class EvidencesIssuerInfoField extends CustomField<EvidencesIssuerInfo> {
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
-
     }
 
     @Override
@@ -72,10 +74,6 @@ public class EvidencesIssuerInfoField extends CustomField<EvidencesIssuerInfo> {
     @Override
     protected void setPresentationValue(EvidencesIssuerInfo newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
 }

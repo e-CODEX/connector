@@ -4,8 +4,8 @@ import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import eu.domibus.connector.controller.routing.MatchExpression;
 
-public class MatchExpressionField extends CustomField<MatchExpression> {
 
+public class MatchExpressionField extends CustomField<MatchExpression> {
     HorizontalLayout horizontalLayout;
 
     public MatchExpressionField() {
@@ -19,7 +19,5 @@ public class MatchExpressionField extends CustomField<MatchExpression> {
 
     @Override
     protected void setPresentationValue(MatchExpression newPresentationValue) {
-
     }
-
 }

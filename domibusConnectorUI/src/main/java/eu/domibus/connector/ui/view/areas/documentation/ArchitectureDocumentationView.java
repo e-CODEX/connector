@@ -8,6 +8,7 @@ import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @UIScope
 @Route(value = ArchitectureDocumentationView.ROUTE, layout = DocumentationLayout.class)

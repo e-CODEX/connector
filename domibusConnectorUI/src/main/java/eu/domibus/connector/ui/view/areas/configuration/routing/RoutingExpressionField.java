@@ -4,7 +4,9 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Pre;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
@@ -18,41 +20,40 @@ import java.util.stream.Stream;
 
 
 public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
-
     public static final String ERROR_COLOR = "#ff0000";
-    public static final String OPERATOR_COLOR = "#0000ff"; //blue ?
+    public static final String OPERATOR_COLOR = "#0000ff"; // blue ?
     public static final String AS4ATTRIBUTE_COLOR = "#000000"; //
-    public static final String AS4VALUE_EXISTANT_COLOR = "#00ff00"; //green
-    public static final String AS4VALUE_NONEXISTANT_COLOR = "#ffff00"; //yellow
+    public static final String AS4VALUE_EXISTANT_COLOR = "#00ff00"; // green
+    public static final String AS4VALUE_NONEXISTANT_COLOR = "#ffff00"; // yellow
 
     public static final List<TokenType> OPERATORS = Stream
             .of(TokenType.OR, TokenType.AND)
             .collect(Collectors.toList());
-
     public static final List<TokenType> MATCH_OPERATORS = Stream
             .of(TokenType.STARTSWITH, TokenType.EQUALS)
             .collect(Collectors.toList());
-
     public static final List<TokenType> MATCH_ATTRIBUTES = Stream
             .of(TokenType.AS4_FINAL_RECIPIENT, TokenType.AS4_ACTION,
-                    TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ROLE,
-                    TokenType.AS4_FROM_PARTY_ID_TYPE,
-                    TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE, TokenType.AS4_ACTION)
+                TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ROLE,
+                TokenType.AS4_FROM_PARTY_ID_TYPE,
+                TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE, TokenType.AS4_ACTION
+            )
             .collect(Collectors.toList());
-
-    private VerticalLayout layout = new VerticalLayout();
-    private TextField tf = new TextField();
-    private RoutingRulePattern value;
-
-    private Div routingExpressionField = new Div();
-    private VerticalLayout errorList = new VerticalLayout();
-
+    private static final List<TokenType> USE_SELECT_FIELD = Stream.of(
+            TokenType.AS4_ACTION, TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE,
+            TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ID_TYPE, TokenType.AS4_FROM_PARTY_ROLE
+    ).collect(Collectors.toList());
 
     private final WebPModeService webPModeService;
+    private final VerticalLayout layout = new VerticalLayout();
+    private final TextField tf = new TextField();
+    private RoutingRulePattern value;
+    private final Div routingExpressionField = new Div();
+    private final VerticalLayout errorList = new VerticalLayout();
 
     public RoutingExpressionField(WebPModeService webPModeService) {
         this.webPModeService = webPModeService;
-//        this.eff = eff;
+        //        this.eff = eff;
         this.add(layout);
         layout.setPadding(false);
         layout.setMargin(false);
@@ -70,19 +71,17 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
     @Override
     protected RoutingRulePattern generateModelValue() {
 
-        //TODO: read value convert to RoutingRulePattern..
+        // TODO: read value convert to RoutingRulePattern..
 
         return value;
     }
 
     @Override
     protected void setPresentationValue(RoutingRulePattern routingRulePattern) {
-        //value.getMatchClause().getExpression();
-       Expression exp = routingRulePattern.getExpression();
+        // value.getMatchClause().getExpression();
+        Expression exp = routingRulePattern.getExpression();
 
         tf.setValue(exp.toString());
-
-
     }
 
     private void tfValueChanged(ComponentValueChangeEvent<TextField, String> textFieldStringComponentValueChangeEvent) {
@@ -99,12 +98,11 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
             tf.setInvalid(true);
             expressionParser.getParsingExceptions().stream().forEach(e -> {
                 Div listItem = new Div();
-//                listItem.add(e.getMessage());
+                //                listItem.add(e.getMessage());
                 listItem.add(getErrorLocation(value, e));
                 errorList.add(listItem);
             });
         }
-
     }
 
     private Component getErrorLocation(String value, ExpressionParser.ParsingException e) {
@@ -123,7 +121,7 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
         d.add(block);
 
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < e.getCol(); i++) { //add spaces to error location
+        for (int i = 0; i < e.getCol(); i++) { // add spaces to error location
             stringBuilder.append(" ");
         }
         stringBuilder.append("^---- ");
@@ -132,7 +130,7 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
         stringBuilder.append(" ");
         stringBuilder.append(e.getMessage());
         d.add(new Pre(stringBuilder.toString()));
-        //set font family to monospace so locating the parsing error does work
+        // set font family to monospace so locating the parsing error does work
         d.getStyle().set("font-family", "monospace");
         d.setPadding(false);
         d.setMargin(false);
@@ -154,14 +152,13 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
             htmlContainer.add(new Text(","));
             htmlContainer.add(convertToHtml(new Span(), binaryExp.getExp2()));
             htmlContainer.add(new Text(")"));
-
         } else if (exp instanceof MatchExpression) {
             MatchExpression matchExpression = (MatchExpression) exp;
 
-            //build colored html with: <operator>(<as4Attribute>, '<as4valueString>')
-//            Span as4MatchOperator = new Span(matchExpression.getMatchOperator().toString());
-//            as4MatchOperator.getStyle().set("color", OPERATOR_COLOR);
-//            htmlContainer.add(as4MatchOperator);
+            // build colored html with: <operator>(<as4Attribute>, '<as4valueString>')
+            //            Span as4MatchOperator = new Span(matchExpression.getMatchOperator().toString());
+            //            as4MatchOperator.getStyle().set("color", OPERATOR_COLOR);
+            //            htmlContainer.add(as4MatchOperator);
 
             Select<TokenType> matchOperator = new Select<>();
             matchOperator.setItems(MATCH_OPERATORS);
@@ -173,9 +170,9 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
 
             htmlContainer.add(new Text("("));
 
-//            Span matchExp = new Span(matchExpression.getAs4Attribute().toString());
-//            matchExp.getStyle().set("color", AS4ATTRIBUTE_COLOR);
-//            htmlContainer.add(matchExp);
+            //            Span matchExp = new Span(matchExpression.getAs4Attribute().toString());
+            //            matchExp.getStyle().set("color", AS4ATTRIBUTE_COLOR);
+            //            htmlContainer.add(matchExp);
             Select<TokenType> matchAttribute = new Select<>();
             matchAttribute.setItems(MATCH_ATTRIBUTES);
             matchAttribute.setValue(matchExpression.getAs4Attribute());
@@ -186,8 +183,8 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
 
             htmlContainer.add(new Text(", '"));
 
-//            Span as4MatchValue = new Span(matchExpression.getValueString());
-            //TODO: color switch!
+            //            Span as4MatchValue = new Span(matchExpression.getValueString());
+            // TODO: color switch!
 
             if (matchExpression.getMatchOperator() == TokenType.EQUALS && USE_SELECT_FIELD.contains(matchExpression.getAs4Attribute())) {
                 Select<String> as4ValueSelectField = new Select<>();
@@ -205,37 +202,30 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
             }
 
             htmlContainer.add(new Text("')"));
-
         }
         return htmlContainer;
     }
 
-    private static final List<TokenType> USE_SELECT_FIELD = Stream.of(
-            TokenType.AS4_ACTION, TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE,
-            TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ID_TYPE, TokenType.AS4_FROM_PARTY_ROLE
-    ).collect(Collectors.toList());
-
     private List<String> loadValidItems(TokenType as4Attribute) {
         if (as4Attribute == TokenType.AS4_ACTION) {
             return webPModeService.getActionList()
-                    .stream().map(a -> a.getAction()).collect(Collectors.toList());
+                                  .stream().map(a -> a.getAction()).collect(Collectors.toList());
         } else if (as4Attribute == TokenType.AS4_SERVICE_NAME) {
             return webPModeService.getServiceList()
-                    .stream().map(s -> s.getService()).collect(Collectors.toList());
+                                  .stream().map(s -> s.getService()).collect(Collectors.toList());
         } else if (as4Attribute == TokenType.AS4_SERVICE_TYPE) {
             return webPModeService.getServiceList()
-                    .stream().map(s -> s.getServiceType()).collect(Collectors.toList());
+                                  .stream().map(s -> s.getServiceType()).collect(Collectors.toList());
         } else if (as4Attribute == TokenType.AS4_FROM_PARTY_ID) {
             return webPModeService.getPartyList()
-                    .stream().map(p -> p.getPartyId()).collect(Collectors.toList());
+                                  .stream().map(p -> p.getPartyId()).collect(Collectors.toList());
         } else if (as4Attribute == TokenType.AS4_FROM_PARTY_ID_TYPE) {
             return webPModeService.getPartyList()
-                    .stream().map(p -> p.getPartyIdType()).collect(Collectors.toList());
+                                  .stream().map(p -> p.getPartyIdType()).collect(Collectors.toList());
         } else if (as4Attribute == TokenType.AS4_FROM_PARTY_ROLE) {
             return webPModeService.getPartyList()
-                    .stream().map(p -> p.getRole()).collect(Collectors.toList());
+                                  .stream().map(p -> p.getRole()).collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
-
 }

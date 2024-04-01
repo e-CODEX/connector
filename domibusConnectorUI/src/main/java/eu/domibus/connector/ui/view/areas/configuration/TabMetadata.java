@@ -5,6 +5,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.lang.annotation.*;
 
+
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Documented
@@ -12,5 +13,6 @@ import java.lang.annotation.*;
 @SpringComponent
 public @interface TabMetadata {
     String title();
+
     String tabGroup();
 }

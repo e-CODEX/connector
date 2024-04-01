@@ -9,13 +9,12 @@ import org.springframework.core.style.ToStringCreator;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @ConfigurationProperties(prefix = UploadPModesOnFirstStartConfigurationProperties.PREFIX)
 public class UploadPModesOnFirstStartConfigurationProperties {
-
     public static final String PREFIX = "connector.init.pmode";
 
     private List<PModeUpload> upload = new ArrayList<>();
-
     private boolean enabled;
 
     public List<PModeUpload> getUpload() {
@@ -70,5 +69,4 @@ public class UploadPModesOnFirstStartConfigurationProperties {
                     .toString();
         }
     }
-
 }

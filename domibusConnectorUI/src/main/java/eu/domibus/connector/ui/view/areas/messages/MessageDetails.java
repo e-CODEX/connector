@@ -15,7 +15,6 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
-
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.ui.component.LumoLabel;
 import eu.domibus.connector.ui.dto.WebMessage;
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Optional;
 
+
 //@HtmlImport("styles/shared-styles.html")
 //@StyleSheet("styles/grid.css")
 @Component
@@ -41,149 +41,154 @@ import java.util.Optional;
 @Order(3)
 @TabMetadata(title = "Message Details", tabGroup = MessageLayout.TAB_GROUP_NAME)
 public class MessageDetails extends VerticalLayout implements HasUrlParameter<String> {
+    public static final String ROUTE = "messageDetails";
+    private static final Logger LOGGER = LogManager.getLogger(MessageDetails.class);
 
-	public static final String ROUTE = "messageDetails";
+    private static final long serialVersionUID = 1L;
+    private final WebMessageService messageService;
+    private final ConnectorMessageForm messageForm;
+    private final VerticalLayout messageEvidencesArea;
 
-	private static final long serialVersionUID = 1L;
+    public MessageDetails(@Autowired WebMessageService messageService) {
+        this.messageService = messageService;
+        this.messageForm = new ConnectorMessageForm();
+        this.messageEvidencesArea = new VerticalLayout();
+    }
 
-	private final static Logger LOGGER = LogManager.getLogger(MessageDetails.class);
+    public static void navigateTo(DomibusConnectorMessageId messageId) {
+        UI.getCurrent().navigate(MessageDetails.class, messageId.getConnectorMessageId());
+    }
 
-	private WebMessageService messageService;
-	private ConnectorMessageForm messageForm;
-	private VerticalLayout messageEvidencesArea;
+    @PostConstruct
+    void init() {
+        Button refreshButton = new Button(new Icon(VaadinIcon.REFRESH));
+        refreshButton.setText("Refresh");
+        refreshButton.addClickListener(e -> {
+            if (messageForm.getBinder() != null) loadMessageDetails(messageForm.getBinder().getBean());
+        });
 
-	public MessageDetails(@Autowired WebMessageService messageService) {
-		this.messageService = messageService;
-		this.messageForm = new ConnectorMessageForm();
-		this.messageEvidencesArea = new VerticalLayout();
-	}
+        HorizontalLayout buttons = new HorizontalLayout(
+                refreshButton
+        );
+        buttons.setWidth("100vw");
+        add(buttons);
 
-	@PostConstruct
-	void init() {
-		Button refreshButton = new Button(new Icon(VaadinIcon.REFRESH));
-		refreshButton.setText("Refresh");
-		refreshButton.addClickListener(e -> {
-			if(messageForm.getBinder()!=null)loadMessageDetails(messageForm.getBinder().getBean());
-		});
+        VerticalLayout messageDetailsArea = new VerticalLayout();
+        messageForm.getStyle().set("margin-top", "25px");
 
-		HorizontalLayout buttons = new HorizontalLayout(
-				refreshButton
-		);
-		buttons.setWidth("100vw");
-		add(buttons);
+        messageDetailsArea.add(messageForm);
+        // setAlignItems(Alignment.START);
+        messageForm.setEnabled(true);
+        //		messageDetailsArea.setHeight("100vh");
+        messageDetailsArea.setWidth("500px");
+        add(messageDetailsArea);
 
-		VerticalLayout messageDetailsArea = new VerticalLayout();
-		messageForm.getStyle().set("margin-top","25px");
+        add(messageEvidencesArea);
 
-		messageDetailsArea.add(messageForm);
-		//setAlignItems(Alignment.START);
-		messageForm.setEnabled(true);
-//		messageDetailsArea.setHeight("100vh");
-		messageDetailsArea.setWidth("500px");
-		add(messageDetailsArea);
+        setSizeFull();
+    }
 
-		add(messageEvidencesArea);
+    public void loadMessageDetails(WebMessage connectorMessage) {
+        Optional<WebMessage> optionalMessage = Optional.empty();
 
-		setSizeFull();
-//		setHeight("100vh");
-	}
+        if (!StringUtils.isEmpty(connectorMessage.getConnectorMessageId())) {
+            LOGGER.debug(
+                    "MessageDetails loaded with connectorMessageId [{}]",
+                    connectorMessage.getConnectorMessageId()
+            );
+            optionalMessage = messageService.getMessageByConnectorId(connectorMessage.getConnectorMessageId());
+        }
 
+        if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getBackendMessageId())) {
+            LOGGER.debug("MessageDetails loaded with backendMessageId [{}]", connectorMessage.getBackendMessageId());
+            optionalMessage = messageService.getMessageByBackendMessageId(connectorMessage.getBackendMessageId());
+        }
 
-	public void loadMessageDetails(WebMessage connectorMessage) {
+        if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getEbmsMessageId())) {
+            LOGGER.debug("MessageDetails loaded with ebmsMessageId [{}]", connectorMessage.getEbmsMessageId());
+            optionalMessage = messageService.getMessageByEbmsId(connectorMessage.getEbmsMessageId());
+        }
 
-		Optional<WebMessage> optionalMessage = Optional.empty();
+        if (!optionalMessage.isPresent()) {
+            String errorMessage = String.format(
+                    "No message found within database with connectorMessageId [%s], ebmsMessageId [%s] or " +
+                            "backendMessageId [%s] !",
+                    connectorMessage.getConnectorMessageId(),
+                    connectorMessage.getEbmsMessageId(),
+                    connectorMessage.getBackendMessageId()
+            );
+            LOGGER.warn(errorMessage);
+            Notification.show(errorMessage);
+        }
 
-		if(!StringUtils.isEmpty(connectorMessage.getConnectorMessageId())) {
-			LOGGER.debug("MessageDetails loaded with connectorMessageId [{}]", connectorMessage.getConnectorMessageId());
-			optionalMessage = messageService.getMessageByConnectorId(connectorMessage.getConnectorMessageId());
-		}
+        WebMessage webMessageDetail = optionalMessage.get();
+        messageForm.setConnectorMessage(webMessageDetail);
 
-		if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getBackendMessageId())) {
-			LOGGER.debug("MessageDetails loaded with backendMessageId [{}]", connectorMessage.getBackendMessageId());
-			optionalMessage = messageService.getMessageByBackendMessageId(connectorMessage.getBackendMessageId());
-		}
+        if (!webMessageDetail.getEvidences().isEmpty()) {
+            messageEvidencesArea.removeAll();
 
-		if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getEbmsMessageId())) {
-			LOGGER.debug("MessageDetails loaded with ebmsMessageId [{}]", connectorMessage.getEbmsMessageId());
-			optionalMessage = messageService.getMessageByEbmsId(connectorMessage.getEbmsMessageId());
-		}
+            Div evidences = new Div();
+            evidences.setWidth("100vw");
+            LumoLabel evidencesLabel = new LumoLabel();
+            evidencesLabel.setText("Evidences:");
+            evidencesLabel.getStyle().set("font-size", "20px");
+            evidences.add(evidencesLabel);
 
-		if (!optionalMessage.isPresent()) {
-			String errorMessage = String.format("No message found within database with connectorMessageId [%s], ebmsMessageId [%s] or backendMessageId [%s] !", connectorMessage.getConnectorMessageId(), connectorMessage.getEbmsMessageId(), connectorMessage.getBackendMessageId());
-			LOGGER.warn(errorMessage);
-			Notification.show(errorMessage);
-		}
+            messageEvidencesArea.add(evidences);
 
-			WebMessage webMessageDetail = optionalMessage.get();
-			messageForm.setConnectorMessage(webMessageDetail);
+            Div details = new Div();
+            details.setWidth("100vw");
 
-			if (!webMessageDetail.getEvidences().isEmpty()) {
-				messageEvidencesArea.removeAll();
+            Grid<WebMessageEvidence> grid = new Grid<>();
 
-				Div evidences = new Div();
-				evidences.setWidth("100vw");
-				LumoLabel evidencesLabel = new LumoLabel();
-				evidencesLabel.setText("Evidences:");
-				evidencesLabel.getStyle().set("font-size", "20px");
-				evidences.add(evidencesLabel);
+            grid.setItems(webMessageDetail.getEvidences());
 
-				messageEvidencesArea.add(evidences);
+            grid.addColumn(WebMessageEvidence::getEvidenceType).setHeader("Evidence Type").setWidth("300px");
+            grid.addColumn(WebMessageEvidence::getDeliveredToGatewayString).setHeader("Delivered to Gateway")
+                .setWidth("300px");
+            grid.addColumn(WebMessageEvidence::getDeliveredToBackendString).setHeader("Delivered to Backend")
+                .setWidth("300px");
 
-				Div details = new Div();
-				details.setWidth("100vw");
+            grid.setWidth("1000px");
+            grid.setHeight("210px");
+            grid.setMultiSort(true);
 
-				Grid<WebMessageEvidence> grid = new Grid<>();
+            for (Column<WebMessageEvidence> col : grid.getColumns()) {
+                col.setSortable(true);
+                col.setResizable(true);
+            }
 
-				grid.setItems(webMessageDetail.getEvidences());
+            details.add(grid);
 
-				grid.addColumn(WebMessageEvidence::getEvidenceType).setHeader("Evidence Type").setWidth("300px");
-				grid.addColumn(WebMessageEvidence::getDeliveredToGatewayString).setHeader("Delivered to Gateway").setWidth("300px");
-				grid.addColumn(WebMessageEvidence::getDeliveredToBackendString).setHeader("Delivered to Backend").setWidth("300px");
+            messageEvidencesArea.add(details);
 
-				grid.setWidth("1000px");
-				grid.setHeight("210px");
-				grid.setMultiSort(true);
+            messageEvidencesArea.setWidth("100vw");
+            //			add(messageEvidencesArea);
+            messageEvidencesArea.setVisible(true);
+        }
+    }
 
-				for (Column<WebMessageEvidence> col : grid.getColumns()) {
-					col.setSortable(true);
-					col.setResizable(true);
-				}
+    public void show(WebMessage message) {
+        UI.getCurrent().navigate(MessageDetails.class, message.getConnectorMessageId());
+    }
 
-				details.add(grid);
+    private void clearMessageDetails() {
+        messageForm.setConnectorMessage(new WebMessage());
 
-				messageEvidencesArea.add(details);
+        messageEvidencesArea.removeAll();
+        messageEvidencesArea.setVisible(false);
+    }
 
-				messageEvidencesArea.setWidth("100vw");
-				//			add(messageEvidencesArea);
-				messageEvidencesArea.setVisible(true);
-			}
-
-	}
-
-	public static void navigateTo(DomibusConnectorMessageId messageId) {
-		UI.getCurrent().navigate(MessageDetails.class, messageId.getConnectorMessageId());
-	}
-
-	public void show(WebMessage message) {
-		UI.getCurrent().navigate(MessageDetails.class, message.getConnectorMessageId());
-	}
-
-	private void clearMessageDetails() {
-		messageForm.setConnectorMessage(new WebMessage());
-
-		messageEvidencesArea.removeAll();
-		messageEvidencesArea.setVisible(false);
-	}
-
-	@Override
-	public void setParameter(BeforeEvent event
-			, @OptionalParameter String parameter) {
-		if(parameter!=null) {
-			WebMessage webMessage = new WebMessage();
-			webMessage.setConnectorMessageId(parameter);
-			loadMessageDetails(webMessage);
-		}else {
-			clearMessageDetails();
-		}
-	}
+    @Override
+    public void setParameter(
+            BeforeEvent event
+            , @OptionalParameter String parameter) {
+        if (parameter != null) {
+            WebMessage webMessage = new WebMessage();
+            webMessage.setConnectorMessageId(parameter);
+            loadMessageDetails(webMessage);
+        } else {
+            clearMessageDetails();
+        }
+    }
 }

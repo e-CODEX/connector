@@ -13,28 +13,26 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SignatureConfigurationField extends CustomField<SignatureConfigurationProperties> {
-
     private final SpringBeanValidationBinderFactory validationBinderFactory;
     private final KeyConfigurationField privateKey;
-
-    private Select<EncryptionAlgorithm> encryptionAlgorithm;
-    private Select<DigestAlgorithm> digestAlgorithm;
     private final StoreConfigurationField keyStore;
+    private final Select<EncryptionAlgorithm> encryptionAlgorithm;
+    private final Select<DigestAlgorithm> digestAlgorithm;
+    private final SpringBeanValidationBinder<SignatureConfigurationProperties> binder;
 
-
-    private SpringBeanValidationBinder<SignatureConfigurationProperties> binder;
-
-    private Label statusLabel = new Label("");
-    private FormLayout formLayout = new FormLayout();
+    private final Label statusLabel = new Label("");
+    private final FormLayout formLayout = new FormLayout();
 
     private SignatureConfigurationProperties value;
 
-    public SignatureConfigurationField(SpringBeanValidationBinderFactory validationBinderFactory,
-                                       KeyConfigurationField keyConfigurationField,
-                                       StoreConfigurationField keyStore) {
+    public SignatureConfigurationField(
+            SpringBeanValidationBinderFactory validationBinderFactory,
+            KeyConfigurationField keyConfigurationField,
+            StoreConfigurationField keyStore) {
         this.validationBinderFactory = validationBinderFactory;
         this.keyStore = keyStore;
         this.privateKey = keyConfigurationField;
@@ -45,12 +43,16 @@ public class SignatureConfigurationField extends CustomField<SignatureConfigurat
         encryptionAlgorithm = new Select<>(EncryptionAlgorithm.values());
         digestAlgorithm = new Select<>(DigestAlgorithm.values());
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(encryptionAlgorithm, "Encryption Algorithm");
         formLayout.addFormItem(digestAlgorithm, "Digest Algorithm");
         formLayout.addFormItem(keyStore, "Key Store Configuration");
         formLayout.addFormItem(privateKey, "Private Key Configuration");
-        //TODO: set keystore on keyfield, so keyfield can be a chooser
+        // TODO: set keystore on keyfield, so keyfield can be a chooser
 
         binder = validationBinderFactory.create(SignatureConfigurationProperties.class);
         binder.bindInstanceFields(this);
@@ -72,9 +74,7 @@ public class SignatureConfigurationField extends CustomField<SignatureConfigurat
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
-
     }
-
 
     @Override
     protected SignatureConfigurationProperties generateModelValue() {
@@ -84,11 +84,6 @@ public class SignatureConfigurationField extends CustomField<SignatureConfigurat
     @Override
     protected void setPresentationValue(SignatureConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
-
 }

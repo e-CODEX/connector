@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+
 @Component
 public class QueueController {
-
     private static final Logger LOGGER = LogManager.getLogger(QueueController.class);
 
     @Getter
@@ -64,14 +64,17 @@ public class QueueController {
             if (msg.getJMSDestination() instanceof javax.jms.Queue) {
                 jmsDestination = ((Queue) msg.getJMSDestination()).getQueueName();
             } else {
-                String error = "Illegal destination: [" + msg.getJMSDestination() + "] Other destinations then queues are not supported!";
+                String error =
+                        "Illegal destination: [" + msg.getJMSDestination() + "] Other destinations then queues are " +
+								"not supported!";
                 LOGGER.warn(error);
                 Notification.show(error);
             }
             if (jmsDestination != null) {
                 ManageableQueue manageableQueue = errorQueueMap.get(jmsDestination);
                 if (manageableQueue == null) {
-                    throw new IllegalArgumentException(String.format("DLQ with name [%s] was not found! Available are: [%s]",
+                    throw new IllegalArgumentException(String.format(
+                            "DLQ with name [%s] was not found! Available are: [%s]",
                             jmsDestination,
                             errorQueueMap.keySet().stream().collect(Collectors.joining(","))
                     ));
@@ -85,13 +88,14 @@ public class QueueController {
         } catch (JMSException e) {
             String error = "An exception occured while moving message from DLQ to queue";
             LOGGER.warn(error, e);
-           Notification.show(error);
+            Notification.show(error);
         }
     }
 
     @Transactional
     public List<WebQueue> getQueues() {
-        List<WebQueue> result = queueMap.values().stream()
+        List<WebQueue> result = queueMap
+                .values().stream()
                 .map(this::mapQueueToWebQueue)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -112,7 +116,12 @@ public class QueueController {
                 webQueue.setDlqMessages(cleanupDlqMsgs);
                 webQueue.setMsgsOnDlq(cleanupDlqMsgs.size());
             } catch (InvalidDestinationException ide) {
-                LOGGER.trace("Error occured while reading from DLQ [" + manageableQueue.getDlqName() + "] (maybe the queue has not been created yet)", ide);
+                LOGGER.trace(
+                        "Error occured while reading from DLQ [" + manageableQueue.getDlqName() + "] (maybe the queue" +
+								" " +
+                                "has not been created yet)",
+                        ide
+                );
             } catch (Exception e) {
                 LOGGER.warn("Error occured while reading from DLQ [" + manageableQueue.getDlqName() + "]", e);
             }

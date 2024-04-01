@@ -16,10 +16,10 @@ import eu.domibus.connectorplugins.link.wsbackendplugin.childctx.WsBackendPlugin
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
+
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class WsBackendConfigurationField extends CustomField<WsBackendPluginConfigurationProperties> implements AfterNavigationObserver {
-
     private final SpringBeanValidationBinder<WsBackendPluginConfigurationProperties> binder;
 
     private final Label statusLabel = new Label();
@@ -32,9 +32,10 @@ public class WsBackendConfigurationField extends CustomField<WsBackendPluginConf
 
     private WsBackendPluginConfigurationProperties value = new WsBackendPluginConfigurationProperties();
 
-    public WsBackendConfigurationField(SpringBeanValidationBinderFactory validationBinderFactory,
-                                       KeyAndKeyStoreAndTrustStoreConfigurationField soap,
-                                       SpringResourceField wsPolicyField) {
+    public WsBackendConfigurationField(
+            SpringBeanValidationBinderFactory validationBinderFactory,
+            KeyAndKeyStoreAndTrustStoreConfigurationField soap,
+            SpringResourceField wsPolicyField) {
         binder = validationBinderFactory.create(WsBackendPluginConfigurationProperties.class);
         this.soap = soap;
         this.wsPolicy = wsPolicyField;
@@ -46,7 +47,11 @@ public class WsBackendConfigurationField extends CustomField<WsBackendPluginConf
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(backendPublishAddress, "backendPublishAddress");
         formLayout.addFormItem(soap, "Soap");
         formLayout.addFormItem(cxfLoggingEnabled, "cxfLoggingEnabled");
@@ -80,7 +85,5 @@ public class WsBackendConfigurationField extends CustomField<WsBackendPluginConf
 
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
-
     }
-
 }

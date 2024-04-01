@@ -5,7 +5,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextField;
@@ -18,42 +17,26 @@ import com.vaadin.flow.server.Command;
 import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.link.api.LinkPlugin;
-import eu.domibus.connector.link.service.DCActiveLinkManagerService;
 import eu.domibus.connector.link.service.DCLinkFacade;
 import eu.domibus.connector.ui.component.WizardStep;
 import eu.domibus.connector.ui.view.areas.configuration.link.LnkConfigItem;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
-
-public class ChooseImplStep extends VerticalLayout implements WizardStep  {
-
-    private static final Logger LOGGER = LogManager.getLogger(ChooseImplStep.class);
-
-//    private final DCActiveLinkManagerService linkManagerService;
+public class ChooseImplStep extends VerticalLayout implements WizardStep {
+    // private final DCActiveLinkManagerService linkManagerService;
     private final DCLinkFacade dcLinkFacade;
-
-    private Binder<LnkConfigItem> lnkConfigItemBinder;
-
+    private final Binder<LnkConfigItem> lnkConfigItemBinder;
+    private final VerticalLayout newLinkConfigDiv = new VerticalLayout();
+    private final ComboBox<LinkPlugin> implChooser = new ComboBox<>();
+    private final VerticalLayout existingLinkConfigDiv = new VerticalLayout();
+    private final ComboBox<DomibusConnectorLinkConfiguration> linkConfigurationComboBox = new ComboBox<>();
     private RadioButtonGroup<LnkConfigItem.NewConfig> newConfig;
-
-    private VerticalLayout newLinkConfigDiv = new VerticalLayout();
-    private ComboBox<LinkPlugin> implChooser = new ComboBox<>();
     private TextField linkConfigName;
-
-    private VerticalLayout existingLinkConfigDiv = new VerticalLayout();
-    private ComboBox<DomibusConnectorLinkConfiguration> linkConfigurationComboBox = new ComboBox<>();
 
     public ChooseImplStep(DCLinkFacade dcLinkFacade, Binder<LnkConfigItem> lnkConfigItem) {
         this.dcLinkFacade = dcLinkFacade;
         this.lnkConfigItemBinder = lnkConfigItem;
-
 
         lnkConfigItemBinder.addValueChangeListener(this::lnkCOnfigItemValueChanged);
         initUI();
@@ -62,24 +45,22 @@ public class ChooseImplStep extends VerticalLayout implements WizardStep  {
     private void lnkCOnfigItemValueChanged(HasValue.ValueChangeEvent<?> valueChangeEvent) {
         Object value = valueChangeEvent.getValue();
         if (value instanceof LnkConfigItem) {
-
         }
     }
 
-
-    private void newConfigValueChanged(AbstractField.ComponentValueChangeEvent<RadioButtonGroup<LnkConfigItem.NewConfig>, LnkConfigItem.NewConfig> event) {
+    private void newConfigValueChanged(
+            AbstractField.ComponentValueChangeEvent<RadioButtonGroup<LnkConfigItem.NewConfig>,
+                    LnkConfigItem.NewConfig> event) {
         if (event.getValue() == LnkConfigItem.NewConfig.NEW_LINK_CONFIG) {
-            //TODO: set visible for new link configuration, editable name, choose plugin impl...
-//            implChooser.setReadOnly(false);
-//            linkConfigName.setReadOnly(false);
+            // TODO: set visible for new link configuration, editable name, choose plugin impl...
+            //            implChooser.setReadOnly(false);
+            //            linkConfigName.setReadOnly(false);
             newLinkConfigDiv.setVisible(true);
             existingLinkConfigDiv.setVisible(false);
-
         } else if (event.getValue() == LnkConfigItem.NewConfig.EXISTING_LINK_CONFIG) {
-            //TODO: set visible for existing link config, choose existing link config...
+            // TODO: set visible for existing link config, choose existing link config...
             newLinkConfigDiv.setVisible(false);
             existingLinkConfigDiv.setVisible(true);
-
         } else {
             throw new IllegalStateException("Should not end here! Unknown LnkConfigItem.NewConfig item" + event.getValue());
         }
@@ -90,7 +71,8 @@ public class ChooseImplStep extends VerticalLayout implements WizardStep  {
         newConfig.setItems(LnkConfigItem.NewConfig.values());
         newConfig.addValueChangeListener(this::newConfigValueChanged);
 
-        lnkConfigItemBinder.bind(newConfig,
+        lnkConfigItemBinder.bind(
+                newConfig,
                 (ValueProvider<LnkConfigItem, LnkConfigItem.NewConfig>) LnkConfigItem::getNewConfig,
                 (Setter<LnkConfigItem, LnkConfigItem.NewConfig>) LnkConfigItem::setNewConfig
         );
@@ -103,7 +85,6 @@ public class ChooseImplStep extends VerticalLayout implements WizardStep  {
         newConfig.setValue(LnkConfigItem.NewConfig.NEW_LINK_CONFIG);
 
         updateUI();
-
     }
 
     private void initCreateLinkConfigDiv() {
@@ -113,10 +94,10 @@ public class ChooseImplStep extends VerticalLayout implements WizardStep  {
 
         lnkConfigItemBinder
                 .forField(linkConfigurationComboBox)
-                .bind((ValueProvider<LnkConfigItem, DomibusConnectorLinkConfiguration>) LnkConfigItem::getLinkConfiguration,
+                .bind(
+                        (ValueProvider<LnkConfigItem, DomibusConnectorLinkConfiguration>) LnkConfigItem::getLinkConfiguration,
                         (Setter<LnkConfigItem, DomibusConnectorLinkConfiguration>) LnkConfigItem::setLinkConfiguration
                 );
-
 
         this.add(existingLinkConfigDiv);
     }
@@ -135,15 +116,22 @@ public class ChooseImplStep extends VerticalLayout implements WizardStep  {
                     return ValidationResult.ok();
                 })
                 .bind(
-                        (ValueProvider<LnkConfigItem, String>) linkConfiguration -> linkConfiguration.getLinkConfiguration().getConfigName() == null ? "" : linkConfiguration.getLinkConfiguration().getConfigName().toString(),
-                        (Setter<LnkConfigItem, String>) (linkConfiguration, configName) -> linkConfiguration.getLinkConfiguration().setConfigName(configName == null ? new DomibusConnectorLinkConfiguration.LinkConfigName("") : new DomibusConnectorLinkConfiguration.LinkConfigName(configName))
+                        (ValueProvider<LnkConfigItem, String>) linkConfiguration -> linkConfiguration
+                                .getLinkConfiguration().getConfigName() == null ? "" : linkConfiguration
+                                .getLinkConfiguration().getConfigName().toString(),
+                        (Setter<LnkConfigItem, String>) (linkConfiguration, configName) -> linkConfiguration
+                                .getLinkConfiguration()
+                                .setConfigName(configName == null ?
+                                                       new DomibusConnectorLinkConfiguration.LinkConfigName(
+                                                               "") :
+                                                       new DomibusConnectorLinkConfiguration.LinkConfigName(
+                                                               configName))
                 );
-
 
         implChooser.setLabel("Link Implementation");
         implChooser.setItemLabelGenerator((ItemLabelGenerator<LinkPlugin>) LinkPlugin::getPluginName);
         implChooser.setItems(dcLinkFacade.getAvailableLinkPlugins(getLinkType()));
-//        implChooser.addValueChangeListener(this::choosenLinkImplChanged);
+        //        implChooser.addValueChangeListener(this::choosenLinkImplChanged);
         implChooser.setMinWidth("10em");
         newLinkConfigDiv.add(implChooser);
 
@@ -159,24 +147,22 @@ public class ChooseImplStep extends VerticalLayout implements WizardStep  {
                         (ValueProvider<LnkConfigItem, LinkPlugin>) LnkConfigItem::getLinkPlugin,
                         (Setter<LnkConfigItem, LinkPlugin>) LnkConfigItem::setLinkPlugin
                 );
-
     }
 
     private LinkType getLinkType() {
         return this.lnkConfigItemBinder.getBean().getLinkType();
     }
 
-
     private void updateUI() {
-//        implChooser.setReadOnly(readOnly && !implChangeAble);
-//        linkConfigName.setReadOnly(readOnly);
-//        configPropsList.setReadOnly(readOnly);
+        // implChooser.setReadOnly(readOnly && !implChangeAble);
+        // linkConfigName.setReadOnly(readOnly);
+        // configPropsList.setReadOnly(readOnly);
 
     }
 
     public void setImplChangeAble(boolean changeAble) {
-//        this.implChangeAble = changeAble;
-//        implChooser.setReadOnly(readOnly && !implChangeAble);
+        // this.implChangeAble = changeAble;
+        // implChooser.setReadOnly(readOnly && !implChangeAble);
     }
 
     @Override
@@ -185,13 +171,11 @@ public class ChooseImplStep extends VerticalLayout implements WizardStep  {
     }
 
     @Override
-    public void onForward(Command onForwardExecute) {
-
-    }
-
-    @Override
     public String getStepTitle() {
         return "Choose Link Implementation";
     }
 
+    @Override
+    public void onForward(Command onForwardExecute) {
+    }
 }

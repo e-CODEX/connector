@@ -12,12 +12,11 @@ import org.springframework.context.annotation.Scope;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
+
 @SpringComponent
 @Scope(SCOPE_PROTOTYPE)
 public class PostalAdressConfigurationPropertiesField extends CustomField<PostalAdressConfigurationProperties> {
-
     private final SpringBeanValidationBinderFactory validationBinderFactory;
-
     private final TextField street = new TextField();
     private final TextField locality = new TextField();
     private final TextField zipCode = new TextField();
@@ -35,7 +34,11 @@ public class PostalAdressConfigurationPropertiesField extends CustomField<Postal
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(street, "Street");
         formLayout.addFormItem(locality, "Locality");
         formLayout.addFormItem(zipCode, "ZipCode");
@@ -71,11 +74,6 @@ public class PostalAdressConfigurationPropertiesField extends CustomField<Postal
     @Override
     protected void setPresentationValue(PostalAdressConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
-
 }

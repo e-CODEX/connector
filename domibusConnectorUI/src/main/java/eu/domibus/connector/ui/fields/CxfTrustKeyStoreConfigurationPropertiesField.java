@@ -5,17 +5,16 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.textfield.TextField;
 import eu.domibus.connector.lib.spring.configuration.CxfTrustKeyStoreConfigurationProperties;
-import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreAndTrustStoreConfigurationProperties;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 @Component(CxfTrustKeyStoreConfigurationPropertiesField.BEAN_NAME)
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CxfTrustKeyStoreConfigurationPropertiesField extends CustomField<CxfTrustKeyStoreConfigurationProperties> {
-
     public static final String BEAN_NAME = "CxfTrustKeyStoreConfigurationPropertiesField";
 
     private final TextField encryptAlias = new TextField();
@@ -30,10 +29,11 @@ public class CxfTrustKeyStoreConfigurationPropertiesField extends CustomField<Cx
 
     CxfTrustKeyStoreConfigurationProperties value;
 
-    public CxfTrustKeyStoreConfigurationPropertiesField(SpringBeanValidationBinderFactory validationBinderFactory,
-                                                         StoreConfigurationField trustStore,
-                                                         StoreConfigurationField keyStore,
-                                                         KeyConfigurationField privateKey) {
+    public CxfTrustKeyStoreConfigurationPropertiesField(
+            SpringBeanValidationBinderFactory validationBinderFactory,
+            StoreConfigurationField trustStore,
+            StoreConfigurationField keyStore,
+            KeyConfigurationField privateKey) {
         this.trustStore = trustStore;
         this.keyStore = keyStore;
         this.privateKey = privateKey;
@@ -41,14 +41,18 @@ public class CxfTrustKeyStoreConfigurationPropertiesField extends CustomField<Cx
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+        ));
         formLayout.addFormItem(this.encryptAlias, "encrypt alias");
         formLayout.addFormItem(this.trustStore, "Trust Store");
         formLayout.addFormItem(this.keyStore, "Key Store");
         formLayout.addFormItem(this.privateKey, "Private Key");
 
-//        formLayout.addFormItem(password, "Key Password");
-        //TODO: add alternative view, when associated with keystore...some kind of select box...
+        // formLayout.addFormItem(password, "Key Password");
+        // TODO: add alternative view, when associated with keystore...some kind of select box...
 
         binder = validationBinderFactory.create(CxfTrustKeyStoreConfigurationProperties.class);
         binder.bindInstanceFields(this);
@@ -70,7 +74,6 @@ public class CxfTrustKeyStoreConfigurationPropertiesField extends CustomField<Cx
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
-
     }
 
     @Override
@@ -81,12 +84,6 @@ public class CxfTrustKeyStoreConfigurationPropertiesField extends CustomField<Cx
     @Override
     protected void setPresentationValue(CxfTrustKeyStoreConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
-        if (newPresentationValue == null) {
-            formLayout.setVisible(false);
-        } else {
-            formLayout.setVisible(true);
-        }
+        formLayout.setVisible(newPresentationValue != null);
     }
-
-
 }

@@ -19,22 +19,19 @@ import org.springframework.stereotype.Component;
 @TabMetadata(title = "General Message Processing Config", tabGroup = ConfigurationLayout.TAB_GROUP_NAME)
 @Order(40)
 public class ConnectorMessageProcessingConfigPanel extends DCVerticalLayoutWithTitleAndHelpButton {
+    public static final String TITLE = "General Message Processing Config";
+    public static final String HELP_ID = "ui/configuration/message_processing_config.html";
+    public static final String ROUTE = "messageProcessingConfig";
 
-        public static final String TITLE = "General Message Processing Config";
-        public static final String HELP_ID = "ui/configuration/message_processing_config.html";
+    public ConnectorMessageProcessingConfigPanel(
+            ConfigurationPanelFactory configurationPanelFactory,
+            ConnectorMessageProcessingPropertiesConfigForm form) {
+        super(HELP_ID, TITLE);
+        ConfigurationPanelFactory.ConfigurationPanel<ConnectorMessageProcessingProperties> configurationPanel
+                = configurationPanelFactory.createConfigurationPanel(form, ConnectorMessageProcessingProperties.class);
 
-        public static final String ROUTE = "messageProcessingConfig";
-
-        public ConnectorMessageProcessingConfigPanel(ConfigurationPanelFactory configurationPanelFactory,
-                                                     ConnectorMessageProcessingPropertiesConfigForm form) {
-            super(HELP_ID, TITLE);
-            ConfigurationPanelFactory.ConfigurationPanel<ConnectorMessageProcessingProperties> configurationPanel
-                    = configurationPanelFactory.createConfigurationPanel(form, ConnectorMessageProcessingProperties.class);
-
-            this.add(configurationPanel);
-
-        }
-
+        this.add(configurationPanel);
     }
+}
 
 

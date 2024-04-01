@@ -5,14 +5,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import eu.domibus.connector.ui.controller.QueueController;
 import eu.domibus.connector.ui.dto.WebQueue;
 
+
 public class DetailsLayout extends VerticalLayout {
-
     private final QueueController queueController;
-
     JmsMonitoringView parentView;
-
-    private MessageGrid msgsGrid;
-    private MessageGrid dlqMsgsGrid;
+    private final MessageGrid msgsGrid;
+    private final MessageGrid dlqMsgsGrid;
 
     public DetailsLayout(QueueController queueController, JmsMonitoringView view) {
         this.queueController = queueController;

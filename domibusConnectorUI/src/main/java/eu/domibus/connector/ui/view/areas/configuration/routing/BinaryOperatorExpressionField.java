@@ -11,17 +11,14 @@ import eu.domibus.connector.controller.routing.TokenType;
 
 
 public class BinaryOperatorExpressionField extends CustomField<BinaryOperatorExpression> {
-
     private final ExpressionFieldFactory expressionFieldFactory;
-
-    private HorizontalLayout horizontalLayout;
-    private Select<TokenType> operatorSelectBox = new Select<>();
+    private final HorizontalLayout horizontalLayout;
+    private final Select<TokenType> operatorSelectBox = new Select<>();
     private Component exp1Field;
     private Component exp2Field;
 
-//    private Button createExp1Expression = new Button("Add Expression");
-//    private Button createExp2Expression = new Button("Add Expression");
-
+    //    private Button createExp1Expression = new Button("Add Expression");
+    //    private Button createExp2Expression = new Button("Add Expression");
 
     public BinaryOperatorExpressionField(ExpressionFieldFactory expressionFieldFactory) {
         this.expressionFieldFactory = expressionFieldFactory;
@@ -39,7 +36,6 @@ public class BinaryOperatorExpressionField extends CustomField<BinaryOperatorExp
         horizontalLayout.add(exp1Field);
         horizontalLayout.add(operatorSelectBox);
         horizontalLayout.add(exp2Field);
-
     }
 
     private Component createExp1Expression() {
@@ -78,8 +74,5 @@ public class BinaryOperatorExpressionField extends CustomField<BinaryOperatorExp
         exp2Field = newExp2Field;
 
         operatorSelectBox.setValue(newPresentationValue.getOperand());
-
     }
-
-
 }

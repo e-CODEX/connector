@@ -28,7 +28,6 @@ import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.service.DCLinkFacade;
-import eu.domibus.connector.link.utils.Connector42LinkConfigTo43LinkConfigConverter;
 import eu.domibus.connector.link.utils.Connector42RoutingRulesTo43RoutingRulesConfigConverter;
 import eu.domibus.connector.ui.component.LumoLabel;
 import eu.domibus.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
@@ -38,16 +37,15 @@ import eu.domibus.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.annotation.Order;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 @Component
 @UIScope
@@ -56,30 +54,29 @@ import java.util.stream.Collectors;
 @RoleRequired(role = "ADMIN")
 @Order(3)
 public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpButton implements AfterNavigationObserver {
-
-    private static final Logger LOGGER = LogManager.getLogger(BackendMessageRoutingView.class);
-
     public static final String ROUTE = "backendrouting";
-
     public static final String TITLE = "Manage Backend Routing Rules";
     public static final String HELP_ID = "ui/configuration/backend_message_routing_ui.html";
+    private static final Logger LOGGER = LogManager.getLogger(BackendMessageRoutingView.class);
 
     private final DCRoutingRulesManagerImpl dcRoutingRulesManagerImpl;
     private final WebBusinessDomainService webBusinessDomainService;
     private final ObjectFactory<RoutingRuleForm> routingRuleFormObjectFactory;
     private final DCLinkFacade dcLinkFacade;
-    private final ObjectFactory<Connector42RoutingRulesTo43RoutingRulesConfigConverter> importOldConfigRoutingRulesConverterObjectFactory;
+    private final ObjectFactory<Connector42RoutingRulesTo43RoutingRulesConfigConverter>
+            importOldConfigRoutingRulesConverterObjectFactory;
 
     private Grid<RoutingRule> routingRuleGrid;
     private ComboBox<String> defaultBackendNameSelectField;
 
     private Map<String, RoutingRule> currentRoutingRules;
 
-    public BackendMessageRoutingView(DCRoutingRulesManagerImpl dcRoutingRulesManagerImpl,
-                                     ObjectFactory<RoutingRuleForm> routingRuleFormObjectFactory,
-                                     WebBusinessDomainService webBusinessDomainService,
-                                     DCLinkFacade dcLinkFacade,
-                                     ObjectFactory<Connector42RoutingRulesTo43RoutingRulesConfigConverter> importOldConfigRoutingRulesConverterObjectFactory) {
+    public BackendMessageRoutingView(
+            DCRoutingRulesManagerImpl dcRoutingRulesManagerImpl,
+            ObjectFactory<RoutingRuleForm> routingRuleFormObjectFactory,
+            WebBusinessDomainService webBusinessDomainService,
+            DCLinkFacade dcLinkFacade,
+            ObjectFactory<Connector42RoutingRulesTo43RoutingRulesConfigConverter> importOldConfigRoutingRulesConverterObjectFactory) {
         super(HELP_ID, TITLE);
         this.routingRuleFormObjectFactory = routingRuleFormObjectFactory;
         this.dcRoutingRulesManagerImpl = dcRoutingRulesManagerImpl;
@@ -91,7 +88,9 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
 
     private void initUI() {
 
-        Label l = new Label("Here is the configuration where routing rules are configured that define how messages are routed to backend(s).");
+        Label l = new Label(
+                "Here is the configuration where routing rules are configured that define how messages are routed to " +
+                        "backend(s).");
         add(l);
 
         LumoLabel routingDescription = new LumoLabel();
@@ -103,19 +102,40 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
 
         Accordion routingPriorities = new Accordion();
 
-        routingPriorities.add("1. refToMessageId", new LumoLabel("If the message contains a refToMessageId then the backend where the original message was sent from is chosen."));
-        routingPriorities.add("2. conversationId", new LumoLabel("If the message is part of a conversation the backend where prior messages of the conversation was sent from is chosen."));
-        routingPriorities.add("3. routing Rules", new LumoLabel("This is the part configured on this page. \nIf there is a rule that applies to the message, the backend configured within the rule is chosen."));
-        routingPriorities.add("4. default Backend", new LumoLabel("If none of the above is applicable, the default backend is chosen."));
+        routingPriorities.add(
+                "1. refToMessageId",
+                new LumoLabel(
+                        "If the message contains a refToMessageId then the backend where the original message was " +
+                                "sent" +
+                                " from is chosen.")
+        );
+        routingPriorities.add(
+                "2. conversationId",
+                new LumoLabel(
+                        "If the message is part of a conversation the backend where prior messages of the " +
+                                "conversation" +
+                                " was sent from is chosen.")
+        );
+        routingPriorities.add(
+                "3. routing Rules",
+                new LumoLabel(
+                        "This is the part configured on this page. \nIf there is a rule that applies to the message, " +
+                                "the backend configured within the rule is chosen.")
+        );
+        routingPriorities.add(
+                "4. default Backend",
+                new LumoLabel("If none of the above is applicable, the default backend is chosen.")
+        );
 
         add(routingPriorities);
 
-        //TextField defaultBackendNameTextField = new TextField();
-//        defaultBackendNameTextField.setReadOnly(true); //currently no way to update this over the UI!
-//        defaultBackendNameTextField.setLabel("Configured default backend name");
-//        defaultBackendNameTextField.setValue(dcRoutingRulesManagerImpl.getDefaultBackendName(getCurrentDomain()));
-//
-//        add(defaultBackendNameTextField);
+        // TextField defaultBackendNameTextField = new TextField();
+        //        defaultBackendNameTextField.setReadOnly(true); //currently no way to update this over the UI!
+        //        defaultBackendNameTextField.setLabel("Configured default backend name");
+        //        defaultBackendNameTextField.setValue(dcRoutingRulesManagerImpl.getDefaultBackendName
+        //        (getCurrentDomain()));
+        //
+        //        add(defaultBackendNameTextField);
         defaultBackendNameSelectField = getBackendNameEditorComponent();
         defaultBackendNameSelectField.setLabel("Configured default backend name");
         defaultBackendNameSelectField.addValueChangeListener(this::defaultBackendChanged);
@@ -125,7 +145,8 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         routingRuleGrid.addColumn(getButtonRenderer());
         routingRuleGrid.getColumns().forEach(c -> c.setResizable(true));
 
-        final List<GridSortOrder<RoutingRule>> sortByPriority = new GridSortOrderBuilder<RoutingRule>().thenDesc(routingRuleGrid.getColumnByKey("priority")).build();
+        final List<GridSortOrder<RoutingRule>> sortByPriority =
+                new GridSortOrderBuilder<RoutingRule>().thenDesc(routingRuleGrid.getColumnByKey("priority")).build();
         routingRuleGrid.sort(sortByPriority);
 
         this.add(routingRuleGrid);
@@ -140,13 +161,12 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
 
         buttonBar.add(createNewRoutingRuleButton, importOldRulesButton);
         add(buttonBar);
-
     }
 
     private void importOldRulesButtonClicked(ClickEvent<Button> buttonClickEvent) {
-        Connector42RoutingRulesTo43RoutingRulesConfigConverter connector42LinkConfigTo43LinkConfigConverter = importOldConfigRoutingRulesConverterObjectFactory.getObject();
+        Connector42RoutingRulesTo43RoutingRulesConfigConverter connector42LinkConfigTo43LinkConfigConverter =
+                importOldConfigRoutingRulesConverterObjectFactory.getObject();
         List<RoutingRule> routingRules = connector42LinkConfigTo43LinkConfigConverter.getRoutingRules();
-
 
         final Dialog d = new Dialog();
         VerticalLayout layout = new VerticalLayout();
@@ -172,7 +192,6 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         layout.add(buttonBar, l, importedRulesGrid);
 
         d.open();
-
     }
 
     private void defaultBackendChanged(AbstractField.ComponentValueChangeEvent<ComboBox<String>, String> comboBoxStringComponentValueChangeEvent) {
@@ -182,17 +201,18 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
 
     private void updateUI() {
         defaultBackendNameSelectField.setValue(dcRoutingRulesManagerImpl.getDefaultBackendName(getCurrentDomain()));
-        Map<String, RoutingRule> backendRoutingRules = dcRoutingRulesManagerImpl.getBackendRoutingRules(getCurrentDomain());
+        Map<String, RoutingRule> backendRoutingRules =
+                dcRoutingRulesManagerImpl.getBackendRoutingRules(getCurrentDomain());
         this.currentRoutingRules = backendRoutingRules;
         routingRuleGrid.setItems(backendRoutingRules.values());
     }
 
     private ComboBox<String> getBackendNameEditorComponent() {
         Set<String> collect = dcLinkFacade.getAllLinksOfType(LinkType.BACKEND)
-                .stream()
-                .map(DomibusConnectorLinkPartner::getLinkPartnerName)
-                .map(DomibusConnectorLinkPartner.LinkPartnerName::getLinkName)
-                .collect(Collectors.toSet());
+                                          .stream()
+                                          .map(DomibusConnectorLinkPartner::getLinkPartnerName)
+                                          .map(DomibusConnectorLinkPartner.LinkPartnerName::getLinkName)
+                                          .collect(Collectors.toSet());
         ComboBox<String> comboBox = new ComboBox<>("LinkName");
         comboBox.setItems(collect);
         comboBox.setAllowCustomValue(true);
@@ -208,7 +228,7 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
                 (RoutingRule routingRule) -> {
                     HorizontalLayout layout = new HorizontalLayout();
                     if (routingRule.getConfigurationSource().equals(ConfigurationSource.DB)) {
-                        //edit Button
+                        // edit Button
                         Button editButton = new Button();
 
                         editButton.setIcon(VaadinIcon.WRENCH.create());
@@ -216,7 +236,7 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
                             editRoutingRule(routingRule);
                         });
                         layout.add(editButton);
-                        //delete button
+                        // delete button
                         Button deleteButton = new Button();
                         deleteButton.setIcon(VaadinIcon.TRASH.create());
                         deleteButton.addClickListener(clickEvent -> {
@@ -227,7 +247,6 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
 
                     return layout;
                 });
-
     }
 
     private void createNewRoutingRuleClicked(ClickEvent<Button> buttonClickEvent) {
@@ -263,14 +282,14 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         Button cancelButton = new Button(VaadinIcon.CLOSE.create());
 
         cancelButton.addClickListener(e -> {
-            //do nothing...
+            // do nothing...
             d.close();
         });
 
         RoutingRule updatedRoutingRule = new RoutingRule();
         saveButton.addClickListener(e -> {
-            //TODO: save routing rule...
-//            routingRuleBinder.readBean();
+            // TODO: save routing rule...
+            //            routingRuleBinder.readBean();
             BinderValidationStatus<RoutingRule> validate = routingRuleBinder.validate();
             LOGGER.info("Validation result: [{}]", validate);
             boolean b = routingRuleBinder.writeBeanIfValid(updatedRoutingRule);
@@ -278,7 +297,6 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
                 d.close();
                 updateAndSaveRoutingRule(updatedRoutingRule);
             }
-
         });
 
         saveCancelButton.add(saveButton);
@@ -312,19 +330,18 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         routingRuleBinder.readBean(r);
         routingRuleBinder.setStatusLabel(statusLabel);
 
-
         Button saveButton = new Button(VaadinIcon.CHECK.create());
         Button cancelButton = new Button(VaadinIcon.CLOSE.create());
 
         cancelButton.addClickListener(e -> {
-            //do nothing...
+            // do nothing...
             d.close();
         });
 
         RoutingRule updatedRoutingRule = new RoutingRule();
         saveButton.addClickListener(e -> {
-            //TODO: save routing rule...
-//            routingRuleBinder.readBean();
+            // TODO: save routing rule...
+            //            routingRuleBinder.readBean();
             BinderValidationStatus<RoutingRule> validate = routingRuleBinder.validate();
             LOGGER.info("Validation result: [{}]", validate);
             boolean b = routingRuleBinder.writeBeanIfValid(updatedRoutingRule);
@@ -332,7 +349,6 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
                 d.close();
                 updateAndSaveRoutingRule(updatedRoutingRule);
             }
-
         });
 
         saveCancelButton.add(saveButton);
@@ -340,8 +356,14 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
     }
 
     private void updateAndSaveRoutingRule(RoutingRule rr) {
-        dcRoutingRulesManagerImpl.deleteBackendRoutingRuleFromPersistence(webBusinessDomainService.getCurrentBusinessDomain(), rr.getRoutingRuleId());
-        rr = dcRoutingRulesManagerImpl.persistBackendRoutingRule(webBusinessDomainService.getCurrentBusinessDomain(), rr);
+        dcRoutingRulesManagerImpl.deleteBackendRoutingRuleFromPersistence(
+                webBusinessDomainService.getCurrentBusinessDomain(),
+                rr.getRoutingRuleId()
+        );
+        rr = dcRoutingRulesManagerImpl.persistBackendRoutingRule(
+                webBusinessDomainService.getCurrentBusinessDomain(),
+                rr
+        );
         this.currentRoutingRules.remove(rr.getRoutingRuleId());
         this.currentRoutingRules.put(rr.getRoutingRuleId(), rr);
         this.routingRuleGrid.setItems(this.currentRoutingRules.values());
@@ -366,14 +388,16 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
 
         acceptButton.addClickListener(e -> {
             currentRoutingRules.remove(r.getRoutingRuleId());
-            dcRoutingRulesManagerImpl.deleteBackendRoutingRuleFromPersistence(webBusinessDomainService.getCurrentBusinessDomain(), r.getRoutingRuleId());
+            dcRoutingRulesManagerImpl.deleteBackendRoutingRuleFromPersistence(
+                    webBusinessDomainService.getCurrentBusinessDomain(),
+                    r.getRoutingRuleId()
+            );
             this.routingRuleGrid.setItems(currentRoutingRules.values());
             d.close();
         });
         cancelButton.addClickListener(e -> {
             d.close();
         });
-
     }
 
 
@@ -383,12 +407,11 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
     }
 
     private DomibusConnectorBusinessDomain.BusinessDomainId getCurrentDomain() {
-        //TODO: replace in multi tenancy model with service...
+        // TODO: replace in multi tenancy model with service...
         return DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
     }
 
-    //TODO: for validation purpose check DCLinkFacade if backendName is a configured backend
+    // TODO: for validation purpose check DCLinkFacade if backendName is a configured backend
     // warn when backend exists, but deactivated
     // error when backend does not exist
-
 }

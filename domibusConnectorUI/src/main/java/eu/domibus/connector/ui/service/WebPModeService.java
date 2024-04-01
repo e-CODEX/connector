@@ -8,7 +8,6 @@ import eu.domibus.connector.domain.model.*;
 import eu.domibus.connector.domain.model.DomibusConnectorKeystore.KeystoreType;
 import eu.domibus.connector.domain.model.DomibusConnectorParty.PartyRoleType;
 import eu.domibus.connector.evidences.spring.EvidencesToolkitConfigurationProperties;
-import eu.domibus.connector.evidences.spring.HomePartyConfigurationProperties;
 import eu.domibus.connector.lib.spring.configuration.StoreConfigurationProperties;
 import eu.domibus.connector.persistence.service.DomibusConnectorKeystorePersistenceService;
 import eu.domibus.connector.persistence.service.DomibusConnectorPModeService;
@@ -42,8 +41,7 @@ import java.util.stream.Stream;
 
 @Service
 public class WebPModeService {
-
-    protected final static Logger LOGGER = LoggerFactory.getLogger(WebPModeService.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(WebPModeService.class);
 
     private final DomibusConnectorPropertiesPersistenceService propertiesPersistenceService;
     private final DomibusConnectorPModeService pModeService;
@@ -51,11 +49,12 @@ public class WebPModeService {
     private final ConfigurationPropertyManagerService configurationPropertyManagerService;
     private final ApplicationContext ctx;
 
-    public WebPModeService(DomibusConnectorPropertiesPersistenceService propertiesPersistenceService,
-                           DomibusConnectorPModeService pModeService,
-                           DomibusConnectorKeystorePersistenceService keystorePersistenceService,
-                           ConfigurationPropertyManagerService configurationPropertyManagerService,
-                           ApplicationContext ctx) {
+    public WebPModeService(
+            DomibusConnectorPropertiesPersistenceService propertiesPersistenceService,
+            DomibusConnectorPModeService pModeService,
+            DomibusConnectorKeystorePersistenceService keystorePersistenceService,
+            ConfigurationPropertyManagerService configurationPropertyManagerService,
+            ApplicationContext ctx) {
         this.propertiesPersistenceService = propertiesPersistenceService;
         this.pModeService = pModeService;
         this.keystorePersistenceService = keystorePersistenceService;
@@ -63,8 +62,9 @@ public class WebPModeService {
         this.ctx = ctx;
     }
 
-    public static Object byteArrayToXmlObject(final byte[] xmlAsBytes, final Class<?> instantiationClazz,
-                                              final Class<?>... initializationClasses) throws Exception {
+    public static Object byteArrayToXmlObject(
+            final byte[] xmlAsBytes, final Class<?> instantiationClazz,
+            final Class<?>... initializationClasses) throws Exception {
 
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(xmlAsBytes);
@@ -82,7 +82,6 @@ public class WebPModeService {
         } catch (JAXBException | SAXException | IOException | ParserConfigurationException e) {
             throw new Exception("Exception parsing byte[] to " + instantiationClazz.getName(), e);
         }
-
     }
 
     @Transactional(readOnly = false)
@@ -122,22 +121,24 @@ public class WebPModeService {
     /**
      * Update the security toolki configuration settings
      * within the current business domain
+     *
      * @param store - the StoreSettings to update
      */
     private void updateSecurityConfiguration(DomibusConnectorKeystore store) {
-        DCEcodexContainerProperties dcEcodexContainerProperties = configurationPropertyManagerService.loadConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), DCEcodexContainerProperties.class);
-//        if(dcEcodexContainerProperties.getSignatureValidation().getTrustStore()!=null) {
-//        dcEcodexContainerProperties.getSignatureValidation().getTrustStore().setPassword(store.getPasswordPlain());
-//        dcEcodexContainerProperties.getSignatureValidation().getTrustStore().setType(store.getType().toString());
-//        dcEcodexContainerProperties.getSignatureValidation().getTrustStore().setPath(DatabaseResourceLoader.DB_URL_PREFIX + store.getUuid());
-//        }else {
-        	StoreConfigurationProperties storeConfigurationProperties = new StoreConfigurationProperties();
-        	storeConfigurationProperties.setPassword(store.getPasswordPlain());
-        	storeConfigurationProperties.setType(store.getType().toString());
-        	storeConfigurationProperties.setPath(DatabaseResourceLoader.DB_URL_PREFIX + store.getUuid());
-        	dcEcodexContainerProperties.getSignatureValidation().setTrustStore(storeConfigurationProperties);
-//        }
-        configurationPropertyManagerService.updateConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), dcEcodexContainerProperties);
+        DCEcodexContainerProperties dcEcodexContainerProperties =
+                configurationPropertyManagerService.loadConfiguration(
+                        DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                        DCEcodexContainerProperties.class
+                );
+        StoreConfigurationProperties storeConfigurationProperties = new StoreConfigurationProperties();
+        storeConfigurationProperties.setPassword(store.getPasswordPlain());
+        storeConfigurationProperties.setType(store.getType().toString());
+        storeConfigurationProperties.setPath(DatabaseResourceLoader.DB_URL_PREFIX + store.getUuid());
+        dcEcodexContainerProperties.getSignatureValidation().setTrustStore(storeConfigurationProperties);
+        configurationPropertyManagerService.updateConfiguration(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                dcEcodexContainerProperties
+        );
     }
 
     private void updateHomePartyConfigurationProperties(Configuration pmodes) {
@@ -152,27 +153,48 @@ public class WebPModeService {
                 .findFirst()
                 .get();
 
-        EvidencesToolkitConfigurationProperties homePartyConfigurationProperties = configurationPropertyManagerService.loadConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), EvidencesToolkitConfigurationProperties.class);
-        homePartyConfigurationProperties.getIssuerInfo().getAs4Party().setName(homeParty.getIdentifier().get(0).getPartyId());
+        EvidencesToolkitConfigurationProperties homePartyConfigurationProperties =
+                configurationPropertyManagerService.loadConfiguration(
+                        DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                        EvidencesToolkitConfigurationProperties.class
+                );
+        homePartyConfigurationProperties.getIssuerInfo().getAs4Party()
+                                        .setName(homeParty.getIdentifier().get(0).getPartyId());
         homePartyConfigurationProperties.getIssuerInfo().getAs4Party().setEndpointAddress(homeParty.getEndpoint());
 
-        configurationPropertyManagerService.updateConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), homePartyConfigurationProperties);
+        configurationPropertyManagerService.updateConfiguration(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                homePartyConfigurationProperties
+        );
     }
-    
+
     public DomibusConnectorParty getHomeParty() {
-    	EvidencesToolkitConfigurationProperties homePartyConfigurationProperties = configurationPropertyManagerService.loadConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), EvidencesToolkitConfigurationProperties.class);
-    	
-    	return getCurrentPModeSet(DomibusConnectorBusinessDomain.getDefaultMessageLaneId())
+        EvidencesToolkitConfigurationProperties homePartyConfigurationProperties =
+                configurationPropertyManagerService.loadConfiguration(
+                        DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                        EvidencesToolkitConfigurationProperties.class
+                );
+
+        return getCurrentPModeSet(DomibusConnectorBusinessDomain.getDefaultMessageLaneId())
                 .map(DomibusConnectorPModeSet::getParties)
-                .flatMap(partiesList -> partiesList.stream()
-                        .filter(p -> (p.getPartyId().equals(homePartyConfigurationProperties.getIssuerInfo().getAs4Party().getName()) && p.getRoleType().equals(PartyRoleType.INITIATOR)))
-                        .findAny()
+                .flatMap(
+                        partiesList -> partiesList
+                                .stream()
+                                .filter(p -> (
+                                        p.getPartyId().equals(homePartyConfigurationProperties
+                                                                      .getIssuerInfo()
+                                                                      .getAs4Party()
+                                                                      .getName()
+                                        ) && p.getRoleType().equals(PartyRoleType.INITIATOR)))
+                                .findAny()
                 ).orElse(null);
     }
 
-
     @Transactional(readOnly = false)
-    public DomibusConnectorKeystore importConnectorstore(byte[] connectorstoreBytes, String password, KeystoreType connectorstoreType) {
+    public DomibusConnectorKeystore importConnectorstore(
+            byte[] connectorstoreBytes,
+            String password,
+            KeystoreType connectorstoreType) {
         DomibusConnectorKeystore connectorstore = new DomibusConnectorKeystore();
 
         String description = "Connectorstore uploaded with PMode-Set imported at " + new Date();
@@ -187,8 +209,11 @@ public class WebPModeService {
         return connectorstore;
     }
 
-
-    private DomibusConnectorPModeSet mapPModeConfigurationToPModeSet(Configuration pmodes, byte[] contents, String description, DomibusConnectorKeystore connectorstore) {
+    private DomibusConnectorPModeSet mapPModeConfigurationToPModeSet(
+            Configuration pmodes,
+            byte[] contents,
+            String description,
+            DomibusConnectorKeystore connectorstore) {
         DomibusConnectorPModeSet pModeSet = new DomibusConnectorPModeSet();
         pModeSet.setDescription(description);
         pModeSet.setpModes(contents);
@@ -201,44 +226,42 @@ public class WebPModeService {
         return pModeSet;
     }
 
-
     private List<DomibusConnectorService> importServices(Configuration pmodes) {
         return pmodes.getBusinessProcesses()
-                .getServices()
-                .getService()
-                .stream()
-                .map(s -> {
-                    DomibusConnectorService service = new DomibusConnectorService();
-                    service.setService(s.getValue());
-                    service.setServiceType(s.getType());
-                    return service;
-                })
-                .collect(Collectors.toList());
+                     .getServices()
+                     .getService()
+                     .stream()
+                     .map(s -> {
+                         DomibusConnectorService service = new DomibusConnectorService();
+                         service.setService(s.getValue());
+                         service.setServiceType(s.getType());
+                         return service;
+                     })
+                     .collect(Collectors.toList());
     }
 
     private List<DomibusConnectorAction> importActions(Configuration pmodes) {
 
         return pmodes.getBusinessProcesses()
-                .getActions()
-                .getAction()
-                .stream()
-                .map(a -> {
-                    DomibusConnectorAction action = new DomibusConnectorAction();
-                    action.setAction(a.getValue());
-                    return action;
-                })
-                .collect(Collectors.toList());
+                     .getActions()
+                     .getAction()
+                     .stream()
+                     .map(a -> {
+                         DomibusConnectorAction action = new DomibusConnectorAction();
+                         action.setAction(a.getValue());
+                         return action;
+                     })
+                     .collect(Collectors.toList());
     }
 
     private List<DomibusConnectorParty> importParties(Configuration pmodes) {
         String homeParty = pmodes.getParty();
 
-
         Map<String, Role> roles = pmodes.getBusinessProcesses()
-                .getRoles()
-                .getRole()
-                .stream()
-                .collect(Collectors.toMap(r -> r.getName(), Function.identity()));
+                                        .getRoles()
+                                        .getRole()
+                                        .stream()
+                                        .collect(Collectors.toMap(r -> r.getName(), Function.identity()));
 
         Map<String, Configuration.BusinessProcesses.Parties.Party> parties = pmodes
                 .getBusinessProcesses()
@@ -255,46 +278,58 @@ public class WebPModeService {
                 .stream()
                 .collect(Collectors.toMap(p -> p.getName(), Function.identity()));
 
-        List<DomibusConnectorParty> importedParties = pmodes.getBusinessProcesses()
-                .getProcess()
-                .stream()
-                .map(process ->
-                        Stream.of(process
-                                        .getInitiatorParties()
-                                        .getInitiatorParty()
-                                        .stream()
-                                        .map(initiatorParty -> this.createParty(partyIdTypes, parties, roles.get(process.getInitiatorRole()), initiatorParty.getName(), DomibusConnectorParty.PartyRoleType.INITIATOR)),
-                                process.
-                                        getResponderParties().
-                                        getResponderParty().
-                                        stream().
-                                        map(responderParty -> this.createParty(partyIdTypes, parties, roles.get(process.getResponderRole()), responderParty.getName(), DomibusConnectorParty.PartyRoleType.RESPONDER))
-                        ).flatMap(Function.identity())
-                ).flatMap(Function.identity())
-                .flatMap(Function.identity())
-                .distinct() //remove duplicate parties
-                .collect(Collectors.toList());
-        return importedParties;
-
+        return pmodes.getBusinessProcesses()
+                     .getProcess()
+                     .stream()
+                     .map(process ->
+                                  Stream.of(
+                                          process
+                                                  .getInitiatorParties()
+                                                  .getInitiatorParty()
+                                                  .stream()
+                                                  .map(initiatorParty -> this.createParty(
+                                                          partyIdTypes,
+                                                          parties,
+                                                          roles.get(process.getInitiatorRole()),
+                                                          initiatorParty.getName(),
+                                                          DomibusConnectorParty.PartyRoleType.INITIATOR
+                                                  )),
+                                          process
+                                                  .getResponderParties()
+                                                  .getResponderParty()
+                                                  .stream()
+                                                  .map(responderParty -> this.createParty(
+                                                          partyIdTypes,
+                                                          parties,
+                                                          roles.get(process.getResponderRole()),
+                                                          responderParty.getName(),
+                                                          DomibusConnectorParty.PartyRoleType.RESPONDER
+                                                  ))
+                                  ).flatMap(Function.identity())
+                     ).flatMap(Function.identity())
+                     .flatMap(Function.identity())
+                     .distinct() // remove duplicate parties
+                     .collect(Collectors.toList());
     }
 
 
-    private Stream<DomibusConnectorParty> createParty(Map<String, PartyIdType> partyIdTypes, Map<String, Configuration.BusinessProcesses.Parties.Party> parties,
-                                                      Role role, String partyName, DomibusConnectorParty.PartyRoleType roleType) {
+    private Stream<DomibusConnectorParty> createParty(
+            Map<String, PartyIdType> partyIdTypes, Map<String, Configuration.BusinessProcesses.Parties.Party> parties,
+            Role role, String partyName, DomibusConnectorParty.PartyRoleType roleType) {
 
         return parties.get(partyName)
-                .getIdentifier()
-                .stream()
-                .map(identifier -> {
-                    DomibusConnectorParty p = new DomibusConnectorParty();
-                    p.setPartyName(partyName);
-                    p.setRole(role.getValue());
-                    p.setPartyId(identifier.getPartyId());
-                    p.setRoleType(roleType);
-                    String partyIdTypeValue = partyIdTypes.get(identifier.getPartyIdType()).getValue();
-                    p.setPartyIdType(partyIdTypeValue);
-                    return p;
-                });
+                      .getIdentifier()
+                      .stream()
+                      .map(identifier -> {
+                          DomibusConnectorParty p = new DomibusConnectorParty();
+                          p.setPartyName(partyName);
+                          p.setRole(role.getValue());
+                          p.setPartyId(identifier.getPartyId());
+                          p.setRoleType(roleType);
+                          String partyIdTypeValue = partyIdTypes.get(identifier.getPartyIdType()).getValue();
+                          p.setPartyIdType(partyIdTypeValue);
+                          return p;
+                      });
     }
 
 
@@ -308,9 +343,9 @@ public class WebPModeService {
 
     public List<String> getActionListString() {
         return this.getActionList()
-                .stream()
-                .map(DomibusConnectorAction::getAction)
-                .collect(Collectors.toList());
+                   .stream()
+                   .map(DomibusConnectorAction::getAction)
+                   .collect(Collectors.toList());
     }
 
     public List<DomibusConnectorService> getServiceList() {
@@ -319,9 +354,9 @@ public class WebPModeService {
 
     public List<String> getServiceListString() {
         return this.getServiceList()
-                .stream()
-                .map(DomibusConnectorService::getService)
-                .collect(Collectors.toList());
+                   .stream()
+                   .map(DomibusConnectorService::getService)
+                   .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = false)
@@ -340,7 +375,7 @@ public class WebPModeService {
         pModes.getParties().remove(oldParty);
         pModes.getParties().add(updatedParty);
         pModes.setDescription(String.format("updated party %s in UI", updatedParty));
-        //find party in new p-modes by equals
+        // find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getParties()
                 .stream()
@@ -355,7 +390,7 @@ public class WebPModeService {
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getParties().add(party);
         pModes.setDescription(String.format("added party %s in UI", party));
-        //find party in new p-modes by equals
+        // find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getParties()
                 .stream()
@@ -379,7 +414,7 @@ public class WebPModeService {
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getActions().add(action);
         pModes.setDescription(String.format("added action %s in UI", action));
-        //find party in new p-modes by equals
+        // find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getActions()
                 .stream()
@@ -389,13 +424,15 @@ public class WebPModeService {
     }
 
     @Transactional(readOnly = false)
-    public DomibusConnectorAction updateAction(DomibusConnectorAction oldAction, DomibusConnectorAction updatedAction) {
+    public DomibusConnectorAction updateAction(
+            DomibusConnectorAction oldAction,
+            DomibusConnectorAction updatedAction) {
         LOGGER.trace("updateAction: updateAction with oldAction [{}] and new action [{}]", oldAction, updatedAction);
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getActions().remove(oldAction);
         pModes.getActions().add(updatedAction);
         pModes.setDescription(String.format("updated action %s in UI", updatedAction));
-        //find party in new p-modes by equals
+        // find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getActions()
                 .stream()
@@ -410,7 +447,7 @@ public class WebPModeService {
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getServices().add(service);
         pModes.setDescription(String.format("added service %s in UI", service));
-        //find party in new p-modes by equals
+        // find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getServices()
                 .stream()
@@ -420,13 +457,15 @@ public class WebPModeService {
     }
 
     @Transactional
-    public DomibusConnectorService updateService(DomibusConnectorService oldService, DomibusConnectorService updatedService) {
+    public DomibusConnectorService updateService(
+            DomibusConnectorService oldService,
+            DomibusConnectorService updatedService) {
         LOGGER.trace("updateService: with new service [{}]", updatedService);
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getServices().remove(oldService);
         pModes.getServices().add(updatedService);
         pModes.setDescription(String.format("updated service %s in UI", updatedService));
-        //find party in new p-modes by equals
+        // find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getServices()
                 .stream()
@@ -452,12 +491,14 @@ public class WebPModeService {
             pModes.setMessageLaneId(laneId);
         }
         this.pModeService.updatePModeConfigurationSet(pModes);
-        return this.getCurrentPModeSet(laneId).orElseThrow(() -> new IllegalStateException("After update there must be a p-ModeSet with this id"));
+        return this.getCurrentPModeSet(laneId)
+                   .orElseThrow(() -> new IllegalStateException("After update there must be a p-ModeSet with this " +
+                                                                        "id"));
     }
 
     @Transactional(readOnly = false)
     public void updateActivePModeSetDescription(DomibusConnectorPModeSet pModes) {
-    	DomibusConnectorBusinessDomain.BusinessDomainId laneId = pModes.getMessageLaneId();
+        DomibusConnectorBusinessDomain.BusinessDomainId laneId = pModes.getMessageLaneId();
         if (laneId == null) {
             laneId = DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
             LOGGER.info("Setting default lane [{}] pModeSet", laneId);
@@ -469,21 +510,23 @@ public class WebPModeService {
     @Transactional(readOnly = false)
     public void updateConnectorstorePassword(DomibusConnectorPModeSet pModes, String newConnectorstorePwd) {
 
-    	this.keystorePersistenceService.updateKeystorePassword(pModes.getConnectorstore(), newConnectorstorePwd);
+        this.keystorePersistenceService.updateKeystorePassword(pModes.getConnectorstore(), newConnectorstorePwd);
     }
 
     public Optional<DomibusConnectorPModeSet> getCurrentPModeSet(DomibusConnectorBusinessDomain.BusinessDomainId laneId) {
         return this.pModeService.getCurrentPModeSet(laneId);
     }
 
-    public List<DomibusConnectorPModeSet> getInactivePModeSets(){
-    	final DomibusConnectorBusinessDomain.BusinessDomainId laneId = DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
+    public List<DomibusConnectorPModeSet> getInactivePModeSets() {
+        final DomibusConnectorBusinessDomain.BusinessDomainId laneId =
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
 
-    	return this.pModeService.getInactivePModeSets(laneId);
+        return this.pModeService.getInactivePModeSets(laneId);
     }
 
     private DomibusConnectorPModeSet getCurrentPModeSetOrNewSet() {
-        final DomibusConnectorBusinessDomain.BusinessDomainId laneId = DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
+        final DomibusConnectorBusinessDomain.BusinessDomainId laneId =
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
         Optional<DomibusConnectorPModeSet> currentPModeSetOptional = this.pModeService.getCurrentPModeSet(laneId);
         return currentPModeSetOptional.orElseGet(() -> {
             DomibusConnectorPModeSet set = new DomibusConnectorPModeSet();
@@ -493,7 +536,6 @@ public class WebPModeService {
     }
 
     public DomibusConnectorKeystore getConnectorstore(String connectorstoreUUID) {
-    	return keystorePersistenceService.getKeystoreByUUID(connectorstoreUUID);
+        return keystorePersistenceService.getKeystoreByUUID(connectorstoreUUID);
     }
-
 }

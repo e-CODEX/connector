@@ -1,7 +1,6 @@
 package eu.domibus.connector.ui.view.areas.monitoring;
 
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,12 +12,10 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import java.util.List;
 
+
 public class MessageGrid extends Grid<Message> {
-
     private final QueueController queueController;
-
     private final JmsMonitoringView parentView;
-
     private WebQueue queue;
 
     public MessageGrid(QueueController queueController, JmsMonitoringView parentView) {
@@ -84,7 +81,8 @@ public class MessageGrid extends Grid<Message> {
     private String getConnectorId(Message msg) {
         String result = null;
         try {
-            final DomibusConnectorMessage domibusConnectorMessage = (DomibusConnectorMessage) queueController.getConverter().fromMessage(msg);
+            final DomibusConnectorMessage domibusConnectorMessage =
+                    (DomibusConnectorMessage) queueController.getConverter().fromMessage(msg);
             result = domibusConnectorMessage.getConnectorMessageId().getConnectorMessageId();
         } catch (JMSException e) {
             e.printStackTrace();

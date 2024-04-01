@@ -11,10 +11,8 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
-
 import eu.domibus.connector.ui.configuration.SecurityUtils;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +21,7 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * Helper class for creating a tab menu
  * with support to navigate between this tabs
@@ -30,7 +29,6 @@ import java.util.Map;
  * can be accessed as enabled
  */
 public class DCTabHandler implements BeforeEnterObserver {
-
     private static final Logger LOGGER = LogManager.getLogger(DCTabHandler.class);
 
     Tabs tabMenu = new Tabs();
@@ -59,17 +57,14 @@ public class DCTabHandler implements BeforeEnterObserver {
         return new TabBuilder();
     }
 
-
     private void tabSelectionChanged(Tabs.SelectedChangeEvent selectedChangeEvent) {
         if (selectedChangeEvent.isFromClient()) {
             Tab selectedTab = selectedChangeEvent.getSelectedTab();
             Class componentClazz = tabsToPages.get(selectedTab);
             LOGGER.debug("Navigate to [{}]", componentClazz);
             UI.getCurrent().navigate(componentClazz);
-
         }
     }
-
 
     /**
      * sets the current selected tab dependent
@@ -91,9 +86,9 @@ public class DCTabHandler implements BeforeEnterObserver {
      */
     private void setTabEnabledOnUserRole() {
         pagesToTab.entrySet().stream()
-                .forEach(entry -> {
-                    entry.getValue().setEnabled(SecurityUtils.isUserAllowedToView(entry.getKey()));
-                });
+                  .forEach(entry -> {
+                      entry.getValue().setEnabled(SecurityUtils.isUserAllowedToView(entry.getKey()));
+                  });
     }
 
     @Override
@@ -101,15 +96,35 @@ public class DCTabHandler implements BeforeEnterObserver {
         setSelectedTab(event);
         setTabEnabledOnUserRole();
     }
+    public void createTabs(ApplicationContext applicationContext, String group) {
+        // this breaks lazy loading...
+        applicationContext.getBeansWithAnnotation(TabMetadata.class)
+                          .values().stream()
+                          .map(o -> (Component) o)
+                          .filter(c -> c.getClass().getAnnotation(TabMetadata.class).tabGroup().equals(group))
+                          .sorted(AnnotationAwareOrderComparator.INSTANCE)
+                          .forEach(c -> {
+                              TabMetadata annotation = c.getClass().getAnnotation(TabMetadata.class);
+                              LOGGER.debug(
+                                      "Adding tab [{}] with title [{}] to group [{}]",
+                                      c,
+                                      annotation.title(),
+                                      group
+                              );
+                              this.createTab()
+                                  .withLabel(annotation.title())
+                                  .addForComponent(c.getClass());
+                          });
+    }
 
     public class TabBuilder {
-
         private Icon tabIcon;
         private String tabLabel = "";
         private Component component;
         private Class<? extends Component> clz;
 
-        private TabBuilder() {}
+        private TabBuilder() {
+        }
 
         public TabBuilder withIcon(Icon icon) {
             this.tabIcon = icon;
@@ -152,24 +167,5 @@ public class DCTabHandler implements BeforeEnterObserver {
             tabMenu.add(tab);
             return tab;
         }
-
-
-    }
-
-    public void createTabs(ApplicationContext applicationContext, String group) {
-        //this breaks lazy loading...
-        applicationContext.getBeansWithAnnotation(TabMetadata.class)
-                .values().stream()
-                .map(o -> (Component) o)
-                .filter(c -> c.getClass().getAnnotation(TabMetadata.class).tabGroup().equals(group))
-                .sorted(AnnotationAwareOrderComparator.INSTANCE)
-                .forEach(c -> {
-                    TabMetadata annotation = c.getClass().getAnnotation(TabMetadata.class);
-
-                    LOGGER.debug("Adding tab [{}] with title [{}] to group [{}]", c, annotation.title(), group);
-                    this.createTab()
-                            .withLabel(annotation.title())
-                            .addForComponent(c.getClass());
-                });
     }
 }

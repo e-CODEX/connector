@@ -1,6 +1,5 @@
 package eu.domibus.connector.ui.view.areas.configuration.link;
 
-import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.hierarchy.AbstractHierarchicalDataProvider;
 import com.vaadin.flow.data.provider.hierarchy.HierarchicalQuery;
 import eu.domibus.connector.domain.enums.LinkType;
@@ -8,18 +7,20 @@ import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.service.DCLinkFacade;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-public class WebLinkItemHierachicalDataProvider extends AbstractHierarchicalDataProvider<WebLinkItem, WebLinkItemFilter> {
 
+public class WebLinkItemHierachicalDataProvider extends AbstractHierarchicalDataProvider<WebLinkItem,
+        WebLinkItemFilter> {
     private final DCLinkFacade dcLinkFacade;
     private final LinkType linkType;
 
-    public WebLinkItemHierachicalDataProvider(DCLinkFacade dcLinkFacade,
-                                              LinkType linkType) {
+    public WebLinkItemHierachicalDataProvider(
+            DCLinkFacade dcLinkFacade,
+            LinkType linkType) {
         this.dcLinkFacade = dcLinkFacade;
         this.linkType = linkType;
     }
@@ -34,20 +35,33 @@ public class WebLinkItemHierachicalDataProvider extends AbstractHierarchicalData
         return doQuery(hierarchicalQuery);
     }
 
+    @Override
+    public boolean hasChildren(WebLinkItem webLinkItem) {
+        DomibusConnectorLinkConfiguration linkConfiguration = webLinkItem.getLinkConfiguration();
+        if (linkConfiguration != null) {
+            return dcLinkFacade.getAllLinks()
+                               .stream()
+                               .anyMatch(l -> Objects.equals(l.getLinkConfiguration(), linkConfiguration));
+        }
+        return false;
+    }
+
     private Stream<WebLinkItem> doQuery(HierarchicalQuery<WebLinkItem, WebLinkItemFilter> hierarchicalQuery) {
 
-//        WebLinkItemFilter filter = hierarchicalQuery.getFilter().orElse(new WebLinkItemFilter());
         Optional<WebLinkItem> parentOptional = hierarchicalQuery.getParentOptional();
         if (parentOptional.isPresent()) {
             WebLinkItem parent = parentOptional.get();
             return dcLinkFacade.getAllLinksOfType(linkType)
-                    .stream()
-                    .filter(partner -> Objects.equals(partner.getLinkConfiguration(), parent.getLinkConfiguration()))
-                    .map(this::mapToWebLinkItem);
+                               .stream()
+                               .filter(partner -> Objects.equals(
+                                       partner.getLinkConfiguration(),
+                                       parent.getLinkConfiguration()
+                               ))
+                               .map(this::mapToWebLinkItem);
         } else {
             return dcLinkFacade.getAllLinkConfigurations(linkType)
-                    .stream()
-                    .map(this::mapToWebLinkItem);
+                               .stream()
+                               .map(this::mapToWebLinkItem);
         }
     }
 
@@ -70,17 +84,6 @@ public class WebLinkItemHierachicalDataProvider extends AbstractHierarchicalData
             return null;
         }
         return dcLinkFacade.getLinkPluginByName(config.getLinkImpl()).orElse(null);
-    }
-
-    @Override
-    public boolean hasChildren(WebLinkItem webLinkItem) {
-        DomibusConnectorLinkConfiguration linkConfiguration = webLinkItem.getLinkConfiguration();
-        if (linkConfiguration != null) {
-            return dcLinkFacade.getAllLinks()
-                    .stream()
-                    .anyMatch(l -> Objects.equals(l.getLinkConfiguration(), linkConfiguration));
-        }
-        return false;
     }
 
     @Override

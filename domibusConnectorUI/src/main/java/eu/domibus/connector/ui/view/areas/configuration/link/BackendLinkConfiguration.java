@@ -9,12 +9,12 @@ import eu.domibus.connector.link.service.DCLinkFacade;
 import eu.domibus.connector.ui.utils.RoleRequired;
 import eu.domibus.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
-
 import eu.domibus.connector.ui.view.areas.configuration.link.importoldconfig.ImportOldBackendConfigDialog;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @UIScope
@@ -22,25 +22,24 @@ import org.springframework.stereotype.Component;
 @Route(value = BackendLinkConfiguration.ROUTE, layout = ConfigurationLayout.class)
 @RoleRequired(role = "ADMIN")
 @Order(1)
-//@Profile(DCLinkPluginConfiguration.LINK_PLUGIN_PROFILE_NAME)
 public class BackendLinkConfiguration extends LinkConfiguration {
 
     public static final String ROUTE = "backendlink";
 
     public static final String TITLE = "Backend Configuration";
-    
+
     private final ObjectProvider<ImportOldBackendConfigDialog> importOldBackendConfig;
 
-    private Button importOldConfigButton = new Button("Import Link Config From 4.2 Connector Properties");
+    private final Button importOldConfigButton = new Button("Import Link Config From 4.2 Connector Properties");
 
-    public BackendLinkConfiguration(DCLinkFacade dcLinkFacade,
-                                    ObjectProvider<ImportOldBackendConfigDialog> importOldGatewayConfigDialog,
-                                    ApplicationContext applicationContext) {
+    public BackendLinkConfiguration(
+            DCLinkFacade dcLinkFacade,
+            ObjectProvider<ImportOldBackendConfigDialog> importOldGatewayConfigDialog,
+            ApplicationContext applicationContext) {
         super(dcLinkFacade, LinkType.BACKEND, TITLE);
         this.importOldBackendConfig = importOldGatewayConfigDialog;
         importOldConfigButton.addClickListener(this::importOldConfig);
         super.buttonBar.add(importOldConfigButton);
-
     }
 
     private void importOldConfig(ClickEvent<Button> buttonClickEvent) {
@@ -48,5 +47,4 @@ public class BackendLinkConfiguration extends LinkConfiguration {
         dialog.setDialogCloseCallback(this::refreshList);
         dialog.open();
     }
-
 }

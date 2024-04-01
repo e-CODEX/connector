@@ -7,29 +7,14 @@ import eu.domibus.connector.link.api.LinkPlugin;
 
 import java.util.List;
 
+
 public class LnkConfigItem {
-
-    public enum NewConfig {
-        NEW_LINK_CONFIG("Create new Link Configuration"),
-        EXISTING_LINK_CONFIG("Use existing Link Configuration");
-
-        private final String humanString;
-
-        NewConfig(String s) {
-            this.humanString = s;
-        }
-
-        public String getHumanString() {
-            return humanString;
-        }
-    }
 
     private LinkType linkType;
     private NewConfig newConfig;
     private LinkPlugin linkPlugin;
     private String linkConfigName = "";
-
-    private DomibusConnectorLinkConfiguration  linkConfiguration;
+    private DomibusConnectorLinkConfiguration linkConfiguration;
     private List<DomibusConnectorLinkPartner> linkPartnerList;
     private DomibusConnectorLinkPartner linkPartner;
 
@@ -87,5 +72,20 @@ public class LnkConfigItem {
 
     public void setLinkPlugin(LinkPlugin linkPlugin) {
         this.linkPlugin = linkPlugin;
+    }
+
+    public enum NewConfig {
+        NEW_LINK_CONFIG("Create new Link Configuration"),
+        EXISTING_LINK_CONFIG("Use existing Link Configuration");
+
+        private final String humanString;
+
+        NewConfig(String s) {
+            this.humanString = s;
+        }
+
+        public String getHumanString() {
+            return humanString;
+        }
     }
 }

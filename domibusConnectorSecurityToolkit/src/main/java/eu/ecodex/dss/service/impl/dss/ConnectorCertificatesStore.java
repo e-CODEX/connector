@@ -2,46 +2,42 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/service/impl/dss/ConnectorCertificatesStore.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/service/impl/dss
+ * /ConnectorCertificatesStore.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
 package eu.ecodex.dss.service.impl.dss;
 
+import eu.ecodex.dss.model.CertificateStoreInfo;
+import eu.ecodex.dss.util.LogDelegate;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.Resource;
+
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.URL;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import org.apache.commons.io.IOUtils;
-
-import eu.ecodex.dss.model.CertificateStoreInfo;
-import eu.ecodex.dss.util.LogDelegate;
-import org.springframework.core.io.Resource;
 
 /**
- * Extracts all {@link X509Certificate}s from the keystore, caches them and provides functionality to check if a certificate is contained.
+ * Extracts all {@link X509Certificate}s from the keystore, caches them and provides functionality to check if a
+ * certificate is contained.
  * The initialise keystore is NOT automatically inspected, but via {@link #lookup}!
  *
- * 
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
- * 
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
-@Deprecated //replace with DSS certificate source
+@Deprecated // replace with DSS certificate source
 public class ConnectorCertificatesStore {
-
     private static final LogDelegate LOG = new LogDelegate(ConnectorCertificatesStore.class);
 
     private Map<BigInteger, byte[]> lookup = null;
@@ -60,10 +56,12 @@ public class ConnectorCertificatesStore {
 
     /**
      * will load the keystore from the provided info, creating a new cache and extracting its X509 certificates.
-     * note that {@link #isValid(java.security.cert.X509Certificate)} will always report true, if nothing has been loaded.
+     * note that {@link #isValid(java.security.cert.X509Certificate)} will always report true, if nothing has been
+     * loaded.
      * duplicate certificates are ignored, that is if the serial number has already been stored internally.
      *
-     * @param info if null or invalid, ignored. otherwise the location must provide a loadable keystore or an exception will be thrown
+     * @param info if null or invalid, ignored. otherwise the location must provide a loadable keystore or an
+     *             exception will be thrown
      * @return the number of cached certificates or -1 in case no feasible info was provided
      * @throws Exception as of the underlying libraries (e.g. loading the keystore)
      */
@@ -98,14 +96,14 @@ public class ConnectorCertificatesStore {
         final ArrayList<String> aliases = Collections.list(ks.aliases());
         LOG.lDetail("found {} aliases: {}", aliases.size(), aliases);
 
-        for ( final String alias : aliases ) {
+        for (final String alias : aliases) {
             if (!ks.isCertificateEntry(alias)) {
                 LOG.lDetail("ignored alias {} not representing a certificate entry", alias);
                 continue;
             }
 
             final Certificate cert = ks.getCertificate(alias);
-            if ( !(cert instanceof X509Certificate ) ) {
+            if (!(cert instanceof X509Certificate)) {
                 LOG.lWarn("ignored alias {} not representing an X509 certificate", alias);
                 continue;
             }
@@ -134,15 +132,19 @@ public class ConnectorCertificatesStore {
         LOG.lDetail("cached {} X509 certificates", lookup.size());
 
         if (lookup.isEmpty()) {
-            LOG.lDetail("no usable certificate was found in the keystore - all further validations will be negative! (keystore url: {})", ksLocation);
+            LOG.lDetail(
+                    "no usable certificate was found in the keystore - all further validations will be negative! " +
+                            "(keystore url: {})",
+                    ksLocation
+            );
         }
-
         return lookup.size();
     }
 
     /**
      * checks if the cert is one of the certificates of the connectors.
-     * that is implementation-wise, if the certificate's serial number is in the internal map and the ASN.1 DER byte arrays are the same.
+     * that is implementation-wise, if the certificate's serial number is in the internal map and the ASN.1 DER byte
+     * arrays are the same.
      * note that the method will also return true, if the keystore has NOT been loaded.
      *
      * @param cert the to be checked certificate
@@ -161,18 +163,20 @@ public class ConnectorCertificatesStore {
 
         final BigInteger cSN = cert.getSerialNumber();
         final byte[] storeDER = lookup.get(cSN);
-        if ( storeDER == null ) {
+        if (storeDER == null) {
             LOG.lDetail("no certificate found in keystore for serial number {} - will return false", cSN);
             return false;
         }
         final byte[] certDER = cert.getEncoded();
-        if ( certDER == null ) {
+        if (certDER == null) {
             LOG.lWarn("certificate in parameter has no ASN.1 DER bytes - will return false");
             return false;
         }
 
         if (!Arrays.equals(storeDER, certDER)) {
-            LOG.lWarn("certificate in parameter conflicts with corresponding keystore certificate (ASN.1 DER bytes not equal) - will return false");
+            LOG.lWarn(
+                    "certificate in parameter conflicts with corresponding keystore certificate (ASN.1 DER bytes not " +
+                            "equal) - will return false");
             return false;
         }
 

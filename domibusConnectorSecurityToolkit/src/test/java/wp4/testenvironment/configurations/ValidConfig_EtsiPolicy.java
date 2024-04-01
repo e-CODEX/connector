@@ -11,14 +11,15 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ValidConfig_EtsiPolicy {
 
+public class ValidConfig_EtsiPolicy {
     public static EtsiValidationPolicy etsiValidationPolicy() {
         try {
             Resource resource = new ClassPathResource("/102853/constraint.xml");
             InputStream policyDataStream = resource.getInputStream();
             EtsiValidationPolicy validationPolicy = null;
-            validationPolicy = (EtsiValidationPolicy) ValidationPolicyFacade.newFacade().getValidationPolicy(policyDataStream);
+            validationPolicy =
+                    (EtsiValidationPolicy) ValidationPolicyFacade.newFacade().getValidationPolicy(policyDataStream);
             return validationPolicy;
         } catch (IOException ioe) {
             throw new RuntimeException("Error while loading resource", ioe);

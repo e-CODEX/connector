@@ -2,6 +2,7 @@ package eu.domibus.connector.security.container.service;
 
 import eu.domibus.connector.domain.enums.AdvancedElectronicSystemType;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
+import eu.domibus.connector.dss.configuration.SignatureConfigurationProperties;
 import eu.domibus.connector.dss.configuration.SignatureValidationConfigurationProperties;
 import eu.domibus.connector.dss.service.CertificateSourceFromKeyStoreCreator;
 import eu.domibus.connector.dss.service.CommonCertificateVerifierFactory;
@@ -10,7 +11,6 @@ import eu.domibus.connector.lib.spring.configuration.StoreConfigurationPropertie
 import eu.domibus.connector.security.aes.DCAuthenticationBasedTechnicalValidationServiceFactory;
 import eu.domibus.connector.security.configuration.DCBusinessDocumentValidationConfigurationProperties;
 import eu.domibus.connector.security.configuration.DCEcodexContainerProperties;
-import eu.domibus.connector.dss.configuration.SignatureConfigurationProperties;
 import eu.ecodex.dss.model.ECodexContainer;
 import eu.ecodex.dss.model.SignatureCheckers;
 import eu.ecodex.dss.model.SignatureParameters;
@@ -19,7 +19,10 @@ import eu.ecodex.dss.model.token.TokenIssuer;
 import eu.ecodex.dss.service.ECodexContainerService;
 import eu.ecodex.dss.service.ECodexLegalValidationService;
 import eu.ecodex.dss.service.ECodexTechnicalValidationService;
-import eu.ecodex.dss.service.impl.dss.*;
+import eu.ecodex.dss.service.impl.dss.DSSECodexContainerService;
+import eu.ecodex.dss.service.impl.dss.DSSECodexLegalValidationService;
+import eu.ecodex.dss.service.impl.dss.DSSECodexTechnicalValidationService;
+import eu.ecodex.dss.service.impl.dss.DSSSignatureChecker;
 import eu.europa.esig.dss.policy.EtsiValidationPolicy;
 import eu.europa.esig.dss.policy.ValidationPolicyFacade;
 import eu.europa.esig.dss.spi.tsl.TrustedListsCertificateSource;
@@ -41,10 +44,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
 public class ECodexContainerFactoryService {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ECodexContainerFactoryService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ECodexContainerFactoryService.class);
 
     private final DCBusinessDocumentValidationConfigurationProperties dcBusinessDocConfig;
     private final DCEcodexContainerProperties dcEcodexContainerProperties;
@@ -69,16 +72,13 @@ public class ECodexContainerFactoryService {
     }
 
     public ECodexContainerService createECodexContainerService(DomibusConnectorMessage message) {
-
-        DSSECodexContainerService containerService = new DSSECodexContainerService(
+        return new DSSECodexContainerService(
                 createTechnicalBusinessDocumentValidationService(message),
                 createLegalValidationService(),
                 createSignatureParameters(),
                 tokenIssuer(message),
                 createSignatureCheckers()
         );
-
-        return containerService;
     }
 
     private ECodexLegalValidationService createLegalValidationService() {
@@ -98,18 +98,27 @@ public class ECodexContainerFactoryService {
 
     public ECodexTechnicalValidationService createTechnicalBusinessDocumentValidationService(DomibusConnectorMessage message) {
         AdvancedSystemType advancedElectronicSystemType = getAdvancedSystemType(message);
-        switch(advancedElectronicSystemType) {
-            case SIGNATURE_BASED: return createDSSECodexTechnicalValidationService(dcBusinessDocConfig.getSignatureValidation());
-            case AUTHENTICATION_BASED: return createDSSAuthenticationBasedValidationService(message, dcBusinessDocConfig.getAuthenticationValidation());
-            default: throw new IllegalArgumentException("Illegal AdvancedSystemType");
+        switch (advancedElectronicSystemType) {
+            case SIGNATURE_BASED:
+                return createDSSECodexTechnicalValidationService(dcBusinessDocConfig.getSignatureValidation());
+            case AUTHENTICATION_BASED:
+                return createDSSAuthenticationBasedValidationService(
+                        message,
+                        dcBusinessDocConfig.getAuthenticationValidation()
+                );
+            default:
+                throw new IllegalArgumentException("Illegal AdvancedSystemType");
         }
     }
 
     private AdvancedSystemType getAdvancedSystemType(DomibusConnectorMessage message) {
         Objects.requireNonNull(message, "message is not allowed to be null");
-        Objects.requireNonNull(message.getDcMessageProcessSettings(), "messageProcess settings are not allowed to be null!");
-        AdvancedElectronicSystemType validationServiceName = message.getDcMessageProcessSettings().getValidationServiceName();
-
+        Objects.requireNonNull(
+                message.getDcMessageProcessSettings(),
+                "messageProcess settings are not allowed to be null!"
+        );
+        AdvancedElectronicSystemType validationServiceName =
+                message.getDcMessageProcessSettings().getValidationServiceName();
 
         if (validationServiceName != null) {
             LOGGER.debug("Using AdvancedSystemType [{}] from message", validationServiceName);
@@ -119,35 +128,47 @@ public class ECodexContainerFactoryService {
             Objects.requireNonNull(validationServiceName, "AdvancedSystemType is null in configuration!");
         }
         if (!dcBusinessDocConfig.getAllowedAdvancedSystemTypes().contains(validationServiceName)) {
-            String error = String.format("The used AdvancedSystemType [%s] is not part of the configured allowed ones [%s]",
-                    validationServiceName, dcBusinessDocConfig.getAllowedAdvancedSystemTypes().stream().map(Object::toString).collect(Collectors.joining(",")));
+            String error = String.format(
+                    "The used AdvancedSystemType [%s] is not part of the configured allowed ones [%s]",
+                    validationServiceName,
+                    dcBusinessDocConfig.getAllowedAdvancedSystemTypes().stream().map(Object::toString)
+                                       .collect(Collectors.joining(","))
+            );
             throw new IllegalArgumentException(error);
         }
 
-        AdvancedSystemType advancedElectronicSystemType = AdvancedSystemType.valueOf(validationServiceName.name());;
-        return advancedElectronicSystemType;
+        return AdvancedSystemType.valueOf(validationServiceName.name());
     }
 
-    private ECodexTechnicalValidationService createDSSAuthenticationBasedValidationService(DomibusConnectorMessage message, DCBusinessDocumentValidationConfigurationProperties.AuthenticationValidationConfigurationProperties config) {
+    private ECodexTechnicalValidationService createDSSAuthenticationBasedValidationService(
+            DomibusConnectorMessage message,
+            DCBusinessDocumentValidationConfigurationProperties.AuthenticationValidationConfigurationProperties config) {
         Objects.requireNonNull(config, "AuthenticationValidationConfigurationProperties is not allowed to be null!");
-        Class<? extends DCAuthenticationBasedTechnicalValidationServiceFactory> authenticatorServiceFactoryClass = config.getAuthenticatorServiceFactoryClass();
-        DCAuthenticationBasedTechnicalValidationServiceFactory bean = applicationContext.getBean(authenticatorServiceFactoryClass);
+        Class<? extends DCAuthenticationBasedTechnicalValidationServiceFactory> authenticatorServiceFactoryClass =
+                config.getAuthenticatorServiceFactoryClass();
+        DCAuthenticationBasedTechnicalValidationServiceFactory bean =
+                applicationContext.getBean(authenticatorServiceFactoryClass);
         return bean.createTechnicalValidationService(message, config);
     }
 
-    private ECodexTechnicalValidationService createDSSECodexTechnicalValidationService(SignatureValidationConfigurationProperties signatureValidationConfigurationProperties) {
+    private ECodexTechnicalValidationService createDSSECodexTechnicalValidationService(
+            SignatureValidationConfigurationProperties signatureValidationConfigurationProperties) {
         String trustedListSourceName = signatureValidationConfigurationProperties.getTrustedListSource();
-        Optional<TrustedListsCertificateSource> certificateSource = dssTrustedListsManager.getCertificateSource(trustedListSourceName);
+        Optional<TrustedListsCertificateSource> certificateSource =
+                dssTrustedListsManager.getCertificateSource(trustedListSourceName);
 
         StoreConfigurationProperties ignoreStore = signatureValidationConfigurationProperties.getIgnoreStore();
         CertificateSource ignoreCertificates = null;
         if (ignoreStore != null) {
-             ignoreCertificates = certificateSourceFromKeyStoreCreator.createCertificateSourceFromStore(ignoreStore);
+            ignoreCertificates = certificateSourceFromKeyStoreCreator.createCertificateSourceFromStore(ignoreStore);
         }
 
-        CertificateVerifier businessDocumentCertificateVerifier = commonCertificateVerifierFactory.createCommonCertificateVerifier(signatureValidationConfigurationProperties);
+        CertificateVerifier businessDocumentCertificateVerifier =
+                commonCertificateVerifierFactory.createCommonCertificateVerifier(
+                        signatureValidationConfigurationProperties);
 
-        EtsiValidationPolicy etsiValidationPolicy = loadEtsiValidationPolicy(signatureValidationConfigurationProperties);
+        EtsiValidationPolicy etsiValidationPolicy =
+                loadEtsiValidationPolicy(signatureValidationConfigurationProperties);
 
         return new DSSECodexTechnicalValidationService(
                 etsiValidationPolicy,
@@ -155,16 +176,17 @@ public class ECodexContainerFactoryService {
                 new DefaultSignatureProcessExecutor(),
                 certificateSource,
                 Optional.ofNullable(ignoreCertificates)
-                );
-
+        );
     }
 
     private EtsiValidationPolicy loadEtsiValidationPolicy(SignatureValidationConfigurationProperties signatureValidationConfigurationProperties) {
         try {
-            Resource resource = applicationContext.getResource(signatureValidationConfigurationProperties.getValidationConstraintsXml());
+            Resource resource =
+                    applicationContext.getResource(signatureValidationConfigurationProperties.getValidationConstraintsXml());
             InputStream policyDataStream = resource.getInputStream();
-            EtsiValidationPolicy validationPolicy = null;
-            validationPolicy = (EtsiValidationPolicy) ValidationPolicyFacade.newFacade().getValidationPolicy(policyDataStream);
+            EtsiValidationPolicy validationPolicy;
+            validationPolicy =
+                    (EtsiValidationPolicy) ValidationPolicyFacade.newFacade().getValidationPolicy(policyDataStream);
             return validationPolicy;
         } catch (IOException ioe) {
             throw new RuntimeException("Error while loading resource", ioe);
@@ -173,17 +195,17 @@ public class ECodexContainerFactoryService {
         }
     }
 
-
     private SignatureCheckers createSignatureCheckers() {
         return new SignatureCheckers(
                 asicsSignatureChecker(),
                 xmlTokenSignatureChecker(),
-                pdfTokenSignatureChecker());
-
+                pdfTokenSignatureChecker()
+        );
     }
 
     private DSSSignatureChecker<ECodexContainer.TokenPdfTypeECodex> pdfTokenSignatureChecker() {
-        return DSSSignatureChecker.builder()
+        return DSSSignatureChecker
+                .builder()
                 .withSignatureCheckerName("TokenPdfSignatureChecker")
                 .withCertificateVerifier(eCodexContainerCertificateVerifier())
                 .withValidationConstraints(signatureValidationConstraintsXml())
@@ -193,7 +215,8 @@ public class ECodexContainerFactoryService {
     }
 
     private DSSSignatureChecker<ECodexContainer.TokenXmlTypesECodex> xmlTokenSignatureChecker() {
-        return DSSSignatureChecker.builder()
+        return DSSSignatureChecker
+                .builder()
                 .withSignatureCheckerName("TokenPdfSignatureChecker")
                 .withCertificateVerifier(eCodexContainerCertificateVerifier())
                 .withValidationConstraints(signatureValidationConstraintsXml())
@@ -203,18 +226,20 @@ public class ECodexContainerFactoryService {
     }
 
     private DSSSignatureChecker<ECodexContainer.AsicDocumentTypeECodex> asicsSignatureChecker() {
-        return DSSSignatureChecker.builder()
+        return DSSSignatureChecker
+                .builder()
                 .withCertificateVerifier(eCodexContainerCertificateVerifier())
                 .withSignatureCheckerName("TokenPdfSignatureChecker")
                 .withValidationConstraints(signatureValidationConstraintsXml())
                 .withProcessExecutor(new DefaultSignatureProcessExecutor())
                 .withConnectorCertificateSource(connectorCertificateSource())
-                .build(new ECodexContainer.AsicDocumentTypeECodex())
-                ;
+                .build(new ECodexContainer.AsicDocumentTypeECodex());
     }
 
     private CertificateVerifier eCodexContainerCertificateVerifier() {
-        return commonCertificateVerifierFactory.createCommonCertificateVerifier(dcEcodexContainerProperties.getSignatureValidation());
+        return commonCertificateVerifierFactory.createCommonCertificateVerifier(
+                dcEcodexContainerProperties.getSignatureValidation()
+        );
     }
 
     private CertificateSource connectorCertificateSource() {
@@ -224,8 +249,8 @@ public class ECodexContainerFactoryService {
 
     private Resource signatureValidationConstraintsXml() {
         return applicationContext.getResource(dcEcodexContainerProperties
-                .getSignatureValidation()
-                .getValidationConstraintsXml());
+                                                      .getSignatureValidation()
+                                                      .getValidationConstraintsXml());
     }
 
     private SignatureParameters createSignatureParameters() {
@@ -233,7 +258,8 @@ public class ECodexContainerFactoryService {
             LOGGER.debug("creatingSignatureParameters");
 
             SignatureConfigurationProperties signatureConfig = dcEcodexContainerProperties.getSignature();
-            CertificateSourceFromKeyStoreCreator.SignatureConnectionAndPrivateKeyEntry signatureConnectionFromStore = certificateSourceFromKeyStoreCreator.createSignatureConnectionFromStore(signatureConfig);
+            CertificateSourceFromKeyStoreCreator.SignatureConnectionAndPrivateKeyEntry signatureConnectionFromStore =
+                    certificateSourceFromKeyStoreCreator.createSignatureConnectionFromStore(signatureConfig);
 
             SignatureParameters signatureParameters = new SignatureParameters();
             signatureParameters.setSignatureTokenConnection(signatureConnectionFromStore.getSignatureTokenConnection());
@@ -245,8 +271,5 @@ public class ECodexContainerFactoryService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
-
-
 }

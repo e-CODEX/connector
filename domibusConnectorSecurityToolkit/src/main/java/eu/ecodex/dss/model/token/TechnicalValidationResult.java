@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/TechnicalValidationResult.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token
+ * /TechnicalValidationResult.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -16,18 +17,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
+
 /**
  * This class holds the data about the ValidationResult.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TechnicalResultType", propOrder = {"trustLevel", "comment" })
+@XmlType(name = "TechnicalResultType", propOrder = {"trustLevel", "comment"})
 public class TechnicalValidationResult implements Serializable {
-
     @XmlElement(name = "TrustLevel", required = true)
     protected TechnicalTrustLevel trustLevel;
     @XmlElement(name = "Comments")
@@ -72,5 +73,4 @@ public class TechnicalValidationResult implements Serializable {
         this.comment = value;
         return this;
     }
-
 }

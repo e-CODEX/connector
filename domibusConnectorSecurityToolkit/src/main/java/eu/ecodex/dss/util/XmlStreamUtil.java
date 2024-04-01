@@ -9,10 +9,11 @@
  */
 package eu.ecodex.dss.util;
 
+import eu.europa.esig.dss.model.DSSDocument;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import eu.europa.esig.dss.model.DSSDocument;
 
 /**
  * Provide conveniences methods for XML stream.
@@ -26,6 +27,11 @@ import eu.europa.esig.dss.model.DSSDocument;
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class XmlStreamUtil {
+    /**
+     * The default constructor for XmlStreamUtil.
+     */
+    private XmlStreamUtil() {
+    }
 
     /**
      * Validate if the document is an XML and well-formed
@@ -34,7 +40,6 @@ public class XmlStreamUtil {
      * @return The result
      */
     public static boolean isXmlFile(final DSSDocument document) {
-
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder parser = factory.newDocumentBuilder();
@@ -43,14 +48,5 @@ public class XmlStreamUtil {
         } catch (Exception e) {
             return false;
         }
-
     }
-
-    /**
-     *
-     * The default constructor for XmlStreamUtil.
-     */
-    private XmlStreamUtil() {
-    }
-
 }

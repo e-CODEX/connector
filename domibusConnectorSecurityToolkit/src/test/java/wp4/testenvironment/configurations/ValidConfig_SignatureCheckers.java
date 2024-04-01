@@ -12,50 +12,54 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 
-public class ValidConfig_SignatureCheckers {
 
+public class ValidConfig_SignatureCheckers {
     public static SignatureCheckers getSignatureCheckers() {
         return new SignatureCheckers(
                 asicsSignatureChecker(),
                 xmlTokenSignatureChecker(),
-                pdfTokenSignatureChecker());
+                pdfTokenSignatureChecker()
+        );
     }
-
 
     private static DSSSignatureChecker<ECodexContainer.TokenPdfTypeECodex> pdfTokenSignatureChecker() {
         return DSSSignatureChecker.builder()
-                .withSignatureCheckerName("TokenPdfSignatureChecker")
-                .withCertificateVerifier(eCodexContainerCertificateVerifier())
-                .withValidationConstraints(signatureValidationConstraintsXml())
-                .withProcessExecutor(new DefaultSignatureProcessExecutor())
-                .build(new ECodexContainer.TokenPdfTypeECodex())
+                                  .withSignatureCheckerName("TokenPdfSignatureChecker")
+                                  .withCertificateVerifier(eCodexContainerCertificateVerifier())
+                                  .withValidationConstraints(signatureValidationConstraintsXml())
+                                  .withProcessExecutor(new DefaultSignatureProcessExecutor())
+                                  .build(new ECodexContainer.TokenPdfTypeECodex())
                 ;
     }
 
     private static DSSSignatureChecker<ECodexContainer.TokenXmlTypesECodex> xmlTokenSignatureChecker() {
         return DSSSignatureChecker.builder()
-                .withSignatureCheckerName("TokenPdfSignatureChecker")
-                .withCertificateVerifier(eCodexContainerCertificateVerifier())
-                .withValidationConstraints(signatureValidationConstraintsXml())
-                .withProcessExecutor(new DefaultSignatureProcessExecutor())
-                .build(new ECodexContainer.TokenXmlTypesECodex())
+                                  .withSignatureCheckerName("TokenPdfSignatureChecker")
+                                  .withCertificateVerifier(eCodexContainerCertificateVerifier())
+                                  .withValidationConstraints(signatureValidationConstraintsXml())
+                                  .withProcessExecutor(new DefaultSignatureProcessExecutor())
+                                  .build(new ECodexContainer.TokenXmlTypesECodex())
                 ;
     }
 
     private static DSSSignatureChecker<ECodexContainer.AsicDocumentTypeECodex> asicsSignatureChecker() {
         return DSSSignatureChecker.builder()
-                .withCertificateVerifier(eCodexContainerCertificateVerifier())
-                .withSignatureCheckerName("TokenPdfSignatureChecker")
-                .withValidationConstraints(signatureValidationConstraintsXml())
-                .withProcessExecutor(new DefaultSignatureProcessExecutor())
-                .withConnectorCertificateSource(connectorCertificateSource())
-                .build(new ECodexContainer.AsicDocumentTypeECodex())
+                                  .withCertificateVerifier(eCodexContainerCertificateVerifier())
+                                  .withSignatureCheckerName("TokenPdfSignatureChecker")
+                                  .withValidationConstraints(signatureValidationConstraintsXml())
+                                  .withProcessExecutor(new DefaultSignatureProcessExecutor())
+                                  .withConnectorCertificateSource(connectorCertificateSource())
+                                  .build(new ECodexContainer.AsicDocumentTypeECodex())
                 ;
     }
 
     private static CertificateSource connectorCertificateSource() {
         try {
-            return new KeyStoreCertificateSource(new ClassPathResource("/keystores/signature_store.jks").getInputStream(), "JKS", "teststore");
+            return new KeyStoreCertificateSource(
+                    new ClassPathResource("/keystores/signature_store.jks").getInputStream(),
+                    "JKS",
+                    "teststore"
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -72,5 +76,4 @@ public class ValidConfig_SignatureCheckers {
             throw new RuntimeException(e);
         }
     }
-
 }

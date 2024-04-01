@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/TokenDocument.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/TokenDocument
+ * .java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -18,20 +19,20 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
+
 /**
  * This class holds a document to be transported.
- * 
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
- * 
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DocumentType", propOrder = { "filename", "type", "digestMethod", "digestValue", "signatureFilename" })
+@XmlType(name = "DocumentType", propOrder = {"filename", "type", "digestMethod", "digestValue", "signatureFilename"})
 public class TokenDocument implements Serializable {
-    
     @XmlElement(name = "Filename", required = true)
     protected String filename;
     @XmlElement(name = "Type", required = true)
@@ -45,7 +46,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Gets the value of the filename property.
-     * 
+     *
      * @return possible object is {@link String }
      */
     public String getFilename() {
@@ -54,7 +55,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Sets the value of the filename property.
-     * 
+     *
      * @param value allowed object is {@link String }
      * @return this class' instance for chaining
      */
@@ -65,7 +66,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Gets the value of the type property.
-     * 
+     *
      * @return possible object is {@link String}
      */
     public String getType() {
@@ -74,7 +75,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Sets the value of the type property.
-     * 
+     *
      * @param value allowed object is {@link String}
      * @return this class' instance for chaining
      */
@@ -85,7 +86,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Gets the value of the digestMethod property.
-     * 
+     *
      * @return possible object is {@link DigestMethodType}
      */
     public DigestMethodType getDigestMethod() {
@@ -94,7 +95,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Sets the value of the digestMethod property.
-     * 
+     *
      * @param digestMethod allowed object is {@link DigestMethodType}
      * @return this class' instance for chaining
      */
@@ -105,7 +106,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Gets the value of the digestValue property.
-     * 
+     *
      * @return possible object is {@link Byte} array
      */
     public byte[] getDigestValue() {
@@ -114,7 +115,7 @@ public class TokenDocument implements Serializable {
 
     /**
      * Sets the value of the digestMethod digestValue.
-     * 
+     *
      * @param digestValue allowed object is {@link Byte} array
      * @return this class' instance for chaining
      */
@@ -142,5 +143,4 @@ public class TokenDocument implements Serializable {
         this.signatureFilename = value;
         return this;
     }
-
 }

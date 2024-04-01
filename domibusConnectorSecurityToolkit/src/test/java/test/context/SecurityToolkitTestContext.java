@@ -2,7 +2,6 @@ package test.context;
 
 import eu.domibus.connector.common.configuration.ConnectorConfigurationProperties;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
-import eu.domibus.connector.dss.configuration.BasicDssConfigurationProperties;
 import eu.domibus.connector.persistence.service.DCBusinessDomainPersistenceService;
 import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import eu.domibus.connector.persistence.service.testutil.LargeFilePersistenceServicePassthroughImpl;
@@ -15,24 +14,26 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
 
-@ComponentScan(basePackages = {"eu.domibus.connector.security", "eu.domibus.connector.common", "eu.domibus.connector.dss"})
-@EnableAutoConfiguration( exclude = {
-        DataSourceAutoConfiguration.class,
-        DataSourceTransactionManagerAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class
-})
+
+@ComponentScan(
+        basePackages = {"eu.domibus.connector.security", "eu.domibus.connector.common", "eu.domibus.connector.dss"}
+)
+@EnableAutoConfiguration(
+        exclude = {
+                DataSourceAutoConfiguration.class,
+                DataSourceTransactionManagerAutoConfiguration.class,
+                HibernateJpaAutoConfiguration.class
+        }
+)
 @Configuration
 //@Import({BasicDssConfigurationProperties.class})
 @EnableConfigurationProperties({ConnectorConfigurationProperties.class})
 public class SecurityToolkitTestContext {
-
-
     @Bean
     public LargeFilePersistenceService bigDataPersistenceService() {
         LargeFilePersistenceServicePassthroughImpl service = new LargeFilePersistenceServicePassthroughImpl();
@@ -43,9 +44,7 @@ public class SecurityToolkitTestContext {
     public DCBusinessDomainPersistenceService dcBusinessDomainPersistenceService() {
         DCBusinessDomainPersistenceService mock = Mockito.mock(DCBusinessDomainPersistenceService.class);
         Mockito.when(mock.findById(eq(DomibusConnectorBusinessDomain.getDefaultMessageLaneId())))
-                .thenReturn(Optional.of(DomibusConnectorBusinessDomain.getDefaultMessageLane()));
+               .thenReturn(Optional.of(DomibusConnectorBusinessDomain.getDefaultMessageLane()));
         return mock;
     }
-
-
 }

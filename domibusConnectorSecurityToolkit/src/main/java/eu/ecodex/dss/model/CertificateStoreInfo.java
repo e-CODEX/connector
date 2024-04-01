@@ -2,19 +2,20 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/CertificateStoreInfo.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/CertificateStoreInfo
+ * .java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
 package eu.ecodex.dss.model;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.core.io.Resource;
+
 
 /**
  * holds information how to access the store holding the e-CODEX connector certificates used for ASiC-S validation
- * 
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
@@ -22,13 +23,14 @@ import org.springframework.core.io.Resource;
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
-@Deprecated //TODO replace with certificate source...
+@Deprecated // TODO replace with certificate source...
 public class CertificateStoreInfo {
     private Resource location;
     private String password;
 
     /**
      * the info is valid, if a non-empty location is provided
+     *
      * @return the result
      */
     public boolean isValid() {
@@ -37,6 +39,7 @@ public class CertificateStoreInfo {
 
     /**
      * the location (in url format) for loading the keystore
+     *
      * @return the value
      */
     public Resource getLocation() {
@@ -45,6 +48,7 @@ public class CertificateStoreInfo {
 
     /**
      * the location (in url format) for loading the keystore
+     *
      * @param v the value
      * @return this class' instance for chaining
      */
@@ -55,6 +59,7 @@ public class CertificateStoreInfo {
 
     /**
      * gives the password for loading the keystore
+     *
      * @return the value
      */
     public String getPassword() {
@@ -63,6 +68,7 @@ public class CertificateStoreInfo {
 
     /**
      * sets the password for loading the keystore
+     *
      * @param v the value
      * @return this class' instance for chaining
      */
@@ -77,9 +83,8 @@ public class CertificateStoreInfo {
     @Override
     public String toString() {
         return "CertificateStoreInfo{" +
-            "location=" + (location == null ? null : ('\'' + location.toString() + '\'')) +
-            ", password=" + (password == null ? null : "[set]") +
-            '}';
+                "location=" + (location == null ? null : ('\'' + location.toString() + '\'')) +
+                ", password=" + (password == null ? null : "[set]") +
+                '}';
     }
-
 }

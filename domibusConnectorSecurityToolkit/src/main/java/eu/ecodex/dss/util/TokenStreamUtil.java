@@ -9,22 +9,15 @@
  */
 package eu.ecodex.dss.util;
 
+import eu.ecodex.dss.model.token.OriginalValidationReportContainer;
+import eu.ecodex.dss.model.token.Token;
+
+import javax.xml.bind.*;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
-import javax.xml.bind.Unmarshaller;
-
-import eu.ecodex.dss.model.token.OriginalValidationReportContainer;
-import eu.ecodex.dss.model.token.Signature;
-import eu.ecodex.dss.model.token.Token;
-//import eu.europa.ec.markt.dss.validation.report.ValidationReport;
 
 /**
  * Utility class to decode/encode a {@link Token}
@@ -41,46 +34,21 @@ import eu.ecodex.dss.model.token.Token;
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class TokenStreamUtil {
-
-    private static final LogDelegate LOG = new LogDelegate(TokenStreamUtil.class);
-
     // a message to be outputted in case a JAXBException occurs
+    private static final LogDelegate LOG = new LogDelegate(TokenStreamUtil.class);
     public static final String EX_HINT = "A " + JAXBException.class
-          .getSimpleName() + " exception occurred; probably because of non-compliant data in the list of the " + OriginalValidationReportContainer.class
-          .getSimpleName() + " object. Please use simple types wrapped in " + OriginalValidationReportContainer.SimpleTypeEntry.class.getSimpleName() + ".";
-
+            .getSimpleName() + " exception occurred; probably because of non-compliant data in the list of the " +
+            OriginalValidationReportContainer.class
+                    .getSimpleName() + " object. Please use simple types wrapped in " +
+            OriginalValidationReportContainer.SimpleTypeEntry.class.getSimpleName() + ".";
     // the factory is annotated as @XmlRegistry, which is specified to be thread-safe.
     // so we instantiate it only once for performance reasons
     private static final TokenJAXBObjectFactory FACTORY = new TokenJAXBObjectFactory();
-
     private static final Map<String, String> NS_PREFIXES_MAP;
 
     static {
         NS_PREFIXES_MAP = new HashMap<String, String>();
         NS_PREFIXES_MAP.put("http://www.w3.org/2000/09/xmldsig#", "ds");
-    }
-
-
-
-    /**
-     * singleton in initializer pattern, to reliably create the context only if the object is actually used
-     */
-    private static class JAXBContextHolder {
-        /**
-         * the shared context
-         */
-        private static final JAXBContext INSTANCE;
-
-        static {
-            try {
-                // NICE-TO-HAVE dynamically reference other classes based on e.g. a properties file.
-	            // todo to be checked migration V4
-                INSTANCE = JAXBContext.newInstance(TokenJAXBObjectFactory.class, OriginalValidationReportContainer.SimpleTypeEntry.class); //, ValidationReport.class);
-            } catch (final JAXBException e) {
-                LOG.lError("instantiation", e);
-                throw new ExceptionInInitializerError(e);
-            }
-        }
     }
 
     /**
@@ -103,7 +71,6 @@ public class TokenStreamUtil {
         try {
             final JAXBElement<Token> xmlToken = (JAXBElement<Token>) delegate.unmarshal(xmlInputStream);
             final Token token = xmlToken.getValue();
-            
             // 20150608 - AK - Reason for this line unknown
             // final Signature signatureData = token.getValidationVerificationSignatureData();
 
@@ -138,4 +105,27 @@ public class TokenStreamUtil {
         return output;
     }
 
+    /**
+     * singleton in initializer pattern, to reliably create the context only if the object is actually used
+     */
+    private static class JAXBContextHolder {
+        /**
+         * the shared context
+         */
+        private static final JAXBContext INSTANCE;
+
+        static {
+            try {
+                // NICE-TO-HAVE dynamically reference other classes based on e.g. a properties file.
+                // TODO to be checked migration V4
+                INSTANCE = JAXBContext.newInstance(
+                        TokenJAXBObjectFactory.class,
+                        OriginalValidationReportContainer.SimpleTypeEntry.class
+                ); //, ValidationReport.class);
+            } catch (final JAXBException e) {
+                LOG.lError("instantiation", e);
+                throw new ExceptionInInitializerError(e);
+            }
+        }
+    }
 }

@@ -11,9 +11,10 @@ package eu.ecodex.dss.model;
 
 import org.apache.commons.lang.StringUtils;
 
+
 /**
  * This class holds attributes regarding a to be used proxy.
- * 
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
@@ -30,10 +31,13 @@ public class ProxyData {
      * the port
      */
     private int port;
-
-    /** the user's name to authenticate against the proxy */
+    /**
+     * the user's name to authenticate against the proxy
+     */
     private String authName;
-    /** the user's pass to authenticate against the proxy */
+    /**
+     * the user's pass to authenticate against the proxy
+     */
     private String authPass;
 
     /**
@@ -140,10 +144,10 @@ public class ProxyData {
     @Override
     public String toString() {
         return "ProxyData{" +
-            "host=" + (host == null ? null : ('\'' + host + '\'')) +
-            ", port=" + port +
-            ", authName=" + (authName == null ? null : ('\'' + authName + '\'')) +
-            ", authPass=" + (authPass == null ? null : ('\'' + authPass + '\'')) +
-            '}';
+                "host=" + (host == null ? null : ('\'' + host + '\'')) +
+                ", port=" + port +
+                ", authName=" + (authName == null ? null : ('\'' + authName + '\'')) +
+                ", authPass=" + (authPass == null ? null : ('\'' + authPass + '\'')) +
+                '}';
     }
 }

@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/ValidationVerification.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token
+ * /ValidationVerification.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -21,7 +22,7 @@ import java.util.List;
 
 /**
  * This class holds information about the verification.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
@@ -30,7 +31,6 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "VerificationDataType", propOrder = {"signatureData", "authenticationData"})
 public class ValidationVerification implements Serializable {
-
     @XmlElement(name = "SignatureData")
     protected List<Signature> signatureData;
     @XmlElement(name = "AuthenticationData")
@@ -55,7 +55,7 @@ public class ValidationVerification implements Serializable {
         this.signatureData = value;
         return this;
     }
-    
+
     @Deprecated
     public ValidationVerification setSignatureData(final Signature value) {
         this.addSignatureData(value);
@@ -69,16 +69,16 @@ public class ValidationVerification implements Serializable {
      * @return this class' instance for chaining
      */
     public ValidationVerification addSignatureData(final Signature value) {
-        if(this.signatureData == null){
-        	this.signatureData = new ArrayList<Signature>();
+        if (this.signatureData == null) {
+            this.signatureData = new ArrayList<Signature>();
         }
-        
-        if(value != null) {
-        	this.signatureData.add(value);
+
+        if (value != null) {
+            this.signatureData.add(value);
         }
         return this;
     }
-    
+
     /**
      * Gets the value of the authenticationData property.
      *
@@ -98,5 +98,4 @@ public class ValidationVerification implements Serializable {
         this.authenticationData = value;
         return this;
     }
-
 }

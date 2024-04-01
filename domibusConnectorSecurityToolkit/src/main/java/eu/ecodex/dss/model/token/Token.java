@@ -21,20 +21,20 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
  * This class holds the token which is the overall container for all data.
- * 
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
- * 
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TokenType", propOrder = { "issuer", "document", "validation" })
+@XmlType(name = "TokenType", propOrder = {"issuer", "document", "validation"})
 public class Token implements Serializable {
-
     @XmlElement(name = "Issuer", required = true)
     protected TokenIssuer issuer;
     @XmlElement(name = "Document", required = true)
@@ -44,7 +44,7 @@ public class Token implements Serializable {
 
     /**
      * Gets the value of the issuer property.
-     * 
+     *
      * @return possible object is {@link eu.ecodex.dss.model.token.TokenIssuer }
      */
     public TokenIssuer getIssuer() {
@@ -64,7 +64,7 @@ public class Token implements Serializable {
 
     /**
      * Gets the value of the document property.
-     * 
+     *
      * @return possible object is {@link eu.ecodex.dss.model.token.TokenDocument }
      */
     public TokenDocument getDocument() {
@@ -84,7 +84,7 @@ public class Token implements Serializable {
 
     /**
      * Gets the value of the validation property.
-     * 
+     *
      * @return possible object is {@link eu.ecodex.dss.model.token.TokenValidation }
      */
     public TokenValidation getValidation() {
@@ -93,8 +93,7 @@ public class Token implements Serializable {
 
     /**
      * Sets the value of the validation property.
-     * 
-     * 
+     *
      * @param value allowed object is {@link eu.ecodex.dss.model.token.TokenValidation }
      * @return this class' instance for chaining
      */
@@ -107,11 +106,11 @@ public class Token implements Serializable {
 
     /**
      * Get the value of the issuer country
-     * 
+     *
      * @return possible object is {@link String} or null.
      */
     public String getIssuerCountry() {
-        return ( issuer == null ) ? null : issuer.getCountry();
+        return (issuer == null) ? null : issuer.getCountry();
     }
 
     /**
@@ -120,7 +119,7 @@ public class Token implements Serializable {
      * @return possible object is {@link String} or null.
      */
     public String getIssuerServiceProvider() {
-        return ( issuer == null ) ? null : issuer.getServiceProvider();
+        return (issuer == null) ? null : issuer.getServiceProvider();
     }
 
     /**
@@ -129,7 +128,7 @@ public class Token implements Serializable {
      * @return possible object is {@link AdvancedSystemType} or empty.
      */
     public AdvancedSystemType getAdvancedElectronicSystem() {
-        return ( issuer == null ) ? null : issuer.getAdvancedElectronicSystem();
+        return (issuer == null) ? null : issuer.getAdvancedElectronicSystem();
     }
 
     /**
@@ -139,25 +138,25 @@ public class Token implements Serializable {
      */
     public String getAdvancedElectronicSystemText() {
         final AdvancedSystemType type = getAdvancedElectronicSystem();
-        return ( type == null ) ? StringUtils.EMPTY : type.getText();
+        return (type == null) ? StringUtils.EMPTY : type.getText();
     }
 
     /**
      * Gets the value of the token document name.
-     * 
+     *
      * @return possible object is {@link String} or empty.
      */
     public String getDocumentName() {
-        return ( document == null ) ? StringUtils.EMPTY : document.getFilename();
+        return (document == null) ? StringUtils.EMPTY : document.getFilename();
     }
 
     /**
      * Get the value of the token document type.
-     * 
+     *
      * @return possible object is {@link String} or empty.
      */
     public String getDocumentType() {
-        return ( document == null ) ? StringUtils.EMPTY : document.getType();
+        return (document == null) ? StringUtils.EMPTY : document.getType();
     }
 
     /**
@@ -166,7 +165,7 @@ public class Token implements Serializable {
      * @return possible object is {@link DigestMethodType} or null.
      */
     public DigestMethodType getDocumentDigestMethod() {
-        return ( document == null ) ? null : document.getDigestMethod();
+        return (document == null) ? null : document.getDigestMethod();
     }
 
     /**
@@ -175,34 +174,34 @@ public class Token implements Serializable {
      * @return possible object is {@link byte[]} or null.
      */
     public byte[] getDocumentDigestValue() {
-        return ( document == null ) ? null : document.getDigestValue();
+        return (document == null) ? null : document.getDigestValue();
     }
 
     /**
      * Gets the value of the technical validation result.
-     * 
+     *
      * @return possible object is {@link TechnicalValidationResult}
      */
     public TechnicalValidationResult getTechnicalValidationResult() {
-        return ( validation == null ) ? null : validation.getTechnicalResult();
+        return (validation == null) ? null : validation.getTechnicalResult();
     }
 
     /**
      * Gets the value of the legal validation result.
-     * 
+     *
      * @return possible object is {@link LegalValidationResult}
      */
     public LegalValidationResult getLegalValidationResult() {
-        return ( validation == null ) ? null : validation.getLegalResult();
+        return (validation == null) ? null : validation.getLegalResult();
     }
 
     /**
      * Gets the value of original validation report.
-     * 
+     *
      * @return possible object is {@link OriginalValidationReportContainer}
      */
     public OriginalValidationReportContainer getValidationOriginalReport() {
-        return ( validation == null ) ? null : validation.getOriginalValidationReport();
+        return (validation == null) ? null : validation.getOriginalValidationReport();
     }
 
     /**
@@ -211,7 +210,7 @@ public class Token implements Serializable {
      * @return possible object is {@link ValidationVerification}
      */
     public ValidationVerification getValidationVerificationData() {
-        return ( validation == null ) ? null : validation.getVerificationData();
+        return (validation == null) ? null : validation.getVerificationData();
     }
 
     /**
@@ -220,7 +219,7 @@ public class Token implements Serializable {
      * @return possible object is {@link javax.xml.datatype.XMLGregorianCalendar}
      */
     public XMLGregorianCalendar getValidationVerificationTime() {
-        return ( validation == null ) ? null : validation.getVerificationTime();
+        return (validation == null) ? null : validation.getVerificationTime();
     }
 
     /**
@@ -230,7 +229,7 @@ public class Token implements Serializable {
      */
     public AuthenticationInformation getValidationVerificationAuthenticationData() {
         final ValidationVerification o = getValidationVerificationData();
-        return ( o == null ) ? null : o.getAuthenticationData();
+        return (o == null) ? null : o.getAuthenticationData();
     }
 
     /**
@@ -240,7 +239,7 @@ public class Token implements Serializable {
      */
     public String getValidationVerificationAuthenticationProvider() {
         final AuthenticationInformation o = getValidationVerificationAuthenticationData();
-        return ( o == null ) ? null : o.getIdentityProvider();
+        return (o == null) ? null : o.getIdentityProvider();
     }
 
     /**
@@ -250,7 +249,7 @@ public class Token implements Serializable {
      */
     public String getValidationVerificationAuthenticationUsername() {
         final AuthenticationInformation o = getValidationVerificationAuthenticationData();
-        return ( o == null ) ? null : o.getUsernameSynonym();
+        return (o == null) ? null : o.getUsernameSynonym();
     }
 
     /**
@@ -260,106 +259,105 @@ public class Token implements Serializable {
      */
     public XMLGregorianCalendar getValidationVerificationAuthenticationTime() {
         final AuthenticationInformation o = getValidationVerificationAuthenticationData();
-        return ( o == null ) ? null : o.getTimeOfAuthentication();
+        return (o == null) ? null : o.getTimeOfAuthentication();
     }
 
     /**
      * Gets the value of signature data.
      * Deprecated due to rework: Now multiple signatures are possible!
      * Will return data for first Signature or no result.
-     * 
+     *
      * @return possible object is {@link Signature}
      */
     @Deprecated
     public Signature getValidationVerificationSignatureData() {
-		final ValidationVerification o = getValidationVerificationData();
-		if (!isValidationVerificationSignatureUnsigned()) {
-			return o.getSignatureData().get(0);
-		} else {
-			return null;
-		}
+        final ValidationVerification o = getValidationVerificationData();
+        if (!isValidationVerificationSignatureUnsigned()) {
+            return o.getSignatureData().get(0);
+        } else {
+            return null;
+        }
     }
 
     /**
      * Gets the value of signature data.
-     * 
+     *
      * @return possible object is {@link Signature}
      */
     public List<Signature> getValidationVerificationSignatureDataList() {
         final ValidationVerification o = getValidationVerificationData();
-        return ( o == null ) ? null : o.getSignatureData();
+        return (o == null) ? null : o.getSignatureData();
     }
-    
+
     /**
      * Gets the value of signature certificate.
      * Deprecated due to rework: Now multiple signatures are possible!
      * Will return data for first Signature or no result.
-     * 
+     *
      * @return possible object is {@link SignatureCertificate}
      */
     @Deprecated
     public SignatureCertificate getValidationVerificationSignatureCertificateInformation() {
         final Signature o = getValidationVerificationSignatureData();
-        return ( o == null ) ? null : o.getCertificateInformation();
+        return (o == null) ? null : o.getCertificateInformation();
     }
 
     /**
      * Gets the value of signature certificate for a given signature.
-     * 
+     *
      * @param signature allowed object is {@link eu.ecodex.dss.model.token.Signature }
      * @return possible object is {@link SignatureCertificate}
      */
     public SignatureCertificate getValidationVerificationSignatureCertificateInformation(Signature signature) {
-        return ( signature == null ) ? null : signature.getCertificateInformation();
+        return (signature == null) ? null : signature.getCertificateInformation();
     }
-    
+
     /**
      * Gets the certificate issuer
      * Deprecated due to rework: Now multiple signatures are possible!
      * Will return data for first Signature or no result.
-     * 
+     *
      * @return possible object is {@link String} or null.
      */
     @Deprecated
     public String getValidationVerificationSignatureCertificateIssuer() {
         final SignatureCertificate o = getValidationVerificationSignatureCertificateInformation();
-        return ( o == null ) ? null : o.getIssuer();
+        return (o == null) ? null : o.getIssuer();
     }
-    
+
     /**
      * Gets the value of the issuer for a signature certificate for a given signature.
-     * 
+     *
      * @param signatureCertificate allowed object is {@link eu.ecodex.dss.model.token.SignatureCertificate }
      * @return possible object is {@link String} or null.
      */
     public String getValidationVerificationSignatureCertificateIssuer(SignatureCertificate signatureCertificate) {
-        return ( signatureCertificate == null ) ? null : signatureCertificate.getIssuer();
+        return (signatureCertificate == null) ? null : signatureCertificate.getIssuer();
     }
 
     /**
      * Gets the value of signature information.
      * Deprecated due to rework: Now multiple signatures are possible!
      * Will return data for first Signature or no result.
-     * 
+     *
      * @return possible object is {@link SignatureAttributes}
      */
     @Deprecated
     public SignatureAttributes getValidationVerificationSignatureInformation() {
         final Signature o = getValidationVerificationSignatureData();
-        return ( o == null ) ? null : o.getSignatureInformation();
+        return (o == null) ? null : o.getSignatureInformation();
     }
 
     /**
      * Gets the value of signature information.
-     * 
+     *
      * @param signature allowed object is {@link eu.ecodex.dss.model.token.Signature }
      * @return possible object is {@link SignatureAttributes}
      */
     public SignatureAttributes getValidationVerificationSignatureInformation(Signature signature) {
-        return ( signature == null ) ? null : signature.getSignatureInformation();
+        return (signature == null) ? null : signature.getSignatureInformation();
     }
-    
-    
+
     /**
      * Gets the value of signature attribute format.
      * Deprecated due to rework: Now multiple signatures are possible!
@@ -370,9 +368,9 @@ public class Token implements Serializable {
     @Deprecated
     public String getValidationVerificationSignatureFormat() {
         final SignatureAttributes o = getValidationVerificationSignatureInformation();
-        return ( o == null ) ? null : o.getSignatureFormat();
+        return (o == null) ? null : o.getSignatureFormat();
     }
-    
+
     /**
      * Gets the value of signature attribute format.
      *
@@ -380,7 +378,7 @@ public class Token implements Serializable {
      * @return possible object is {@link String} or null
      */
     public String getValidationVerificationSignatureFormat(SignatureAttributes signatureAttributes) {
-        return ( signatureAttributes == null ) ? null : signatureAttributes.getSignatureFormat();
+        return (signatureAttributes == null) ? null : signatureAttributes.getSignatureFormat();
     }
 
     /**
@@ -393,9 +391,9 @@ public class Token implements Serializable {
     @Deprecated
     public String getValidationVerificationSignatureLevel() {
         final SignatureAttributes o = getValidationVerificationSignatureInformation();
-        return ( o == null ) ? null : o.getSignatureLevel();
+        return (o == null) ? null : o.getSignatureLevel();
     }
-    
+
     /**
      * Gets the value of signature attribute level
      *
@@ -403,31 +401,27 @@ public class Token implements Serializable {
      * @return possible object is {@link String} or null.
      */
     public String getValidationVerificationSignatureLevel(SignatureAttributes signatureAttributes) {
-        return ( signatureAttributes == null ) ? null : signatureAttributes.getSignatureLevel();
+        return (signatureAttributes == null) ? null : signatureAttributes.getSignatureLevel();
     }
 
     /**
      * Gets the value of signing status.
-     * 
+     *
      * @return true = the document is unsigned
      */
     public boolean isValidationVerificationSignatureUnsigned() {
-    	List<Signature> signatures = getValidationVerificationSignatureDataList();
+        List<Signature> signatures = getValidationVerificationSignatureDataList();
 
-    	// Pre 1.09 version of "being unsigned"
-		if (signatures != null 	&& !signatures.isEmpty()) {
-			if(signatures.get(0).getAuthenticationCertValidation() == null &&
-					signatures.get(0).getCertificateInformation() == null &&
-					signatures.get(0).getSignatureInformation() == null &&
-					signatures.get(0).getSigningTime() == null &&
-					signatures.get(0).getTechnicalResult() == null) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return true;
-		}
+        // Pre 1.09 version of "being unsigned"
+        if (signatures != null && !signatures.isEmpty()) {
+            return signatures.get(0).getAuthenticationCertValidation() == null &&
+                    signatures.get(0).getCertificateInformation() == null &&
+                    signatures.get(0).getSignatureInformation() == null &&
+                    signatures.get(0).getSigningTime() == null &&
+                    signatures.get(0).getTechnicalResult() == null;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -440,7 +434,7 @@ public class Token implements Serializable {
     @Deprecated
     public XMLGregorianCalendar getValidationVerificationSignatureSigningTime() {
         final Signature o = getValidationVerificationSignatureData();
-        return ( o == null ) ? null : o.getSigningTime();
+        return (o == null) ? null : o.getSigningTime();
     }
 
     /**
@@ -450,139 +444,138 @@ public class Token implements Serializable {
      * @return possible object is {@link javax.xml.datatype.XMLGregorianCalendar}
      */
     public XMLGregorianCalendar getValidationVerificationSignatureSigningTime(Signature signature) {
-        return ( signature == null ) ? null : signature.getSigningTime();
+        return (signature == null) ? null : signature.getSigningTime();
     }
-    
+
     /**
      * Gets the value of technical trust level.
-     * 
+     *
      * @return possible object is {@link TechnicalTrustLevel}
      */
     public TechnicalTrustLevel getTechnicalValidationResultTrustLevel() {
         final TechnicalValidationResult o = getTechnicalValidationResult();
-        return ( o == null ) ? TechnicalTrustLevel.FAIL : o.getTrustLevel();
+        return (o == null) ? TechnicalTrustLevel.FAIL : o.getTrustLevel();
     }
 
     /**
      * Gets the value of technical comment.
-     * 
+     *
      * @return possible object is {@link String} or null
      */
     public String getTechnicalValidationResultComments() {
         final TechnicalValidationResult o = getTechnicalValidationResult();
-        return ( o == null ) ? null : o.getComment();
+        return (o == null) ? null : o.getComment();
     }
 
     /**
      * Gets the value of legal trust level.
-     * 
+     *
      * @return possible object is {@link TechnicalTrustLevel}
      */
     public LegalTrustLevel getLegalValidationResultTrustLevel() {
         final LegalValidationResult o = getLegalValidationResult();
-        return ( o == null ) ? LegalTrustLevel.NOT_SUCCESSFUL : o.getTrustLevel();
+        return (o == null) ? LegalTrustLevel.NOT_SUCCESSFUL : o.getTrustLevel();
     }
 
     /**
      * Gets the value of legal disclaimer.
-     * 
+     *
      * @return possible object is {@link String} or null
      */
     public String getLegalValidationResultDisclaimer() {
         final LegalValidationResult o = getLegalValidationResult();
-        return ( o == null ) ? null : o.getDisclaimer();
+        return (o == null) ? null : o.getDisclaimer();
     }
 
     /**
      * Gets the value of certificate verification.
-    * Deprecated due to rework: Now multiple signatures are possible!
-    * Will return data for first Signature or no result.
-     * 
+     * Deprecated due to rework: Now multiple signatures are possible!
+     * Will return data for first Signature or no result.
+     *
      * @return possible object is true or false
      */
     @Deprecated
     public boolean isValidationVerificationSignatureCertificateValid() {
         final SignatureCertificate o = getValidationVerificationSignatureCertificateInformation();
-        return ( o != null ) && o.isCertificateValid();
+        return (o != null) && o.isCertificateValid();
     }
-    
+
     /**
      * Gets the value of certificate verification.
-     * 
+     *
      * @param signatureCertificate allowed object is {@link eu.ecodex.dss.model.token.SignatureCertificate }
      * @return possible object is true or false
      */
     public boolean isValidationVerificationSignatureCertificateValid(SignatureCertificate signatureCertificate) {
-        return ( signatureCertificate != null ) && signatureCertificate.isCertificateValid();
+        return (signatureCertificate != null) && signatureCertificate.isCertificateValid();
     }
 
     /**
-     * Gets the value of signature verification. 
+     * Gets the value of signature verification.
      * Deprecated due to rework: Now multiple signatures are possible!
      * Will return data for first Signature or no result.
-     * 
+     *
      * @return possible object is true or false
      */
     @Deprecated
     public boolean isValidationVerificationSignatureValid() {
         final SignatureAttributes o = getValidationVerificationSignatureInformation();
-        return ( o != null ) && o.isSignatureValid();
+        return (o != null) && o.isSignatureValid();
     }
-    
+
     /**
      * Gets the value of signature verification.
-     * 
+     *
      * @param signatureAttributes allowed object is {@link eu.ecodex.dss.model.token.SignatureAttributes }
      * @return possible object is true or false
      */
     public boolean isValidationVerificationSignatureValid(SignatureAttributes signatureAttributes) {
-        return ( signatureAttributes != null ) && signatureAttributes.isSignatureValid();
+        return (signatureAttributes != null) && signatureAttributes.isSignatureValid();
     }
 
     /**
      * Gets the value of structure verification.
      * Deprecated due to rework: Now multiple signatures are possible!
      * Will return data for first Signature or no result.
-     * 
+     *
      * @return possible object is true or false
      */
     @Deprecated
     public boolean isValidationVerificationSignatureStructureValid() {
         final SignatureAttributes o = getValidationVerificationSignatureInformation();
-        return( o != null ) && o.isStructureValid();
+        return (o != null) && o.isStructureValid();
     }
-    
+
     /**
      * Gets the value of structure verification.
-     * 
+     *
      * @param signatureAttributes allowed object is {@link eu.ecodex.dss.model.token.SignatureAttributes }
      * @return possible object is true or false
      */
     public boolean isValidationVerificationSignatureStructureValid(SignatureAttributes signatureAttributes) {
-        return( signatureAttributes != null ) && signatureAttributes.isStructureValid();
+        return (signatureAttributes != null) && signatureAttributes.isStructureValid();
     }
 
     /**
      * Gets the value of validity as signing time.
      * Deprecated due to rework: Now multiple signatures are possible!
      * Will return data for first Signature or no result.
-     * 
+     *
      * @return possible object is true or false
      */
     @Deprecated
     public boolean isValidationVerificationSignatureCertificateValidityAtSigningTime() {
         final SignatureCertificate o = getValidationVerificationSignatureCertificateInformation();
-        return ( o != null ) && o.isValidityAtSigningTime();
+        return (o != null) && o.isValidityAtSigningTime();
     }
-    
+
     /**
      * Gets the value of validity as signing time.
-     * 
+     *
      * @param signatureCertificate allowed object is {@link eu.ecodex.dss.model.token.SignatureCertificate }
      * @return possible object is true or false
      */
     public boolean isValidationVerificationSignatureCertificateValidityAtSigningTime(SignatureCertificate signatureCertificate) {
-        return ( signatureCertificate != null ) && signatureCertificate.isValidityAtSigningTime();
+        return (signatureCertificate != null) && signatureCertificate.isValidityAtSigningTime();
     }
-
 }

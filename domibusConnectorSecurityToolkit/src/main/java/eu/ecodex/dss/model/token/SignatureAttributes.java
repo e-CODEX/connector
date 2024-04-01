@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/SignatureAttributes.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token
+ * /SignatureAttributes.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -19,16 +20,18 @@ import java.io.Serializable;
 
 /**
  * This class holds information about the signature.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "SignatureInformationType", propOrder = { "signatureValid", "structureValid", "signatureFormat", "signatureLevel"})
+@XmlType(
+        name = "SignatureInformationType",
+        propOrder = {"signatureValid", "structureValid", "signatureFormat", "signatureLevel"}
+)
 public class SignatureAttributes implements Serializable {
-
     @XmlElement(name = "SignatureVerification")
     protected boolean signatureValid;
     @XmlElement(name = "StructureVerification")
@@ -40,7 +43,7 @@ public class SignatureAttributes implements Serializable {
 
     /**
      * Gets the value of the signatureValid property.
-     * 
+     *
      * @return the value
      */
     public boolean isSignatureValid() {
@@ -49,7 +52,7 @@ public class SignatureAttributes implements Serializable {
 
     /**
      * Sets the value of the signatureValid property.
-     * 
+     *
      * @param value the value
      * @return this class' instance for chaining
      */
@@ -60,7 +63,7 @@ public class SignatureAttributes implements Serializable {
 
     /**
      * Gets the value of the structureValid property.
-     * 
+     *
      * @return the value
      */
     public boolean isStructureValid() {
@@ -69,7 +72,7 @@ public class SignatureAttributes implements Serializable {
 
     /**
      * Sets the value of the structureValid property.
-     * 
+     *
      * @param value the value
      * @return this class' instance for chaining
      */
@@ -117,5 +120,4 @@ public class SignatureAttributes implements Serializable {
         this.signatureLevel = value;
         return this;
     }
-
 }

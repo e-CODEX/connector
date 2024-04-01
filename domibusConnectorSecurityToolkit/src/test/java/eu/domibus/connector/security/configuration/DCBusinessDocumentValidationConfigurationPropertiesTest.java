@@ -14,34 +14,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(classes = DCBusinessDocumentValidationConfigurationPropertiesTest.TestContext.class)
 @ActiveProfiles({"test", "seclib-test"})
 class DCBusinessDocumentValidationConfigurationPropertiesTest {
-
-    @SpringBootApplication(scanBasePackages = "eu.domibus.connector.utils")
-    @EnableConfigurationProperties(ConnectorConfigurationProperties.class)
-    public static class TestContext {
-
-    }
-    
     @Autowired
     BeanToPropertyMapConverter beanToPropertyMapConverter;
 
     @Test
-    public void testBusinesssDocumentValidationToBeanMap() {
-        DCBusinessDocumentValidationConfigurationProperties conf = new DCBusinessDocumentValidationConfigurationProperties();
+    void testBusinesssDocumentValidationToBeanMap() {
+        DCBusinessDocumentValidationConfigurationProperties conf =
+                new DCBusinessDocumentValidationConfigurationProperties();
         conf.setSignatureValidation(new SignatureValidationConfigurationProperties());
         conf.getSignatureValidation().setCrlEnabled(false);
         conf.getSignatureValidation().setOcspEnabled(false);
 
-        Map<String, String> stringStringMap = beanToPropertyMapConverter.readBeanPropertiesToMap(conf, "connector.business-document-sent");
+        Map<String, String> stringStringMap =
+                beanToPropertyMapConverter.readBeanPropertiesToMap(conf, "connector.business-document-sent");
 
         Map<String, String> expected = new HashMap<>();
-        expected.put("connector.business-document-sent.allowed-advanced-system-types", "SIGNATURE_BASED,AUTHENTICATION_BASED");
-        expected.put("connector.business-document-sent.signature-validation.validation-constraints-xml", "classpath:/102853/constraint.xml");
+        expected.put(
+                "connector.business-document-sent.allowed-advanced-system-types",
+                "SIGNATURE_BASED,AUTHENTICATION_BASED"
+        );
+        expected.put(
+                "connector.business-document-sent.signature-validation.validation-constraints-xml",
+                "classpath:/102853/constraint.xml"
+        );
         expected.put("connector.business-document-sent.country", "");
         expected.put("connector.business-document-sent.service-provider", "");
         expected.put("connector.business-document-sent.allow-system-type-override-by-client", "true");
@@ -53,7 +53,11 @@ class DCBusinessDocumentValidationConfigurationPropertiesTest {
         expected.put("connector.business-document-sent.signature-validation.certificate-verifier-name", "default");
 
         assertThat(stringStringMap).containsExactlyInAnyOrderEntriesOf(expected);
-
     }
 
+    @SpringBootApplication(scanBasePackages = "eu.domibus.connector.utils")
+    @EnableConfigurationProperties(ConnectorConfigurationProperties.class)
+    public static class TestContext {
+
+    }
 }

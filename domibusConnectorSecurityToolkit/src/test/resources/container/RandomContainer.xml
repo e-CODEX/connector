@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><TrustOkToken xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<?xml version="1.0" encoding="UTF-8"?>
+<TrustOkToken xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
     <Issuer>
         <ServiceProvider>Dummy ServiceProvision Inc.</ServiceProvider>
         <Country>DE</Country>
@@ -34,64 +35,163 @@
         </TechnicalResult>
         <LegalResult>
             <TrustLevel>SUCCESSFUL</TrustLevel>
-            <Disclaimer>e-CODEX approves the validity of the document. It is attested that it fulfils the requirements to be legally valid in the sending country.</Disclaimer>
+            <Disclaimer>e-CODEX approves the validity of the document. It is attested that it fulfils the requirements
+                to be legally valid in the sending country.
+            </Disclaimer>
         </LegalResult>
         <OriginalValidationReport>
-<SimpleReport xmlns="http://dss.markt.ec.europa.eu/validation/diagnostic">
-	<Policy>
-		<PolicyName>ECodex-based</PolicyName>
-		<PolicyDescription>eCODEX validation policy</PolicyDescription>
-	</Policy>
-	<ValidationTime>2015-06-15T11:19:57Z</ValidationTime>
-	<DocumentName>Two_Sig.pdf</DocumentName>
-	<Signature Id="AF87C3E530C59F763813076B5B69B283" SignatureFormat="PAdES_BASELINE_B">
-		<SigningTime>2015-04-24T12:36:04Z</SigningTime>
-		<SignedBy>GRP: CODEX Connector</SignedBy>
-		<Indication>VALID</Indication>
-		<Warning NameId="BBB_XCV_CCCBB_ANS">The certificate chain is not trusted, there is no trusted anchor.</Warning>
-		<Warning CertificateId="1362" CertificateSource="SIGNATURE" NameId="BBB_XCV_IRDTFC_ANS">The revocation data for the certificate is not trusted!</Warning>
-		<Warning CertificateId="1362" NameId="CTS_WITSS_ANS" TrustedServiceStatus="">The status of the trusted service should be: UNDERSUPERVISION, SUPERVISIONINCESSATION or ACCREDITED!</Warning>
-		<Warning CertificateId="1361" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate</Warning>
-		<Warning CertificateId="1361" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data for the certificate is not trusted!</Warning>
-		<Warning CertificateId="1361" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
-		<Warning CertificateId="1360" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate</Warning>
-		<Warning CertificateId="1360" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data for the certificate is not trusted!</Warning>
-		<Warning CertificateId="1360" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
-		<Warning NameId="BBB_XCV_CMDCIQC_ANS">The certificate is not qualified!</Warning>
-		<Warning NameId="BBB_XCV_CMDCISSCD_ANS">The signer's certificate is not supported by SSCD!</Warning>
-		<Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2" SubContext="CACertificate">The digest algorithm not authorised!</Warning>
-		<Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2" SubContext="CACertificate">The digest algorithm not authorised!</Warning>
-		<SignatureLevel>AdES</SignatureLevel>
-		<SignatureScopes>
-			<SignatureScope name="Full PDF" scope="FullSignatureScope">Full document</SignatureScope>
-		</SignatureScopes>
-	</Signature>
-	<Signature Id="935A82F27700612FAADA0E4929C365B6" SignatureFormat="PAdES_BASELINE_B">
-		<SigningTime>2015-04-24T12:36:03Z</SigningTime>
-		<SignedBy>GRP: CODEX Connector</SignedBy>
-		<Indication>VALID</Indication>
-		<Warning NameId="BBB_XCV_CCCBB_ANS">The certificate chain is not trusted, there is no trusted anchor.</Warning>
-		<Warning CertificateId="1362" CertificateSource="SIGNATURE" NameId="BBB_XCV_IRDTFC_ANS">The revocation data for the certificate is not trusted!</Warning>
-		<Warning CertificateId="1362" NameId="CTS_WITSS_ANS" TrustedServiceStatus="">The status of the trusted service should be: UNDERSUPERVISION, SUPERVISIONINCESSATION or ACCREDITED!</Warning>
-		<Warning CertificateId="1361" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate</Warning>
-		<Warning CertificateId="1361" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data for the certificate is not trusted!</Warning>
-		<Warning CertificateId="1361" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
-		<Warning CertificateId="1360" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate</Warning>
-		<Warning CertificateId="1360" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data for the certificate is not trusted!</Warning>
-		<Warning CertificateId="1360" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
-		<Warning NameId="BBB_XCV_CMDCIQC_ANS">The certificate is not qualified!</Warning>
-		<Warning NameId="BBB_XCV_CMDCISSCD_ANS">The signer's certificate is not supported by SSCD!</Warning>
-		<Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2" SubContext="CACertificate">The digest algorithm not authorised!</Warning>
-		<Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2" SubContext="CACertificate">The digest algorithm not authorised!</Warning>
-		<SignatureLevel>AdES</SignatureLevel>
-		<SignatureScopes>
-			<SignatureScope name="PDF previous version #1" scope="PdfByteRangeSignatureScope">The document byte range: [0, 160, 16546, 1761]</SignatureScope>
-		</SignatureScopes>
-	</Signature>
-	<ValidSignaturesCount>2</ValidSignaturesCount>
-	<SignaturesCount>2</SignaturesCount>
-</SimpleReport>
-</OriginalValidationReport>
+            <SimpleReport xmlns="http://dss.markt.ec.europa.eu/validation/diagnostic">
+                <Policy>
+                    <PolicyName>ECodex-based</PolicyName>
+                    <PolicyDescription>eCODEX validation policy</PolicyDescription>
+                </Policy>
+                <ValidationTime>2015-06-15T11:19:57Z</ValidationTime>
+                <DocumentName>Two_Sig.pdf</DocumentName>
+                <Signature Id="AF87C3E530C59F763813076B5B69B283" SignatureFormat="PAdES_BASELINE_B">
+                    <SigningTime>2015-04-24T12:36:04Z</SigningTime>
+                    <SignedBy>GRP: CODEX Connector</SignedBy>
+                    <Indication>VALID</Indication>
+                    <Warning NameId="BBB_XCV_CCCBB_ANS">The certificate chain is not trusted, there is no trusted
+                        anchor.
+                    </Warning>
+                    <Warning CertificateId="1362" CertificateSource="SIGNATURE" NameId="BBB_XCV_IRDTFC_ANS">The
+                        revocation data for the certificate is not trusted!
+                    </Warning>
+                    <Warning CertificateId="1362" NameId="CTS_WITSS_ANS" TrustedServiceStatus="">The status of the
+                        trusted service should be: UNDERSUPERVISION, SUPERVISIONINCESSATION or ACCREDITED!
+                    </Warning>
+                    <Warning CertificateId="1361" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate
+                    </Warning>
+                    <Warning CertificateId="1361" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data
+                        for the certificate is not trusted!
+                    </Warning>
+                    <Warning CertificateId="1361" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
+                    <Warning CertificateId="1360" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate
+                    </Warning>
+                    <Warning CertificateId="1360" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data
+                        for the certificate is not trusted!
+                    </Warning>
+                    <Warning CertificateId="1360" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
+                    <Warning NameId="BBB_XCV_CMDCIQC_ANS">The certificate is not qualified!</Warning>
+                    <Warning NameId="BBB_XCV_CMDCISSCD_ANS">The signer's certificate is not supported by SSCD!</Warning>
+                    <Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2"
+                             SubContext="CACertificate">The digest algorithm not authorised!
+                    </Warning>
+                    <Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2"
+                             SubContext="CACertificate">The digest algorithm not authorised!
+                    </Warning>
+                    <SignatureLevel>AdES</SignatureLevel>
+                    <SignatureScopes>
+                        <SignatureScope name="Full PDF" scope="FullSignatureScope">Full document</SignatureScope>
+                    </SignatureScopes>
+                </Signature>
+                <Signature Id="935A82F27700612FAADA0E4929C365B6" SignatureFormat="PAdES_BASELINE_B">
+                    <SigningTime>2015-04-24T12:36:03Z</SigningTime>
+                    <SignedBy>GRP: CODEX Connector</SignedBy>
+                    <Indication>VALID</Indication>
+                    <Warning NameId="BBB_XCV_CCCBB_ANS">The certificate chain is not trusted, there is no trusted
+                        anchor.
+                    </Warning>
+                    <Warning CertificateId="1362" CertificateSource="SIGNATURE" NameId="BBB_XCV_IRDTFC_ANS">The
+                        revocation data for the certificate is not trusted!
+                    </Warning>
+                    <Warning CertificateId="1362" NameId="CTS_WITSS_ANS" TrustedServiceStatus="">The status of the
+                        trusted service should be: UNDERSUPERVISION, SUPERVISIONINCESSATION or ACCREDITED!
+                    </Warning>
+                    <Warning CertificateId="1361" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate
+                    </Warning>
+                    <Warning CertificateId="1361" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data
+                        for the certificate is not trusted!
+                    </Warning>
+                    <Warning CertificateId="1361" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
+                    <Warning CertificateId="1360" NameId="BBB_XCV_IRDPFC_ANS">No revocation data for the certificate
+                    </Warning>
+                    <Warning CertificateId="1360" CertificateSource="" NameId="BBB_XCV_IRDTFC_ANS">The revocation data
+                        for the certificate is not trusted!
+                    </Warning>
+                    <Warning CertificateId="1360" NameId="BBB_XCV_IICR_ANS">The intermediate CA is revoked</Warning>
+                    <Warning NameId="BBB_XCV_CMDCIQC_ANS">The certificate is not qualified!</Warning>
+                    <Warning NameId="BBB_XCV_CMDCISSCD_ANS">The signer's certificate is not supported by SSCD!</Warning>
+                    <Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2"
+                             SubContext="CACertificate">The digest algorithm not authorised!
+                    </Warning>
+                    <Warning Context="MainSignature" DigestAlgorithm="SHA1" NameId="ASCCM_ANS_2"
+                             SubContext="CACertificate">The digest algorithm not authorised!
+                    </Warning>
+                    <SignatureLevel>AdES</SignatureLevel>
+                    <SignatureScopes>
+                        <SignatureScope name="PDF previous version #1" scope="PdfByteRangeSignatureScope">The document
+                            byte range: [0, 160, 16546, 1761]
+                        </SignatureScope>
+                    </SignatureScopes>
+                </Signature>
+                <ValidSignaturesCount>2</ValidSignaturesCount>
+                <SignaturesCount>2</SignaturesCount>
+            </SimpleReport>
+        </OriginalValidationReport>
 
     </Validation>
-<ds:Signature Id="id-8E453E64BFC7111BB2BF0CF335E7B47D" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference Id="xml_ref_id" URI=""><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"><ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>J/CHDSRWDtlApc92IJZ8Hj8M488=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xades-id-8E453E64BFC7111BB2BF0CF335E7B47D"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>Tla55a+i8pk6j1YtqqzWDdk82Yc=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="value-id-8E453E64BFC7111BB2BF0CF335E7B47D">sy7YTJcdxtW6y3VQC64gXl8ZQEMOEV0HunFalRDm25r++XreSsKEV1Odw318FSqQa1SrpLZv66ZE+keCex0SbaeI4WSRwaCmK1MonO2aKUU8z3eM8w5wXNXW1ptaYDDg9TbwKlVjYTHG+J5D6YhRnRIOfNJgmPKxwR0tAQXY936RIbLeM6Zith69GY4qst5ITYK+QssX2/pcl6M13ALgJKaBSG7FPt8AVqfLRKcYkEmeGWhKeSyPCufpfr/DBbfP5I0n3NR1YQKw1TNxbpY4htAzrOFUsfMkgOL1oxZYSY3ImGjUPW8+jrFH+s4WcxgTCcKe/ghL+0HW5qI2ug/Aqw==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIDczCCAlugAwIBAgIEOzGNyzANBgkqhkiG9w0BAQsFADBqMQswCQYDVQQGEwJERTEMMAoGA1UECBMDTlJXMRQwEgYDVQQHEwtEdWVzc2VsZG9yZjEPMA0GA1UEChMGSVQuTlJXMRAwDgYDVQQLEwdSZWYgMzIxMRQwEgYDVQQDEwtBZHJpYW4gS2xhcjAeFw0xNDA1MDYxNTM1MzVaFw0xNzA0MjAxNTM1MzVaMGoxCzAJBgNVBAYTAkRFMQwwCgYDVQQIEwNOUlcxFDASBgNVBAcTC0R1ZXNzZWxkb3JmMQ8wDQYDVQQKEwZJVC5OUlcxEDAOBgNVBAsTB1JlZiAzMjExFDASBgNVBAMTC0FkcmlhbiBLbGFyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxgVZV0zCVnLCwH5rJ9YHMW4Gfkuf7KWywNxAJQdrE1nQ6Lr60V6cUO7GMhoOjJfWk4mzj0g1vYSpzMcem1bBigZMv5PmAqZvMjYqqLJg6KaaVPXD4avZNXGeEWvNq/V2M/GGq6+6LvveI6c3hZcrROSfw5fqgvNGLkm9mAXfBJNoSNrE2jlo3D+dGNSaqrQRcNzBi+faGm6vmJx1Tdvul6A563XPDuvCY9S5L7itz7kAG6VPZkdp66GfswU7GvPnD2nDQKVplH6H0cl4Yf+U/3+KzvZKjbvNyIzjKecjiSM1Vy6g9PFgWv7SqZYYJnGDqxX1f4MW2JXwAMsj11CfXQIDAQABoyEwHzAdBgNVHQ4EFgQUnnbfwnupqIYjjvlJlgugTgsdsacwDQYJKoZIhvcNAQELBQADggEBAC9ue6/r3ZPFWBw994U6n1QagvXlmWQ4DiKppPFoTxCi+DPnf5+hgzgyOdf/EIxDf/7sSsg1YifsYjf2YHx6/61Iibr+6L96oVVLmW111CBmOVKKrhq5A06qGIext5FPpxKoxZzU8rDwpEC45kMiyMxyJdH6GQPyjgjvXvhGJB25fo0Ch+q5JzdAB13UUKlewhNniOjo4B1Ww4wD82e1X2XbEwoeYxIKrXC6w5YxIFzDzmfiMUrltQCVLziSBix0MvO7y1BkQ4LAJaUhyaaEd08Nv1FtVx1BBOPzNzd5E/7ghkrY8QDrrLHpmSPqgc9NTMl+KAgaF/K2BQafBylS18s=</ds:X509Certificate></ds:X509Data></ds:KeyInfo><ds:Object><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="#id-8E453E64BFC7111BB2BF0CF335E7B47D"><xades:SignedProperties Id="xades-id-8E453E64BFC7111BB2BF0CF335E7B47D"><xades:SignedSignatureProperties><xades:SigningTime>2015-06-15T09:20:00Z</xades:SigningTime><xades:SigningCertificate><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>k9C8emzdbdXnkCv8POnIKaaIdN0=</ds:DigestValue></xades:CertDigest><xades:IssuerSerial><ds:X509IssuerName>CN=Adrian Klar,OU=Ref 321,O=IT.NRW,L=Duesseldorf,ST=NRW,C=DE</ds:X509IssuerName><ds:X509SerialNumber>993103307</ds:X509SerialNumber></xades:IssuerSerial></xades:Cert></xades:SigningCertificate></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#xml_ref_id"><xades:MimeType>text/xml</xades:MimeType></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></TrustOkToken>
+    <ds:Signature Id="id-8E453E64BFC7111BB2BF0CF335E7B47D" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <ds:Reference Id="xml_ref_id" URI="">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                    <ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+                        <ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath>
+                    </ds:Transform>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>J/CHDSRWDtlApc92IJZ8Hj8M488=</ds:DigestValue>
+            </ds:Reference>
+            <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
+                          URI="#xades-id-8E453E64BFC7111BB2BF0CF335E7B47D">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>Tla55a+i8pk6j1YtqqzWDdk82Yc=</ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue Id="value-id-8E453E64BFC7111BB2BF0CF335E7B47D">
+            sy7YTJcdxtW6y3VQC64gXl8ZQEMOEV0HunFalRDm25r++XreSsKEV1Odw318FSqQa1SrpLZv66ZE+keCex0SbaeI4WSRwaCmK1MonO2aKUU8z3eM8w5wXNXW1ptaYDDg9TbwKlVjYTHG+J5D6YhRnRIOfNJgmPKxwR0tAQXY936RIbLeM6Zith69GY4qst5ITYK+QssX2/pcl6M13ALgJKaBSG7FPt8AVqfLRKcYkEmeGWhKeSyPCufpfr/DBbfP5I0n3NR1YQKw1TNxbpY4htAzrOFUsfMkgOL1oxZYSY3ImGjUPW8+jrFH+s4WcxgTCcKe/ghL+0HW5qI2ug/Aqw==
+        </ds:SignatureValue>
+        <ds:KeyInfo>
+            <ds:X509Data>
+                <ds:X509Certificate>
+                    MIIDczCCAlugAwIBAgIEOzGNyzANBgkqhkiG9w0BAQsFADBqMQswCQYDVQQGEwJERTEMMAoGA1UECBMDTlJXMRQwEgYDVQQHEwtEdWVzc2VsZG9yZjEPMA0GA1UEChMGSVQuTlJXMRAwDgYDVQQLEwdSZWYgMzIxMRQwEgYDVQQDEwtBZHJpYW4gS2xhcjAeFw0xNDA1MDYxNTM1MzVaFw0xNzA0MjAxNTM1MzVaMGoxCzAJBgNVBAYTAkRFMQwwCgYDVQQIEwNOUlcxFDASBgNVBAcTC0R1ZXNzZWxkb3JmMQ8wDQYDVQQKEwZJVC5OUlcxEDAOBgNVBAsTB1JlZiAzMjExFDASBgNVBAMTC0FkcmlhbiBLbGFyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxgVZV0zCVnLCwH5rJ9YHMW4Gfkuf7KWywNxAJQdrE1nQ6Lr60V6cUO7GMhoOjJfWk4mzj0g1vYSpzMcem1bBigZMv5PmAqZvMjYqqLJg6KaaVPXD4avZNXGeEWvNq/V2M/GGq6+6LvveI6c3hZcrROSfw5fqgvNGLkm9mAXfBJNoSNrE2jlo3D+dGNSaqrQRcNzBi+faGm6vmJx1Tdvul6A563XPDuvCY9S5L7itz7kAG6VPZkdp66GfswU7GvPnD2nDQKVplH6H0cl4Yf+U/3+KzvZKjbvNyIzjKecjiSM1Vy6g9PFgWv7SqZYYJnGDqxX1f4MW2JXwAMsj11CfXQIDAQABoyEwHzAdBgNVHQ4EFgQUnnbfwnupqIYjjvlJlgugTgsdsacwDQYJKoZIhvcNAQELBQADggEBAC9ue6/r3ZPFWBw994U6n1QagvXlmWQ4DiKppPFoTxCi+DPnf5+hgzgyOdf/EIxDf/7sSsg1YifsYjf2YHx6/61Iibr+6L96oVVLmW111CBmOVKKrhq5A06qGIext5FPpxKoxZzU8rDwpEC45kMiyMxyJdH6GQPyjgjvXvhGJB25fo0Ch+q5JzdAB13UUKlewhNniOjo4B1Ww4wD82e1X2XbEwoeYxIKrXC6w5YxIFzDzmfiMUrltQCVLziSBix0MvO7y1BkQ4LAJaUhyaaEd08Nv1FtVx1BBOPzNzd5E/7ghkrY8QDrrLHpmSPqgc9NTMl+KAgaF/K2BQafBylS18s=
+                </ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+        <ds:Object>
+            <xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+                                        Target="#id-8E453E64BFC7111BB2BF0CF335E7B47D">
+                <xades:SignedProperties Id="xades-id-8E453E64BFC7111BB2BF0CF335E7B47D">
+                    <xades:SignedSignatureProperties>
+                        <xades:SigningTime>2015-06-15T09:20:00Z</xades:SigningTime>
+                        <xades:SigningCertificate>
+                            <xades:Cert>
+                                <xades:CertDigest>
+                                    <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                                    <ds:DigestValue>k9C8emzdbdXnkCv8POnIKaaIdN0=</ds:DigestValue>
+                                </xades:CertDigest>
+                                <xades:IssuerSerial>
+                                    <ds:X509IssuerName>CN=Adrian Klar,OU=Ref 321,O=IT.NRW,L=Duesseldorf,ST=NRW,C=DE
+                                    </ds:X509IssuerName>
+                                    <ds:X509SerialNumber>993103307</ds:X509SerialNumber>
+                                </xades:IssuerSerial>
+                            </xades:Cert>
+                        </xades:SigningCertificate>
+                    </xades:SignedSignatureProperties>
+                    <xades:SignedDataObjectProperties>
+                        <xades:DataObjectFormat ObjectReference="#xml_ref_id">
+                            <xades:MimeType>text/xml</xades:MimeType>
+                        </xades:DataObjectFormat>
+                    </xades:SignedDataObjectProperties>
+                </xades:SignedProperties>
+            </xades:QualifyingProperties>
+        </ds:Object>
+    </ds:Signature>
+</TrustOkToken>

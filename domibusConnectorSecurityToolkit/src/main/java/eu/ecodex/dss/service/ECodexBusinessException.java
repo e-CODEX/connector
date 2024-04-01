@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/service/ECodexBusinessException.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/service
+ * /ECodexBusinessException.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -14,27 +15,27 @@ import eu.ecodex.dss.model.checks.CheckResult;
 
 import java.util.List;
 
+
 /**
  * used for non-technical exceptions in order to indicate rule violations.
  * i.e. the token structure's integrity must be good; or if the token issuer has an authentication-based system, then
  * authentication information must be provided.
- * 
+ *
  *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
- * 
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class ECodexBusinessException extends ECodexException {
-    private CheckResult checkResult;
+    private final CheckResult checkResult;
 
     /**
-     * 
      * The default constructor for ECodexBusinessException.
-     * 
-     * @param message The message
+     *
+     * @param message     The message
      * @param checkResult The check result
      */
     public ECodexBusinessException(final String message, final CheckResult checkResult) {
@@ -43,25 +44,8 @@ public class ECodexBusinessException extends ECodexException {
     }
 
     /**
-     * Get check result
-     * 
-     * @return The result
-     */
-    public CheckResult getCheckResult() {
-        return checkResult;
-    }
-
-    /**
-     * Get check result details
-     * 
-     * @return The details
-     */
-    public String getCheckResultDetails() {
-        return createCheckResultDetails(checkResult);
-    }
-
-    /**
      * creates a textual representation of the problems found
+     *
      * @param checkResult the container for the problems
      * @return a text in case the checkResult is not successfull
      */
@@ -93,5 +77,23 @@ public class ECodexBusinessException extends ECodexException {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Get check result
+     *
+     * @return The result
+     */
+    public CheckResult getCheckResult() {
+        return checkResult;
+    }
+
+    /**
+     * Get check result details
+     *
+     * @return The details
+     */
+    public String getCheckResultDetails() {
+        return createCheckResultDetails(checkResult);
     }
 }

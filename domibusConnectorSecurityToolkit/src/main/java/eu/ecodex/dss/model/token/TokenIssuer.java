@@ -18,9 +18,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
+
 /**
  * This class holds the data about the Issuer.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
@@ -29,7 +30,6 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "IssuerType", propOrder = {"serviceProvider", "country", "advancedElectronicSystem"})
 public class TokenIssuer implements Serializable {
-
     @XmlElement(name = "ServiceProvider", required = true)
     protected String serviceProvider;
     @XmlElement(name = "Country", required = true)
@@ -104,5 +104,4 @@ public class TokenIssuer implements Serializable {
                 .append("advancedElectronicSystem", this.advancedElectronicSystem)
                 .toString();
     }
-
 }

@@ -23,28 +23,33 @@ import java.io.ByteArrayOutputStream;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+
 /**
  *
  */
 @Service
 public class OriginalSenderBasedAESAuthenticationServiceFactory implements DCAuthenticationBasedTechnicalValidationServiceFactory {
-
-
     @Override
-    public ECodexTechnicalValidationService createTechnicalValidationService(DomibusConnectorMessage message, DCBusinessDocumentValidationConfigurationProperties.AuthenticationValidationConfigurationProperties config) {
-        DomibusConnectorAESTokenValidationCreator domibusConnectorAESTokenValidationCreator = new DomibusConnectorAESTokenValidationCreator(config.getIdentityProvider());
+    public ECodexTechnicalValidationService createTechnicalValidationService(
+            DomibusConnectorMessage message,
+            DCBusinessDocumentValidationConfigurationProperties.AuthenticationValidationConfigurationProperties config) {
+        DomibusConnectorAESTokenValidationCreator domibusConnectorAESTokenValidationCreator =
+                new DomibusConnectorAESTokenValidationCreator(config.getIdentityProvider());
         return new DomibusConnectorAESTechnicalValidationService(message, domibusConnectorAESTokenValidationCreator);
     }
 
     static class DomibusConnectorAESTechnicalValidationService implements ECodexTechnicalValidationService {
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(DomibusConnectorAESTechnicalValidationService.class);
+        private static final Logger LOGGER =
+                LoggerFactory.getLogger(DomibusConnectorAESTechnicalValidationService.class);
 
         private final DomibusConnectorAESTokenValidationCreator delegate;
 
         private final DomibusConnectorMessage message;
 
-        public DomibusConnectorAESTechnicalValidationService(final DomibusConnectorMessage message, final DomibusConnectorAESTokenValidationCreator delegate) {
+        public DomibusConnectorAESTechnicalValidationService(
+                final DomibusConnectorMessage message,
+                final DomibusConnectorAESTokenValidationCreator delegate) {
             super();
             this.message = message;
             this.delegate = delegate;
@@ -66,9 +71,8 @@ public class OriginalSenderBasedAESAuthenticationServiceFactory implements DCAut
 
         /**
          * {@inheritDoc}
-         *
+         * <p>
          * the report must contain exactly one object of type
-         *
          */
         @Override
         public DSSDocument createReportPDF(final Token token) throws ECodexException {
@@ -130,15 +134,11 @@ public class OriginalSenderBasedAESAuthenticationServiceFactory implements DCAut
                 IOUtils.closeQuietly(pdfStream);
             }
         }
-
-
-
     }
 
     static class DomibusConnectorAESTokenValidationCreator {
-
-        private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(DomibusConnectorAESTokenValidationCreator.class);
-
+        private static final org.apache.logging.log4j.Logger LOGGER =
+                LogManager.getLogger(DomibusConnectorAESTokenValidationCreator.class);
 
         private final String identityProvider;
 
@@ -147,7 +147,6 @@ public class OriginalSenderBasedAESAuthenticationServiceFactory implements DCAut
         }
 
         TokenValidation createTokenValidation(DomibusConnectorMessage message) throws Exception {
-
             TokenValidation tValidation = new TokenValidation();
 
             final TechnicalValidationResult validationResult = new TechnicalValidationResult();
@@ -158,26 +157,26 @@ public class OriginalSenderBasedAESAuthenticationServiceFactory implements DCAut
             tokenAuthentication.setIdentityProvider(identityProvider);
             tokenAuthentication.setUsernameSynonym(message.getMessageDetails().getOriginalSender());
             tokenAuthentication.setTimeOfAuthentication(
-                        DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
+                    DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
 
             validationVerification.setAuthenticationData(tokenAuthentication);
 
             tValidation.setTechnicalResult(validationResult);
             tValidation.setVerificationData(validationVerification);
-            tValidation.setVerificationTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
+            tValidation.setVerificationTime(DatatypeFactory.newInstance()
+                                                           .newXMLGregorianCalendar(new GregorianCalendar()));
 
             try {
                 // passed all the previous checks
                 decide(TechnicalTrustLevel.SUCCESSFUL, "The authentication is valid.", tValidation);
-
             } catch (Exception e) {
                 LOGGER.warn("Exception occured during createTokenValidation", e);
-
                 // Cannot generate the DSS validation report
                 validationResult.setTrustLevel(TechnicalTrustLevel.FAIL);
                 validationResult.setComment("An error occured, while validating the signature via DSS.");
                 LOGGER.warn("b/o encountered exception: result determined to {}: {}", validationResult.getTrustLevel(),
-                        validationResult.getComment());
+                            validationResult.getComment()
+                );
             }
             return tValidation;
         }
@@ -188,6 +187,5 @@ public class OriginalSenderBasedAESAuthenticationServiceFactory implements DCAut
             r.setComment(comments);
             LOGGER.debug("result determined to {}: {}", r.getTrustLevel(), r.getComment());
         }
-
     }
 }

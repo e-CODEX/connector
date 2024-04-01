@@ -6,17 +6,17 @@ import eu.europa.esig.dss.enumerations.MimeType;
 import eu.europa.esig.dss.model.CommonDocument;
 import eu.europa.esig.dss.model.DSSDocument;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 
-public class LargeFileBasedDssDocument extends CommonDocument implements DSSDocument {
 
+public class LargeFileBasedDssDocument extends CommonDocument implements DSSDocument {
     private final LargeFilePersistenceService persistenceService;
     private final LargeFileReference reference;
 
-    public LargeFileBasedDssDocument(LargeFilePersistenceService persistenceService,
-                                     LargeFileReference reference) {
+    public LargeFileBasedDssDocument(
+            LargeFilePersistenceService persistenceService,
+            LargeFileReference reference) {
         this.persistenceService = persistenceService;
         this.reference = reference;
     }
@@ -38,5 +38,4 @@ public class LargeFileBasedDssDocument extends CommonDocument implements DSSDocu
     public String getName() {
         return reference.getName();
     }
-
 }

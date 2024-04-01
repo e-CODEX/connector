@@ -12,17 +12,17 @@ package eu.ecodex.dss.model.token;
 
 public class AuthenticationCertificate {
 
-	protected boolean validationSuccessful;
+    protected boolean validationSuccessful;
 
-	public AuthenticationCertificate() {
-		this.validationSuccessful = false;
-	}
-	
-	public boolean isValidationSuccessful() {
-		return validationSuccessful;
-	}
+    public AuthenticationCertificate() {
+        this.validationSuccessful = false;
+    }
 
-	public void setValidationSuccessful(boolean validationSuccessful) {
-		this.validationSuccessful = validationSuccessful;
-	}
+    public boolean isValidationSuccessful() {
+        return validationSuccessful;
+    }
+
+    public void setValidationSuccessful(boolean validationSuccessful) {
+        this.validationSuccessful = validationSuccessful;
+    }
 }

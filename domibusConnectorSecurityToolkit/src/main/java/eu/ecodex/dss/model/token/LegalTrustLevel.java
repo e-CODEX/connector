@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/LegalTrustLevel.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/LegalTrustLevel
+ * .java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -16,9 +17,10 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
  * This class holds the type of the trust level.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
@@ -27,53 +29,33 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "LegalTrustLevelEnum")
 @XmlEnum
 public enum LegalTrustLevel {
-
-    /** aka GREEN */
-     @XmlEnumValue("SUCCESSFUL")
+    /**
+     * aka GREEN
+     */
+    @XmlEnumValue("SUCCESSFUL")
     SUCCESSFUL("SUCCESSFUL", "Successful"),
-    
+
     @XmlEnumValue("UNDETERMINED")
-     UNDETERMINED("UNDETERMINED", "Undetermined"),
-    
-    /** aka RED */
-     @XmlEnumValue("NOT_SUCCESSFUL")
+    UNDETERMINED("UNDETERMINED", "Undetermined"),
+
+    /**
+     * aka RED
+     */
+    @XmlEnumValue("NOT_SUCCESSFUL")
     NOT_SUCCESSFUL("NOT_SUCCESSFUL", "Not Successful");
-    
+
     private final String value;
     private final String text;
 
     /**
      * constructor
+     *
      * @param value the value "SUCCESSFUL" or "NOT_SUCCESSFUL"
-     * @param text the textual representation "Successful" or "Not Successful"
+     * @param text  the textual representation "Successful" or "Not Successful"
      */
     LegalTrustLevel(final String value, final String text) {
         this.value = value;
         this.text = text;
-    }
-
-    /**
-     * the underlying string value
-     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
-     */
-    public String value() {
-        return getValue();
-    }
-
-    /**
-     * the underlying string value
-     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * the underlying string value
-     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
-     */
-    public String getText() {
-        return text;
     }
 
     /**
@@ -104,30 +86,30 @@ public enum LegalTrustLevel {
      * @return null, if levels are null or empty; otherwise the detected worst level
      */
     public static LegalTrustLevel worst(final LegalTrustLevel... levels) {
-        if ( levels == null || levels.length == 0) {
+        if (levels == null || levels.length == 0) {
             return null;
         }
 
         LegalTrustLevel result = null;
 
-        for ( final LegalTrustLevel level : levels ) {
-            if ( level == null ) {
+        for (final LegalTrustLevel level : levels) {
+            if (level == null) {
                 // ignore null values
                 continue;
             }
-            if ( result == null ) {
+            if (result == null) {
                 // initialise the result
                 result = level;
-            } else if ( isNotSuccessful(level) ) {
+            } else if (isNotSuccessful(level)) {
                 // the worst case
                 result = level;
-            } else if ( isSuccessful(level) ) {
+            } else if (isSuccessful(level)) {
                 // check if can apply the level (that is not overwrite a worse value)
-                if ( !isNotSuccessful(result) ) {
+                if (!isNotSuccessful(result)) {
                     result = level;
                 }
             }
-            if ( isNotSuccessful(result) ) {
+            if (isNotSuccessful(result)) {
                 return result; // this is the worst case, so we can ignore all others
             }
         }
@@ -145,7 +127,7 @@ public enum LegalTrustLevel {
         if (StringUtils.isEmpty(v)) {
             throw new IllegalArgumentException("value must not be empty");
         }
-        for (LegalTrustLevel c: LegalTrustLevel.values()) {
+        for (LegalTrustLevel c : LegalTrustLevel.values()) {
             if (c.value.equals(v)) {
                 return c;
             }
@@ -153,4 +135,30 @@ public enum LegalTrustLevel {
         throw new IllegalArgumentException(v);
     }
 
+    /**
+     * the underlying string value
+     *
+     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
+     */
+    public String value() {
+        return getValue();
+    }
+
+    /**
+     * the underlying string value
+     *
+     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * the underlying string value
+     *
+     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
+     */
+    public String getText() {
+        return text;
+    }
 }

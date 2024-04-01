@@ -11,16 +11,17 @@ import eu.domibus.connector.security.configuration.validation.CheckAllowedAdvanc
 import org.apache.commons.collections4.set.ListOrderedSet;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * This configuration class holds the settings for
@@ -35,7 +36,6 @@ import java.util.stream.Stream;
 @CheckAllowedAdvancedElectronicSystemType
 @MapNested
 public class DCBusinessDocumentValidationConfigurationProperties {
-
     public static final String PREFIX = "connector.business-document-sent";
 
     /**
@@ -43,55 +43,51 @@ public class DCBusinessDocumentValidationConfigurationProperties {
      */
     @NotBlank
     String country = "";
-
     /**
      * Name of the service provider which is operating the
      * connector
      */
     @NotBlank
     String serviceProvider = "";
-
     /**
      * The default AdvancedSystemType which should be used
      * <ul>
      *     <li>SIGNATURE_BASED</li>
      *     <li>AUTHENTICATION_BASED</li>
      * </ul>
-     *
+     * <p>
      * For SIGNATURE_BASED the signatureValidation properties must be configured
      * For AUTHENTICATION_BASED the
-     *
      */
     @NotNull
     private AdvancedElectronicSystemType defaultAdvancedSystemType;
-
     /**
      * Provides a list of the allowed SystemTypes
-     *  only a allowed system type can be 5
+     * only a allowed system type can be 5
      */
     @NotNull
     @UseConverter
-    private ListOrderedSet<AdvancedElectronicSystemType> allowedAdvancedSystemTypes = ListOrderedSet.listOrderedSet(Arrays.asList(AdvancedElectronicSystemType.values()));
+    private ListOrderedSet<AdvancedElectronicSystemType> allowedAdvancedSystemTypes =
+            ListOrderedSet.listOrderedSet(Arrays.asList(AdvancedElectronicSystemType.values()));
 
     /**
-     *  If true the client can override the for the specific message used system type
-     *   the system type must be within the list of allowedAdvancedSystemTypes
+     * If true the client can override the for the specific message used system type
+     * the system type must be within the list of allowedAdvancedSystemTypes
      */
     private boolean allowSystemTypeOverrideByClient = true;
-
     /**
      * Configuration for signature validation,
-     *  used when the advancedSystemType is SIGNATURE_BASED
+     * used when the advancedSystemType is SIGNATURE_BASED
      */
     @Valid
     @NestedConfigurationProperty
     @MapNested
     private SignatureValidationConfigurationProperties signatureValidation;
-
     @Valid
     @NestedConfigurationProperty
     @MapNested
-    private DCBusinessDocumentValidationConfigurationProperties.AuthenticationValidationConfigurationProperties authenticationValidation;
+    private DCBusinessDocumentValidationConfigurationProperties.AuthenticationValidationConfigurationProperties
+            authenticationValidation;
 
     public Set<AdvancedElectronicSystemType> getAllowedAdvancedSystemTypes() {
         return allowedAdvancedSystemTypes;
@@ -152,15 +148,14 @@ public class DCBusinessDocumentValidationConfigurationProperties {
     public static class AuthenticationValidationConfigurationProperties {
         /**
          * If the AUTHENTICATION_BASED is used, the identity provider must be set
-         *  the identity provider is the system which has authenticated the user
+         * the identity provider is the system which has authenticated the user
          */
         @NotBlank
         private String identityProvider;
-
         @NotNull
         @UseConverter
-        private Class<? extends DCAuthenticationBasedTechnicalValidationServiceFactory> authenticatorServiceFactoryClass = OriginalSenderBasedAESAuthenticationServiceFactory.class;
-
+        private Class<? extends DCAuthenticationBasedTechnicalValidationServiceFactory>
+                authenticatorServiceFactoryClass = OriginalSenderBasedAESAuthenticationServiceFactory.class;
         @NotNull
         private Map<String, String> properties = new HashMap<>();
 
@@ -176,7 +171,9 @@ public class DCBusinessDocumentValidationConfigurationProperties {
             return authenticatorServiceFactoryClass;
         }
 
-        public void setAuthenticatorServiceFactoryClass(Class<? extends DCAuthenticationBasedTechnicalValidationServiceFactory> authenticatorServiceFactoryClass) {
+        public void setAuthenticatorServiceFactoryClass(
+                Class<?
+                        extends DCAuthenticationBasedTechnicalValidationServiceFactory> authenticatorServiceFactoryClass) {
             this.authenticatorServiceFactoryClass = authenticatorServiceFactoryClass;
         }
 

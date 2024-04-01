@@ -2,41 +2,28 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/util/PDFGeneratorTechnicalSummary.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/util
+ * /PDFGeneratorTechnicalSummary.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
 package eu.ecodex.dss.util;
 
-import java.io.ByteArrayOutputStream;
-import java.util.List;
-
-import eu.europa.esig.dss.enumerations.MimeType;
-import eu.europa.esig.dss.enumerations.MimeTypeEnum;
-import eu.europa.esig.dss.model.DSSDocument;
-import org.apache.commons.io.IOUtils;
-
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
+import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-
-import eu.ecodex.dss.model.token.AdvancedSystemType;
-import eu.ecodex.dss.model.token.Signature;
-import eu.ecodex.dss.model.token.SignatureAttributes;
-import eu.ecodex.dss.model.token.SignatureCertificate;
-import eu.ecodex.dss.model.token.TechnicalTrustLevel;
-import eu.ecodex.dss.model.token.Token;
-import eu.ecodex.dss.model.token.TokenValidation;
-import eu.ecodex.dss.model.token.ValidationVerification;
-
+import eu.ecodex.dss.model.token.*;
+import eu.europa.esig.dss.enumerations.MimeTypeEnum;
+import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
+import org.apache.commons.io.IOUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+
 
 /**
  * This creates the technical summary page of the trustoktoken
@@ -48,7 +35,6 @@ import eu.europa.esig.dss.model.InMemoryDocument;
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
-
     private static final String STATE_SUCCESS = "Successful";
     private static final String STATE_FAIL = "Fail";
 
@@ -64,14 +50,11 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
      */
     @Override
     public DSSDocument generate(final Token token) throws DocumentException {
-
         // Result
-
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final com.lowagie.text.Document document = new com.lowagie.text.Document();
 
         try {
-
             final PdfWriter writer = PdfWriter.getInstance(document, output);
             writer.setPdfVersion(PdfWriter.PDF_VERSION_1_4);
 
@@ -80,80 +63,77 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
             addPageHeader(document, token);
             addTitle(document);
             addGeneral(document, token);
-            
-            final AdvancedSystemType systemType = token.getAdvancedElectronicSystem();
-        	final TokenValidation validation = token.getValidation();
-        	final ValidationVerification valVeri = (validation != null) ? validation.getVerificationData() : null;
-        	final List<Signature> signatureList = (valVeri != null) ? valVeri.getSignatureData() : null;
-        	
-            if (systemType == AdvancedSystemType.AUTHENTICATION_BASED) {
-            	if(signatureList != null && 
-            			!signatureList.isEmpty() &&
-            			signatureList.get(0).getCertificateInformation() != null &&
-            			signatureList.get(0).getSignatureInformation() != null &&
-            			signatureList.get(0).getSigningTime() != null &&
-            			signatureList.get(0).getTechnicalResult() != null) {
-            		
-               		for (int sigCounter = 0; sigCounter < signatureList.size(); sigCounter++)
-            		{
-            			Signature signature = signatureList.get(sigCounter);
-            			
-            			if(sigCounter > 0) {
-            				document.newPage();
-            				
-            	            addPageHeader(document, token);
-            	            addTitle(document);
-            	            addGeneral(document, token);
-            			}
-            			
-            			addSignatureNumber(document, sigCounter + 1, signatureList.size());
-    	                addSignatureResults(document, signature);
-    	                addSignatureCertificate(document, signature);
-    	                addResult(document, signature);
-    	                addStamp(document, signature.getTechnicalResult().getTrustLevel());
-					}
-            	} else {
-            		addAuthenticationResults(document, token);
-            		addResult(document, token);
-            		addStamp(document, token.getTechnicalValidationResultTrustLevel());
-            	}
-            	
-            } else {
-            	
-            	if(signatureList != null && !signatureList.isEmpty()) {
-            		for (int sigCounter = 0; sigCounter < signatureList.size(); sigCounter++)
-            		{
-            			Signature signature = signatureList.get(sigCounter);
-            			
-            			if(sigCounter > 0) {
-            				document.newPage();
-            				
-            	            addPageHeader(document, token);
-            	            addTitle(document);
-            	            addGeneral(document, token);
-            			}
-            			
-            			addSignatureNumber(document, sigCounter + 1, signatureList.size());
-            			
-    	                addSignatureResults(document, signature);
-    	                addSignatureCertificate(document, signature);
-    	                
-            			// AK: For Backwardcompatibility with existing, national systems.
-            			if(signatureList.size() == 1 &&
-            					(signature.getTechnicalResult() == null || signature.getTechnicalResult().getTrustLevel() == null)) {
-            				addResult(document, token);
-            				addStamp(document, token.getTechnicalValidationResultTrustLevel());
-            			} else {
-        	                addResult(document, signature);
-        	                addStamp(document, signature.getTechnicalResult().getTrustLevel());            				
-            			}
-					}
-            	}else{
-            		addResult(document, token);
-            		addStamp(document, token.getTechnicalValidationResultTrustLevel());
-            	}
-            }
 
+            final AdvancedSystemType systemType = token.getAdvancedElectronicSystem();
+            final TokenValidation validation = token.getValidation();
+            final ValidationVerification valVeri = (validation != null) ? validation.getVerificationData() : null;
+            final List<Signature> signatureList = (valVeri != null) ? valVeri.getSignatureData() : null;
+
+            if (systemType == AdvancedSystemType.AUTHENTICATION_BASED) {
+                if (signatureList != null &&
+                        !signatureList.isEmpty() &&
+                        signatureList.get(0).getCertificateInformation() != null &&
+                        signatureList.get(0).getSignatureInformation() != null &&
+                        signatureList.get(0).getSigningTime() != null &&
+                        signatureList.get(0).getTechnicalResult() != null) {
+
+                    for (int sigCounter = 0; sigCounter < signatureList.size(); sigCounter++) {
+                        Signature signature = signatureList.get(sigCounter);
+
+                        if (sigCounter > 0) {
+                            document.newPage();
+
+                            addPageHeader(document, token);
+                            addTitle(document);
+                            addGeneral(document, token);
+                        }
+
+                        addSignatureNumber(document, sigCounter + 1, signatureList.size());
+                        addSignatureResults(document, signature);
+                        addSignatureCertificate(document, signature);
+                        addResult(document, signature);
+                        addStamp(document, signature.getTechnicalResult().getTrustLevel());
+                    }
+                } else {
+                    addAuthenticationResults(document, token);
+                    addResult(document, token);
+                    addStamp(document, token.getTechnicalValidationResultTrustLevel());
+                }
+            } else {
+
+                if (signatureList != null && !signatureList.isEmpty()) {
+                    for (int sigCounter = 0; sigCounter < signatureList.size(); sigCounter++) {
+                        Signature signature = signatureList.get(sigCounter);
+
+                        if (sigCounter > 0) {
+                            document.newPage();
+
+                            addPageHeader(document, token);
+                            addTitle(document);
+                            addGeneral(document, token);
+                        }
+
+                        addSignatureNumber(document, sigCounter + 1, signatureList.size());
+
+                        addSignatureResults(document, signature);
+                        addSignatureCertificate(document, signature);
+
+                        // AK: For Backwardcompatibility with existing, national systems.
+                        if (signatureList.size() == 1 &&
+                                (signature.getTechnicalResult() == null || signature.getTechnicalResult()
+                                                                                    .getTrustLevel() == null)) {
+                            addResult(document, token);
+                            addStamp(document, token.getTechnicalValidationResultTrustLevel());
+                        } else {
+                            addResult(document, signature);
+                            addStamp(document, signature.getTechnicalResult().getTrustLevel());
+                        }
+                    }
+                } else {
+                    addResult(document, token);
+                    addStamp(document, token.getTechnicalValidationResultTrustLevel());
+                }
+            }
         } finally {
             if (document.isOpen()) {
                 document.close();
@@ -162,7 +142,6 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         }
 
         return new InMemoryDocument(output.toByteArray(), "token-summary-technical.pdf", MimeTypeEnum.PDF);
-
     }
 
     private void addTitle(final com.lowagie.text.Document document) throws DocumentException {
@@ -173,16 +152,18 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         document.add(paragraph);
     }
 
-    private void addSignatureNumber(final com.lowagie.text.Document document, int curNumber, int maxNumber) throws DocumentException {
+    private void addSignatureNumber(
+            final com.lowagie.text.Document document,
+            int curNumber,
+            int maxNumber) throws DocumentException {
         // Title
         Paragraph paragraph = new Paragraph("Signature " + curNumber + " of " + maxNumber, FONT_H4);
         paragraph.setAlignment(Element.ALIGN_CENTER);
         paragraph.setSpacingAfter(30);
         document.add(paragraph);
     }
-    
-    private void addGeneral(final com.lowagie.text.Document document, final Token token) throws DocumentException {
 
+    private void addGeneral(final com.lowagie.text.Document document, final Token token) throws DocumentException {
         // get data from structure
         final String country = PDFUtil.format(token.getIssuerCountry());
         final String advancedElectronicSystem = PDFUtil.format(token.getAdvancedElectronicSystemText());
@@ -233,8 +214,9 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         document.add(table);
     }
 
-    private void addAuthenticationResults(final com.lowagie.text.Document document, final Token token) throws DocumentException {
-
+    private void addAuthenticationResults(
+            final com.lowagie.text.Document document,
+            final Token token) throws DocumentException {
         // get data from structure
         final String authProvider = PDFUtil.format(token.getValidationVerificationAuthenticationProvider());
         final String authUser = PDFUtil.format(token.getValidationVerificationAuthenticationUsername());
@@ -277,9 +259,10 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         document.add(table);
     }
 
-    private void addSignatureResults(final com.lowagie.text.Document document, final Signature signature) throws DocumentException {
-
-    	// create the pdf
+    private void addSignatureResults(
+            final com.lowagie.text.Document document,
+            final Signature signature) throws DocumentException {
+        // create the pdf
         final PdfPTable table = new PdfPTable(2);
         table.setSpacingAfter(20);
 
@@ -290,62 +273,68 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
 
         table.addCell(captionCell);
 
-    	SignatureAttributes signatureAttributes = signature.getSignatureInformation();
-        
-    	if(signatureAttributes != null) {
-	    	// get data from structure
-	        final String signingTime = PDFUtil.format(signature.getSigningTime());
-	        final String structureVerification = signatureAttributes.isStructureValid() ? STATE_SUCCESS : STATE_FAIL;
-	        final String signatureVerification = signatureAttributes.isSignatureValid() ? STATE_SUCCESS : STATE_FAIL;
-	        final String signatureLevel = PDFUtil.format(signatureAttributes.getSignatureLevel());
+        SignatureAttributes signatureAttributes = signature.getSignatureInformation();
 
-	        final PdfPCell leftCell = new PdfPCell();
-	        leftCell.setBorder(Rectangle.NO_BORDER);
-	        leftCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-	
-	        final PdfPCell rightCell = new PdfPCell();
-	        rightCell.setBorder(Rectangle.NO_BORDER);
-	        rightCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-	
-	        leftCell.setPhrase(new Paragraph("Signing Time", FONT_TEXT));
-	        rightCell.setPhrase(new Paragraph(signingTime, FONT_TEXT));
-	        table.addCell(leftCell);
-	        table.addCell(rightCell);
-	
-	        leftCell.setPhrase(new Paragraph("Structure Verification", FONT_TEXT));
-	        rightCell.setPhrase(new Paragraph(structureVerification, FONT_TEXT));
-	        table.addCell(leftCell);
-	        table.addCell(rightCell);
-	
-	        leftCell.setPhrase(new Paragraph("Signature Verification", FONT_TEXT));
-	        rightCell.setPhrase(new Paragraph(signatureVerification, FONT_TEXT));
-	        table.addCell(leftCell);
-	        table.addCell(rightCell);
-	
-	        leftCell.setPhrase(new Paragraph("Signature Level", FONT_TEXT));
-	        rightCell.setPhrase(new Paragraph(signatureLevel, FONT_TEXT));
-	        table.addCell(leftCell);
-	        table.addCell(rightCell);
-    	} else {
-    		// Just in case. Should never happen as the token structure is invalid when the signature attributes are missing.
-            captionCell.setPhrase(new Paragraph("Signature Attributes missing. No signature information available!", FONT_TEXT));
+        if (signatureAttributes != null) {
+            // get data from structure
+            final String signingTime = PDFUtil.format(signature.getSigningTime());
+            final String structureVerification = signatureAttributes.isStructureValid() ? STATE_SUCCESS : STATE_FAIL;
+            final String signatureVerification = signatureAttributes.isSignatureValid() ? STATE_SUCCESS : STATE_FAIL;
+            final String signatureLevel = PDFUtil.format(signatureAttributes.getSignatureLevel());
+
+            final PdfPCell leftCell = new PdfPCell();
+            leftCell.setBorder(Rectangle.NO_BORDER);
+            leftCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+
+            final PdfPCell rightCell = new PdfPCell();
+            rightCell.setBorder(Rectangle.NO_BORDER);
+            rightCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+
+            leftCell.setPhrase(new Paragraph("Signing Time", FONT_TEXT));
+            rightCell.setPhrase(new Paragraph(signingTime, FONT_TEXT));
+            table.addCell(leftCell);
+            table.addCell(rightCell);
+
+            leftCell.setPhrase(new Paragraph("Structure Verification", FONT_TEXT));
+            rightCell.setPhrase(new Paragraph(structureVerification, FONT_TEXT));
+            table.addCell(leftCell);
+            table.addCell(rightCell);
+
+            leftCell.setPhrase(new Paragraph("Signature Verification", FONT_TEXT));
+            rightCell.setPhrase(new Paragraph(signatureVerification, FONT_TEXT));
+            table.addCell(leftCell);
+            table.addCell(rightCell);
+
+            leftCell.setPhrase(new Paragraph("Signature Level", FONT_TEXT));
+            rightCell.setPhrase(new Paragraph(signatureLevel, FONT_TEXT));
+            table.addCell(leftCell);
+            table.addCell(rightCell);
+        } else {
+            // Just in case. Should never happen as the token structure is invalid when the signature attributes are
+            // missing.
+            captionCell.setPhrase(new Paragraph(
+                    "Signature Attributes missing. No signature information available!",
+                    FONT_TEXT
+            ));
             captionCell.setHorizontalAlignment(PdfCell.ALIGN_CENTER);
 
             table.addCell(captionCell);
-    	}
+        }
         document.add(table);
     }
 
-    private void addSignatureCertificate(final com.lowagie.text.Document document, final Signature signature) throws DocumentException {
+    private void addSignatureCertificate(
+            final com.lowagie.text.Document document,
+            final Signature signature) throws DocumentException {
 
-    	SignatureCertificate sigCert = (signature != null) ? signature.getCertificateInformation() : null;
-    	
-    	if(sigCert == null){
-    		return;
-    	}
-    	
+        SignatureCertificate sigCert = (signature != null) ? signature.getCertificateInformation() : null;
+
+        if (sigCert == null) {
+            return;
+        }
+
         // get data from structure
-    	final String certificateOwner = PDFUtil.format(sigCert.getSubject());
+        final String certificateOwner = PDFUtil.format(sigCert.getSubject());
         final String certificateIssuer = PDFUtil.format(sigCert.getIssuer());
         final String certificateVerification = sigCert.isCertificateValid() ? STATE_SUCCESS : STATE_FAIL;
         final String validityAtSigningTime = sigCert.isValidityAtSigningTime() ? STATE_SUCCESS : STATE_FAIL;
@@ -373,7 +362,7 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         rightCell.setPhrase(new Paragraph(certificateOwner, FONT_TEXT));
         table.addCell(leftCell);
         table.addCell(rightCell);
-        
+
         leftCell.setPhrase(new Paragraph("Issuer", FONT_TEXT));
         rightCell.setPhrase(new Paragraph(certificateIssuer, FONT_TEXT));
         table.addCell(leftCell);
@@ -392,12 +381,16 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         document.add(table);
     }
 
-    private void addResult(final com.lowagie.text.Document document, final Signature signature) throws DocumentException {
+    private void addResult(
+            final com.lowagie.text.Document document,
+            final Signature signature) throws DocumentException {
 
         // get data from structure
         final TechnicalTrustLevel trustLevel = signature.getTechnicalResult().getTrustLevel();
         final String validationResult = PDFUtil.format(trustLevel == null ? null : trustLevel.getText());
-        final String comment = PDFUtil.format(signature.getTechnicalResult().getComment() == null ? "" : signature.getTechnicalResult().getComment());
+        final String comment = PDFUtil.format(
+                signature.getTechnicalResult().getComment() == null ? "" : signature.getTechnicalResult().getComment()
+        );
 
         // create the pdf
         final PdfPTable table = new PdfPTable(2);
@@ -427,10 +420,10 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         rightCell.setPhrase(new Paragraph(comment, FONT_TEXT));
         table.addCell(leftCell);
         table.addCell(rightCell);
-        
+
         document.add(table);
     }
-    
+
     private void addResult(final com.lowagie.text.Document document, final Token token) throws DocumentException {
 
         // get data from structure
@@ -464,10 +457,12 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         TokenValidation validation = token.getValidation();
         ValidationVerification verification = (validation != null) ? validation.getVerificationData() : null;
         List<Signature> signatures = (verification != null) ? verification.getSignatureData() : null;
-        
-        if (signatures == null || signatures.isEmpty()) {
 
-        	final String comment = PDFUtil.format(validation.getTechnicalResult().getComment() == null ? "Unable to find signatures" : validation.getTechnicalResult().getComment());
+        if (signatures == null || signatures.isEmpty()) {
+            final String comment = PDFUtil.format(
+                    validation.getTechnicalResult().getComment() == null
+                            ? "Unable to find signatures" : validation.getTechnicalResult().getComment()
+            );
 
             leftCell.setPhrase(new Paragraph("Comment", FONT_TEXT));
             rightCell.setPhrase(new Paragraph(comment, FONT_TEXT));
@@ -478,7 +473,9 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
         document.add(table);
     }
 
-    private void addStamp(final com.lowagie.text.Document document, final TechnicalTrustLevel trustLevel) throws DocumentException {
+    private void addStamp(
+            final com.lowagie.text.Document document,
+            final TechnicalTrustLevel trustLevel) throws DocumentException {
         // get data from structure
         Image resultImg = IMG_TECHNICAL_FAIL;
         if (trustLevel == TechnicalTrustLevel.SUCCESSFUL) {
@@ -508,5 +505,4 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
 
         document.add(table);
     }
-
 }

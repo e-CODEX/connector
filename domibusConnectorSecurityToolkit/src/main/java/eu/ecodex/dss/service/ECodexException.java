@@ -19,7 +19,6 @@ package eu.ecodex.dss.service;
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class ECodexException extends Exception {
-
     /**
      * see {@link RuntimeException#RuntimeException()}
      */
@@ -28,6 +27,7 @@ public class ECodexException extends Exception {
 
     /**
      * see {@link RuntimeException#RuntimeException(String)}
+     *
      * @param message textual information
      */
     public ECodexException(final String message) {
@@ -36,6 +36,7 @@ public class ECodexException extends Exception {
 
     /**
      * see {@link RuntimeException#RuntimeException(Throwable)}
+     *
      * @param cause the parent cause
      */
     public ECodexException(final Throwable cause) {
@@ -44,8 +45,9 @@ public class ECodexException extends Exception {
 
     /**
      * see {@link RuntimeException#RuntimeException(String, Throwable)}
+     *
      * @param message textual information
-     * @param cause the parent cause
+     * @param cause   the parent cause
      */
     public ECodexException(final String message, final Throwable cause) {
         super(message, cause);
@@ -53,12 +55,13 @@ public class ECodexException extends Exception {
 
     /**
      * wraps a non-ecodexexception
+     *
      * @param e the catched exception
      * @return the wrapped (or not-wrapped) exception
      */
     public static ECodexException wrap(final Exception e) {
         if (e instanceof ECodexException) {
-            return (ECodexException)e;
+            return (ECodexException) e;
         } else {
             return new ECodexException(e);
         }

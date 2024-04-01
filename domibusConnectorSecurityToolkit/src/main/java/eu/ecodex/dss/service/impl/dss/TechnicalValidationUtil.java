@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/service/impl/dss/TechnicalValidationUtil.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/service/impl/dss
+ * /TechnicalValidationUtil.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -42,341 +43,355 @@ import java.util.Optional;
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 class TechnicalValidationUtil {
+    /**
+     * Get the signing time (via the {@link AdvancedSignature}).
+     *
+     * @param diagnosticData See {@link DiagnosticData}
+     * @param signatureId    signature id
+     * @return a {@link javax.xml.datatype.XMLGregorianCalendar}
+     * @throws javax.xml.datatype.DatatypeConfigurationException as of the underlying {@link DatatypeFactory}
+     */
+    public static XMLGregorianCalendar getSigningTime(
+            final DiagnosticData diagnosticData,
+            final String signatureId) throws DatatypeConfigurationException {
 
-	/**
-	 * Get the signing time (via the {@link AdvancedSignature}).
-	 *
-	 * @param diagnosticData See {@link DiagnosticData}
-	 * @param signatureId    signature id
-	 * @return a {@link javax.xml.datatype.XMLGregorianCalendar}
-	 * @throws javax.xml.datatype.DatatypeConfigurationException as of the underlying {@link DatatypeFactory}
-	 */
-	public static XMLGregorianCalendar getSigningTime(final DiagnosticData diagnosticData, final String signatureId) throws DatatypeConfigurationException {
+        if (diagnosticData == null) {
+            return null;
+        }
+        final Date signatureDate = diagnosticData.getSignatureDate(signatureId);
+        if (signatureDate == null) {
+            return null;
+        }
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(signatureDate);
+        return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
+    }
 
-		if (diagnosticData == null) {
-			return null;
-		}
-		final Date signatureDate = diagnosticData.getSignatureDate(signatureId);
-		if (signatureDate == null) {
-			return null;
-		}
-		final GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTime(signatureDate);
-		return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
-	}
+    public static XMLGregorianCalendar getSigningTime(
+            final AdvancedSignature signature,
+            final String signatureId) throws DatatypeConfigurationException {
 
-	public static XMLGregorianCalendar getSigningTime(final AdvancedSignature signature, final String signatureId) throws DatatypeConfigurationException {
+        if (signature == null) {
+            return null;
+        }
+        final Date signatureDate = signature.getSigningTime();
+        if (signatureDate == null) {
+            return null;
+        }
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(signatureDate);
+        return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
+    }
 
-		if (signature == null) {
-			return null;
-		}
-		final Date signatureDate = signature.getSigningTime();
-		if (signatureDate == null) {
-			return null;
-		}
-		final GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTime(signatureDate);
-		return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
-	}
+    /**
+     * Get the signing certificate token (via the {@link AdvancedSignature}).
+     *
+     * @param signature the signature level analysis
+     * @return The signing certificate token
+     */
+    public static CertificateToken getSigningCertificateToken(final AdvancedSignature signature) {
+        if (signature == null) {
+            return null;
+        }
+        final CertificateToken certificateToken = signature.getSigningCertificateToken();
+        return certificateToken;
+    }
 
-	/**
-	 * Get the signing certificate token (via the {@link AdvancedSignature}).
-	 *
-	 * @param signature the signature level analysis
-	 * @return The signing certificate token
-	 */
-	public static CertificateToken getSigningCertificateToken(final AdvancedSignature signature) {
+    public static CertificateToken getCertificateToken(final AdvancedSignature signature, String certificateId) {
+        if (signature == null) {
+            return null;
+        }
 
-		if (signature == null) {
-			return null;
-		}
-		final CertificateToken certificateToken = signature.getSigningCertificateToken();
-		return certificateToken;
-	}
+        CertificateToken certificateToken = null;
+        List<CertificateToken> certificateList = signature.getCertificates();
 
-	public static CertificateToken getCertificateToken(final AdvancedSignature signature, String certificateId) {
+        for (CertificateToken certificate : certificateList) {
+            if (certificate.getDSSId().asXmlId().equals(certificateId)) {
+                certificateToken = certificate;
+                break;
+            }
+        }
 
-		if (signature == null) {
-			return null;
-		}
+        return certificateToken;
+    }
 
-		CertificateToken certificateToken = null;
-		List<CertificateToken> certificateList = signature.getCertificates();
+    /**
+     * Get the signing certificate (via the {@link AdvancedSignature}).
+     *
+     * @param certificateToken the certificateToken level analysis
+     * @return The signing certificate
+     */
+    public static X509Certificate getCertificate(final CertificateToken certificateToken) {
+        if (certificateToken == null) {
+            return null;
+        }
+        return certificateToken.getCertificate();
+    }
 
-		for (CertificateToken certificate : certificateList) {
-			if(certificate.getDSSId().asXmlId().equals(certificateId)){
-				certificateToken = certificate;
-				break;
-			}
-		}
+    public static CertificateWrapper getCertificateWrapper(
+            List<CertificateWrapper> usedCertificates,
+            String issuerName) {
 
-		return certificateToken;
-	}
+        if (usedCertificates == null || issuerName == null || issuerName.equals("")) {
+            return null;
+        }
 
-	/**
-	 * Get the signing certificate (via the {@link AdvancedSignature}).
-	 *
-	 * @param certificateToken the certificateToken level analysis
-	 * @return The signing certificate
-	 */
-	public static X509Certificate getCertificate(final CertificateToken certificateToken) {
+        for (CertificateWrapper certificateWrapper : usedCertificates) {
+            certificateWrapper.getCertificateDN().equals(issuerName);
+            return certificateWrapper;
+        }
 
-		if (certificateToken == null) {
-			return null;
-		}
-		return certificateToken.getCertificate();
-	}
+        return null;
+    }
 
-	public static CertificateWrapper getCertificateWrapper(List<CertificateWrapper> usedCertificates, String issuerName) {
+    /**
+     * Gets the issuer certificate of the signing certificate: via subjectDN == issuerDN
+     *
+     * @param certificateToken the certificate token
+     * @return The issuer certificate
+     */
+    public static CertificateToken getIssuerCertificateToken(final CertificateToken certificateToken) {
+        if (certificateToken == null) {
+            return null;
+        }
+        if (certificateToken.isSelfSigned()) {
+            return certificateToken;
+        }
 
-		if (usedCertificates == null || issuerName == null || issuerName.equals("")) {
-			return null;
-		}
+        final CertificateToken issuerCertificateToken = new CertificateToken(getIssuerCertificate(certificateToken));
 
-		for (CertificateWrapper certificateWrapper : usedCertificates) {
-			certificateWrapper.getCertificateDN().equals(issuerName);
-			return certificateWrapper;
-		}
+        return issuerCertificateToken;
+    }
 
-		return null;
-	}
+    /**
+     * Gets the issuer certificate of the signing certificate: via subjectDN == issuerDN
+     *
+     * @param certificateToken the certificate token
+     * @return The issuer certificate
+     */
+    public static X509Certificate getIssuerCertificate(final CertificateToken certificateToken) {
+        final CertificateToken issuerCertificateToken = getIssuerCertificateToken(certificateToken);
+        if (issuerCertificateToken == null) {
+            return null;
+        }
+        final X509Certificate issuerCertificate = issuerCertificateToken.getCertificate();
+        return issuerCertificate;
+    }
 
-	/**
-	 * Gets the issuer certificate of the signing certificate: via subjectDN == issuerDN
-	 *
-	 * @param certificateToken the certificate token
-	 * @return The issuer certificate
-	 */
-	public static CertificateToken getIssuerCertificateToken(final CertificateToken certificateToken) {
+    /**
+     * Get the issuer name from the signing certificate.
+     *
+     * @param certificate the signature level analysis
+     * @return The signing certificate
+     */
+    public static String getSigningCertificateIssuerName(final X509Certificate certificate) {
+        return (certificate == null) ? null : certificate.getIssuerX500Principal().getName(X500Principal.RFC1779);
+    }
 
-		if (certificateToken == null) {
-			return null;
-		}
-		if (certificateToken.isSelfSigned()) {
-			return certificateToken;
-		}
+    /**
+     * Get the subject name from the signing certificate.
+     *
+     * @param certificate the signature level analysis
+     * @return The signing certificate
+     */
+    public static String getSigningCertificateSubjectName(final X509Certificate certificate) {
+        return (certificate == null) ? null : certificate.getSubjectX500Principal().getName(X500Principal.RFC1779);
+    }
 
-		final CertificateToken issuerCertificateToken = new CertificateToken(getIssuerCertificate(certificateToken));
+    /**
+     * get the signature format and level (e.g. PAdES-LTV)
+     *
+     * @param simpleReport The {@link SimpleReport}
+     * @param signatureId  signature id
+     * @return the format (if present) concatenated with "-" and the level (if present)
+     */
+    @Deprecated // use getSignatureFormatLvl instead!
+    public static String getSignatureFormatLevelAsString(final SimpleReport simpleReport, final String signatureId) {
+        return getSignatureFormatLevel(simpleReport, signatureId)
+                .map(SignatureLevel::toString)
+                .orElse(null);
+    }
 
-		return issuerCertificateToken;
-	}
+    public static Optional<SignatureLevel> getSignatureFormatLevel(
+            final SimpleReport simpleReport,
+            final String signatureId) {
+        if (simpleReport == null) {
+            return Optional.empty();
+        }
+        final SignatureLevel format = simpleReport.getSignatureFormat(signatureId);
+        return Optional.ofNullable(format);
+    }
 
-	/**
-	 * Gets the issuer certificate of the signing certificate: via subjectDN == issuerDN
-	 *
-	 * @param certificateToken the certificate token
-	 * @return The issuer certificate
-	 */
-	public static X509Certificate getIssuerCertificate(final CertificateToken certificateToken) {
+    /**
+     * Get the signature level. If the signature information are incomplete , it return by default UNDETERMINED.
+     *
+     * @param simpleReport The {@link SimpleReport}
+     * @param signatureId  signature id
+     * @return The result
+     */
+    public static SignatureQualification getSignatureConclusion(
+            final SimpleReport simpleReport,
+            final String signatureId) {
 
-		final CertificateToken issuerCertificateToken = getIssuerCertificateToken(certificateToken);
-		if (issuerCertificateToken == null) {
-			return null;
-		}
-		final X509Certificate issuerCertificate = issuerCertificateToken.getCertificate();
-		return issuerCertificate;
-	}
+        if (simpleReport == null) {
+            return SignatureQualification.NA;
+        }
 
-	/**
-	 * Get the issuer name from the signing certificate.
-	 *
-	 * @param certificate the signature level analysis
-	 * @return The signing certificate
-	 */
-	public static String getSigningCertificateIssuerName(final X509Certificate certificate) {
-		return (certificate == null) ? null : certificate.getIssuerX500Principal().getName(X500Principal.RFC1779);
-	}
+        return simpleReport.getSignatureQualification(signatureId);
+    }
 
-	/**
-	 * Get the subject name from the signing certificate.
-	 *
-	 * @param certificate the signature level analysis
-	 * @return The signing certificate
-	 */
-	public static String getSigningCertificateSubjectName(final X509Certificate certificate) {
-		return (certificate == null) ? null : certificate.getSubjectX500Principal().getName(X500Principal.RFC1779);
-	}
+    /**
+     * Check if the signature is mathematically correct.
+     *
+     * @param simpleReport The {@link SimpleReport}
+     * @param signatureId  signature id
+     * @return The result
+     */
+    public static boolean checkSignatureCorrectness(final SimpleReport simpleReport, final String signatureId) {
+        if (simpleReport == null) {
+            return false;
+        }
+        final boolean result = simpleReport.isValid(signatureId);
+        return result;
+    }
 
-	/**
-	 * get the signature format and level (e.g. PAdES-LTV)
-	 *
-	 * @param simpleReport The {@link SimpleReport}
-	 * @param signatureId  signature id
-	 * @return the format (if present) concatenated with "-" and the level (if present)
-	 */
-	@Deprecated //use getSignatureFormatLvl instead!
-	public static String getSignatureFormatLevelAsString(final SimpleReport simpleReport, final String signatureId) {
-		return getSignatureFormatLevel(simpleReport, signatureId)
-				.map(SignatureLevel::toString)
-				.orElse(null);
-	}
+    /**
+     * Search the signing certificate in the Certificate path revocation analysis, compare the two's certificates and
+     * check if the status is valid.
+     *
+     * @param certificateToken The {@link CertificateToken}
+     * @return The result (a {@link TechnicalTrustLevel}, where {@link TechnicalTrustLevel#SUFFICIENT} means that no
+     * online source could be contacted)
+     */
+    public static TechnicalTrustLevel checkCertificateRevocation(
+            final CertificateToken certificateToken,
+            boolean... revoked) {
 
-	public static Optional<SignatureLevel> getSignatureFormatLevel(final SimpleReport simpleReport, final String signatureId) {
-		if (simpleReport == null) {
-			return Optional.empty();
-		}
-		final SignatureLevel format = simpleReport.getSignatureFormat(signatureId);
-		return Optional.ofNullable(format);
-	}
+        if (certificateToken == null) {
+            return TechnicalTrustLevel.FAIL;
+        }
 
-	/**
-	 * Get the signature level. If the signature information are incomplete , it return by default UNDETERMINED.
-	 *
-	 * @param simpleReport The {@link SimpleReport}
-	 * @param signatureId  signature id
-	 * @return The result
-	 */
-	public static SignatureQualification getSignatureConclusion(final SimpleReport simpleReport, final String signatureId) {
+        if (revoked.length == 0) {
+            if (certificateToken.isSelfSigned()) {
+                return TechnicalTrustLevel.SUCCESSFUL;
+            } else {
+                // as defined by http://www.jira.e-codex.eu/browse/ECDX-25
+                // 4-3. Being valid at the time of signing with an CRL and/or an OCSP being defined, but none of them
+                // is reachable: YELLOW
+                return TechnicalTrustLevel.SUFFICIENT;
+            }
+        }
 
-		if (simpleReport == null) {
-			return SignatureQualification.NA;
-		}
+        return revoked[0] ? TechnicalTrustLevel.FAIL : TechnicalTrustLevel.SUCCESSFUL;
+    }
 
-		return simpleReport.getSignatureQualification(signatureId);
-	}
+    /**
+     * Search the signing signatureId in the Certificate path revocation analysis, compare the two's certificates and
+     * check the validity at singing time. Or: use directly the signatureId to compute the result.
+     *
+     * @param certificateToken The {@link CertificateToken}
+     * @param signingTime
+     * @return the result (a {@link TechnicalTrustLevel}, where {@link TechnicalTrustLevel#SUFFICIENT} means that no
+     * online source could be contacted)
+     */
+    public static TechnicalTrustLevel checkCertificateValidity(
+            final CertificateToken certificateToken,
+            XMLGregorianCalendar signingTime) {
 
-	/**
-	 * Check if the signature is mathematically correct.
-	 *
-	 * @param simpleReport The {@link SimpleReport}
-	 * @param signatureId  signature id
-	 * @return The result
-	 */
-	public static boolean checkSignatureCorrectness(final SimpleReport simpleReport, final String signatureId) {
-		if (simpleReport == null) {
-			return false;
-		}
-		final boolean result = simpleReport.isValid(signatureId);
-		return result;
-	}
+        if (certificateToken == null) {
+            return TechnicalTrustLevel.FAIL;
+        }
+        final boolean valid = certificateToken.isValidOn(signingTime.toGregorianCalendar().getTime());
+        return valid ? TechnicalTrustLevel.SUCCESSFUL : TechnicalTrustLevel.FAIL;
+    }
 
-	/**
-	 * Search the signing certificate in the Certificate path revocation analysis, compare the two's certificates and
-	 * check if the status is valid.
-	 *
-	 * @param certificateToken The {@link CertificateToken}
-	 * @return The result (a {@link TechnicalTrustLevel}, where {@link TechnicalTrustLevel#SUFFICIENT} means that no online source could be contacted)
-	 */
-	public static TechnicalTrustLevel checkCertificateRevocation(final CertificateToken certificateToken, boolean... revoked) {
+    /**
+     * @param diagnosticData The {@link DiagnosticData}
+     * @param certificateId  The {@link String}
+     * @return The result
+     */
+    public static boolean checkTrustAnchor(DiagnosticData diagnosticData, String certificateId) {
+        XmlDiagnosticData model = (diagnosticData == null) ? null : diagnosticData.getJaxbModel();
+        List<eu.europa.esig.dss.diagnostic.jaxb.XmlCertificate> certificates =
+                (model == null) ? null : model.getUsedCertificates();
 
-		if (certificateToken == null) {
-			return TechnicalTrustLevel.FAIL;
-		}
+        if (certificates == null) {
+            return false;
+        }
 
-		if (revoked.length == 0) {
-			if (certificateToken.isSelfSigned()) {
-				return TechnicalTrustLevel.SUCCESSFUL;
-			} else {
-				// as defined by http://www.jira.e-codex.eu/browse/ECDX-25
-				// 4-3. Being valid at the time of signing with an CRL and/or an OCSP being defined, but none of them is reachable: YELLOW
-				return TechnicalTrustLevel.SUFFICIENT;
-			}
-		}
+        for (eu.europa.esig.dss.diagnostic.jaxb.XmlCertificate xmlCertificate : certificates) {
+            if (xmlCertificate.getId() != null && xmlCertificate.getId()
+                                                                .equals(certificateId) && xmlCertificate.isTrusted()) {
+                return true;
+            }
+        }
 
-		return revoked[0] ? TechnicalTrustLevel.FAIL : TechnicalTrustLevel.SUCCESSFUL;
-	}
+        return false;
+    }
 
-	/**
-	 * Search the signing signatureId in the Certificate path revocation analysis, compare the two's certificates and
-	 * check the validity at singing time. Or: use directly the signatureId to compute the result.
-	 *
-	 * @param certificateToken The {@link CertificateToken}
-	 * @param signingTime
-	 * @return the result (a {@link TechnicalTrustLevel}, where {@link TechnicalTrustLevel#SUFFICIENT} means that no online source could be contacted)
-	 */
-	public static TechnicalTrustLevel checkCertificateValidity(final CertificateToken certificateToken, XMLGregorianCalendar signingTime) {
+    public static boolean checkSignatureConclusion(
+            SimpleReport simpleReport,
+            DetailedReport detailedReport,
+            String signatureId) {
 
-		if (certificateToken == null) {
-			return TechnicalTrustLevel.FAIL;
-		}
-		final boolean valid = certificateToken.isValidOn(signingTime.toGregorianCalendar().getTime());
-		return valid ? TechnicalTrustLevel.SUCCESSFUL : TechnicalTrustLevel.FAIL;
-	}
+        SignatureQualification conclusion = getSignatureConclusion(simpleReport, signatureId);
 
+        switch (conclusion) {
+            case NA:
+                if (detailedReport != null) {
 
-	/**
-	 * @param diagnosticData The {@link DiagnosticData}
-	 * @param certificateId The {@link String}
-	 * @return The result
-	 */
-	public static boolean checkTrustAnchor(DiagnosticData diagnosticData, String certificateId) {
+                    XmlSignature signature = detailedReport.getXmlSignatureById(signatureId);
+                    XmlValidationSignatureQualification signatureQualification =
+                            (signature == null) ? null : signature.getValidationSignatureQualification();
+                    List<XmlConstraint> signatureConstraints =
+                            (signatureQualification == null) ? null : signatureQualification.getConstraint();
 
-		XmlDiagnosticData model = (diagnosticData == null) ? null : diagnosticData.getJaxbModel();
-		List<eu.europa.esig.dss.diagnostic.jaxb.XmlCertificate> certificates = (model == null) ? null : model.getUsedCertificates();
+                    if (signatureConstraints == null || signatureConstraints.isEmpty()) {
+                        return false;
+                    } else {
+                        for (XmlConstraint curConstraint : signatureConstraints) {
+                            XmlMessage curName = (curConstraint == null) ? null : curConstraint.getName();
+                            String nameId = (curName == null) ? null : curName.getValue();
 
-		if(certificates == null) {
-			return false;
-		}
+                            XmlStatus curStatus = (curConstraint == null) ? null : curConstraint.getStatus();
+                            String finalStatus = (curStatus == null) ? null : curStatus.value();
 
-		for (eu.europa.esig.dss.diagnostic.jaxb.XmlCertificate xmlCertificate : certificates) {
-			if(xmlCertificate.getId() != null && xmlCertificate.getId().equals(certificateId) && xmlCertificate.isTrusted()) {
-				return true;
-			}
-		}
+                            if (nameId.equals("QUAL_IS_ADES") && finalStatus.equals("OK")) {
+                                return true;
+                            } else if (nameId.equals("QUAL_IS_ADES_IND") && finalStatus.equals("OK")) {
+                                return true;
+                            }
+                        }
+                    }
+                }
 
-		return false;
-	}
+                return false;
 
-
-
-	public static boolean checkSignatureConclusion(SimpleReport simpleReport, DetailedReport detailedReport, String signatureId) {
-
-		SignatureQualification conclusion = getSignatureConclusion(simpleReport, signatureId);
-
-		switch (conclusion) {
-			case NA:
-				if(detailedReport != null) {
-
-					XmlSignature signature = detailedReport.getXmlSignatureById(signatureId);
-					XmlValidationSignatureQualification signatureQualification = (signature == null) ? null : signature.getValidationSignatureQualification();
-					List<XmlConstraint> signatureConstraints = (signatureQualification == null) ? null : signatureQualification.getConstraint();
-
-					if(signatureConstraints == null || signatureConstraints.isEmpty()) {
-						return false;
-					} else {
-						for (XmlConstraint curConstraint : signatureConstraints) {
-							XmlMessage curName = (curConstraint == null) ? null : curConstraint.getName();
-							String nameId = (curName == null) ? null : curName.getValue();
-
-							XmlStatus curStatus = (curConstraint == null) ? null : curConstraint.getStatus();
-							String finalStatus = (curStatus == null) ? null : curStatus.value();
-
-							if(nameId.equals("QUAL_IS_ADES") && finalStatus.equals("OK")) {
-								return true;
-							} else if (nameId.equals("QUAL_IS_ADES_IND") && finalStatus.equals("OK")) {
-								return true;
-							}
-						}
-					}
-				}
-
-				return false;
-
-			case NOT_ADES:
-			case NOT_ADES_QC:
-			case NOT_ADES_QC_QSCD:
-				return false;
-//		case ADES:
-//		case ADES_QC:
-			case ADESEAL:
-			case ADESEAL_QC:
-			case ADESIG:
-			case ADESIG_QC:
-//		case INDETERMINATE_ADES:
-//		case INDETERMINATE_ADES_QC:
-			case INDETERMINATE_ADESEAL:
-			case INDETERMINATE_ADESEAL_QC:
-			case INDETERMINATE_ADESIG:
-			case INDETERMINATE_ADESIG_QC:
-//		case INDETERMINATE_QES:
-			case INDETERMINATE_QESEAL:
-			case INDETERMINATE_QESIG:
-//		case QES:
-			case QESIG:
-			case QESEAL:
-				return true;
-			default:
-				return false;
-		}
-	}
+            case NOT_ADES:
+            case NOT_ADES_QC:
+            case NOT_ADES_QC_QSCD:
+                return false;
+            //		case ADES:
+            //		case ADES_QC:
+            case ADESEAL:
+            case ADESEAL_QC:
+            case ADESIG:
+            case ADESIG_QC:
+                //		case INDETERMINATE_ADES:
+                //		case INDETERMINATE_ADES_QC:
+            case INDETERMINATE_ADESEAL:
+            case INDETERMINATE_ADESEAL_QC:
+            case INDETERMINATE_ADESIG:
+            case INDETERMINATE_ADESIG_QC:
+                //		case INDETERMINATE_QES:
+            case INDETERMINATE_QESEAL:
+            case INDETERMINATE_QESIG:
+                //		case QES:
+            case QESIG:
+            case QESEAL:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

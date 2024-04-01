@@ -2,15 +2,13 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/util/AbstractPDFGenerator.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/util/AbstractPDFGenerator
+ * .java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
 package eu.ecodex.dss.util;
-
-import eu.ecodex.dss.model.token.Token;
-import eu.europa.esig.dss.model.DSSDocument;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -18,20 +16,22 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import eu.ecodex.dss.model.token.Token;
+import eu.europa.esig.dss.model.DSSDocument;
 
 import java.awt.*;
+
 
 /**
  * An abstract class to provide some basic resources and functionality
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
- * 
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public abstract class AbstractPDFGenerator {
-
     protected static final Font FONT_H1;
     protected static final Font FONT_H2;
     protected static final Font FONT_H3;
@@ -45,9 +45,8 @@ public abstract class AbstractPDFGenerator {
     protected static final Image IMG_TECHNICAL_SUFFICIENT;
     protected static final Image IMG_TECHNICAL_SUCCESSFULL;
     protected static final Image IMG_LEGAL_NOTSUCCESSFULL;
-//    protected static final Image IMG_LEGAL_UNDETERMINED;
+    //    protected static final Image IMG_LEGAL_UNDETERMINED;
     protected static final Image IMG_LEGAL_SUCCESSFULL;
-
     protected static Color TABLE_BACKGROUND;
 
     static {
@@ -67,7 +66,7 @@ public abstract class AbstractPDFGenerator {
             IMG_TECHNICAL_SUCCESSFULL = PDFUtil.createImage(PDFUtil.Image.TECHNICAL_SUCCESSFUL);
 
             IMG_LEGAL_NOTSUCCESSFULL = PDFUtil.createImage(PDFUtil.Image.LEGAL_NOTSUCCESSFUL);
-//            IMG_LEGAL_UNDETERMINED = PDFUtil.createImage(PDFUtil.Image.LEGAL_UNDETERMINED);
+            //            IMG_LEGAL_UNDETERMINED = PDFUtil.createImage(PDFUtil.Image.LEGAL_UNDETERMINED);
             IMG_LEGAL_SUCCESSFULL = PDFUtil.createImage(PDFUtil.Image.LEGAL_SUCCESSFUL);
 
             TABLE_BACKGROUND = new Color(157, 206, 237);
@@ -77,7 +76,6 @@ public abstract class AbstractPDFGenerator {
     }
 
     /**
-     * 
      * The default constructor for the class
      */
     protected AbstractPDFGenerator() {
@@ -85,17 +83,17 @@ public abstract class AbstractPDFGenerator {
 
     /**
      * Generate the PDF page(s)
-     * 
+     *
      * @param token The token
      * @return The document
      * @throws com.lowagie.text.DocumentException The exception.
      */
     public abstract DSSDocument generate(final Token token) throws DocumentException;
-    
+
     protected void addPageHeader(final com.lowagie.text.Document document, final Token token) throws DocumentException {
         final PdfPTable table = new PdfPTable(3);
         table.setSpacingAfter(10);
-        table.setWidths(new int[] { 40, 40, 20 });
+        table.setWidths(new int[]{40, 40, 20});
 
         PdfPCell cell = new PdfPCell();
         cell.addElement(IMG_LOGO_ECODEX);
@@ -117,5 +115,4 @@ public abstract class AbstractPDFGenerator {
 
         document.add(table);
     }
-
 }

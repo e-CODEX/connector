@@ -9,18 +9,19 @@
  */
 package eu.ecodex.dss.model;
 
+import eu.europa.esig.dss.model.DSSDocument;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import eu.europa.esig.dss.model.DSSDocument;
 
 /**
  * this holds the document and its attachments
- * 
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
- * 
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
@@ -31,7 +32,7 @@ public class BusinessContent {
 
     /**
      * checks whether a document has been set
-     * 
+     *
      * @return the result
      */
     public boolean hasDocument() {
@@ -40,7 +41,7 @@ public class BusinessContent {
 
     /**
      * gives access to the document
-     * 
+     *
      * @return the value (may be null)
      */
     public DSSDocument getDocument() {
@@ -49,7 +50,7 @@ public class BusinessContent {
 
     /**
      * sets the document
-     * 
+     *
      * @param document the value (nullable)
      * @return this class' instance for chaining
      */
@@ -89,7 +90,7 @@ public class BusinessContent {
 
     /**
      * adds an attachment, implicitely creates the underlying list if null
-     * 
+     *
      * @param attachment the value (not nullable)
      * @return this class' instance for chaining
      */
@@ -106,7 +107,7 @@ public class BusinessContent {
 
     /**
      * checks whether at least one attachment is available
-     * 
+     *
      * @return the result
      */
     public boolean hasAttachments() {
@@ -115,7 +116,7 @@ public class BusinessContent {
 
     /**
      * gives direct access to the list of attachments
-     * 
+     *
      * @return the value (may be null)
      */
     public List<DSSDocument> getAttachments() {
@@ -127,7 +128,7 @@ public class BusinessContent {
 
     /**
      * sets the list of attachments
-     * 
+     *
      * @param attachments the value (nullable)
      * @return this class' instance for chaining
      */

@@ -10,14 +10,9 @@
 
 package eu.ecodex.dss.model.token;
 
-import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.Serializable;
 
 /**
  * This class holds information about the signature.
@@ -30,13 +25,16 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * http://www.jira.e-codex.eu/browse/ECDX-45: is/setUnsigned();
- *
- * {@literal @XmlAccessorType(XmlAccessType.FIELD) changed to -->  @XmlAccessorType(XmlAccessType.NONE) to allow to handle unsigned property. }
+ * <p>
+ * {@literal @XmlAccessorType(XmlAccessType.FIELD) changed to -->  @XmlAccessorType(XmlAccessType.NONE) to allow to
+ * handle unsigned property. }
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "SignatureDataType", propOrder = {"signingTime", "signatureInformation", "certificateInformation", "technicalResult"})
+@XmlType(
+        name = "SignatureDataType",
+        propOrder = {"signingTime", "signatureInformation", "certificateInformation", "technicalResult"}
+)
 public class Signature implements Serializable {
-
     @XmlElement(name = "SigningTime")
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar signingTime;
@@ -46,36 +44,35 @@ public class Signature implements Serializable {
     protected SignatureCertificate certificateInformation;
     @XmlElement(name = "TechnicalResult")
     protected TechnicalValidationResult technicalResult;
-    
+    protected AuthenticationCertificate authenticationCertValidation;
+
     public TechnicalValidationResult getTechnicalResult() {
-		return technicalResult;
-	}
+        return technicalResult;
+    }
 
-	public void setTechnicalResult(TechnicalValidationResult technicalResult) {
-		this.technicalResult = technicalResult;
-	}
-
-	protected AuthenticationCertificate authenticationCertValidation;
+    public void setTechnicalResult(TechnicalValidationResult technicalResult) {
+        this.technicalResult = technicalResult;
+    }
 
     /**
      * Gets the value of the authenticationCertValidation property.
      *
      * @return possible object is {@link eu.ecodex.dss.model.token.AuthenticationCertificate }
-     */   
+     */
     public AuthenticationCertificate getAuthenticationCertValidation() {
-		return authenticationCertValidation;
-	}
+        return authenticationCertValidation;
+    }
 
     /**
      * Sets the value of the authenticationCertValidation property.
      *
      * @param authenticationCertValidation the value
      * @return this class' instance for chaining
-     */    
-	public Signature setAuthenticationCertValidation(AuthenticationCertificate authenticationCertValidation) {
-		this.authenticationCertValidation = authenticationCertValidation;
-		return this;
-	}    
+     */
+    public Signature setAuthenticationCertValidation(AuthenticationCertificate authenticationCertValidation) {
+        this.authenticationCertValidation = authenticationCertValidation;
+        return this;
+    }
 
     /**
      * Gets the value of the signingTime property.
@@ -136,5 +133,4 @@ public class Signature implements Serializable {
         this.certificateInformation = value;
         return this;
     }
-
 }

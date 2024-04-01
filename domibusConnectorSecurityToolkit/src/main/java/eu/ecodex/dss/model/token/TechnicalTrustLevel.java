@@ -2,7 +2,8 @@
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
- * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token/TechnicalTrustLevel.java $
+ * $HeadURL: http://forge.aris-lux.lan/svn/dgmarktdss/ecodex/src/main/java/eu/ecodex/dss/model/token
+ * /TechnicalTrustLevel.java $
  * $Revision: 1879 $
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
@@ -16,9 +17,10 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
  * This class holds the type of the trust level.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
@@ -27,54 +29,36 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "TechnicalTrustLevelEnum")
 @XmlEnum
 public enum TechnicalTrustLevel {
-
-    /** aka RED */
+    /**
+     * aka RED
+     */
     @XmlEnumValue("FAIL")
     FAIL("FAIL", "Failed"),
 
-    /** aka YELLOW */
+    /**
+     * aka YELLOW
+     */
     @XmlEnumValue("SUFFICIENT")
     SUFFICIENT("SUFFICIENT", "Sufficient"),
-    
-    /** aka GREEN */
-     @XmlEnumValue("SUCCESSFUL")
+
+    /**
+     * aka GREEN
+     */
+    @XmlEnumValue("SUCCESSFUL")
     SUCCESSFUL("SUCCESSFUL", "Successful");
-    
+
     private final String value;
     private final String text;
 
     /**
      * constructor
+     *
      * @param value the value "FAIL" or "SUFFICIENT" or "SUCCESSFUL"
-     * @param text the textual representation "Fail" or "Sufficient" or "Successfull"
+     * @param text  the textual representation "Fail" or "Sufficient" or "Successfull"
      */
     TechnicalTrustLevel(final String value, final String text) {
         this.value = value;
         this.text = text;
-    }
-
-    /**
-     * the underlying string value
-     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
-     */
-    public String value() {
-        return getValue();
-    }
-
-    /**
-     * the underlying string value
-     * @return "FAIL" or "SUFFICIENT" or "SUCCESSFUL"
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * the underlying string value
-     * @return "Fail" or "Sufficient" or "Successfull"
-     */
-    public String getText() {
-        return text;
     }
 
     /**
@@ -115,35 +99,35 @@ public enum TechnicalTrustLevel {
      * @return null, if levels are null or empty; otherwise the detected worst level
      */
     public static TechnicalTrustLevel worst(final TechnicalTrustLevel... levels) {
-        if ( levels == null || levels.length == 0) {
+        if (levels == null || levels.length == 0) {
             return null;
         }
 
         TechnicalTrustLevel result = null;
 
-        for ( final TechnicalTrustLevel level : levels ) {
-            if ( level == null ) {
+        for (final TechnicalTrustLevel level : levels) {
+            if (level == null) {
                 // ignore null values
                 continue;
             }
-            if ( result == null ) {
+            if (result == null) {
                 // initialise the result
                 result = level;
-            } else if ( isFail(level) ) {
+            } else if (isFail(level)) {
                 // the worst case
                 result = level;
-            } else if ( isSufficient(level) ) {
+            } else if (isSufficient(level)) {
                 // check if can apply the level (that is not overwrite a worse value)
-                if ( !isFail(result) ) {
+                if (!isFail(result)) {
                     result = level;
                 }
-            } else if ( isSuccessful(level) ) {
+            } else if (isSuccessful(level)) {
                 // check if can apply the level (that is not overwrite a worse value)
-                if ( !isFail(result) && !isSufficient(result) ) {
+                if (!isFail(result) && !isSufficient(result)) {
                     result = level;
                 }
             }
-            if ( isFail(result) ) {
+            if (isFail(result)) {
                 return result; // this is the worst case, so we can ignore all others
             }
         }
@@ -161,7 +145,7 @@ public enum TechnicalTrustLevel {
         if (StringUtils.isEmpty(v)) {
             throw new IllegalArgumentException("value must not be empty");
         }
-        for (TechnicalTrustLevel c: TechnicalTrustLevel.values()) {
+        for (TechnicalTrustLevel c : TechnicalTrustLevel.values()) {
             if (c.value.equals(v)) {
                 return c;
             }
@@ -169,4 +153,30 @@ public enum TechnicalTrustLevel {
         throw new IllegalArgumentException(v);
     }
 
+    /**
+     * the underlying string value
+     *
+     * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
+     */
+    public String value() {
+        return getValue();
+    }
+
+    /**
+     * the underlying string value
+     *
+     * @return "FAIL" or "SUFFICIENT" or "SUCCESSFUL"
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * the underlying string value
+     *
+     * @return "Fail" or "Sufficient" or "Successfull"
+     */
+    public String getText() {
+        return text;
+    }
 }

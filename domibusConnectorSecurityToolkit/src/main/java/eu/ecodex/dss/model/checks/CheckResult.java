@@ -13,18 +13,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+
 /**
  * holds the result of a check.
  * note that this class is somewhat immutable: if a problem has been added, it cannot be removed anymore.
  *
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class CheckResult {
-    private List<CheckProblem> problems = new LinkedList<CheckProblem>();
+    private final List<CheckProblem> problems = new LinkedList<CheckProblem>();
 
     /**
      * is the overall result successful?
@@ -127,7 +128,6 @@ public class CheckResult {
 
     @Override
     public String toString() {
-
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("CheckResult:").append('\n');
         for (final CheckProblem problem : problems) {

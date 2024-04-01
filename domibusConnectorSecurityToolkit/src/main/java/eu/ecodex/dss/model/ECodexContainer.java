@@ -19,16 +19,16 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 /**
- * this holds the to be signed content plus the created asic document 
- * 
+ * this holds the to be signed content plus the created asic document
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class ECodexContainer {
-
     /**
      * the documents that are stored within the container
      */
@@ -43,12 +43,12 @@ public class ECodexContainer {
      * the signed XML representation of the {@link #token}
      */
     private DSSDocument tokenXML;
-    
+
     /**
      * the signed PDF representation of the {@link #token}
      */
     private DSSDocument tokenPDF;
-    
+
     /**
      * the generated ASiC-S "file"
      */
@@ -56,7 +56,7 @@ public class ECodexContainer {
 
     /**
      * the documents that are stored within the container
-     * 
+     *
      * @return the value
      */
     public BusinessContent getBusinessContent() {
@@ -64,35 +64,8 @@ public class ECodexContainer {
     }
 
     /**
-     * convenience method to give access to the main document of the (signed) business content
-     * 
-     * @return the value
-     */
-    public DSSDocument getBusinessDocument() {
-        return (businessContent == null) ? null : businessContent.getDocument();
-    }
-    
-    /**
-     * convenience method to give access to the detached signature of the main document of the (signed) business content
-     *
-     * @return the value
-     */
-    public DSSDocument getBusinessSignature() {
-        return (businessContent == null) ? null : businessContent.getDetachedSignature();
-    }
-
-    /**
-     * convenience method to give access to the attachments of the (signed) business content
-     * 
-     * @return the value
-     */
-    public List<DSSDocument> getBusinessAttachments() {
-        return (businessContent == null) ? null : businessContent.getAttachments();
-    }
-    
-    /**
      * the documents that are stored within the container
-     * 
+     *
      * @param businessContent the value
      * @return this class' instance for chaining
      */
@@ -102,8 +75,36 @@ public class ECodexContainer {
     }
 
     /**
+     * convenience method to give access to the main document of the (signed) business content
+     *
+     * @return the value
+     */
+    public DSSDocument getBusinessDocument() {
+        return (businessContent == null) ? null : businessContent.getDocument();
+    }
+
+    /**
+     * convenience method to give access to the detached signature of the main document of the (signed) business
+     * content
+     *
+     * @return the value
+     */
+    public DSSDocument getBusinessSignature() {
+        return (businessContent == null) ? null : businessContent.getDetachedSignature();
+    }
+
+    /**
+     * convenience method to give access to the attachments of the (signed) business content
+     *
+     * @return the value
+     */
+    public List<DSSDocument> getBusinessAttachments() {
+        return (businessContent == null) ? null : businessContent.getAttachments();
+    }
+
+    /**
      * the token about the trust as object structure
-     * 
+     *
      * @return the value
      */
     public Token getToken() {
@@ -112,7 +113,7 @@ public class ECodexContainer {
 
     /**
      * the token about the trust as object structure
-     * 
+     *
      * @param token the value
      * @return this class' instance for chaining
      */
@@ -123,7 +124,7 @@ public class ECodexContainer {
 
     /**
      * the signed XML representation of the {@link #token}
-     * 
+     *
      * @return the value
      */
     public DSSDocument getTokenXML() {
@@ -143,7 +144,7 @@ public class ECodexContainer {
 
     /**
      * the signed PDF representation of the {@link #token}
-     * 
+     *
      * @return the value
      */
     public DSSDocument getTokenPDF() {
@@ -163,7 +164,7 @@ public class ECodexContainer {
 
     /**
      * the generated ASiC-S "file"
-     * 
+     *
      * @return the value
      */
     public DSSDocument getAsicDocument() {
@@ -182,14 +183,12 @@ public class ECodexContainer {
     }
 
     public abstract static class ECodexDSSDocumentType {
-
         public abstract DSSDocument getDSSDocument(ECodexContainer eCodexContainer);
-        public abstract List<MimeType> getValidMimeTypes();
 
+        public abstract List<MimeType> getValidMimeTypes();
     }
 
     public static class TokenXmlTypesECodex extends ECodexDSSDocumentType {
-
         @Override
         public DSSDocument getDSSDocument(ECodexContainer eCodexContainer) {
             Objects.requireNonNull(eCodexContainer, "eCodex container must not be null!");
@@ -203,7 +202,6 @@ public class ECodexContainer {
     }
 
     public static class TokenPdfTypeECodex extends ECodexDSSDocumentType {
-
         @Override
         public DSSDocument getDSSDocument(ECodexContainer eCodexContainer) {
             Objects.requireNonNull(eCodexContainer, "eCodex container must not be null!");
@@ -217,7 +215,6 @@ public class ECodexContainer {
     }
 
     public static class AsicDocumentTypeECodex extends ECodexDSSDocumentType {
-
         @Override
         public DSSDocument getDSSDocument(ECodexContainer eCodexContainer) {
             Objects.requireNonNull(eCodexContainer, "eCodex container must not be null!");
@@ -229,5 +226,4 @@ public class ECodexContainer {
             return Stream.of(MimeTypeEnum.XML).collect(Collectors.toList());
         }
     }
-    
 }

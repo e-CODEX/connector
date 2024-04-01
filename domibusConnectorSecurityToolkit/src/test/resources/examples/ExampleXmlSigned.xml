@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><TrustOkToken xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<?xml version="1.0" encoding="UTF-8"?>
+<TrustOkToken xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
     <Issuer>
         <ServiceProvider>BRZ</ServiceProvider>
         <Country>AT</Country>
@@ -39,37 +40,101 @@
         </TechnicalResult>
         <LegalResult>
             <TrustLevel>SUCCESSFUL</TrustLevel>
-            <Disclaimer>e-CODEX approves the validity of the document. It is attested that it fulfils the requirements to be legally valid in the sending country.</Disclaimer>
+            <Disclaimer>e-CODEX approves the validity of the document. It is attested that it fulfils the requirements
+                to be legally valid in the sending country.
+            </Disclaimer>
         </LegalResult>
         <OriginalValidationReport>
 
-<SimpleReport xmlns="http://dss.esig.europa.eu/validation/simple-report">
-    <Policy>
-        <PolicyName>ECodex-based</PolicyName>
-        <PolicyDescription>eCODEX validation policy</PolicyDescription>
-    </Policy>
-    <ValidationTime>2020-03-06T14:26:11</ValidationTime>
-    <DocumentName>Form_A.pdf</DocumentName>
-    <ValidSignaturesCount>1</ValidSignaturesCount>
-    <SignaturesCount>1</SignaturesCount>
-    <Signature Id="id-0673fe41a0628a01634990d90d06da18ace814cf8dddaa50d3f37cfb74180edc" SignatureFormat="PKCS7-B">
-        <SigningTime>2013-01-20T15:53:52</SigningTime>
-        <BestSignatureTime>2020-03-06T14:26:11</BestSignatureTime>
-        <SignedBy>eCodexServer</SignedBy>
-        <CertificateChain>
-            <Certificate>
-                <id>BF3E0BCCE8785178B6C109F852008B037ED34D8F81C4F22D2B2C0CEA777FFA2E</id>
-                <qualifiedName>eCodexServer</qualifiedName>
-            </Certificate>
-        </CertificateChain>
-        <SignatureLevel description="Not applicable">N/A</SignatureLevel>
-        <Indication>TOTAL_PASSED</Indication>
-        <Errors>The certificate path is not trusted!</Errors>
-        <Warnings>The certificate chain for signature is not trusted, there is no trusted anchor.</Warnings>
-        <SignatureScope name="Full PDF" scope="FULL">Full document</SignatureScope>
-    </Signature>
-</SimpleReport>
-</OriginalValidationReport>
+            <SimpleReport xmlns="http://dss.esig.europa.eu/validation/simple-report">
+                <Policy>
+                    <PolicyName>ECodex-based</PolicyName>
+                    <PolicyDescription>eCODEX validation policy</PolicyDescription>
+                </Policy>
+                <ValidationTime>2020-03-06T14:26:11</ValidationTime>
+                <DocumentName>Form_A.pdf</DocumentName>
+                <ValidSignaturesCount>1</ValidSignaturesCount>
+                <SignaturesCount>1</SignaturesCount>
+                <Signature Id="id-0673fe41a0628a01634990d90d06da18ace814cf8dddaa50d3f37cfb74180edc"
+                           SignatureFormat="PKCS7-B">
+                    <SigningTime>2013-01-20T15:53:52</SigningTime>
+                    <BestSignatureTime>2020-03-06T14:26:11</BestSignatureTime>
+                    <SignedBy>eCodexServer</SignedBy>
+                    <CertificateChain>
+                        <Certificate>
+                            <id>BF3E0BCCE8785178B6C109F852008B037ED34D8F81C4F22D2B2C0CEA777FFA2E</id>
+                            <qualifiedName>eCodexServer</qualifiedName>
+                        </Certificate>
+                    </CertificateChain>
+                    <SignatureLevel description="Not applicable">N/A</SignatureLevel>
+                    <Indication>TOTAL_PASSED</Indication>
+                    <Errors>The certificate path is not trusted!</Errors>
+                    <Warnings>The certificate chain for signature is not trusted, there is no trusted anchor.</Warnings>
+                    <SignatureScope name="Full PDF" scope="FULL">Full document</SignatureScope>
+                </Signature>
+            </SimpleReport>
+        </OriginalValidationReport>
 
     </Validation>
-<ds:Signature Id="id-e5c3799c385253b1f57e6acd49021b20"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference Id="r-id-1" URI=""><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"><ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath></ds:Transform><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>oOe4HFMhd2uoarjKoQPgC1EzE8Y=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xades-id-e5c3799c385253b1f57e6acd49021b20"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>UTyBFeKPzIbSewslxj87PIeBHV0=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="value-id-e5c3799c385253b1f57e6acd49021b20">CQ4HCnNbUl9KdbfMQFFQHW40ISCw5PYspxv38UbAvh2RnsJMlrU20/Pf8xE9zTHtH2c7V2n+vT9I2ddg8ctP8gbLFb6CjonN84CMIQsLyKYD9ZsfYr81IY/IVJ1GSoILJXnhS3lcsSMGYIQ3X0DFyiyqtKGVoHhh+eioM0MV/Kc1uORbP7gqimlbIBVxzojxrCSLahpW/9DAUeG5AAlOWYrZd1JNjrkpBJyRRwMJaobeDkl8edP4DGJKsr6vAJ1hMnvWOKsuRYBa0xNUhzH31b6iwgftXfRzqrfEtOT3qnLrbfmKwTyRFf0D1PCyaebdGetBWTS3fV+IAhQkSwtVXg==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIICqDCCAZCgAwIBAgIEW/P1YjANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDDApjb25uZWN0b3IxMCAXDTE4MTEyMDExNTIwMloYDzIxMTcxMTIwMTE1MjAyWjAVMRMwEQYDVQQDDApjb25uZWN0b3IxMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApY2Op2qzLi6wrhbjUZENnaO309gO4dCT9X1dTQaSp9q5PhDdeXShfGTiWzT1usHvrYrDjqlnHvp3kGfUgP6nkJSJbcvJW03s2F39+RdwlNQFJUGma0L596YhJQWA5+4Ixg17Ul3TXJ+u8Sn4+H9XAcdh0Ynarf8IahGsFTKeBuww6KMsFvqZMDsE7TXThze2KJ00bfhVtKaSzCWbR8H6Px0jIa+DVa9Uw8voiNoMc2Vi8mKD48YwSvlmU9kJ7G9vAZHCH3tuWthSsO7KYQF6OEUG5Oy2K4mLHMLZAFVbPNYe9P/up9V/PyGWS2a2u9jZ6L7tOqQw9yqP6fXkiB0kwQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA7DmVEKLKDaPDMeKQAAHapxVTJqBNdxkWA5TsQB0vlWN5ITmmgZOsF+p6uGpf0vgdecOUPUZWhwKKK/XeXl2QPyIakJA0Xz1aSAlg1V4cBCBxfxg3eI9G3xECAAXkDOgdc65khWfhqpBNeDZJ9CBwxC8qBaUYQw3h7BtDUOTfoeHAPKDyJvCf1Ac4gkStwwOwMtS4/y71y+LqWg/uKZrEQs5x71m3AryosM/SaEk/SAPZmM92mC79Ln7U5LK6aRvPb+CHX5acDBI5xn7/4Y+WMYkpb2yOCTzxxU14h0EXwDkLjwb8OsWgp6YYpf+j8OccXs1uLDU7Cqj+Gm9L1upkC</ds:X509Certificate></ds:X509Data></ds:KeyInfo><ds:Object><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="#id-e5c3799c385253b1f57e6acd49021b20"><xades:SignedProperties Id="xades-id-e5c3799c385253b1f57e6acd49021b20"><xades:SignedSignatureProperties><xades:SigningTime>2020-03-06T14:26:12Z</xades:SigningTime><xades:SigningCertificateV2><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><ds:DigestValue>WIv5CksmVyDIMLKaV3gkqofjZNk0LuLyw9/GjXeAl61cq85OTs1uTJBIitxEea0cZO6dmGvMqR4mPA1Egym+JQ==</ds:DigestValue></xades:CertDigest><xades:IssuerSerialV2>MCEwGaQXMBUxEzARBgNVBAMMCmNvbm5lY3RvcjECBFvz9WI=</xades:IssuerSerialV2></xades:Cert></xades:SigningCertificateV2></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#r-id-1"><xades:MimeType>text/xml</xades:MimeType></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></TrustOkToken>
+    <ds:Signature Id="id-e5c3799c385253b1f57e6acd49021b20">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <ds:Reference Id="r-id-1" URI="">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+                        <ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath>
+                    </ds:Transform>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>oOe4HFMhd2uoarjKoQPgC1EzE8Y=</ds:DigestValue>
+            </ds:Reference>
+            <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
+                          URI="#xades-id-e5c3799c385253b1f57e6acd49021b20">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>UTyBFeKPzIbSewslxj87PIeBHV0=</ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue Id="value-id-e5c3799c385253b1f57e6acd49021b20">
+            CQ4HCnNbUl9KdbfMQFFQHW40ISCw5PYspxv38UbAvh2RnsJMlrU20/Pf8xE9zTHtH2c7V2n+vT9I2ddg8ctP8gbLFb6CjonN84CMIQsLyKYD9ZsfYr81IY/IVJ1GSoILJXnhS3lcsSMGYIQ3X0DFyiyqtKGVoHhh+eioM0MV/Kc1uORbP7gqimlbIBVxzojxrCSLahpW/9DAUeG5AAlOWYrZd1JNjrkpBJyRRwMJaobeDkl8edP4DGJKsr6vAJ1hMnvWOKsuRYBa0xNUhzH31b6iwgftXfRzqrfEtOT3qnLrbfmKwTyRFf0D1PCyaebdGetBWTS3fV+IAhQkSwtVXg==
+        </ds:SignatureValue>
+        <ds:KeyInfo>
+            <ds:X509Data>
+                <ds:X509Certificate>
+                    MIICqDCCAZCgAwIBAgIEW/P1YjANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDDApjb25uZWN0b3IxMCAXDTE4MTEyMDExNTIwMloYDzIxMTcxMTIwMTE1MjAyWjAVMRMwEQYDVQQDDApjb25uZWN0b3IxMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApY2Op2qzLi6wrhbjUZENnaO309gO4dCT9X1dTQaSp9q5PhDdeXShfGTiWzT1usHvrYrDjqlnHvp3kGfUgP6nkJSJbcvJW03s2F39+RdwlNQFJUGma0L596YhJQWA5+4Ixg17Ul3TXJ+u8Sn4+H9XAcdh0Ynarf8IahGsFTKeBuww6KMsFvqZMDsE7TXThze2KJ00bfhVtKaSzCWbR8H6Px0jIa+DVa9Uw8voiNoMc2Vi8mKD48YwSvlmU9kJ7G9vAZHCH3tuWthSsO7KYQF6OEUG5Oy2K4mLHMLZAFVbPNYe9P/up9V/PyGWS2a2u9jZ6L7tOqQw9yqP6fXkiB0kwQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA7DmVEKLKDaPDMeKQAAHapxVTJqBNdxkWA5TsQB0vlWN5ITmmgZOsF+p6uGpf0vgdecOUPUZWhwKKK/XeXl2QPyIakJA0Xz1aSAlg1V4cBCBxfxg3eI9G3xECAAXkDOgdc65khWfhqpBNeDZJ9CBwxC8qBaUYQw3h7BtDUOTfoeHAPKDyJvCf1Ac4gkStwwOwMtS4/y71y+LqWg/uKZrEQs5x71m3AryosM/SaEk/SAPZmM92mC79Ln7U5LK6aRvPb+CHX5acDBI5xn7/4Y+WMYkpb2yOCTzxxU14h0EXwDkLjwb8OsWgp6YYpf+j8OccXs1uLDU7Cqj+Gm9L1upkC
+                </ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+        <ds:Object>
+            <xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+                                        Target="#id-e5c3799c385253b1f57e6acd49021b20">
+                <xades:SignedProperties Id="xades-id-e5c3799c385253b1f57e6acd49021b20">
+                    <xades:SignedSignatureProperties>
+                        <xades:SigningTime>2020-03-06T14:26:12Z</xades:SigningTime>
+                        <xades:SigningCertificateV2>
+                            <xades:Cert>
+                                <xades:CertDigest>
+                                    <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+                                    <ds:DigestValue>
+                                        WIv5CksmVyDIMLKaV3gkqofjZNk0LuLyw9/GjXeAl61cq85OTs1uTJBIitxEea0cZO6dmGvMqR4mPA1Egym+JQ==
+                                    </ds:DigestValue>
+                                </xades:CertDigest>
+                                <xades:IssuerSerialV2>MCEwGaQXMBUxEzARBgNVBAMMCmNvbm5lY3RvcjECBFvz9WI=
+                                </xades:IssuerSerialV2>
+                            </xades:Cert>
+                        </xades:SigningCertificateV2>
+                    </xades:SignedSignatureProperties>
+                    <xades:SignedDataObjectProperties>
+                        <xades:DataObjectFormat ObjectReference="#r-id-1">
+                            <xades:MimeType>text/xml</xades:MimeType>
+                        </xades:DataObjectFormat>
+                    </xades:SignedDataObjectProperties>
+                </xades:SignedProperties>
+            </xades:QualifyingProperties>
+        </ds:Object>
+    </ds:Signature>
+</TrustOkToken>

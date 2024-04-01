@@ -12,10 +12,11 @@ package eu.ecodex.dss.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * encapsulates the actual logging behind and provides some convenience methods
- * 
- * 
+ *
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
@@ -24,14 +25,13 @@ import org.slf4j.LoggerFactory;
  * @version $Revision: 2032 $ - $Date: 2013-05-17 09:52:32 +0200 (ven., 17 mai 2013) $
  */
 public class LogDelegate {
-
     protected final Class clazz;
     protected final String className;
     protected final Logger log;
 
     public LogDelegate(final Class<?> clazz) {
         this.clazz = clazz;
-        className = ( clazz == null ) ? null : clazz.getName();
+        className = (clazz == null) ? null : clazz.getName();
         // we want to have a logger in any case
         log = LoggerFactory.getLogger((clazz == null) ? getClass() : clazz);
     }
@@ -39,29 +39,32 @@ public class LogDelegate {
     /**
      * pre-concatenates the class name to the message, because
      * the final logger will report the methods of this class unfortunately.
-     * if detectMethod is true, the invoking "business" method will be detected via reflection and appended to the class name.
+     * if detectMethod is true, the invoking "business" method will be detected via reflection and appended to the
+     * class name.
      *
-     * @param message the value
+     * @param message      the value
      * @param detectMethod the value
      * @return the text for the log-method invocation
      */
     protected String prepareMessage(final String message, final boolean detectMethod) {
-        if ( className == null ) {
+        if (className == null) {
             return message;
         }
         final StringBuilder m = new StringBuilder(256); // a suitable length to avoid arraycopy
         m.append(className);
-        if ( detectMethod ) {
-            final StackTraceElement[] stes = new Throwable().getStackTrace(); // no possibility to reduce the array length
+        if (detectMethod) {
+            final StackTraceElement[] stes =
+                    new Throwable().getStackTrace(); // no possibility to reduce the array length
             // 0 = this
             // 1 = log-method
             // 2 = business method
-            // possibly we could ignore e.g. synthetic methods (via instrumentation/aspects) or such with specific annotations
+            // possibly we could ignore e.g. synthetic methods (via instrumentation/aspects) or such with specific
+            // annotations
             // but that should be an improvement in slf4j
             final StackTraceElement ste = stes[2];
             m.append('#').append(ste.getMethodName());
             // + linenumber
-            if ( ste.getLineNumber() > 0 ) {
+            if (ste.getLineNumber() > 0) {
                 m.append('@').append(ste.getLineNumber());
             }
         }
@@ -72,7 +75,7 @@ public class LogDelegate {
     /**
      * used to signal the entering of a method (debug level)
      *
-     * @param method the name of the method
+     * @param method     the name of the method
      * @param parameters the values in parameter
      */
     public void mEnter(final String method, final Object... parameters) {
@@ -84,7 +87,7 @@ public class LogDelegate {
     }
 
     private void mEnterImpl(final String method, final Object[] parameters) {
-        if ( !log.isDebugEnabled() ) {
+        if (!log.isDebugEnabled()) {
             return;
         }
         final String m = prepareMessage(method, false);
@@ -94,7 +97,7 @@ public class LogDelegate {
     /**
      * used to signal the successful exiting of a method (debug level)
      *
-     * @param method the name of the method
+     * @param method     the name of the method
      * @param parameters the values in parameter
      */
     public void mExit(final String method, final Object... parameters) {
@@ -106,7 +109,7 @@ public class LogDelegate {
     }
 
     private void mExitImpl(final String method, final Object[] parameters) {
-        if ( !log.isDebugEnabled() ) {
+        if (!log.isDebugEnabled()) {
             return;
         }
         final String m = prepareMessage(method, false);
@@ -116,8 +119,8 @@ public class LogDelegate {
     /**
      * used to signal a problem during execution (debug level for the parameters and error for the cause)
      *
-     * @param method the name of the method
-     * @param cause the occurred exception letting the execution fail
+     * @param method     the name of the method
+     * @param cause      the occurred exception letting the execution fail
      * @param parameters the values in parameter
      */
     public void mCause(final String method, final Throwable cause, final Object... parameters) {
@@ -131,14 +134,14 @@ public class LogDelegate {
     private void mCauseImpl(final String method, final Throwable cause, final Object[] parameters) {
         final boolean debugEnabled = log.isDebugEnabled();
         final boolean errorEnabled = log.isErrorEnabled();
-        if ( !debugEnabled && !errorEnabled ) {
+        if (!debugEnabled && !errorEnabled) {
             return;
         }
         final String m = prepareMessage(method, false);
-        if ( debugEnabled && parameters != null && parameters.length > 0 ) {
+        if (debugEnabled && parameters != null && parameters.length > 0) {
             log.debug(m + "-cause", parameters);
         }
-        if ( errorEnabled ) {
+        if (errorEnabled) {
             log.error(m + "-cause", cause);
         }
     }
@@ -146,7 +149,7 @@ public class LogDelegate {
     /**
      * used to give information on a configuration (trace level)
      *
-     * @param message the text
+     * @param message    the text
      * @param parameters the values (to be put in the message)
      */
     public void lConfig(final String message, final Object... parameters) {
@@ -158,7 +161,7 @@ public class LogDelegate {
     }
 
     private void lConfigImpl(final String message, final Object[] parameters) {
-        if ( !log.isTraceEnabled() ) {
+        if (!log.isTraceEnabled()) {
             return;
         }
         final String m = prepareMessage(message, true);
@@ -168,8 +171,8 @@ public class LogDelegate {
     /**
      * used to log something important (error level)
      *
-     * @param message the text
-     * @param cause the exception
+     * @param message    the text
+     * @param cause      the exception
      * @param parameters the values (to be put in the message)
      */
     public void lError(final String message, final Throwable cause, final Object... parameters) {
@@ -181,11 +184,11 @@ public class LogDelegate {
     }
 
     private void lErrorImpl(final String message, final Throwable cause, final Object[] parameters) {
-        if ( !log.isErrorEnabled() ) {
+        if (!log.isErrorEnabled()) {
             return;
         }
         final String m = prepareMessage(message, true);
-        if ( parameters != null && parameters.length > 0 ) {
+        if (parameters != null && parameters.length > 0) {
             log.error(m, parameters);
         }
         log.error(m, cause);
@@ -194,7 +197,7 @@ public class LogDelegate {
     /**
      * used to log something important (error level)
      *
-     * @param message the text
+     * @param message    the text
      * @param parameters the values (to be put in the message)
      */
     public void lError(final String message, final Object... parameters) {
@@ -206,7 +209,7 @@ public class LogDelegate {
     }
 
     private void lErrorImpl(final String message, final Object[] parameters) {
-        if ( !log.isErrorEnabled() ) {
+        if (!log.isErrorEnabled()) {
             return;
         }
         final String m = prepareMessage(message, true);
@@ -216,7 +219,7 @@ public class LogDelegate {
     /**
      * used to log something important (warn level)
      *
-     * @param message the text
+     * @param message    the text
      * @param parameters the values (to be put in the message)
      */
     public void lWarn(final String message, final Object... parameters) {
@@ -228,7 +231,7 @@ public class LogDelegate {
     }
 
     private void lWarnImpl(final String message, final Object[] parameters) {
-        if ( !log.isWarnEnabled() ) {
+        if (!log.isWarnEnabled()) {
             return;
         }
         final String m = prepareMessage(message, true);
@@ -238,7 +241,7 @@ public class LogDelegate {
     /**
      * used to give some meaningful information on the execution (debug level)
      *
-     * @param message the text
+     * @param message    the text
      * @param parameters the values (to be put in the message)
      */
     public void lInfo(final String message, final Object... parameters) {
@@ -250,7 +253,7 @@ public class LogDelegate {
     }
 
     private void lInfoImpl(final String message, final Object[] parameters) {
-        if ( !log.isDebugEnabled() ) {
+        if (!log.isDebugEnabled()) {
             return;
         }
         final String m = prepareMessage(message, true);
@@ -260,7 +263,7 @@ public class LogDelegate {
     /**
      * used to give additional detailed information on the execution e.g. for problem resolution (trace level)
      *
-     * @param message the text
+     * @param message    the text
      * @param parameters the values (to be put in the message)
      */
     public void lDetail(final String message, final Object... parameters) {
@@ -272,11 +275,10 @@ public class LogDelegate {
     }
 
     private void lDetailImpl(final String message, final Object[] parameters) {
-        if ( !log.isTraceEnabled() ) {
+        if (!log.isTraceEnabled()) {
             return;
         }
         final String m = prepareMessage(message, true);
         log.trace(m, parameters);
     }
-
 }

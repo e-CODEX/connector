@@ -11,23 +11,21 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+
 @Component
 @BusinessDomainScoped
 @ConfigurationProperties(prefix = DCEcodexContainerProperties.PREFIX)
 public class DCEcodexContainerProperties {
-
     public static final String PREFIX = "connector.ecodex-container";
-
     @Valid
     @NotNull
     @NestedConfigurationProperty
     private SignatureConfigurationProperties signature = new SignatureConfigurationProperties();
-
     @Valid
     @NotNull
     @NestedConfigurationProperty
-    private SignatureValidationConfigurationProperties signatureValidation= new SignatureValidationConfigurationProperties();
-
+    private SignatureValidationConfigurationProperties signatureValidation =
+            new SignatureValidationConfigurationProperties();
 
     public SignatureValidationConfigurationProperties getSignatureValidation() {
         return signatureValidation;
@@ -44,5 +42,4 @@ public class DCEcodexContainerProperties {
     public void setSignature(SignatureConfigurationProperties signature) {
         this.signature = signature;
     }
-
 }

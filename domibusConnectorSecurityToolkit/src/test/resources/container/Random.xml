@@ -2,91 +2,91 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-  
-  <bean id="securityContainer" class="eu.ecodex.connector.security.container.ECodexSecurityContainer">
-  	<property name="javaKeyStorePath" value="${connector.security.keystore.path}" />
-  	<property name="javaKeyStorePassword" value="${connector.security.keystore.password}" />
-  	<property name="keyAlias" value="${connector.security.key.alias}" />
-  	<property name="keyPassword" value="${connector.security.key.password}" />
-  	<property name="containerService" ref="containerService"/>
-  	<property name="tokenIssuer" ref="tokenIssuer"/>
-  </bean>
-  
-  <bean id="connectorProxyDao" class="eu.ecodex.connector.security.proxy.ECodexConnectorProxyDao">
-  	<constructor-arg value="${http.proxy.enabled}"/>
-  	<constructor-arg value="${http.proxy.host}"/>
-  	<constructor-arg value="${http.proxy.port}"/>
-  	<constructor-arg value="${http.proxy.user}"/>
-  	<constructor-arg value="${http.proxy.password}"/>
-  </bean>
-  
-  <bean id="proxyPreferenceManager" class="eu.europa.ec.markt.dss.manager.ProxyPreferenceManager">
-  	<property name="proxyDao" ref="connectorProxyDao"/>
-  </bean>
-  
-  <bean id="httpDataLoader" class="eu.ecodex.dss.util.ECodexDataLoader" singleton="false">
-  	<property name="allowLDAP" value="${connector.security.allow.ldap:false}" />
-  	<property name="proxyPreferenceManager" ref="proxyPreferenceManager"/>
-  </bean>
-  
-  <bean id="ocspDataLoader" class="eu.ecodex.dss.util.ECodexDataLoader" singleton="false">
-  	<property name="allowLDAP" value="${connector.security.allow.ldap:false}" />
-  	<property name="proxyPreferenceManager" ref="proxyPreferenceManager"/>
-  	<property name="contentType" value="application/ocsp-request"/>
-  </bean>
-  
-  <bean id="onlineCRLSource" class="eu.europa.ec.markt.dss.validation102853.crl.OnlineCRLSource">
-  	<property name="dataLoader" ref="httpDataLoader"/>
-  </bean>
-  
-  <bean id="ocspSource" class="eu.europa.ec.markt.dss.validation102853.ocsp.OnlineOCSPSource">
-  	<property name="dataLoader" ref="ocspDataLoader"/>
-  </bean>
-  
-  <bean id="certificateVerifier" class="eu.europa.ec.markt.dss.validation102853.CommonCertificateVerifier">
-  	<property name="crlSource" ref="onlineCRLSource"/>
-  	<property name="ocspSource" ref="ocspSource"/>
-  	<property name="dataLoader" ref="httpDataLoader"/>
-  </bean>
-  
-  <bean id="trustedCertificates" class="eu.ecodex.dss.model.CertificateStoreInfo" >
-		<property name="location" value="${java.truststore.path}" />
-		<property name="password" value="${java.truststore.password}" />
-	</bean>
+    <bean id="securityContainer" class="eu.ecodex.connector.security.container.ECodexSecurityContainer">
+        <property name="javaKeyStorePath" value="${connector.security.keystore.path}"/>
+        <property name="javaKeyStorePassword" value="${connector.security.keystore.password}"/>
+        <property name="keyAlias" value="${connector.security.key.alias}"/>
+        <property name="keyPassword" value="${connector.security.key.password}"/>
+        <property name="containerService" ref="containerService"/>
+        <property name="tokenIssuer" ref="tokenIssuer"/>
+    </bean>
 
-	<bean id="environmentConfiguration" class="eu.ecodex.dss.model.EnvironmentConfiguration" >
-		<property name="connectorCertificates" ref="trustedCertificates" />
-	</bean>
-	
-  <bean id="legalValidationService" class="eu.ecodex.dss.service.impl.dss.DSSECodexLegalValidationService">
-  	<property name="environmentConfiguration" ref="environmentConfiguration"/>
-  </bean>
-  
-  <bean id="technicalValidationService" class="eu.ecodex.dss.service.impl.dss.DSSECodexTechnicalValidationService">
-  	<property name="certificateVerifier" ref="certificateVerifier"/>
-  	<property name="proxyPreferenceManager" ref="proxyPreferenceManager"/>
-  	<property name="environmentConfiguration" ref="environmentConfiguration"/>
-  </bean>
-  
-  <bean id="containerService" class="eu.ecodex.dss.service.impl.dss.DSSECodexContainerService">
-  	<property name="certificateVerifier" ref="certificateVerifier"/>
-  	<property name="legalValidationService" ref="legalValidationService"/>
-  	<property name="technicalValidationService" ref="technicalValidationService"/>
-  	<property name="environmentConfiguration" ref="environmentConfiguration"/>
-  </bean>
-  
-  <bean id="tokenIssuer" class="eu.ecodex.dss.model.token.TokenIssuer">
-  	<property name="country" value="${token.issuer.country}" />
-  	<property name="serviceProvider" value="${token.issuer.service.provider}" />
-  	<property name="advancedElectronicSystem" value="${token.issuer.aes.value}" />
-  </bean>
-  
-  <bean id="connectorSecurityToolkitFactory" class="eu.ecodex.connector.security.ECodexConnectorSecurityToolkitFactory">
-  	<property name="implementationClassName" value="${connector.security.toolkit.implementation.class.name}" />
-  </bean>
+    <bean id="connectorProxyDao" class="eu.ecodex.connector.security.proxy.ECodexConnectorProxyDao">
+        <constructor-arg value="${http.proxy.enabled}"/>
+        <constructor-arg value="${http.proxy.host}"/>
+        <constructor-arg value="${http.proxy.port}"/>
+        <constructor-arg value="${http.proxy.user}"/>
+        <constructor-arg value="${http.proxy.password}"/>
+    </bean>
 
-  <bean id="connectorSecurityToolkit" factory-bean="connectorSecurityToolkitFactory" factory-method="createECodexConnectorSecurityToolkit">
-  	<property name="securityContainer" ref="securityContainer" />
-  </bean>
-  
+    <bean id="proxyPreferenceManager" class="eu.europa.ec.markt.dss.manager.ProxyPreferenceManager">
+        <property name="proxyDao" ref="connectorProxyDao"/>
+    </bean>
+
+    <bean id="httpDataLoader" class="eu.ecodex.dss.util.ECodexDataLoader" singleton="false">
+        <property name="allowLDAP" value="${connector.security.allow.ldap:false}"/>
+        <property name="proxyPreferenceManager" ref="proxyPreferenceManager"/>
+    </bean>
+
+    <bean id="ocspDataLoader" class="eu.ecodex.dss.util.ECodexDataLoader" singleton="false">
+        <property name="allowLDAP" value="${connector.security.allow.ldap:false}"/>
+        <property name="proxyPreferenceManager" ref="proxyPreferenceManager"/>
+        <property name="contentType" value="application/ocsp-request"/>
+    </bean>
+
+    <bean id="onlineCRLSource" class="eu.europa.ec.markt.dss.validation102853.crl.OnlineCRLSource">
+        <property name="dataLoader" ref="httpDataLoader"/>
+    </bean>
+
+    <bean id="ocspSource" class="eu.europa.ec.markt.dss.validation102853.ocsp.OnlineOCSPSource">
+        <property name="dataLoader" ref="ocspDataLoader"/>
+    </bean>
+
+    <bean id="certificateVerifier" class="eu.europa.ec.markt.dss.validation102853.CommonCertificateVerifier">
+        <property name="crlSource" ref="onlineCRLSource"/>
+        <property name="ocspSource" ref="ocspSource"/>
+        <property name="dataLoader" ref="httpDataLoader"/>
+    </bean>
+
+    <bean id="trustedCertificates" class="eu.ecodex.dss.model.CertificateStoreInfo">
+        <property name="location" value="${java.truststore.path}"/>
+        <property name="password" value="${java.truststore.password}"/>
+    </bean>
+
+    <bean id="environmentConfiguration" class="eu.ecodex.dss.model.EnvironmentConfiguration">
+        <property name="connectorCertificates" ref="trustedCertificates"/>
+    </bean>
+
+    <bean id="legalValidationService" class="eu.ecodex.dss.service.impl.dss.DSSECodexLegalValidationService">
+        <property name="environmentConfiguration" ref="environmentConfiguration"/>
+    </bean>
+
+    <bean id="technicalValidationService" class="eu.ecodex.dss.service.impl.dss.DSSECodexTechnicalValidationService">
+        <property name="certificateVerifier" ref="certificateVerifier"/>
+        <property name="proxyPreferenceManager" ref="proxyPreferenceManager"/>
+        <property name="environmentConfiguration" ref="environmentConfiguration"/>
+    </bean>
+
+    <bean id="containerService" class="eu.ecodex.dss.service.impl.dss.DSSECodexContainerService">
+        <property name="certificateVerifier" ref="certificateVerifier"/>
+        <property name="legalValidationService" ref="legalValidationService"/>
+        <property name="technicalValidationService" ref="technicalValidationService"/>
+        <property name="environmentConfiguration" ref="environmentConfiguration"/>
+    </bean>
+
+    <bean id="tokenIssuer" class="eu.ecodex.dss.model.token.TokenIssuer">
+        <property name="country" value="${token.issuer.country}"/>
+        <property name="serviceProvider" value="${token.issuer.service.provider}"/>
+        <property name="advancedElectronicSystem" value="${token.issuer.aes.value}"/>
+    </bean>
+
+    <bean id="connectorSecurityToolkitFactory"
+          class="eu.ecodex.connector.security.ECodexConnectorSecurityToolkitFactory">
+        <property name="implementationClassName" value="${connector.security.toolkit.implementation.class.name}"/>
+    </bean>
+
+    <bean id="connectorSecurityToolkit" factory-bean="connectorSecurityToolkitFactory"
+          factory-method="createECodexConnectorSecurityToolkit">
+        <property name="securityContainer" ref="securityContainer"/>
+    </bean>
 </beans>

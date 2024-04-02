@@ -93,7 +93,7 @@
         <org.apache.santuario.xmlsec.version>2.2.4</org.apache.santuario.xmlsec.version>
         <com.fasterxml.woodstox.woodstox-core.version>6.4.0</com.fasterxml.woodstox.woodstox-core.version>
         <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
-        <spring.boot.version>2.5.15</spring.boot.version>
+        <spring.boot.version>3.2.4</spring.boot.version>
         <eu.ecodex.utils.version>0.0.22-RELEASE</eu.ecodex.utils.version>
         <org.junit.jupiter.version>5.9.1</org.junit.jupiter.version>
         <vaadin.version>14.10.5</vaadin.version>

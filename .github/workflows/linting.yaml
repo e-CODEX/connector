@@ -1,0 +1,13 @@
+name: Java Checkstyle
+on: [pull_request]
+jobs:
+  checkstyle:
+    name: runner / checkstyle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dbelyaev/action-checkstyle@78d31899f6343e44fe4870a5a22e0690d968989d # v1.7.1
+        with:
+          reporter: github-pr-review
+          level: warning
+          checkstyle_config: google_checks.xml

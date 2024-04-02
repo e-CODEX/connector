@@ -112,7 +112,7 @@
         <com.sun.xml.bind.jaxb-xjc.version>2.3.0</com.sun.xml.bind.jaxb-xjc.version>
         <org.glassfish.jaxb.jaxb-runtime.version>2.3.8</org.glassfish.jaxb.jaxb-runtime.version>
         <javax.xml.ws.jaxws-api.version>2.3.1</javax.xml.ws.jaxws-api.version>
-        <jakarta.xml.soap.jakarta.xml.soap-api.version>1.4.2</jakarta.xml.soap.jakarta.xml.soap-api.version>
+        <jakarta.xml.soap.jakarta.xml.soap-api.version>3.0.1</jakarta.xml.soap.jakarta.xml.soap-api.version>
         <jakarta.jws.jakarta.jws-api.version>2.1.0</jakarta.jws.jakarta.jws-api.version>
         <javax.jms.javax.jms-api.version>2.0.1</javax.jms.javax.jms-api.version>
         <javax.validation.validation-api.version>2.0.1.Final</javax.validation.validation-api.version>

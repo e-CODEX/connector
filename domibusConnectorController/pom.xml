@@ -10,11 +10,33 @@
     <name>${project.artifactId}</name>
     <description>Does the business work with the messages: Generates the evidences, resolves and verifies the ASIC-S container, creates the TRUST-Tokens. It hands over the messages to the GWLink module for GW-Communication and to the BackendLinkModule for communication with the connectorClients. For this purpose it uses other modules like persistence, evidenceToolkit, securityToolkit,...</description>
     <dependencies>
+        <!-- domibus modules and libs-->
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>domibusConnectorSecurityToolkit</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>domibusConnectorEvidencesToolkit</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>domibusConnectorPersistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.ecodex.utils</groupId>
+            <artifactId>spring-quartz-scheduled</artifactId>
+            <version>${eu.ecodex.utils.version}</version>
+        </dependency>
+        <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jta-atomikos</artifactId>
@@ -23,6 +45,43 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-artemis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- db dependencies -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>1.15.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- other dependencies -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-jms-server</artifactId>
@@ -33,63 +92,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.activemq</groupId>-->
-        <!--            <artifactId>activemq-kahadb-store</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>annotations</artifactId>
         </dependency>
-        <dependency>
-            <groupId>eu.domibus.connector</groupId>
-            <artifactId>domibusConnectorSecurityToolkit</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.domibus.connector</groupId>
-            <artifactId>domibusConnectorEvidencesToolkit</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>domibusConnectorPersistence</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-quartz</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>eu.ecodex.utils</groupId>
-            <artifactId>spring-quartz-scheduled</artifactId>
-            <version>${eu.ecodex.utils.version}</version>
-        </dependency>
-        <!-- JMS -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.activemq</groupId>-->
-        <!--            <artifactId>activemq-broker</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.activemq</groupId>-->
-        <!--            <artifactId>activemq-spring</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-autoconfigure</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.sun.xml.bind</groupId>-->
-        <!--            <artifactId>jaxb-impl</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>javax.xml.bind</groupId>-->
-        <!--            <artifactId>jaxb-api</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.sun.xml.bind</groupId>-->
-        <!--            <artifactId>jaxb-core</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -115,18 +121,9 @@
             <artifactId>jul-to-slf4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.tomcat</groupId>-->
-        <!--            <artifactId>tomcat-el-api</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.tomcat</groupId>-->
-        <!--            <artifactId>tomcat-jasper-el</artifactId>-->
-        <!--        </dependency>-->
         <!-- test dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -168,7 +165,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
@@ -200,41 +197,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>12.2.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>1.15.2</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
     <build>
-        <!-- activate resource filtering to provide the tests with correct properties for the environment
-            BUT only filter resources from specific folder to avoid malforming the other resources
+        <!--
+        activate resource filtering to provide the tests with correct properties for the environment
+        BUT only filter resources from specific folder to avoid malforming the other resources
         -->
         <testResources>
             <testResource>

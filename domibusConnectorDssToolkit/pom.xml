@@ -8,10 +8,17 @@
     </parent>
     <artifactId>domibusConnectorDssToolkit</artifactId>
     <dependencies>
+        <!-- domibus modules and libs-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>domibusConnectorControllerLIB</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>eu.ecodex.utils</groupId>
             <artifactId>spring-boot-property-converter</artifactId>
         </dependency>
+        <!-- dss dependencies -->
         <dependency>
             <groupId>eu.europa.ec.joinup.sd-dss</groupId>
             <artifactId>dss-document</artifactId>
@@ -25,10 +32,6 @@
                     <groupId>org.apache.santuario</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.santuario</groupId>
-            <artifactId>xmlsec</artifactId>
         </dependency>
         <dependency>
             <groupId>eu.europa.ec.joinup.sd-dss</groupId>
@@ -54,10 +57,21 @@
             <groupId>eu.europa.ec.joinup.sd-dss</groupId>
             <artifactId>dss-pades</artifactId>
         </dependency>
+        <!-- other dependencies -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>domibusConnectorControllerLIB</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.apache.santuario</groupId>
+            <artifactId>xmlsec</artifactId>
+        </dependency>
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

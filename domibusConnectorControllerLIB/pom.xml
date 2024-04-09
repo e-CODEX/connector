@@ -9,9 +9,15 @@
     <artifactId>domibusConnectorControllerLIB</artifactId>
     <description>Contains common code of all connector modules, like property configuration checkers, helper, ...</description>
     <dependencies>
+        <!-- domibus modules and libs-->
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>domibusConnectorAPIlib</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -19,10 +25,10 @@
             <artifactId>spring-property-configuration-manager</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
-            <artifactId>domibusConnectorAPIlib</artifactId>
-            <version>${project.version}</version>
+            <groupId>eu.ecodex.utils</groupId>
+            <artifactId>spring-property-configuration-manager-api</artifactId>
         </dependency>
+        <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
@@ -40,13 +46,14 @@
             <artifactId>spring-aspects</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.ecodex.utils</groupId>
-            <artifactId>spring-property-configuration-manager-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!-- other dependencies -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -54,8 +61,8 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -66,18 +73,13 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.tomcat</groupId>-->
-        <!--            <artifactId>tomcat-el-api</artifactId>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.tomcat</groupId>-->
-        <!--            <artifactId>tomcat-jasper-el</artifactId>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorTestData</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -86,14 +88,6 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
 </project>

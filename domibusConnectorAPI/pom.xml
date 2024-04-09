@@ -49,7 +49,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xml-maven-plugin</artifactId>
-                <version>1.0.2</version>
                 <executions>
                     <execution>
                         <phase>pre-site</phase>
@@ -91,7 +90,6 @@
                             <goal>wsdl2java</goal>
                         </goals>
                         <configuration>
-                            <!--                            <sourceRoot>${basedir}/src/main/java</sourceRoot>-->
                             <encoding>UTF-8</encoding>
                             <wsdlOptions>
                                 <wsdlOption>

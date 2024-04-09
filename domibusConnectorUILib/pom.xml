@@ -12,18 +12,20 @@
         <pmode.xsd.resources.path>src/main/resources/pmode/domibus_3_2_4</pmode.xsd.resources.path>
     </properties>
     <dependencies>
+        <!-- domibus modules and libs-->
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorPersistence</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -32,10 +34,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <!-- other dependencies -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -67,7 +69,6 @@
                             <schemaIncludes>
                                 <include>domibus-pmode.xsd</include>
                             </schemaIncludes>
-                            <!--                            <generateDirectory>src/main/java</generateDirectory>-->
                             <strict>true</strict>
                             <extension>true</extension>
                             <args>

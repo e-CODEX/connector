@@ -13,19 +13,19 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
-        <!-- connector parts -->
+        <!-- domibus modules and libs-->
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorAPI</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorController</artifactId>
             <version>${project.version}</version>
             <exclusions>
@@ -36,18 +36,14 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorPersistence</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- additional spring parts -->
+        <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -66,10 +62,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
+        <!-- other dependencies -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-web</artifactId>
         </dependency>
+        <!-- db dependencies -->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
@@ -78,22 +80,18 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <!--            <scope>provided</scope>-->
         </dependency>
     </dependencies>
 </project>

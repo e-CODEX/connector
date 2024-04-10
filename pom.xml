@@ -113,7 +113,7 @@
         <maven.javadoc-plugin.version>3.6.3</maven.javadoc-plugin.version>
         <maven.resources-plugin.version>2.6</maven.resources-plugin.version>
         <maven.source-plugin.version>2.2.1</maven.source-plugin.version>
-        <maven.surefire-plugin.version>3.0.0-M5</maven.surefire-plugin.version>
+        <maven.surefire-plugin.version>3.2.5</maven.surefire-plugin.version>
         <maven.war-plugin.version>3.2.0</maven.war-plugin.version>
         <org.codehaus.mojo.xml-maven-plugin>1.0.2</org.codehaus.mojo.xml-maven-plugin>
         <org.jacoco.maven-plugin.version>0.7.9</org.jacoco.maven-plugin.version>

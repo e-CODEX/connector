@@ -116,7 +116,6 @@
         <maven.surefire-plugin.version>3.0.0-M5</maven.surefire-plugin.version>
         <maven.war-plugin.version>3.2.0</maven.war-plugin.version>
         <org.codehaus.mojo.xml-maven-plugin>1.0.2</org.codehaus.mojo.xml-maven-plugin>
-        <org.jacoco.maven-plugin.version>0.7.9</org.jacoco.maven-plugin.version>
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -187,17 +186,12 @@
         <!-- testing -->
         <assertj.version>3.19.0</assertj.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <jacoco.outputDir>${project.build.directory}/jacoco</jacoco.outputDir>
-        <jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>
-        <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
         <junit.jupiter.api.version>5.7.1</junit.jupiter.api.version>
         <junit.jupiter.engine.version>5.7.1</junit.jupiter.engine.version>
         <org.dbunit.dbunit.version>2.7.3</org.dbunit.dbunit.version>
         <org.junit.jupiter.version>5.9.1</org.junit.jupiter.version>
         <org.xmlunit.xmlunit-core.version>2.5.1</org.xmlunit.xmlunit-core.version>
         <org.xmlunit.xmlunit-matchers.version>2.5.1</org.xmlunit.xmlunit-matchers.version>
-        <sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
-        <sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -208,7 +202,6 @@
                 <version>${eu.domibus.connector.plugin.version}</version>
                 <type>zip</type>
             </dependency>
-
             <dependency>
                 <groupId>eu.ecodex.utils</groupId>
                 <artifactId>logging-tester</artifactId>
@@ -743,6 +736,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
+                        <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                         <argLine>-Djunit.jupiter.extensions.autodetection.enabled=true</argLine>
                         <forkCount>1</forkCount>
                         <reuseForks>false</reuseForks>
@@ -856,11 +850,6 @@
                     <artifactId>depgraph-maven-plugin</artifactId>
                     <version>${com.github.ferstl.depgraph-maven-plugin.version}</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${org.jacoco.maven-plugin.version}</version>
-                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -900,26 +889,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-            <!-- activate unit testing with failsafe -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>execute-unit-tests</id>
                         <phase>test</phase>
                         <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
+                            <goal>test</goal>
                         </goals>
                         <configuration>
-                            <!-- to be deleted and replaced by CI jacoco config -->
-                            <argLine>@{jacoco.agent.ut.arg}</argLine>
                             <includes>
                                 <include>**/*Test.java</include>
                             </includes>
@@ -932,27 +909,31 @@
                             <redirectTestOutputToFile>true</redirectTestOutputToFile>
                         </configuration>
                     </execution>
+                </executions>
+            </plugin>
+            <!-- activate unit testing with failsafe -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
                     <execution>
-                        <id>executeITCases</id>
+                        <id>execute-integration-tests-cases</id>
                         <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                         </goals>
                         <configuration>
-                            <!-- to be deleted and replaced by CI jacoco config -->
-                            <argLine>@{jacoco.agent.it.arg}</argLine>
                             <reportsDirectory>${project.build.directory}/ittest-reports</reportsDirectory>
+                            <useSystemClassLoader>false</useSystemClassLoader>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>executeDBUnitCases</id>
+                        <id>execute-dbunit-tests-cases</id>
                         <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                         </goals>
                         <configuration>
-                            <!-- to be deleted and replaced by CI jacoco config -->
-                            <argLine>@{jacoco.agent.it.arg}</argLine>
                             <includes>
                                 <include>**/*DBUnit.java</include>
                             </includes>
@@ -1038,55 +1019,6 @@
                 <version>1.7.0</version>
                 <configuration>
                     <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <!--
-                    Prepares a variable, jacoco.agent.ut.arg, that contains the info
-                    to be passed to the JVM hosting the code being tested.
-                    -->
-                    <execution>
-                        <id>prepare-ut-agent</id>
-                        <phase>process-test-classes</phase>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <destFile>${sonar.jacoco.reportPath}</destFile>
-                            <propertyName>jacoco.agent.ut.arg</propertyName>
-                            <append>true</append>
-                        </configuration>
-                    </execution>
-                    <!--
-                    Prepares a variable, jacoco.agent.it.arg, that contains the
-                    info to be passed to the JVM hosting the code being tested.
-                    -->
-                    <execution>
-                        <id>prepare-it-agent</id>
-                        <!--
-                        moved to package phase to be sure all pre-integration test
-                        have it already set to bring up environments with jacoco agent as JVM params
-                        -->
-                        <phase>package</phase>
-                        <goals>
-                            <goal>prepare-agent-integration</goal>
-                        </goals>
-                        <configuration>
-                            <destFile>${sonar.jacoco.itReportPath}</destFile>
-                            <propertyName>jacoco.agent.it.arg</propertyName>
-                            <append>true</append>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*.docx</exclude>
-                        <exclude>**/*.pdf</exclude>
-                        <exclude>**/*.zip</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
             <plugin>

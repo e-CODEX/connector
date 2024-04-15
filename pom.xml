@@ -43,6 +43,7 @@
         <!-- should be the last module -->
         <module>domibusConnectorDistribution</module>
         <module>domibusConnectorDssToolkit</module>
+        <module>coverage</module>
     </modules>
     <distributionManagement>
         <repository>
@@ -116,6 +117,7 @@
         <maven.surefire-plugin.version>3.2.5</maven.surefire-plugin.version>
         <maven.war-plugin.version>3.2.0</maven.war-plugin.version>
         <org.codehaus.mojo.xml-maven-plugin>1.0.2</org.codehaus.mojo.xml-maven-plugin>
+        <jacoco.version>0.8.12</jacoco.version>
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -736,7 +738,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <argLine>-Djunit.jupiter.extensions.autodetection.enabled=true</argLine>
+                        <argLine>@{argLine} -Djunit.jupiter.extensions.autodetection.enabled=true</argLine>
                         <forkCount>1</forkCount>
                         <reuseForks>false</reuseForks>
                     </configuration>
@@ -753,11 +755,16 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <argLine>-Djunit.jupiter.extensions.autodetection.enabled=true</argLine>
+                        <argLine>@{argLine} -Djunit.jupiter.extensions.autodetection.enabled=true</argLine>
                         <forkCount>1</forkCount>
                         <reuseForks>false</reuseForks>
                         <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -943,6 +950,24 @@
                             </excludes>
                             <reportsDirectory>${project.build.directory}/dbunit-reports</reportsDirectory>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-prepare-agent-integration</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

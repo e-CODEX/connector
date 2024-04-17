@@ -118,6 +118,7 @@
         <maven.war-plugin.version>3.2.0</maven.war-plugin.version>
         <org.codehaus.mojo.xml-maven-plugin>1.0.2</org.codehaus.mojo.xml-maven-plugin>
         <jacoco.version>0.8.12</jacoco.version>
+        <cyclonedx.version>2.8.0</cyclonedx.version>
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -185,6 +186,7 @@
         <spring.boot.version>2.5.15</spring.boot.version>
         <tomcat.version>8.5.32</tomcat.version>
         <xml-apis.xml-apis.version>1.4.1</xml-apis.xml-apis.version>
+        <lombok.version>1.18.32</lombok.version>
         <!-- testing -->
         <assertj.version>3.19.0</assertj.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -655,6 +657,12 @@
                 <artifactId>xmlunit-matchers</artifactId>
                 <version>${org.xmlunit.xmlunit-matchers.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
             <!-- tests -->
             <dependency>
                 <groupId>org.hamcrest</groupId>
@@ -855,6 +863,11 @@
                     <groupId>com.github.ferstl</groupId>
                     <artifactId>depgraph-maven-plugin</artifactId>
                     <version>${com.github.ferstl.depgraph-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.cyclonedx</groupId>
+                    <artifactId>cyclonedx-maven-plugin</artifactId>
+                    <version>${cyclonedx.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -1071,6 +1084,19 @@
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
                     <commitIdGenerationMode>full</commitIdGenerationMode>
                 </configuration>
+            </plugin>
+            <!-- uses default configuration -->
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

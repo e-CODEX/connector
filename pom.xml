@@ -134,7 +134,7 @@
         <com.fasterxml.woodstox.woodstox-core.version>6.4.0</com.fasterxml.woodstox.woodstox-core.version>
         <org.apache.santuario.xmlsec.version>2.2.4</org.apache.santuario.xmlsec.version>
         <!-- vaadin -->
-        <vaadin.version>14.10.5</vaadin.version>
+        <vaadin.version>24.3.9</vaadin.version>
         <vaadin.grid-pagination.version>2.0.10</vaadin.grid-pagination.version>
         <!-- soap web service -->
         <com.sun.xml.bind.jaxb.version>2.3.0</com.sun.xml.bind.jaxb.version>

@@ -26,7 +26,6 @@
           </option>
           <option name="goals">
             <list>
-              <option value="-U" />
               <option value="clean" />
               <option value="install" />
             </list>

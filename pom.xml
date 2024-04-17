@@ -118,6 +118,7 @@
         <maven.war-plugin.version>3.2.0</maven.war-plugin.version>
         <org.codehaus.mojo.xml-maven-plugin>1.0.2</org.codehaus.mojo.xml-maven-plugin>
         <jacoco.version>0.8.12</jacoco.version>
+        <cyclonedx.version>2.8.0</cyclonedx.version>
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -856,6 +857,11 @@
                     <artifactId>depgraph-maven-plugin</artifactId>
                     <version>${com.github.ferstl.depgraph-maven-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.cyclonedx</groupId>
+                    <artifactId>cyclonedx-maven-plugin</artifactId>
+                    <version>${cyclonedx.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -1071,6 +1077,19 @@
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
                     <commitIdGenerationMode>full</commitIdGenerationMode>
                 </configuration>
+            </plugin>
+            <!-- uses default configuration -->
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

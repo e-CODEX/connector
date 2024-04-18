@@ -2,7 +2,7 @@ on:
   push:
   pull_request:
   merge_group:
-
+name: CI Pipeline
 jobs:
   CI:
     uses: eu-LISA/ecodex-workflows/.github/workflows/maven-ci.yaml@main

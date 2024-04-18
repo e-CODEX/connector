@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - develop
+name: Dependency Submission      
 jobs:
   submit:
     runs-on: ubuntu-latest

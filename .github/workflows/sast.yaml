@@ -2,11 +2,17 @@ on:
   push:
   pull_request:
     types: [opened, synchronize, reopened]
+name: Static Analysis Java    
 jobs:
   sonar:
     uses: eu-LISA/ecodex-workflows/.github/workflows/sonar-java.yaml@main
     with:
         jacoco-xml-report-path: 'coverage/target/site/jacoco-aggregate/jacoco.xml'
-        java-version: 17
+        java-version: 21
         build-tool: 'maven'
     secrets: inherit
+  codeql:
+    uses: eu-LISA/ecodex-workflows/.github/workflows/codeql-java.yaml@main
+    with:
+      java-version: 21
+      build-tool: 'maven' 

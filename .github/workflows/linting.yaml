@@ -1,5 +1,5 @@
-name: Java Checkstyle
 on: [pull_request]
+name: Java code Checkstyle
 jobs:
   checkstyle:
     name: runner / checkstyle

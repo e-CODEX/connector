@@ -7,6 +7,6 @@ jobs:
   CI:
     uses: eu-LISA/ecodex-workflows/.github/workflows/maven-ci.yaml@main
     with:
-      java-version: 11
+      java-version: 21
       sbom-path: 'target/bom.xml'
       artifact-path: 'domibusConnectorDistribution/target/domibusConnector.zip'

@@ -95,8 +95,8 @@
     </pluginRepositories>
     <!-- shared version number properties -->
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- for spring boot-->
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- ecodex domibus libs-->
@@ -105,17 +105,18 @@
         <!-- plugins -->
         <com.github.ferstl.depgraph-maven-plugin.version>3.3.0</com.github.ferstl.depgraph-maven-plugin.version>
         <eu.ecodex.spring-properties-reporting-plugin.version>0.9.2-RELEASE</eu.ecodex.spring-properties-reporting-plugin.version>
-        <maven.assembly-plugin.version>2.4</maven.assembly-plugin.version>
-        <maven.compiler-plugin.version>3.7.0</maven.compiler-plugin.version>
-        <maven.dependency-plugin.version>3.0.2</maven.dependency-plugin.version>
+        <maven.assembly-plugin.version>3.7.1</maven.assembly-plugin.version>
+        <maven.compiler-plugin.version>3.13.0</maven.compiler-plugin.version>
+        <maven.dependency-plugin.version>3.6.1</maven.dependency-plugin.version>
         <maven.deploy-plugin.version>3.1.1</maven.deploy-plugin.version>
         <maven.failsafe-plugin.version>3.2.5</maven.failsafe-plugin.version>
-        <maven.jar-plugin.version>2.4</maven.jar-plugin.version>
+        <maven.jar-plugin.version>3.4.0</maven.jar-plugin.version>
         <maven.javadoc-plugin.version>3.6.3</maven.javadoc-plugin.version>
-        <maven.resources-plugin.version>2.6</maven.resources-plugin.version>
-        <maven.source-plugin.version>2.2.1</maven.source-plugin.version>
+        <maven.resources-plugin.version>3.3.1</maven.resources-plugin.version>
+        <maven.source-plugin.version>3.3.1</maven.source-plugin.version>
+        <maven.site-plugin.version>4.0.0-M13</maven.site-plugin.version>
         <maven.surefire-plugin.version>3.2.5</maven.surefire-plugin.version>
-        <maven.war-plugin.version>3.2.0</maven.war-plugin.version>
+        <maven.war-plugin.version>3.4.0</maven.war-plugin.version>
         <org.codehaus.mojo.xml-maven-plugin>1.0.2</org.codehaus.mojo.xml-maven-plugin>
         <jacoco.version>0.8.12</jacoco.version>
         <cyclonedx.version>2.8.0</cyclonedx.version>
@@ -124,11 +125,11 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <!-- documentation -->
         <asciidoclet.version>1.5.6</asciidoclet.version>
-        <asciidoctorj.version>2.5.2</asciidoctorj.version>
-        <asciidoctorj.diagram.version>2.2.1</asciidoctorj.diagram.version>
-        <asciidoctorj.diagram.plantuml.version>1.2021.8</asciidoctorj.diagram.plantuml.version>
-        <asciidoctorj.maven.plugin.version>2.2.1</asciidoctorj.maven.plugin.version>
-        <asciidoctorj.pdf.version>1.6.0</asciidoctorj.pdf.version>
+        <asciidoctorj.version>2.5.12</asciidoctorj.version>
+        <asciidoctorj.diagram.version>2.3.0</asciidoctorj.diagram.version>
+        <asciidoctorj.diagram.plantuml.version>1.2024.3</asciidoctorj.diagram.plantuml.version>
+        <asciidoctorj.maven.plugin.version>3.0.0</asciidoctorj.maven.plugin.version>
+        <asciidoctorj.pdf.version>2.3.15</asciidoctorj.pdf.version>
         <org.apache.cxf.version>3.4.10</org.apache.cxf.version>
         <!-- always update with cxf -->
         <com.fasterxml.woodstox.woodstox-core.version>6.4.0</com.fasterxml.woodstox.woodstox-core.version>
@@ -709,7 +710,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.9.1</version>
+                    <version>${maven.site-plugin.version}</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
@@ -790,8 +791,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler-plugin.version}</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <release>21</release>
                         <encoding>UTF-8</encoding>
                         <meminitial>1024m</meminitial>
                         <maxmem>2024m</maxmem>
@@ -1035,6 +1035,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <doclint>all,-missing</doclint>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,4 +1,7 @@
-on: [pull_request]
+on: 
+  push:
+  pull_request:
+  merge_group:
 name: Java code Checkstyle
 jobs:
   checkstyle:

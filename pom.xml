@@ -130,7 +130,7 @@
         <asciidoctorj.diagram.plantuml.version>1.2024.3</asciidoctorj.diagram.plantuml.version>
         <asciidoctorj.maven.plugin.version>3.0.0</asciidoctorj.maven.plugin.version>
         <asciidoctorj.pdf.version>2.3.15</asciidoctorj.pdf.version>
-        <org.apache.cxf.version>3.4.10</org.apache.cxf.version>
+        <org.apache.cxf.version>4.0.4</org.apache.cxf.version>
         <!-- always update with cxf -->
         <com.fasterxml.woodstox.woodstox-core.version>6.4.0</com.fasterxml.woodstox.woodstox-core.version>
         <org.apache.santuario.xmlsec.version>2.2.4</org.apache.santuario.xmlsec.version>

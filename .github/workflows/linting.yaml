@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dbelyaev/action-checkstyle@075d0715084a9ea2b90be73e0977c7c0d0de978f # v1.8.0
+      - uses: dbelyaev/action-checkstyle@5751ddceff1848a4df6a2d9aa9e7fbc735be4ddb # v1.8.0
         with:
           reporter: github-pr-review
           level: warning

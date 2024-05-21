@@ -7,6 +7,9 @@
         <version>4.4.12-SNAPSHOT</version>
     </parent>
     <artifactId>domibusConnectorUILib</artifactId>
+    <description>
+        This module provides helper classes and methods which can be used in connector ui module.
+    </description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pmode.xsd.resources.path>src/main/resources/pmode/domibus_3_2_4</pmode.xsd.resources.path>

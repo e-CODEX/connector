@@ -9,6 +9,10 @@
     <artifactId>domibusConnectorStarter</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
+    <description>
+        This module is the main entry point of the connector. It also provides a default admin user during first startup.
+        The default admin user password can be found in the log.
+    </description>
     <properties>
         <java.version>1.8</java.version>
     </properties>

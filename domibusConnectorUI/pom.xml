@@ -8,6 +8,9 @@
     </parent>
     <artifactId>domibusConnectorUI</artifactId>
     <packaging>jar</packaging>
+    <description>
+        This module provides a minimalist user interface for the administration of the connector.
+    </description>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>

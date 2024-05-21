@@ -8,8 +8,10 @@
     </parent>
     <artifactId>domibusConnectorSecurityToolkit</artifactId>
     <name>${project.artifactId}</name>
-    <description>The securityToolkitModule resolves and creates the ASIC-S Container. Its a bridge betweent the
-        connector and the securityLib</description>
+    <description>
+        The securityToolkitModule resolves and creates the ASIC-S Container. Its a bridge betweent the connector and
+        the securityLib
+    </description>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>

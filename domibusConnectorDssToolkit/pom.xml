@@ -7,6 +7,9 @@
         <version>4.4.12-SNAPSHOT</version>
     </parent>
     <artifactId>domibusConnectorDssToolkit</artifactId>
+    <description>
+        This module provides services which can be used for certificate verification and signing.
+    </description>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>

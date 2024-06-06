@@ -51,7 +51,7 @@ public class SubmissionAcceptanceRejectionTest  {
 	private static EvidenceBuilder builder = new ECodexEvidenceBuilder(new ClassPathResource("keystore.jks"), "JKS", "test123", "new_Testcert", "test123");
 	private static EvidenceUtils utils = new EvidenceUtilsXades(new ClassPathResource("keystore.jks"), "JKS","test123", "new_Testcert", "test123");
 	
-	private static final String PATH_OUTPUT_FILES = "target/test/SubmissionAcceptanceRejectionTest/";
+	private static final String PATH_OUTPUT_FILES = "build/test/SubmissionAcceptanceRejectionTest/";
 	private static final String SUBMISSION_ACCEPTANCE_FILE = "submissionAcceptance.xml";
 	private static final String RELAYREMMD_ACCEPTANCE_FILE = "relayremmdAcceptance.xml";
 	private static final String DELIVERY_ACCEPTANCE_FILE = "deliveryAcceptance.xml";

@@ -97,7 +97,7 @@ public class H2TestDatabaseFactory implements TestDatabaseFactory {
 
 
 
-        String jdbcUrl = "jdbc:h2:file:./target/testdb/" + UUID.randomUUID().toString().substring(0,6) + ";MODE=" + dbType;
+        String jdbcUrl = "jdbc:h2:file:./build/testdb/" + UUID.randomUUID().toString().substring(0,6) + ";MODE=" + dbType;
 
         ds.setURL(jdbcUrl);
         ds.setUser("sa");

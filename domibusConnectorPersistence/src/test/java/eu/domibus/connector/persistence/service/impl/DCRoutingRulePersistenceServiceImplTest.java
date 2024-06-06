@@ -8,8 +8,8 @@ import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.persistence.dao.CommonPersistenceTest;
 import eu.domibus.connector.persistence.service.DCRoutingRulePersistenceService;
 import org.junit.jupiter.api.*;
-import org.junit.runner.OrderWith;
-import org.junit.runner.manipulation.Ordering;
+//import org.junit.runner.OrderWith;
+//import org.junit.runner.manipulation.Ordering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 

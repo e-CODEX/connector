@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class EvidenceUtilsImplTest {
 
-    private static final String PATH_OUTPUT_FILES = "target/test/EvidenceUtilsImplTest/";
+    private static final String PATH_OUTPUT_FILES = "build/test/EvidenceUtilsImplTest/";
     private static final String SIGN_BYTE_ARRAY_FILE = "SignByteArrayTestoutputFile.xml";
 
     XMLSignatureFactory signFactory;

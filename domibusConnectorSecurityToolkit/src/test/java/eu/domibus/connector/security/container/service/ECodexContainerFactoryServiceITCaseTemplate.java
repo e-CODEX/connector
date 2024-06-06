@@ -56,7 +56,7 @@ public abstract class ECodexContainerFactoryServiceITCaseTemplate {
 
     @BeforeAll
     public static void initClass(TestInfo testInfo) {
-        String dir = System.getenv().getOrDefault(TEST_FILE_RESULTS_DIR_PROPERTY_NAME, "./target/testfileresults/");
+        String dir = System.getenv().getOrDefault(TEST_FILE_RESULTS_DIR_PROPERTY_NAME, "./build/testfileresults/");
         dir = dir + "/" + testInfo.getTestClass().get().getSimpleName();
         TEST_RESULTS_FOLDER = new File(dir);
         TEST_RESULTS_FOLDER.mkdirs();

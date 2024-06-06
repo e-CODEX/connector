@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LoadStoreTransitionMessageTest {
 
 
-    public static final String TEST_DIR = "./target/teststore/";
+    public static final String TEST_DIR = "./build/teststore/";
 
     @BeforeAll
     public static void beforeAll() throws IOException {

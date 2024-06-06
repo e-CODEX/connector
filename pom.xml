@@ -108,9 +108,9 @@
         <maven.assembly-plugin.version>3.7.1</maven.assembly-plugin.version>
         <maven.compiler-plugin.version>3.13.0</maven.compiler-plugin.version>
         <maven.dependency-plugin.version>3.6.1</maven.dependency-plugin.version>
-        <maven.deploy-plugin.version>3.1.1</maven.deploy-plugin.version>
+        <maven.deploy-plugin.version>3.1.2</maven.deploy-plugin.version>
         <maven.failsafe-plugin.version>3.2.5</maven.failsafe-plugin.version>
-        <maven.jar-plugin.version>3.4.0</maven.jar-plugin.version>
+        <maven.jar-plugin.version>3.4.1</maven.jar-plugin.version>
         <maven.javadoc-plugin.version>3.6.3</maven.javadoc-plugin.version>
         <maven.resources-plugin.version>3.3.1</maven.resources-plugin.version>
         <maven.source-plugin.version>3.3.1</maven.source-plugin.version>
@@ -125,36 +125,36 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <!-- documentation -->
         <asciidoclet.version>1.5.6</asciidoclet.version>
-        <asciidoctorj.version>2.5.12</asciidoctorj.version>
-        <asciidoctorj.diagram.version>2.3.0</asciidoctorj.diagram.version>
-        <asciidoctorj.diagram.plantuml.version>1.2024.3</asciidoctorj.diagram.plantuml.version>
-        <asciidoctorj.maven.plugin.version>3.0.0</asciidoctorj.maven.plugin.version>
-        <asciidoctorj.pdf.version>2.3.15</asciidoctorj.pdf.version>
-        <org.apache.cxf.version>3.4.10</org.apache.cxf.version>
+        <asciidoctor.version>2.5.12</asciidoctor.version>
+        <asciidoctor.diagram.version>2.3.0</asciidoctor.diagram.version>
+        <asciidoctor.diagram-plantuml.version>1.2024.3</asciidoctor.diagram-plantuml.version>
+        <asciidoctor.maven-plugin.version>3.0.0</asciidoctor.maven-plugin.version>
+        <asciidoctor.pdf.version>2.3.15</asciidoctor.pdf.version>
         <!-- always update with cxf -->
-        <com.fasterxml.woodstox.woodstox-core.version>6.4.0</com.fasterxml.woodstox.woodstox-core.version>
+        <com.fasterxml.woodstox.woodstox-core.version>6.6.2</com.fasterxml.woodstox.woodstox-core.version>
         <org.apache.santuario.xmlsec.version>2.2.4</org.apache.santuario.xmlsec.version>
         <!-- vaadin -->
         <vaadin.version>14.10.5</vaadin.version>
         <vaadin.grid-pagination.version>2.0.10</vaadin.grid-pagination.version>
         <!-- soap web service -->
         <com.sun.xml.bind.jaxb.version>2.3.0</com.sun.xml.bind.jaxb.version>
-        <com.sun.xml.bind.jaxb-core.version>2.3.0</com.sun.xml.bind.jaxb-core.version>
-        <com.sun.xml.bind.jaxb-impl.version>3.0.2</com.sun.xml.bind.jaxb-impl.version>
-        <com.sun.xml.bind.jaxb-xjc.version>2.3.0</com.sun.xml.bind.jaxb-xjc.version>
+        <com.sun.xml.bind.jaxb-core.version>4.0.5</com.sun.xml.bind.jaxb-core.version>
+        <com.sun.xml.bind.jaxb-impl.version>4.0.5</com.sun.xml.bind.jaxb-impl.version>
+        <com.sun.xml.bind.jaxb-xjc.version>4.0.5</com.sun.xml.bind.jaxb-xjc.version>
         <jakarta.xml.soap.jakarta.xml.soap-api.version>1.4.2</jakarta.xml.soap.jakarta.xml.soap-api.version>
         <jakarta.jws.jakarta.jws-api.version>2.1.0</jakarta.jws.jakarta.jws-api.version>
         <javax.xml.bind.jaxb-api.version>2.3.1</javax.xml.bind.jaxb-api.version>
         <javax.xml.ws.jaxws-api.version>2.3.1</javax.xml.ws.jaxws-api.version>
         <javax.ws.rs>1.1.1</javax.ws.rs>
-        <org.glassfish.jaxb.jaxb-runtime.version>2.3.8</org.glassfish.jaxb.jaxb-runtime.version>
+        <org.apache.cxf.version>3.4.10</org.apache.cxf.version>
+        <org.glassfish.jaxb-runtime.version>2.3.8</org.glassfish.jaxb-runtime.version>
         <!-- database -->
         <org.postgresql.postgresql.version>42.3.8</org.postgresql.postgresql.version>
         <org.mariadb.jdbc.mariadb-java-client.version>3.0.9</org.mariadb.jdbc.mariadb-java-client.version>
-        <com.oracle.database.jdbc.ojdbc8.version>12.2.0.1</com.oracle.database.jdbc.ojdbc8.version>
-        <com.oracle.database.jdbc.ojdbc-bom.version>21.5.0.0</com.oracle.database.jdbc.ojdbc-bom.version>
-        <com.h2database.h2.version>2.0.206</com.h2database.h2.version>
-        <org.liquibase.liquibase-core.version>4.8.0</org.liquibase.liquibase-core.version>
+        <com.oracle.database.jdbc.ojdbc8.version>23.4.0.24.05</com.oracle.database.jdbc.ojdbc8.version>
+        <com.oracle.database.jdbc.ojdbc-bom.version>23.4.0.24.05</com.oracle.database.jdbc.ojdbc-bom.version>
+        <com.h2database.h2.version>1.4.200</com.h2database.h2.version>
+        <org.liquibase-core.version>4.8.0</org.liquibase-core.version>
         <com.github.database-rider.rider-spring.version>1.10.1</com.github.database-rider.rider-spring.version>
         <mysql.mysql-connector-java.version>8.0.32</mysql.mysql-connector-java.version>
         <!-- other -->
@@ -184,19 +184,17 @@
         <org.ow2.asm.asm.version>9.2</org.ow2.asm.asm.version>
         <org.testcontainers.testcontainers.version>1.15.3</org.testcontainers.testcontainers.version>
         <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
-        <spring.boot.version>2.5.15</spring.boot.version>
+        <spring.boot.version>2.7.18</spring.boot.version>
         <tomcat.version>8.5.32</tomcat.version>
         <xml-apis.xml-apis.version>1.4.1</xml-apis.xml-apis.version>
         <lombok.version>1.18.32</lombok.version>
         <!-- testing -->
-        <assertj.version>3.19.0</assertj.version>
-        <hamcrest.version>1.3</hamcrest.version>
-        <junit.jupiter.api.version>5.7.1</junit.jupiter.api.version>
-        <junit.jupiter.engine.version>5.7.1</junit.jupiter.engine.version>
+        <assertj.version>3.26.0</assertj.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <org.junit.jupiter.version>5.10.2</org.junit.jupiter.version>
         <org.dbunit.dbunit.version>2.7.3</org.dbunit.dbunit.version>
-        <org.junit.jupiter.version>5.9.1</org.junit.jupiter.version>
-        <org.xmlunit.xmlunit-core.version>2.5.1</org.xmlunit.xmlunit-core.version>
-        <org.xmlunit.xmlunit-matchers.version>2.5.1</org.xmlunit.xmlunit-matchers.version>
+        <org.xmlunit.xmlunit-core.version>2.10.0</org.xmlunit.xmlunit-core.version>
+        <org.xmlunit.xmlunit-matchers.version>2.10.0</org.xmlunit.xmlunit-matchers.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -375,7 +373,7 @@
             <dependency>
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
-                <version>${org.glassfish.jaxb.jaxb-runtime.version}</version>
+                <version>${org.glassfish.jaxb-runtime.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.xml.ws</groupId>
@@ -447,7 +445,7 @@
             <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
-                <version>${org.liquibase.liquibase-core.version}</version>
+                <version>${org.liquibase-core.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-text</artifactId>
@@ -677,13 +675,8 @@
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.jupiter.api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.jupiter.engine.version}</version>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${org.junit.jupiter.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.dbunit</groupId>

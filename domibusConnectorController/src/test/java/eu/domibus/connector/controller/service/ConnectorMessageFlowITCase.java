@@ -148,7 +148,7 @@ public class ConnectorMessageFlowITCase {
 
     @BeforeEach
     public void setUp(TestInfo testInfo) {
-        testDir = System.getenv().getOrDefault(TEST_FILE_RESULTS_DIR_PROPERTY_NAME, "./target/testfileresults/");
+        testDir = System.getenv().getOrDefault(TEST_FILE_RESULTS_DIR_PROPERTY_NAME, "./build/testfileresults/");
         testDir = testDir + "/" + ConnectorMessageFlowITCase.class.getSimpleName() + "/" + testInfo.getDisplayName();
         testResultsFolder = new File(testDir);
         testResultsFolder.mkdirs();

@@ -5,7 +5,7 @@ on:
 name: CI Pipeline
 jobs:
   CI:
-    uses: eu-LISA/ecodex-workflows/.github/workflows/maven-ci.yaml@main
+    uses: eu-LISA/ecodex-workflows/.github/workflows/maven-ci.yaml@main #TODO update for gradle
     with:
       java-version: 21
       sbom-path: 'target/bom.xml'

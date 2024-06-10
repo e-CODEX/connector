@@ -17,7 +17,7 @@ class LargeFilePersistenceServiceFilesystemImplTCase extends CommonLargeFilePers
 
     @BeforeAll
     public static void deleteFS() {
-        FileSystemUtils.deleteRecursively(Paths.get("./target/ittest").toFile());
+        FileSystemUtils.deleteRecursively(Paths.get("./build/ittest").toFile());
     }
 
     @Override

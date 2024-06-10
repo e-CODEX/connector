@@ -6,14 +6,14 @@ on:
 name: Static Analysis Java    
 jobs:
   sonar:
-    uses: eu-LISA/ecodex-workflows/.github/workflows/sonar-java.yaml@main
+    uses: eu-LISA/ecodex-workflows/.github/workflows/sonar-java.yaml@main #TODO update for gradle
     with:
         jacoco-xml-report-path: 'coverage/target/site/jacoco-aggregate/jacoco.xml'
         java-version: 21
         build-tool: 'maven'
     secrets: inherit
   codeql:
-    uses: eu-LISA/ecodex-workflows/.github/workflows/codeql-java.yaml@main
+    uses: eu-LISA/ecodex-workflows/.github/workflows/codeql-java.yaml@main #TODO update for gradle
     with:
       java-version: 21
       build-tool: 'maven' 

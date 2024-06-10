@@ -1,0 +1,217 @@
+# TODO Cleanup
+
+[versions]
+asciidoc = "4.0.2" # Plugin
+asciidoctorj = "2.5.13" # Java bindings
+com-fasterxml-jackson-core-jackson-databind = "2.12.7.1"
+com-fasterxml-jackson-datatype-jackson-datatype-jsr310 = "2.12.7"
+com-github-database-rider-rider-spring = "1.10.1"
+com-github-librepdf-openpdf = "1.3.30"
+com-google-code-findbugs-annotations = "3.0.1u2"
+com-google-code-findbugs-jsr305 = "3.0.2"
+com-google-guava-guava = "30.1.1-jre"
+com-h2database-h2 = "1.4.200"
+com-mysql-mysql-connector-j = "8.0.32"
+com-oracle-database-jdbc-ojdbc8 = "23.4.0.24.05"
+jaxb-core-and-impl = "4.0.5"
+com-vaadin-flow-server = "2.9.6"
+com-vaadin-vaadin-spring-boot-starter = "14.10.5"
+commons-beanutils-commons-beanutils = "1.9.4"
+commons-cli-commons-cli = "1.4"
+commons-io-commons-io = "2.5"
+commons-lang-commons-lang = "2.6"
+cyclonedx = "1.8.2"
+eu-domibus-domibus-ws-stubs = "4.1.3"
+ecodex-utils = "0.0.22-RELEASE"
+dss = "5.12.1"
+io-micrometer-micrometer-registry-prometheus = "1.7.12"
+jakarta-jws-jakarta-jws-api = "2.1.0"
+jakarta-validation-jakarta-validation-api = "2.0.2"
+jakarta-xml-soap-jakarta-xml-soap-api = "1.4.2"
+javax-javaee-api = "8.0"
+javax-jms-javax-jms-api = "2.0.1"
+jakarta-jms-api = "2.0.3"
+javax-servlet-javax-servlet-api = "4.0.1"
+javax-validation-validation-api = "2.0.1.Final"
+javax-xml-bind-jaxb-api = "2.3.1"
+javax-xml-ws-jaxws-api = "2.3.1"
+net-sf-saxon-saxon-he = "12.4"
+org-apache-activemq-activemq-broker = "5.16.6"
+org-apache-activemq-artemis-jms-server = "2.19.1"
+org-apache-commons-commons-lang3 = "3.4"
+apache-cxf = "3.4.10"
+log4j = "2.17.2"
+lombok = "8.6"
+org-apache-poi-poi = "3.17"
+org-apache-santuario-xmlsec = "2.2.4"
+org-apache-tomcat-tomcat-jdbc = "9.0.75"
+org-assertj-assertj-core = "3.26.0"
+bouncycastle = "1.70"
+org-dbunit-dbunit = "2.7.3"
+org-fusesource-jansi-jansi = "2.4.0"
+org-fusesource-jansi-jansi-x1 = "1.17.1"
+org-glassfish-jaxb-jaxb-runtime = "2.3.8"
+org-hamcrest-hamcrest-core = "2.2"
+junit = "5.10.2"
+junit-platform = "1.10.2"
+org-liquibase-liquibase-core = "4.28.0"
+org-mariadb-jdbc-mariadb-java-client = "3.0.9"
+org-mockito-mockito-core = "3.9.0"
+org-postgresql-postgresql = "42.3.8"
+org-projectlombok-lombok = "1.18.32"
+org-slf4j-jcl-over-slf4j = "1.7.36"
+org-slf4j-jul-to-slf4j = "1.7.36"
+org-slf4j-slf4j-api = "1.7.36"
+spring-boot = "2.7.18"
+org-springframework-data-spring-data-commons = "2.5.12"
+org-springframework-security-spring-security-config = "5.5.8"
+org-springframework-security-spring-security-core = "5.5.8"
+org-springframework-security-spring-security-crypto = "5.5.8"
+org-springframework-security-spring-security-web = "5.5.8"
+org-springframework-spring-aspects = "5.3.27"
+org-springframework-spring-beans = "5.3.27"
+org-springframework-spring-context = "5.3.27"
+org-springframework-spring-core = "5.3.27"
+org-springframework-spring-jdbc = "5.3.27"
+org-springframework-spring-jms = "5.3.27"
+org-springframework-spring-test = "5.3.27"
+testcontainers = "1.19.8"
+org-vaadin-klaudeta-grid-pagination = "2.0.10"
+xmlunit = "2.10.0"
+
+[libraries]
+com-fasterxml-jackson-core-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "com-fasterxml-jackson-core-jackson-databind" }
+com-fasterxml-jackson-datatype-jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "com-fasterxml-jackson-datatype-jackson-datatype-jsr310" }
+com-github-database-rider-rider-spring = { module = "com.github.database-rider:rider-spring", version.ref = "com-github-database-rider-rider-spring" }
+com-github-librepdf-openpdf = { module = "com.github.librepdf:openpdf", version.ref = "com-github-librepdf-openpdf" }
+com-google-code-findbugs-annotations = { module = "com.google.code.findbugs:annotations", version.ref = "com-google-code-findbugs-annotations" }
+com-google-code-findbugs-jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "com-google-code-findbugs-jsr305" }
+com-google-guava-guava = { module = "com.google.guava:guava", version.ref = "com-google-guava-guava" }
+com-h2database-h2 = { module = "com.h2database:h2", version.ref = "com-h2database-h2" }
+com-mysql-mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "com-mysql-mysql-connector-j" }
+com-oracle-database-jdbc-ojdbc8 = { module = "com.oracle.database.jdbc:ojdbc8", version.ref = "com-oracle-database-jdbc-ojdbc8" }
+jaxb-core = { module = "com.sun.xml.bind:jaxb-core", version.ref = "jaxb-core-and-impl" }
+jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref = "jaxb-core-and-impl" }
+jaxb-xjc = { module = "com.sun.xml.bind:jaxb-xjc", version.ref = "jaxb-core-and-impl" }
+com-vaadin-flow-server = { module = "com.vaadin:flow-server", version.ref = "com-vaadin-flow-server" }
+com-vaadin-vaadin-spring-boot-starter = { module = "com.vaadin:vaadin-spring-boot-starter", version.ref = "com-vaadin-vaadin-spring-boot-starter" }
+commons-beanutils-commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils-commons-beanutils" }
+commons-cli-commons-cli = { module = "commons-cli:commons-cli", version.ref = "commons-cli-commons-cli" }
+commons-io-commons-io = { module = "commons-io:commons-io", version.ref = "commons-io-commons-io" }
+commons-lang-commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-lang-commons-lang" }
+eu-domibus-domibus-ws-stubs = { module = "eu.domibus:domibus-ws-stubs", version.ref = "eu-domibus-domibus-ws-stubs" }
+eu-ecodex-utils-logging-tester = { module = "eu.ecodex.utils:logging-tester", version.ref = "ecodex-utils" }
+eu-ecodex-utils-spring-boot-property-converter = { module = "eu.ecodex.utils:spring-boot-property-converter", version.ref = "ecodex-utils" }
+eu-ecodex-utils-spring-property-configuration-manager = { module = "eu.ecodex.utils:spring-property-configuration-manager", version.ref = "ecodex-utils" }
+eu-ecodex-utils-spring-property-configuration-manager-api = { module = "eu.ecodex.utils:spring-property-configuration-manager-api", version.ref = "ecodex-utils" }
+eu-ecodex-utils-spring-property-configuration-manager-vaadin-ui = { module = "eu.ecodex.utils:spring-property-configuration-manager-vaadin-ui", version.ref = "ecodex-utils" }
+eu-ecodex-utils-spring-quartz-scheduled = { module = "eu.ecodex.utils:spring-quartz-scheduled", version.ref = "ecodex-utils" }
+eu-europa-ec-joinup-sd-dss-dss-asic-xades = { module = "eu.europa.ec.joinup.sd-dss:dss-asic-xades", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-crl-parser-x509crl = { module = "eu.europa.ec.joinup.sd-dss:dss-crl-parser-x509crl", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-document = { module = "eu.europa.ec.joinup.sd-dss:dss-document", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-pades = { module = "eu.europa.ec.joinup.sd-dss:dss-pades", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-pades-pdfbox = { module = "eu.europa.ec.joinup.sd-dss:dss-pades-pdfbox", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-service = { module = "eu.europa.ec.joinup.sd-dss:dss-service", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-token = { module = "eu.europa.ec.joinup.sd-dss:dss-token", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-tsl-validation = { module = "eu.europa.ec.joinup.sd-dss:dss-tsl-validation", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-utils-apache-commons = { module = "eu.europa.ec.joinup.sd-dss:dss-utils-apache-commons", version.ref = "dss" }
+eu-europa-ec-joinup-sd-dss-dss-xades = { module = "eu.europa.ec.joinup.sd-dss:dss-xades", version.ref = "dss" }
+io-micrometer-micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "io-micrometer-micrometer-registry-prometheus" }
+jakarta-jms-api = { module = "jakarta.jms:jakarta.jms-api", version.ref = "jakarta-jms-api" }
+jakarta-jws-jakarta-jws-api = { module = "jakarta.jws:jakarta.jws-api", version.ref = "jakarta-jws-jakarta-jws-api" }
+jakarta-validation-jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation-jakarta-validation-api" }
+jakarta-xml-soap-jakarta-xml-soap-api = { module = "jakarta.xml.soap:jakarta.xml.soap-api", version.ref = "jakarta-xml-soap-jakarta-xml-soap-api" }
+javax-javaee-api = { module = "javax:javaee-api", version.ref = "javax-javaee-api" }
+javax-jms-javax-jms-api = { module = "javax.jms:javax.jms-api", version.ref = "javax-jms-javax-jms-api" }
+javax-servlet-javax-servlet-api = { module = "javax.servlet:javax.servlet-api", version.ref = "javax-servlet-javax-servlet-api" }
+javax-validation-validation-api = { module = "javax.validation:validation-api", version.ref = "javax-validation-validation-api" }
+javax-xml-bind-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-xml-bind-jaxb-api" }
+javax-xml-ws-jaxws-api = { module = "javax.xml.ws:jaxws-api", version.ref = "javax-xml-ws-jaxws-api" }
+net-sf-saxon-saxon-he = { module = "net.sf.saxon:Saxon-HE", version.ref = "net-sf-saxon-saxon-he" }
+org-apache-activemq-activemq-broker = { module = "org.apache.activemq:activemq-broker", version.ref = "org-apache-activemq-activemq-broker" }
+org-apache-activemq-artemis-jms-server = { module = "org.apache.activemq:artemis-jms-server", version.ref = "org-apache-activemq-artemis-jms-server" }
+org-apache-commons-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "org-apache-commons-commons-lang3" }
+org-apache-cxf-cxf-core = { module = "org.apache.cxf:cxf-core", version.ref = "apache-cxf" }
+org-apache-cxf-cxf-rt-features-logging = { module = "org.apache.cxf:cxf-rt-features-logging", version.ref = "apache-cxf" }
+org-apache-cxf-cxf-rt-frontend-jaxws = { module = "org.apache.cxf:cxf-rt-frontend-jaxws", version.ref = "apache-cxf" }
+org-apache-cxf-cxf-rt-ws-policy = { module = "org.apache.cxf:cxf-rt-ws-policy", version.ref = "apache-cxf" }
+org-apache-cxf-cxf-rt-ws-security = { module = "org.apache.cxf:cxf-rt-ws-security", version.ref = "apache-cxf" }
+org-apache-cxf-cxf-spring-boot-starter-jaxws = { module = "org.apache.cxf:cxf-spring-boot-starter-jaxws", version.ref = "apache-cxf" }
+org-apache-logging-log4j-log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+org-apache-logging-log4j-log4j-slf4j-impl = { module = "org.apache.logging.log4j:log4j-slf4j-impl", version.ref = "log4j" }
+org-apache-logging-log4j-log4j-v1-v2-api = { module = "org.apache.logging.log4j:log4j-1.2-api", version.ref = "log4j" }
+org-apache-logging-log4j-log4j-web = { module = "org.apache.logging.log4j:log4j-web", version.ref = "log4j" }
+org-apache-poi-poi = { module = "org.apache.poi:poi", version.ref = "org-apache-poi-poi" }
+org-apache-santuario-xmlsec = { module = "org.apache.santuario:xmlsec", version.ref = "org-apache-santuario-xmlsec" }
+org-apache-tomcat-tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "org-apache-tomcat-tomcat-jdbc" }
+org-assertj-assertj-core = { module = "org.assertj:assertj-core", version.ref = "org-assertj-assertj-core" }
+org-bouncycastle-bcmail-jdk15on = { module = "org.bouncycastle:bcmail-jdk15on", version.ref = "bouncycastle" }
+org-bouncycastle-bcpkix-jdk15on = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bouncycastle" }
+org-bouncycastle-bcprov-jdk15on = { module = "org.bouncycastle:bcprov-jdk15on", version.ref = "bouncycastle" }
+org-dbunit-dbunit = { module = "org.dbunit:dbunit", version.ref = "org-dbunit-dbunit" }
+org-fusesource-jansi-jansi = { module = "org.fusesource.jansi:jansi", version.ref = "org-fusesource-jansi-jansi" }
+org-fusesource-jansi-jansi-x1 = { module = "org.fusesource.jansi:jansi", version.ref = "org-fusesource-jansi-jansi-x1" }
+org-glassfish-jaxb-jaxb-runtime = { module = "org.glassfish.jaxb:jaxb-runtime", version.ref = "org-glassfish-jaxb-jaxb-runtime" }
+org-hamcrest-hamcrest-core = { module = "org.hamcrest:hamcrest-core", version.ref = "org-hamcrest-hamcrest-core" }
+org-junit-jupiter-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+org-junit-jupiter-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+org-junit-jupiter-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+org-junit-jupiter-junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+org-junit-jupiter-junit-jupiter-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
+org-liquibase-liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "org-liquibase-liquibase-core" }
+org-mariadb-jdbc-mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "org-mariadb-jdbc-mariadb-java-client" }
+org-mockito-mockito-core = { module = "org.mockito:mockito-core", version.ref = "org-mockito-mockito-core" }
+org-postgresql-postgresql = { module = "org.postgresql:postgresql", version.ref = "org-postgresql-postgresql" }
+org-projectlombok-lombok = { module = "org.projectlombok:lombok", version.ref = "org-projectlombok-lombok" }
+org-slf4j-jcl-over-slf4j = { module = "org.slf4j:jcl-over-slf4j", version.ref = "org-slf4j-jcl-over-slf4j" }
+org-slf4j-jul-to-slf4j = { module = "org.slf4j:jul-to-slf4j", version.ref = "org-slf4j-jul-to-slf4j" }
+org-slf4j-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "org-slf4j-slf4j-api" }
+org-springframework-boot-spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-loader = { module = "org.springframework.boot:spring-boot-loader", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-activemq = { module = "org.springframework.boot:spring-boot-starter-activemq", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-aop = { module = "org.springframework.boot:spring-boot-starter-aop", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-artemis = { module = "org.springframework.boot:spring-boot-starter-artemis", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-jta-atomikos = { module = "org.springframework.boot:spring-boot-starter-jta-atomikos", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-log4j2 = { module = "org.springframework.boot:spring-boot-starter-log4j2", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-quartz = { module = "org.springframework.boot:spring-boot-starter-quartz", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-tomcat = { module = "org.springframework.boot:spring-boot-starter-tomcat", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-starter-web-services = { module = "org.springframework.boot:spring-boot-starter-web-services", version.ref = "spring-boot" }
+org-springframework-boot-spring-boot-test = { module = "org.springframework.boot:spring-boot-test", version.ref = "spring-boot" }
+org-springframework-data-spring-data-commons = { module = "org.springframework.data:spring-data-commons", version.ref = "org-springframework-data-spring-data-commons" }
+org-springframework-security-spring-security-config = { module = "org.springframework.security:spring-security-config", version.ref = "org-springframework-security-spring-security-config" }
+org-springframework-security-spring-security-core = { module = "org.springframework.security:spring-security-core", version.ref = "org-springframework-security-spring-security-core" }
+org-springframework-security-spring-security-crypto = { module = "org.springframework.security:spring-security-crypto", version.ref = "org-springframework-security-spring-security-crypto" }
+org-springframework-security-spring-security-web = { module = "org.springframework.security:spring-security-web", version.ref = "org-springframework-security-spring-security-web" }
+org-springframework-spring-aspects = { module = "org.springframework:spring-aspects", version.ref = "org-springframework-spring-aspects" }
+org-springframework-spring-beans = { module = "org.springframework:spring-beans", version.ref = "org-springframework-spring-beans" }
+org-springframework-spring-context = { module = "org.springframework:spring-context", version.ref = "org-springframework-spring-context" }
+org-springframework-spring-core = { module = "org.springframework:spring-core", version.ref = "org-springframework-spring-core" }
+org-springframework-spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "org-springframework-spring-jdbc" }
+org-springframework-spring-jms = { module = "org.springframework:spring-jms", version.ref = "org-springframework-spring-jms" }
+org-springframework-spring-test = { module = "org.springframework:spring-test", version.ref = "org-springframework-spring-test" }
+org-testcontainers-mariadb = { module = "org.testcontainers:mariadb", version.ref = "testcontainers" }
+org-testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
+org-testcontainers-oracle-xe = { module = "org.testcontainers:oracle-xe", version.ref = "testcontainers" }
+org-testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
+org-testcontainers-testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+org-vaadin-klaudeta-grid-pagination = { module = "org.vaadin.klaudeta:grid-pagination", version.ref = "org-vaadin-klaudeta-grid-pagination" }
+org-xmlunit-xmlunit-core = { module = "org.xmlunit:xmlunit-core", version.ref = "xmlunit" }
+org-xmlunit-xmlunit-matchers = { module = "org.xmlunit:xmlunit-matchers", version.ref = "xmlunit" }
+cxf-codegen = { group = "org.apache.cxf", name = "cxf-tools-wsdlto-frontend-jaxws", version.ref = "apache-cxf" }
+cxf-common = { group = "org.apache.cxf", name = "cxf-tools-common", version.ref = "apache-cxf" }
+cxf-databinding = { group = "org.apache.cxf", name = "cxf-tools-wsdlto-databinding-jaxb", version.ref = "apache-cxf" }
+
+cyclonedx = { module = "org.cyclonedx:cyclonedx-gradle-plugin", version.ref = "cyclonedx" } # Plugin https://github.com/gradle/gradle/issues/15383
+[plugins]
+asciidoctor = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoc" }
+asciidoctor-pdf = { id = "org.asciidoctor.jvm.pdf", version.ref = "asciidoc" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }

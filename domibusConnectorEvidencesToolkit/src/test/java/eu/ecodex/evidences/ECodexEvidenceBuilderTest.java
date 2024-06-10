@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ECodexEvidenceBuilderTest {
 
-    private static final String PATH_OUTPUT_FILES = "target/test/ECodexEvidenceBuilderTest/";
+    private static final String PATH_OUTPUT_FILES = "build/test/ECodexEvidenceBuilderTest/";
 
     private static final String DELIVERY_UNKNOWN_ADDRESS_FILE = "outputfileDeliveryNonDeliveryToRecipientUnknownAdress.xml";
     private static final String DELIVERY_NO_REASON_FILE = "outputfileDeliveryNonDeliveryToRecipientNoreason.xml";

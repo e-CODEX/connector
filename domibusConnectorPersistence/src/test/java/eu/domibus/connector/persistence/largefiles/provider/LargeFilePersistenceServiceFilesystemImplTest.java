@@ -41,7 +41,7 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
 
         String methodName = testInfo.getTestMethod().get().getName();
 
-        testStorageLocation = new File("./target/tests/"
+        testStorageLocation = new File("./build/tests/"
                 + LargeFilePersistenceServiceFilesystemImplTest.class.getSimpleName() + "/"
                 + methodName
                 +  "/fsstorage/");
@@ -49,7 +49,7 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
         FileSystemUtils.deleteRecursively(testStorageLocation);
         testStorageLocation.mkdirs();
 
-        File src = new File("./target/test-classes/testdata/fsstorage/");
+        File src = new File("./build/resources/test/testdata/fsstorage/");
 
         //copy testdata to testfolder
         FileSystemUtils.copyRecursively(src, testStorageLocation);

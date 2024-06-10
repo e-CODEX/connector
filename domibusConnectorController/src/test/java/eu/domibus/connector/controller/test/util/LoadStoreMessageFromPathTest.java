@@ -35,11 +35,11 @@ public class LoadStoreMessageFromPathTest {
 
     @Test
     public void testStoreMsg() throws  IOException {
-        File file = new File("./target/testmsg/msg1/");
+        File file = new File("./build/testmsg/msg1/");
         FileSystemUtils.deleteRecursively(file);
         file.mkdirs();
 
-        Resource r = new FileSystemResource("./target/testmsg/msg1/");
+        Resource r = new FileSystemResource("./build/testmsg/msg1/");
 
         DomibusConnectorMessage message = DomainEntityCreator.createEpoMessage();
 

@@ -22,7 +22,7 @@ import java.io.UnsupportedEncodingException;
         ConnectorConverterAutoConfiguration.class,
         DCKeyStoreService.class
 },
-        properties = "connector.dss.tlCacheLocation=file:./target/tlcache/"
+        properties = "connector.dss.tlCacheLocation=file:./build/tlcache/"
 
 )
 @ActiveProfiles({"seclib-test", SpringProfiles.TEST, "dss-tl-test" })

@@ -30,35 +30,23 @@ dependencies {
     implementation("org.glassfish.jaxb:jaxb-xjc:2.3.5")
 }
 
-description = "The evidence toolkit contains the evidence related services. It is responsibly for creating the evidences."
+description =
+    "The evidence toolkit contains the evidence related services. It is responsibly for creating the evidences."
 
+val generatedSchemasDir = layout.buildDirectory.dir("generated-sources/xjc")
 
+tasks.register<GenerateJaxbClasses>("generateJaxbClasses") {
 
-val schemaDirectory = file("src/main/xsd")
-val schemaFiles = listOf("eDeliveryDetails.xsd", "TS102640_v2.xsd", "SPOCS_ts102640_soap_body.xsd").map { schemaDirectory.resolve(it) }
-val bindingFile = file("src/main/xjb/spocseu.xjb")
-val xsdOutputDir = layout.buildDirectory.dir("generated-sources/xjc")
+    val schemaDirectory = file("src/main/xsd")
 
-val prepareDir by tasks.registering {
-    doLast {
-        xsdOutputDir.get().asFile.mkdirs()
-    }
-}
-
-tasks.register("generateJaxbClasses", JavaExec::class) {
-    dependsOn(prepareDir)
-    group = "build"
-    description = "Generates JAXB classes"
-    classpath = configurations["compileClasspath"]
-    mainClass.set("com.sun.tools.xjc.XJCFacade")
-    args = listOf(
-        "-d", xsdOutputDir.get().asFile.absolutePath,
-        //"-p", "eu.domibus.configuration",
-        "-extension",
-        "-no-header",
-        "-b", bindingFile.absolutePath,
-        *schemaFiles.map { it.absolutePath }.toTypedArray()
-    )
+    schemaFiles.set(
+        listOf(
+            "eDeliveryDetails.xsd",
+            "TS102640_v2.xsd",
+            "SPOCS_ts102640_soap_body.xsd"
+        ).map { schemaDirectory.resolve(it) })
+    bindingFile.set(file("src/main/xjb/spocseu.xjb"))
+    xsdOutputDir.set(generatedSchemasDir)
 }
 
 tasks.named("compileJava") {
@@ -68,12 +56,13 @@ tasks.named("compileJava") {
 sourceSets {
     main {
         java {
-            srcDirs("src/main/java", xsdOutputDir)
+            srcDirs("src/main/java", generatedSchemasDir)
         }
     }
 }
 
 tasks.sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    from(xsdOutputDir)
+    dependsOn("generateJaxbClasses")
+    from(generatedSchemasDir)
 }

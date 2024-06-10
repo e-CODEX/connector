@@ -30,57 +30,24 @@ dependencies {
 description =
     "Contains the domibusConnectorAPI which declares the web interfaces and provides the transition model. It also provides the WSDL files for the webinterfaces."
 
-tasks.register("transformXml") {
-    doLast {
-        val inputDir = file("src/main/resources/wsdl/eu.domibus.connector.domain.transition")
-        val outputDir = file(layout.buildDirectory.dir("site/xsd"))
-        val stylesheet = file("src/xs3p/xs3p.xsl")
-
-        outputDir.mkdirs()
-
-        inputDir.listFiles { file -> file.extension == "xsd" }?.forEach { file ->
-            val outputFile = File(outputDir, file.name.replace(".xsd", ".html"))
-            val factory = TransformerFactory.newInstance()
-            val transformer = factory.newTransformer(StreamSource(stylesheet))
-            transformer.transform(StreamSource(file), StreamResult(outputFile))
-        }
-    }
+tasks.register<TransformXmlTask>("transformXml") {
+    inputDir.set(file("src/main/resources/wsdl/eu.domibus.connector.domain.transition"))
+    outputDir.set(layout.buildDirectory.dir("site/xsd"))
+    stylesheet.set(file("src/xs3p/xs3p.xsl"))
 }
 
 val generatedSourcesDir = layout.buildDirectory.dir("generated-sources")
 
-// Task to generate Java sources from WSDL using JavaExec
-val generateWsdlSources by tasks.register("generateWsdlSources") {
-    val wsdlOptions = listOf(
+val generateWsdlSources by tasks.register<GenerateWsdlSourcesTask>("generateWsdlSources") {
+    wsdlFiles.set(listOf(
         "src/main/resources/wsdl/DomibusConnectorGatewayDeliveryWebService.wsdl",
         "src/main/resources/wsdl/DomibusConnectorGatewaySubmissionWebService.wsdl",
         "src/main/resources/wsdl/DomibusConnectorGatewayWebService.wsdl",
         "src/main/resources/wsdl/DomibusConnectorBackendDeliveryWebService.wsdl",
         "src/main/resources/wsdl/DomibusConnectorBackendWebService.wsdl",
         "src/main/resources/wsdl/DomibusConnectorGatewayDeliverySubmitAsyncService.wsdl"
-    )
-
-    //TODO extract and parallelize. Add also Incremental support: https://docs.gradle.org/current/userguide/custom_tasks.html#incremental_tasks
-
-    wsdlOptions.forEach { wsdl ->
-
-        javaexec {
-            standardOutput = OutputStream.nullOutputStream() //Mute output
-            errorOutput = OutputStream.nullOutputStream()
-            mainClass = "org.apache.cxf.tools.wsdlto.WSDLToJava"
-            classpath(wsdlDeps.asPath)
-
-            val args = listOf(
-                "-quiet",
-                "-d", generatedSourcesDir.get().asFile.absolutePath,
-                "-wsdlLocation", "classpath:wsdl/${File(wsdl).name}",
-                layout.projectDirectory.file(wsdl).asFile.absolutePath
-            )
-            args(args)
-        }
-
-    }
-
+    ))
+    this.generatedSourcesOutputDir.set(generatedSourcesDir)
 }
 
 sourceSets {
@@ -123,8 +90,16 @@ val zip by tasks.register<Zip>("zipWsdlFiles"){
     destinationDirectory.set((layout.buildDirectory.dir("distributions").get().asFile))
 }
 
+tasks.processResources {
+    dependsOn("transformXml")
+}
+
 tasks.named("assemble"){
     dependsOn("zipWsdlFiles")
+}
+
+tasks.sourcesJar {
+    dependsOn(generateWsdlSources)
 }
 
 (publishing.publications["maven"] as MavenPublication).artifact(zip)

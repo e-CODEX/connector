@@ -14,7 +14,7 @@ val wsdlDeps: Configuration by configurations.creating {
 
 dependencies {
     api(libs.javax.xml.bind.jaxb.api)
-    api(libs.com.sun.xml.bind.jaxb.core) // todo replace with jakarta (clashes with cxf in the Link module)
+    api(libs.jaxb.core) // todo replace with jakarta (clashes with cxf in the Link module)
     api(libs.org.glassfish.jaxb.jaxb.runtime)
     api(libs.javax.xml.ws.jaxws.api)
     api(libs.jakarta.jws.jakarta.jws.api)

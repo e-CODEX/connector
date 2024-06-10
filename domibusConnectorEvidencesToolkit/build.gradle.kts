@@ -22,7 +22,7 @@ dependencies {
     testImplementation(project(":domibusConnectorAPI"))
     testImplementation(libs.org.assertj.assertj.core)
     testImplementation(libs.org.junit.jupiter.junit.jupiter.params)
-    testImplementation(libs.com.sun.xml.bind.jaxb.impl)
+    testImplementation(libs.jaxb.impl)
     testImplementation(libs.org.junit.jupiter.junit.jupiter)
     testRuntimeOnly(libs.org.junit.jupiter.junit.jupiter.platform.launcher)
 

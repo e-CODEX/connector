@@ -42,10 +42,9 @@ tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
 }
 
-
-
 val testsJar by tasks.register<Jar>("testsJar") {
-    dependsOn(tasks.classes)
+    dependsOn(tasks.testClasses)
+    dependsOn(tasks.processTestResources)
     archiveClassifier.set("tests")
     from(sourceSets["test"].output)
 }

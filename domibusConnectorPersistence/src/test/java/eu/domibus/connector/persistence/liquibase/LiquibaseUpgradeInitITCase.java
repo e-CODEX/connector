@@ -110,7 +110,7 @@ public class LiquibaseUpgradeInitITCase {
     @FromVersion("")
     protected void checkInitialScripts(Properties props) {
         System.out.println("\n\n\n######################\nRUNNING TEST: checkInstallDB");
-        props.put("spring.liquibase.change-log", "classpath:/db/changelog/install-4.3.xml");
+        props.put("spring.liquibase.change-log", "classpath:db/changelog/install-4.3.xml");
         checkLiquibaseRuns(props);
     }
 
@@ -126,7 +126,7 @@ public class LiquibaseUpgradeInitITCase {
     @FromVersion("4.1.x")
     protected void checkUpgradeFrom4_1_x(Properties props) {
         System.out.println("\n\n\n######################\nRUNNING TEST: checkInstallDB");
-        props.put("spring.liquibase.change-log", "classpath:/db/changelog/install-4.3.xml");
+        props.put("spring.liquibase.change-log", "classpath:db/changelog/install-4.3.xml");
         checkLiquibaseRuns(props);
     }
 
@@ -134,7 +134,7 @@ public class LiquibaseUpgradeInitITCase {
     @FromVersion("4.2.x")
     protected void checkUpgradeFrom4_2_x(Properties props) {
         System.out.println("\n\n\n######################\nRUNNING TEST: checkInstallDB");
-        props.put("spring.liquibase.change-log", "classpath:/db/changelog/install-4.3.xml");
+        props.put("spring.liquibase.change-log", "classpath:db/changelog/install-4.3.xml");
         checkLiquibaseRuns(props);
     }
 

@@ -1,5 +1,6 @@
 plugins {
     id("eu.domibus.connector.java-conventions")
+    `java-test-fixtures`
     alias(libs.plugins.lombok)
 }
 

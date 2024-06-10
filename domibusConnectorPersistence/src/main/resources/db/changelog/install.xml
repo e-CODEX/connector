@@ -6,7 +6,7 @@
 
 
     <include file="db/changelog/properties.xml" />
-    <include file="db/changelog/v4_0/create_dc_db_version_table.xml" />
+<!--    <include file="db/changelog/v4_0/create_dc_db_version_table.xml" />-->
 
     <include file="db/changelog/install-4.4.xml"/>
 

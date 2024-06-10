@@ -12,11 +12,11 @@ dependencies {
     implementation (libs.org.springframework.boot.spring.boot.starter.security)
     //implementation (libs.jakarta.jms.api)
     implementation (libs.javax.xml.bind.jaxb.api)
-    implementation (libs.com.sun.xml.bind.jaxb.core)
-    implementation (libs.com.sun.xml.bind.jaxb.impl)
+    implementation (libs.jaxb.core)
+    implementation (libs.jaxb.impl)
     implementation(libs.org.glassfish.jaxb.jaxb.runtime)
     // todo extract to common place
-    implementation("org.glassfish.jaxb:jaxb-xjc:${libs.versions.org.glassfish.jaxb.jaxb.runtime}") // Add this dependency for XJC tool
+    implementation(libs.jaxb.xjc) // Add this dependency for XJC tool
 
     compileOnly(libs.javax.servlet.javax.servlet.api)
 

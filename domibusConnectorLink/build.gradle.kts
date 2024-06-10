@@ -32,7 +32,7 @@ dependencies {
     testImplementation(libs.org.apache.activemq.activemq.broker)
     testImplementation(libs.org.junit.jupiter.junit.jupiter.api)
     testImplementation(project(":domibusConnectorTestData"))
-    testImplementation(project(":domibusConnectorPersistence"))
+    testImplementation(testFixtures(project(":domibusConnectorPersistence")))
     testImplementation(libs.javax.javaee.api)
 }
 

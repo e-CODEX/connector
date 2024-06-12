@@ -43,6 +43,13 @@
             </includes>
             <outputDirectory>/standalone/config/keystores</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/target</directory>
+            <includes>
+                <include>bom.*</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
     </fileSets>
     <files>
         <file>

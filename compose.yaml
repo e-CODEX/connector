@@ -1,0 +1,64 @@
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  connector:
+    build:
+      context: .
+    ports:
+      - 9081:9081
+    depends_on:
+      - db
+    networks:
+      - dbnet
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://db:3306/connector
+      - SPRING_DATASOURCE_USERNAME=connector
+      - SPRING_DATASOURCE_PASSWORD=connector
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.mariadb.jdbc.Driver
+      - spring.datasource.xa.data-source-class-name=org.mariadb.jdbc.MySQLDataSource
+    expose:
+      - 9081
+  db:
+    image: mariadb:10.5
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./domibusConnectorPersistence/src/main/resources/dbscripts/initial/MariaDB:/docker-entrypoint-initdb.d
+    networks:
+      - dbnet
+    environment:
+      - MYSQL_DATABASE=connector
+      - MYSQL_USER=connector
+      - MYSQL_ROOT_PASSWORD=connector # Dummy passwords for development
+      - MYSQL_PASSWORD=connector # Dummy passwords for development
+    expose:
+      - 3306
+#   db:
+#     image: postgres
+#     restart: always
+#     user: postgres
+#     secrets:
+#       - db-password
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+#     environment:
+#       - POSTGRES_DB=example
+#       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+#     expose:
+#       - 5432
+#     healthcheck:
+#       test: [ "CMD", "pg_isready" ]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+# volumes:
+#   db-data:
+# secrets:
+#   db-password:
+#     file: db/password.txt
+
+volumes:
+  db-data:
+networks:
+  dbnet:

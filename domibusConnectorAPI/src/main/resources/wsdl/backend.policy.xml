@@ -5,10 +5,14 @@
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"
             wsu:Id="DomibusBackendPolicy"
-            xsi:schemaLocation="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702 http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/ws-securitypolicy-1.2.xsd
+            xsi:schemaLocation="
+            http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702
+            http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/ws-securitypolicy-1.2.xsd
             https://www.w3.org/ns/ws-policy http://www.w3.org/2007/02/ws-policy.xsd
-            http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization/optimizedmimeserialization-policy.xsd
-            http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization
+            http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization/optimizedmimeserialization-policy.xsd
+            http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
+            http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
     <wsp:ExactlyOne>
         <wsp:All>
             <wsoma:OptimizedMimeSerialization/>
@@ -16,7 +20,8 @@
                 <wsp:Policy>
                     <sp:InitiatorToken>
                         <wsp:Policy>
-                            <sp:X509Token sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+                            <sp:X509Token
+                                    sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
                                 <wsp:Policy>
                                     <sp:WssX509V3Token10/>
                                 </wsp:Policy>
@@ -25,7 +30,8 @@
                     </sp:InitiatorToken>
                     <sp:RecipientToken>
                         <wsp:Policy>
-                            <sp:X509Token sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Never">
+                            <sp:X509Token
+                                    sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Never">
                                 <wsp:Policy>
                                     <sp:WssX509V3Token10/>
                                 </wsp:Policy>

@@ -11,40 +11,36 @@
         xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
         name="DomibusConnectorDeliveryService"
         targetNamespace="http://connector.domibus.eu/jms/gateway/">
+
     <wsdl:import
             namespace="transition.domain.connector.domibus.eu"
             location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
 
     <wsdl:message name="message">
-        <wsdl:part name="message" type="dct:DomibusConnectorMessageType"></wsdl:part>
+        <wsdl:part name="message" type="dct:DomibusConnectorMessageType"/>
     </wsdl:message>
     <wsdl:message name="response">
-        <wsdl:part name="response" type="dct:DomibusConnectorMessageResponseType"></wsdl:part>
+        <wsdl:part name="response" type="dct:DomibusConnectorMessageResponseType"/>
     </wsdl:message>
-
 
     <wsdl:portType name="DomibusConnectorAsyncDeliverToConnectorService">
         <wsdl:operation name="deliverMessage">
-            <wsdl:input message="tns:message"></wsdl:input>
+            <wsdl:input message="tns:message"/>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:portType name="DomibusConnectorAsyncDeliverToConnectorReceiveResponseService" >
+    <wsdl:portType name="DomibusConnectorAsyncDeliverToConnectorReceiveResponseService">
         <wsdl:operation name="deliverResponse">
-            <wsdl:input message="tns:response"></wsdl:input>
+            <wsdl:input message="tns:response"/>
         </wsdl:operation>
     </wsdl:portType>
-
     <wsdl:portType name="DomibusConnectorAsyncSubmitToGatewayService">
         <wsdl:operation name="submitMessage">
-            <wsdl:input message="tns:message"></wsdl:input>
+            <wsdl:input message="tns:message"/>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:portType name="DomibusConnectorAsyncSubmitToGatewayReceiveResponseService" >
+    <wsdl:portType name="DomibusConnectorAsyncSubmitToGatewayReceiveResponseService">
         <wsdl:operation name="submitResponse">
-            <wsdl:input message="tns:response"></wsdl:input>
+            <wsdl:input message="tns:response"/>
         </wsdl:operation>
     </wsdl:portType>
-
-
-
 </wsdl:definitions>

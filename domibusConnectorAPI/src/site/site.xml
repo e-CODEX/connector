@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="domibusWebConnectorAPI">
-<!--    <bannerLeft>-->
-<!--        <name>e-CODEX making Justice Faster</name>-->
-<!--        <src>images/logo_ecodex_0.png</src>-->
-        <!--    <href>http://maven.apache.org/</href>-->
-<!--    </bannerLeft>-->
     <body>
         <links>
             <item name="E-Codex Project" href="https://www.e-codex.eu/"/>
@@ -12,8 +7,6 @@
         <menu name="domibus WebConnector API">
             <item name="Interface Description" href="interface_description.html"/>
         </menu>
-
-<!--        <menu ref="reports"/>-->
         <footer/>
     </body>
 </project>

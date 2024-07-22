@@ -5,12 +5,4 @@ on:
 name: Java code Checkstyle
 jobs:
   checkstyle:
-    name: runner / checkstyle
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dbelyaev/action-checkstyle@075d0715084a9ea2b90be73e0977c7c0d0de978f # v1.8.0
-        with:
-          reporter: github-pr-review
-          level: warning
-          checkstyle_config: google_checks.xml
+    uses: eu-LISA/ecodex-workflows/.github/workflows/java-linting.yaml@main

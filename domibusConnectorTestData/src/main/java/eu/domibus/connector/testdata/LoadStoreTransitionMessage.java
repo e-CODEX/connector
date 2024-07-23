@@ -299,7 +299,7 @@ public class LoadStoreTransitionMessage {
     private void writeXmlSourceToResource(Path r, Source xmlContent) throws IOException {
 //        File f = r.getFile();
     	FileOutputStream out = new FileOutputStream(r.toFile());
-    	out.write(ConversionTools.convertXmlSourceToByteArray(xmlContent));
+        out.write(ConversionTools.convertXMLSourceToByteArray(xmlContent));
     	out.flush();
     	out.close();
 //        try (FileOutputStream fout = new FileOutputStream(r.toFile())) {

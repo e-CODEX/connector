@@ -176,7 +176,7 @@
         <org.apache.commons.commons-lang3.version>3.4</org.apache.commons.commons-lang3.version>
         <org.apache.commons.commons-compress.version>1.21</org.apache.commons.commons-compress.version>
         <org.apache.log4j2.version>2.19.0</org.apache.log4j2.version>
-        <org.apache.poi.poi.version>3.17</org.apache.poi.poi.version>
+        <org.apache.poi.poi.version>5.3.0</org.apache.poi.poi.version>
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
         <org.codehaus.jackson>1.9.12</org.codehaus.jackson>
         <org.bouncycastl.version>1.70</org.bouncycastl.version>

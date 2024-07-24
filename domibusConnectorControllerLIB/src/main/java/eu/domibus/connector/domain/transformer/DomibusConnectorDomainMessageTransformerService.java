@@ -9,7 +9,6 @@ import eu.domibus.connector.domain.model.builder.DomibusConnectorMessageErrorBui
 import eu.domibus.connector.domain.model.helper.DomainModelHelper;
 import eu.domibus.connector.domain.transition.*;
 import eu.domibus.connector.domain.transition.tools.ConversionTools;
-import eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceProvider;
 import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -454,7 +453,7 @@ public class DomibusConnectorDomainMessageTransformerService {
 
         Source evidence = messageConfirmationTO.getConfirmation();
         if (evidence != null) {
-            confirmation.setEvidence(ConversionTools.convertXmlSourceToByteArray(evidence));
+            confirmation.setEvidence(ConversionTools.convertXMLSourceToByteArray(evidence));
         }
         confirmation.setEvidenceType(DomibusConnectorEvidenceType.valueOf(messageConfirmationTO.getConfirmationType().name()));
 
@@ -466,7 +465,9 @@ public class DomibusConnectorDomainMessageTransformerService {
     DomibusConnectorMessageContent transformMessageContentTransitionToDomain(final @NotNull DomibusConnectorMessageContentType messageContentTO) {
         DomibusConnectorMessageContent messageContent = new DomibusConnectorMessageContent();
 
-        byte[] result = ConversionTools.convertXmlSourceToByteArray(messageContentTO.getXmlContent());
+        byte[] result = ConversionTools.convertXMLSourceToByteArray(
+            messageContentTO.getXmlContent()
+        );
 
         messageContent.setXmlContent(result);
         if(LOGGER.isTraceEnabled()) {

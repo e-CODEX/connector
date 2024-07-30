@@ -1,16 +1,23 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.transport;
 
 import eu.domibus.connector.controller.service.SubmitToLinkService;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
-import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.domain.model.DomibusConnectorTransportStep;
 import eu.domibus.connector.domain.model.helper.DomainModelHelper;
 import eu.domibus.connector.persistence.service.DCMessagePersistenceService;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the DCTransportRetryService interface that handles the retry logic of a
+ * transport step.
+ */
 @Service
 public class DCTransportRetryServiceImpl implements DCTransportRetryService {
-
     private final SubmitToLinkService submitToLinkService;
     private final DCMessagePersistenceService messagePersistenceService;
 
@@ -25,7 +32,6 @@ public class DCTransportRetryServiceImpl implements DCTransportRetryService {
         step.getTransportedMessage().ifPresent(submitToLinkService::submitToLink);
     }
 
-
     @Override
     public boolean isRetryAble(DomibusConnectorTransportStep step) {
         boolean retryPossible = true;
@@ -39,5 +45,4 @@ public class DCTransportRetryServiceImpl implements DCTransportRetryService {
         }
         return retryPossible;
     }
-
 }

@@ -1,10 +1,10 @@
 <?xml version='1.0'?>
-<configuration xmlns="urn:activemq"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="urn:activemq"
+        xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
 
-    <core xmlns="urn:activemq:core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="urn:activemq:core ">
+    <core xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:activemq:core"
+            xsi:schemaLocation="urn:activemq:core ">
 
         <name>0.0.0.0</name>
 
@@ -56,7 +56,6 @@
         -->
         <journal-buffer-timeout>1915999</journal-buffer-timeout>
 
-
         <!--
           When using ASYNCIO, this will determine the writing queue depth for libaio.
          -->
@@ -87,9 +86,6 @@
         <!-- use this to customize the ping used for ipv6 addresses -->
         <!-- <network-check-ping6-command>ping6 -c 1 %2$s</network-check-ping6-command> -->
 
-
-
-
         <!-- how often we are looking for how many bytes are being used on the disk in ms -->
         <disk-scan-period>5000</disk-scan-period>
 
@@ -106,9 +102,7 @@
 
         <critical-analyzer-policy>HALT</critical-analyzer-policy>
 
-
         <page-sync-timeout>1915999</page-sync-timeout>
-
 
         <!-- the system will enter into page mode once you hit this limit.
        This is an estimate in bytes of how much the messages are using in memory
@@ -134,24 +128,32 @@
                        "anycastPrefix=jms.queue.;multicastPrefix=jms.topic." to the acceptor url.
                        See https://issues.apache.org/jira/browse/ARTEMIS-1644 for more information. -->
 
-
             <!-- Acceptor for every supported protocol -->
-            <acceptor name="artemis">tcp://0.0.0.0:61616?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;amqpMinLargeMessageSize=102400;protocols=CORE,AMQP,STOMP,HORNETQ,MQTT,OPENWIRE;useEpoll=true;amqpCredits=1000;amqpLowCredits=300;amqpDuplicateDetection=true;supportAdvisory=false;suppressInternalManagementObjects=false</acceptor>
+            <acceptor name="artemis">
+                tcp://0.0.0.0:61616?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;amqpMinLargeMessageSize=102400;protocols=CORE,AMQP,STOMP,HORNETQ,MQTT,OPENWIRE;useEpoll=true;amqpCredits=1000;amqpLowCredits=300;amqpDuplicateDetection=true;supportAdvisory=false;suppressInternalManagementObjects=false
+            </acceptor>
 
             <!-- AMQP Acceptor.  Listens on default AMQP port for AMQP traffic.-->
-            <acceptor name="amqp">tcp://0.0.0.0:5672?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=AMQP;useEpoll=true;amqpCredits=1000;amqpLowCredits=300;amqpMinLargeMessageSize=102400;amqpDuplicateDetection=true</acceptor>
+            <acceptor name="amqp">
+                tcp://0.0.0.0:5672?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=AMQP;useEpoll=true;amqpCredits=1000;amqpLowCredits=300;amqpMinLargeMessageSize=102400;amqpDuplicateDetection=true
+            </acceptor>
 
             <!-- STOMP Acceptor. -->
-            <acceptor name="stomp">tcp://0.0.0.0:61613?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=STOMP;useEpoll=true</acceptor>
+            <acceptor name="stomp">
+                tcp://0.0.0.0:61613?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=STOMP;useEpoll=true
+            </acceptor>
 
             <!-- HornetQ Compatibility Acceptor.  Enables HornetQ Core and STOMP for legacy HornetQ clients. -->
-            <acceptor name="hornetq">tcp://0.0.0.0:5445?anycastPrefix=jms.queue.;multicastPrefix=jms.topic.;protocols=HORNETQ,STOMP;useEpoll=true</acceptor>
+            <acceptor name="hornetq">
+                tcp://0.0.0.0:5445?anycastPrefix=jms.queue.;multicastPrefix=jms.topic.;protocols=HORNETQ,STOMP;useEpoll=true
+            </acceptor>
 
             <!-- MQTT Acceptor -->
-            <acceptor name="mqtt">tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true</acceptor>
+            <acceptor name="mqtt">
+                tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true
+            </acceptor>
 
         </acceptors>
-
 
         <security-settings>
             <security-setting match="#">
@@ -213,17 +215,16 @@
         <addresses>
             <address name="DLQ">
                 <anycast>
-                    <queue name="DLQ" />
+                    <queue name="DLQ"/>
                 </anycast>
             </address>
             <address name="ExpiryQueue">
                 <anycast>
-                    <queue name="ExpiryQueue" />
+                    <queue name="ExpiryQueue"/>
                 </anycast>
             </address>
 
         </addresses>
-
 
         <!-- Uncomment the following if you want to use the Standard LoggingActiveMQServerPlugin pluging to log in events
         <broker-plugins>
@@ -238,6 +239,5 @@
            </broker-plugin>
         </broker-plugins>
         -->
-
     </core>
 </configuration>

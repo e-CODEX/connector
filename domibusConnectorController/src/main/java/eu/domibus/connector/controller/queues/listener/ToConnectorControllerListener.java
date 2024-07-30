@@ -1,4 +1,11 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.queues.listener;
+
+import static eu.domibus.connector.controller.queues.JmsConfiguration.TO_CONNECTOR_QUEUE_BEAN;
 
 import eu.domibus.connector.common.service.CurrentBusinessDomain;
 import eu.domibus.connector.controller.processor.EvidenceMessageProcessor;
@@ -18,56 +25,77 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import static eu.domibus.connector.controller.queues.JmsConfiguration.TO_CONNECTOR_QUEUE_BEAN;
-
+/**
+ * Controller listener class that handles messages received from the To Connector queue.
+ * It processes different types of messages based on their directions and message types.
+ */
 @Component
 public class ToConnectorControllerListener {
-
     private static final Logger LOGGER = LogManager.getLogger(ToConnectorControllerListener.class);
-
     private final ToGatewayBusinessMessageProcessor toGatewayBusinessMessageProcessor;
     private final ToBackendBusinessMessageProcessor toBackendBusinessMessageProcessor;
     private final EvidenceMessageProcessor evidenceMessageProcessor;
 
-    public ToConnectorControllerListener(ToGatewayBusinessMessageProcessor toGatewayBusinessMessageProcessor,
-                                         ToBackendBusinessMessageProcessor toBackendBusinessMessageProcessor,
-                                         EvidenceMessageProcessor evidenceMessageProcessor) {
+    /**
+     * Listener class that handles messages from the connector queue and processes them.
+     */
+    public ToConnectorControllerListener(
+        ToGatewayBusinessMessageProcessor toGatewayBusinessMessageProcessor,
+        ToBackendBusinessMessageProcessor toBackendBusinessMessageProcessor,
+        EvidenceMessageProcessor evidenceMessageProcessor) {
         this.toGatewayBusinessMessageProcessor = toGatewayBusinessMessageProcessor;
         this.toBackendBusinessMessageProcessor = toBackendBusinessMessageProcessor;
         this.evidenceMessageProcessor = evidenceMessageProcessor;
     }
 
+    /**
+     * Handles a message from the connector queue and processes it.
+     *
+     * @param message The DomibusConnectorMessage to be processed.
+     * @throws IllegalArgumentException if the message or message details are null.
+     * @throws IllegalStateException    if an illegal message format is received.
+     */
     @JmsListener(destination = TO_CONNECTOR_QUEUE_BEAN)
     @Transactional(rollbackFor = Exception.class)
-    @eu.domibus.connector.lib.logging.MDC(name = LoggingMDCPropertyNames.MDC_DC_QUEUE_LISTENER_PROPERTY_NAME, value = "ToConnectorControllerListener")
+    @eu.domibus.connector.lib.logging.MDC(
+        name = LoggingMDCPropertyNames.MDC_DC_QUEUE_LISTENER_PROPERTY_NAME,
+        value = "ToConnectorControllerListener"
+    )
     public void handleMessage(DomibusConnectorMessage message) {
         if (message == null || message.getMessageDetails() == null) {
             throw new IllegalArgumentException("Message and Message Details must not be null");
         }
-        String messageId = message.getConnectorMessageId().toString();
-        MDC.MDCCloseable mdcCloseable = MDC.putCloseable(LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME, messageId);
-        try {
+        var messageId = message.getConnectorMessageId().toString();
+        try (var mdcCloseable = MDC.putCloseable(
+            LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME,
+            messageId
+        )) {
             CurrentBusinessDomain.setCurrentBusinessDomain(message.getMessageLaneId());
             DomibusConnectorMessageDirection direction = message.getMessageDetails().getDirection();
             if (DomainModelHelper.isEvidenceMessage(message)) {
                 evidenceMessageProcessor.processMessage(message);
-            } else if (DomainModelHelper.isBusinessMessage(message) && direction.getTarget() == MessageTargetSource.GATEWAY) {
+            } else if (DomainModelHelper.isBusinessMessage(message)
+                && direction.getTarget() == MessageTargetSource.GATEWAY) {
                 toGatewayBusinessMessageProcessor.processMessage(message);
-            } else if (DomainModelHelper.isBusinessMessage(message) && direction.getTarget() == MessageTargetSource.BACKEND) {
+            } else if (DomainModelHelper.isBusinessMessage(message)
+                && direction.getTarget() == MessageTargetSource.BACKEND) {
                 toBackendBusinessMessageProcessor.processMessage(message);
             } else {
                 throw new IllegalStateException("Illegal Message format received!");
             }
         } catch (Exception exc) {
-            LOGGER.error(LoggingMarker.Log4jMarker.BUSINESS_LOG, "Failed to process message due [{}]! Check Dead Letter Queue and technical logs for details!", exc.getMessage());
-            String error = "Failed to process messsage due: " + exc.getMessage();
+            LOGGER.error(
+                LoggingMarker.Log4jMarker.BUSINESS_LOG,
+                "Failed to process message due [{}]! Check Dead Letter Queue and technical "
+                    + "logs for details!",
+                exc.getMessage()
+            );
+            String error = "Failed to process message due: " + exc.getMessage();
             LOGGER.error(error, exc);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw exc;
         } finally {
             CurrentBusinessDomain.setCurrentBusinessDomain(null);
-            mdcCloseable.close();
         }
     }
-
 }

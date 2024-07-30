@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.processor;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
@@ -6,14 +11,12 @@ import org.springframework.stereotype.Service;
 
 /**
  * This processor is called after a business message
- * has been rejected or confirmed
+ * has been rejected or confirmed.
  *
- * delegates deletion of message content
- *
+ * <p>delegates deletion of message content
  */
 @Service
 public class CleanupMessageProcessor implements DomibusConnectorMessageProcessor {
-
     private final DCMessageContentManager dcMessageContentManager;
 
     public CleanupMessageProcessor(DCMessageContentManager dcMessageContentManager) {
@@ -24,5 +27,4 @@ public class CleanupMessageProcessor implements DomibusConnectorMessageProcessor
     public void processMessage(DomibusConnectorMessage message) {
         dcMessageContentManager.cleanForMessage(message);
     }
-
 }

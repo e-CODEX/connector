@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.processor.util;
 
 import eu.domibus.connector.common.service.ConfigurationPropertyManagerService;
@@ -6,87 +11,152 @@ import eu.domibus.connector.controller.service.DomibusConnectorMessageIdGenerato
 import eu.domibus.connector.domain.configuration.EvidenceActionServiceConfigurationProperties;
 import eu.domibus.connector.domain.enums.DomibusConnectorEvidenceType;
 import eu.domibus.connector.domain.enums.DomibusConnectorRejectionReason;
-import eu.domibus.connector.domain.model.*;
+import eu.domibus.connector.domain.model.DomibusConnectorAction;
+import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
+import eu.domibus.connector.domain.model.DomibusConnectorMessage;
+import eu.domibus.connector.domain.model.DomibusConnectorMessageConfirmation;
 import eu.domibus.connector.evidences.DomibusConnectorEvidencesToolkit;
 import eu.domibus.connector.persistence.service.DCMessagePersistenceService;
 import eu.domibus.connector.persistence.service.DomibusConnectorEvidencePersistenceService;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+/**
+ * The ConfirmationCreatorService class provides methods for creating various types of confirmations
+ * and actions for a given evidence type.
+ * It uses the DomibusConnectorEvidencesToolkit and ConfigurationPropertyManagerService
+ * to generate the confirmations and actions.
+ */
 @Component
 public class ConfirmationCreatorService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmationCreatorService.class);
-
     private final DomibusConnectorEvidencesToolkit evidencesToolkit;
     private final ConfigurationPropertyManagerService configurationPropertyLoaderService;
 
-    public ConfirmationCreatorService(DomibusConnectorEvidencesToolkit evidencesToolkit,
-                                      DomibusConnectorEvidencePersistenceService evidencePersistenceService,
-                                      DomibusConnectorMessageIdGenerator messageIdGenerator,
-                                      ConfigurationPropertyManagerService configurationPropertyLoaderService,
-                                      DCMessagePersistenceService messagePersistenceService) {
+    public ConfirmationCreatorService(
+        DomibusConnectorEvidencesToolkit evidencesToolkit,
+        DomibusConnectorEvidencePersistenceService evidencePersistenceService,
+        DomibusConnectorMessageIdGenerator messageIdGenerator,
+        ConfigurationPropertyManagerService configurationPropertyLoaderService,
+        DCMessagePersistenceService messagePersistenceService) {
         this.evidencesToolkit = evidencesToolkit;
         this.configurationPropertyLoaderService = configurationPropertyLoaderService;
     }
 
-
-    public DomibusConnectorAction createEvidenceAction(DomibusConnectorEvidenceType type) throws DomibusConnectorControllerException {
-
+    /**
+     * Creates a DomibusConnectorAction based on the given evidence type.
+     *
+     * @param type The evidence type.
+     * @return The created DomibusConnectorAction.
+     * @throws DomibusConnectorControllerException If an illegal evidence type is provided and
+     *                                             no action is found.
+     */
+    public DomibusConnectorAction createEvidenceAction(DomibusConnectorEvidenceType type)
+        throws DomibusConnectorControllerException {
         EvidenceActionServiceConfigurationProperties evidenceActionServiceConfigurationProperties =
-                configurationPropertyLoaderService.loadConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), EvidenceActionServiceConfigurationProperties.class);
+            configurationPropertyLoaderService.loadConfiguration(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(),
+                EvidenceActionServiceConfigurationProperties.class
+            );
 
         switch (type) {
             case DELIVERY:
                 return evidenceActionServiceConfigurationProperties
-                        .getDelivery().getConnectorAction();
+                    .getDelivery().getConnectorAction();
             case NON_DELIVERY:
                 return evidenceActionServiceConfigurationProperties
-                        .getNonDelivery().getConnectorAction();
+                    .getNonDelivery().getConnectorAction();
             case RETRIEVAL:
                 return evidenceActionServiceConfigurationProperties
-                        .getRetrieval().getConnectorAction();
+                    .getRetrieval().getConnectorAction();
             case NON_RETRIEVAL:
                 return evidenceActionServiceConfigurationProperties
-                        .getNonRetrieval().getConnectorAction();
+                    .getNonRetrieval().getConnectorAction();
             case RELAY_REMMD_FAILURE:
                 return evidenceActionServiceConfigurationProperties
-                        .getRelayREMMDFailure().getConnectorAction();
+                    .getRelayREMMDFailure().getConnectorAction();
             case RELAY_REMMD_REJECTION:
                 return evidenceActionServiceConfigurationProperties
-                        .getRelayREEMDRejection().getConnectorAction();
+                    .getRelayREEMDRejection().getConnectorAction();
             case RELAY_REMMD_ACCEPTANCE:
                 return evidenceActionServiceConfigurationProperties
-                        .getRelayREEMDAcceptance().getConnectorAction();
+                    .getRelayREEMDAcceptance().getConnectorAction();
             case SUBMISSION_ACCEPTANCE:
                 return evidenceActionServiceConfigurationProperties
-                        .getSubmissionAcceptance().getConnectorAction();
+                    .getSubmissionAcceptance().getConnectorAction();
             case SUBMISSION_REJECTION:
                 return evidenceActionServiceConfigurationProperties
-                        .getSubmissionRejection().getConnectorAction();
+                    .getSubmissionRejection().getConnectorAction();
             default:
-                throw new DomibusConnectorControllerException("Illegal Evidence type " + type + "! No Action found!");
+                throw new DomibusConnectorControllerException(
+                    "Illegal Evidence type " + type + "! No Action found!");
         }
     }
 
-    public DomibusConnectorMessageConfirmation createConfirmation(DomibusConnectorEvidenceType evidenceType, DomibusConnectorMessage businessMsg, DomibusConnectorRejectionReason reason, String details) {
+    public DomibusConnectorMessageConfirmation createConfirmation(
+        DomibusConnectorEvidenceType evidenceType, DomibusConnectorMessage businessMsg,
+        DomibusConnectorRejectionReason reason, String details) {
         return evidencesToolkit.createEvidence(evidenceType, businessMsg, reason, details);
     }
 
-    public DomibusConnectorMessageConfirmation createNonDelivery(DomibusConnectorMessage originalMessage, DomibusConnectorRejectionReason deliveryEvidenceTimeout) {
-        return evidencesToolkit.createEvidence(DomibusConnectorEvidenceType.NON_DELIVERY, originalMessage, deliveryEvidenceTimeout, deliveryEvidenceTimeout.getReasonText());
+    /**
+     * Creates a non-delivery evidence for a given original message and delivery evidence
+     * timeout reason.
+     *
+     * @param originalMessage         The original message for which the non-delivery evidence is
+     *                                created.
+     * @param deliveryEvidenceTimeout The reason for the delivery evidence timeout.
+     * @return The created DomibusConnectorMessageConfirmation object representing
+     *      the non-delivery evidence.
+     */
+    public DomibusConnectorMessageConfirmation createNonDelivery(
+        DomibusConnectorMessage originalMessage,
+        DomibusConnectorRejectionReason deliveryEvidenceTimeout) {
+        return evidencesToolkit.createEvidence(
+            DomibusConnectorEvidenceType.NON_DELIVERY, originalMessage, deliveryEvidenceTimeout,
+            deliveryEvidenceTimeout.getReasonText()
+        );
     }
 
-    public DomibusConnectorMessageConfirmation createNonRetrieval(DomibusConnectorMessage originalMessage, DomibusConnectorRejectionReason deliveryEvidenceTimeout) {
-        return evidencesToolkit.createEvidence(DomibusConnectorEvidenceType.NON_RETRIEVAL, originalMessage, deliveryEvidenceTimeout, deliveryEvidenceTimeout.getReasonText());
+    /**
+     * Creates a non-retrieval evidence for a given original message and delivery evidence
+     * timeout reason.
+     *
+     * @param originalMessage         The original message for which the non-retrieval evidence
+     *                                is created.
+     * @param deliveryEvidenceTimeout The reason for the delivery evidence timeout.
+     * @return The created DomibusConnectorMessageConfirmation object representing the
+     *      non-retrieval evidence.
+     */
+    public DomibusConnectorMessageConfirmation createNonRetrieval(
+        DomibusConnectorMessage originalMessage,
+        DomibusConnectorRejectionReason deliveryEvidenceTimeout) {
+        return evidencesToolkit.createEvidence(
+            DomibusConnectorEvidenceType.NON_RETRIEVAL, originalMessage, deliveryEvidenceTimeout,
+            deliveryEvidenceTimeout.getReasonText()
+        );
     }
 
-    public DomibusConnectorMessageConfirmation createRelayRemmdFailure(DomibusConnectorMessage originalMessage, DomibusConnectorRejectionReason deliveryEvidenceTimeout) {
-        return evidencesToolkit.createEvidence(DomibusConnectorEvidenceType.RELAY_REMMD_FAILURE, originalMessage, deliveryEvidenceTimeout, deliveryEvidenceTimeout.getReasonText());
+    /**
+     * Creates a DomibusConnectorMessageConfirmation object representing a relay REMMD
+     * failure evidence.
+     *
+     * @param originalMessage         The original message for which the relay REMMD
+     *                                failure evidence is created.
+     * @param deliveryEvidenceTimeout The reason for the delivery evidence timeout.
+     * @return The created DomibusConnectorMessageConfirmation object representing the
+     *      relay REMMD failure evidence.
+     */
+    public DomibusConnectorMessageConfirmation createRelayRemmdFailure(
+        DomibusConnectorMessage originalMessage,
+        DomibusConnectorRejectionReason deliveryEvidenceTimeout) {
+        return evidencesToolkit.createEvidence(
+            DomibusConnectorEvidenceType.RELAY_REMMD_FAILURE, originalMessage,
+            deliveryEvidenceTimeout, deliveryEvidenceTimeout.getReasonText()
+        );
     }
 
-    public DomibusConnectorMessageConfirmation createDelivery(DomibusConnectorMessage originalMessage) {
-        return evidencesToolkit.createEvidence(DomibusConnectorEvidenceType.DELIVERY, originalMessage, null, null);
+    public DomibusConnectorMessageConfirmation createDelivery(
+        DomibusConnectorMessage originalMessage) {
+        return evidencesToolkit.createEvidence(
+            DomibusConnectorEvidenceType.DELIVERY, originalMessage, null, null);
     }
 }

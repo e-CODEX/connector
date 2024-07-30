@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.processor.steps;
 
 import eu.domibus.connector.common.service.ConfigurationPropertyManagerService;
@@ -15,31 +20,32 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
- * Does some validation
- * if the Action of this evidence message
- * is correct in respect of the transported
- * evidence type
+ * Does some validation if the Action of this evidence message is correct in respect
+ * of the transported evidence type.
  */
 @Component
 public class ValidateMessageConfirmationStep implements MessageProcessStep {
-
-    private static final Logger LOGGER = LogManager.getLogger(ValidateMessageConfirmationStep.class);
-
+    private static final Logger LOGGER =
+        LogManager.getLogger(ValidateMessageConfirmationStep.class);
     private final ConfirmationCreatorService confirmationCreatorService;
     private final ConfigurationPropertyManagerService configurationPropertyLoaderService;
 
-    public ValidateMessageConfirmationStep(ConfirmationCreatorService confirmationCreatorService,
-                                           ConfigurationPropertyManagerService configurationPropertyLoaderService) {
+    public ValidateMessageConfirmationStep(
+        ConfirmationCreatorService confirmationCreatorService,
+        ConfigurationPropertyManagerService configurationPropertyLoaderService) {
         this.confirmationCreatorService = confirmationCreatorService;
         this.configurationPropertyLoaderService = configurationPropertyLoaderService;
     }
 
     @Override
-    @MDC(name = LoggingMDCPropertyNames.MDC_DC_STEP_PROCESSOR_PROPERTY_NAME, value = "ValidateMessageConfirmationStep")
+    @MDC(
+        name = LoggingMDCPropertyNames.MDC_DC_STEP_PROCESSOR_PROPERTY_NAME,
+        value = "ValidateMessageConfirmationStep"
+    )
     public boolean executeStep(final DomibusConnectorMessage domibusConnectorMessage) {
         domibusConnectorMessage
-                .getTransportedMessageConfirmations()
-                .forEach(c -> this.validateConfirmation(domibusConnectorMessage, c));
+            .getTransportedMessageConfirmations()
+            .forEach(c -> this.validateConfirmation(domibusConnectorMessage, c));
 
         if (domibusConnectorMessage.getTransportedMessageConfirmations().size() == 1) {
             validateActionService(domibusConnectorMessage);
@@ -49,16 +55,26 @@ public class ValidateMessageConfirmationStep implements MessageProcessStep {
 
     private void validateActionService(DomibusConnectorMessage domibusConnectorMessage) {
         EvidenceActionServiceConfigurationProperties evidenceActionServiceConfigurationProperties =
-                configurationPropertyLoaderService.loadConfiguration(domibusConnectorMessage.getMessageLaneId(), EvidenceActionServiceConfigurationProperties.class);
-        boolean enforcing = evidenceActionServiceConfigurationProperties.isEnforceServiceActionNames();
+            configurationPropertyLoaderService.loadConfiguration(
+                domibusConnectorMessage.getMessageLaneId(),
+                EvidenceActionServiceConfigurationProperties.class
+            );
+        boolean enforcing =
+            evidenceActionServiceConfigurationProperties.isEnforceServiceActionNames();
 
-        DomibusConnectorMessageConfirmation confirmation = domibusConnectorMessage.getTransportedMessageConfirmations().get(0);
+        DomibusConnectorMessageConfirmation confirmation =
+            domibusConnectorMessage.getTransportedMessageConfirmations().getFirst();
         DomibusConnectorEvidenceType evidenceType = confirmation.getEvidenceType();
-        DomibusConnectorAction requiredEvidenceAction = confirmationCreatorService.createEvidenceAction(evidenceType);
+        DomibusConnectorAction requiredEvidenceAction =
+            confirmationCreatorService.createEvidenceAction(evidenceType);
 
         DomibusConnectorAction action = domibusConnectorMessage.getMessageDetails().getAction();
         if (!requiredEvidenceAction.equals(action)) {
-            String error = String.format("Enforcing the AS4 action is [%s] and the action [%s] is illegal for this type [%s] of evidence", enforcing, action, evidenceType);
+            var error = String.format(
+                "Enforcing the AS4 action is [%s] and the action [%s] is illegal for this "
+                    + "type [%s] of evidence",
+                enforcing, action, evidenceType
+            );
             if (enforcing) {
                 throwError(domibusConnectorMessage, error);
             } else {
@@ -67,7 +83,8 @@ public class ValidateMessageConfirmationStep implements MessageProcessStep {
         }
     }
 
-    private void validateConfirmation(DomibusConnectorMessage msg, DomibusConnectorMessageConfirmation confirmation) {
+    private void validateConfirmation(DomibusConnectorMessage msg,
+                                      DomibusConnectorMessageConfirmation confirmation) {
         if (confirmation.getEvidenceType() == null) {
             throwError(msg, "The evidence type is null!");
         }
@@ -77,7 +94,7 @@ public class ValidateMessageConfirmationStep implements MessageProcessStep {
     }
 
     private void throwError(DomibusConnectorMessage msg, String text) {
-        throw new DomibusConnectorMessageException(msg, ValidateMessageConfirmationStep.class, text);
+        throw new DomibusConnectorMessageException(
+            msg, ValidateMessageConfirmationStep.class, text);
     }
-
 }

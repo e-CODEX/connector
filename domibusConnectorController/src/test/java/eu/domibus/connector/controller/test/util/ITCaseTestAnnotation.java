@@ -1,23 +1,36 @@
 package eu.domibus.connector.controller.test.util;
 
+import static eu.domibus.connector.persistence.spring.PersistenceProfiles.STORAGE_DB_PROFILE_NAME;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static eu.domibus.connector.persistence.spring.PersistenceProfiles.STORAGE_DB_PROFILE_NAME;
-
+/**
+ * This annotation is used to configure an integration test class.
+ * It is used in conjunction with the Spring Framework to provide dependencies
+ * and other configuration settings needed for testing.
+ *
+ * <p>The annotation is applied to the test class and includes several other annotations such
+ * as @ExtendWith, @ContextConfiguration, @TestPropertySource, @Commit, @ActiveProfiles, and @Sql.
+ *
+ * <p>Example usage:
+ *
+ * <p>\@ITCaseTestAnnotation
+ * public class MyIntegrationTest {
+ * // test methods
+ * }
+ */
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes={ITCaseTestContext.class})
+@ContextConfiguration(classes = {ITCaseTestContext.class})
 @TestPropertySource("classpath:application-test.properties")
 @Commit
 @ActiveProfiles({"ITCaseTestContext", STORAGE_DB_PROFILE_NAME})
-@Sql(scripts = "/testdata.sql") //adds testdata to database like domibus-blue party
+@Sql(scripts = "/testdata.sql") // adds testdata to database like domibus-blue party
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public @interface ITCaseTestAnnotation {
 }

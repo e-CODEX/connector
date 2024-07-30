@@ -1,5 +1,11 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.queues.listener;
 
+import static eu.domibus.connector.controller.queues.JmsConfiguration.TO_LINK_QUEUE_BEAN;
 
 import eu.domibus.connector.common.service.CurrentBusinessDomain;
 import eu.domibus.connector.controller.service.SubmitToLinkService;
@@ -13,40 +19,56 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import static eu.domibus.connector.controller.queues.JmsConfiguration.TO_LINK_QUEUE_BEAN;
-
+/**
+ * This class represents a listener for messages to be sent to a link partner.
+ */
 @Component
 public class ToLinkPartnerListener {
-
     private static final Logger LOGGER = LogManager.getLogger(ToLinkPartnerListener.class);
-
     private final SubmitToLinkService submitToLink;
 
     public ToLinkPartnerListener(SubmitToLinkService submitToLink) {
         this.submitToLink = submitToLink;
     }
 
+    /**
+     * This method handles a message received by the ToLinkPartnerListener.
+     * It retrieves the message ID, sets up the MDC context, and submits the message to the link.
+     * If an exception occurs during submission, the transaction is rolled back and
+     * the exception is rethrown.
+     * Finally, the MDC context is cleared.
+     *
+     * @param message The DomibusConnectorMessage to be handled
+     */
     @JmsListener(destination = TO_LINK_QUEUE_BEAN)
     @Transactional(rollbackFor = Throwable.class)
-    @eu.domibus.connector.lib.logging.MDC(name = LoggingMDCPropertyNames.MDC_DC_QUEUE_LISTENER_PROPERTY_NAME, value = "ToLinkPartnerListener")
+    @eu.domibus.connector.lib.logging.MDC(
+        name = LoggingMDCPropertyNames.MDC_DC_QUEUE_LISTENER_PROPERTY_NAME,
+        value = "ToLinkPartnerListener"
+    )
     public void handleMessage(DomibusConnectorMessage message) {
-        String messageId = message.getConnectorMessageId().toString();
-        MDC.MDCCloseable mdcCloseable = MDC.putCloseable(LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME, messageId);
-        try {
+        var messageId = message.getConnectorMessageId().toString();
+        try (var mdcCloseable = MDC.putCloseable(
+            LoggingMDCPropertyNames.MDC_DOMIBUS_CONNECTOR_MESSAGE_ID_PROPERTY_NAME,
+            messageId
+        )) {
             CurrentBusinessDomain.setCurrentBusinessDomain(message.getMessageLaneId());
             submitToLink.submitToLink(message);
         } catch (Throwable throwable) {
             // because
-            // DomibusConnectorSubmitToLinkException extends DomibusConnectorMessageTransportException
+            // DomibusConnectorSubmitToLinkException extends
+            // DomibusConnectorMessageTransportException
             // DomibusConnectorMessageTransportException extends RuntimeException
             // if we do not catch this, then there won't be rollback nor retry
-
-            LOGGER.error("Cannot submit to link, throwing exception, transaction is rollback, Check DLQ.", throwable);
+            LOGGER.error(
+                "Cannot submit to link, throwing exception, transaction is rollback, "
+                    + "Check DLQ.",
+                throwable
+            );
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw throwable;
         } finally {
             CurrentBusinessDomain.setCurrentBusinessDomain(null);
-            mdcCloseable.close();
         }
     }
 }

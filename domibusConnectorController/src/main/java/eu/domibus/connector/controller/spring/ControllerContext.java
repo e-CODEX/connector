@@ -1,6 +1,9 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
 package eu.domibus.connector.controller.spring;
-
 
 import eu.domibus.connector.common.configuration.ConnectorConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -10,7 +13,8 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * Configures Controller Context
+ * Configures Controller Context.
+ *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 @Configuration
@@ -19,5 +23,4 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties(ConnectorConfigurationProperties.class)
 @PropertySource("classpath:/eu/domibus/connector/controller/spring/default-connector.properties")
 public class ControllerContext {
-
 }

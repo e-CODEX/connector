@@ -1,21 +1,25 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
 package eu.domibus.connector.controller.exception;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-
 import javax.annotation.Nonnull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
+ * A builder class for creating instances of DomibusConnectorMessageException.
+ * It provides methods to set the attributes of the exception before building and throwing it.
  *
- * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
+ * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }.
  */
 public class DomibusConnectorMessageExceptionBuilder {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DomibusConnectorMessageExceptionBuilder.class);
-
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(DomibusConnectorMessageExceptionBuilder.class);
     private DomibusConnectorMessage message;
     private DomibusConnectorMessageId messageId;
     private Class<?> source;
@@ -23,12 +27,13 @@ public class DomibusConnectorMessageExceptionBuilder {
     private String text;
     private boolean logBeforeThrow = true;
 
-    private DomibusConnectorMessageExceptionBuilder() {}
-    
+    private DomibusConnectorMessageExceptionBuilder() {
+    }
+
     public static DomibusConnectorMessageExceptionBuilder createBuilder() {
         return new DomibusConnectorMessageExceptionBuilder();
     }
-    
+
     public DomibusConnectorMessageExceptionBuilder setMessage(DomibusConnectorMessage message) {
         this.message = message;
         return this;
@@ -40,7 +45,8 @@ public class DomibusConnectorMessageExceptionBuilder {
     }
 
     /**
-     * can be called to set the source of the exception or call setSourceObject
+     * Can be called to set the source of the exception or call setSourceObject.
+     *
      * @param source sets the source component of the exception
      * @return the builder
      */
@@ -50,7 +56,8 @@ public class DomibusConnectorMessageExceptionBuilder {
     }
 
     /**
-     * can be called to set the source of the exception or call setSource
+     * Can be called to set the source of the exception or call setSource.
+     *
      * @param object - sets the source object of the exception (calls object.getClass())
      * @return the builder
      */
@@ -58,7 +65,7 @@ public class DomibusConnectorMessageExceptionBuilder {
         this.source = object.getClass();
         return this;
     }
-    
+
     public DomibusConnectorMessageExceptionBuilder setCause(Throwable cause) {
         this.cause = cause;
         return this;
@@ -74,11 +81,18 @@ public class DomibusConnectorMessageExceptionBuilder {
         return this;
     }
 
+    /**
+     * Builds and returns a DomibusConnectorMessageException object based on
+     * the provided parameters.
+     *
+     * @return A DomibusConnectorMessageException object.
+     * @throws IllegalArgumentException if the message parameter is null.
+     */
     public DomibusConnectorMessageException build() {
         if (message == null) {
             throw new IllegalArgumentException("Cannot create Exception without message set!");
         }
-        
+
         DomibusConnectorMessageException exception;
         if (text != null && cause != null) {
             exception = new DomibusConnectorMessageException(message, source, cause, text);
@@ -88,18 +102,24 @@ public class DomibusConnectorMessageExceptionBuilder {
             exception = new DomibusConnectorMessageException(message, source, cause);
         } else {
             exception = new DomibusConnectorMessageException(message, source);
-        }                
+        }
         return exception;
     }
 
+    /**
+     * Builds and throws a DomibusConnectorMessageException object based on the provided parameters.
+     *
+     * @throws DomibusConnectorMessageException if the message parameter is null or if
+     *                                          an error occurs while generating the exception.
+     */
     public void buildAndThrow() throws DomibusConnectorMessageException {
         DomibusConnectorMessageException build = build();
         if (logBeforeThrow && this.source != null) {
-            LoggerFactory.getLogger(this.source).debug("Throwing exception with MessageExceptionBuilder", build);
+            LoggerFactory.getLogger(this.source)
+                .debug("Throwing exception with MessageExceptionBuilder", build);
         } else if (logBeforeThrow) {
             LOGGER.debug("Throwing exception with MessageExceptionBuilder", build);
         }
         throw build;
     }
-
 }

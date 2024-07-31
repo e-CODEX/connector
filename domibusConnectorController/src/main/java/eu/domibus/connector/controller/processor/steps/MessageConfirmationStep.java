@@ -122,7 +122,7 @@ public class MessageConfirmationStep {
                 "[{}]: Evidence of type [{}] will not influence the rejected or "
                     + "confirmed state of message [{}]\n because the evidence has lower priority "
                     + "then the already received evidences",
-                ErrorCode.EVIDENCE_IGNORED_DUE_HIGHER_PRIORITY.getErrorCode(), evidenceType,
+                ErrorCode.EVIDENCE_IGNORED_DUE_HIGHER_PRIORITY.getCode(), evidenceType,
                 originalMessage
             );
             throw new DCEvidenceNotRelevantException(

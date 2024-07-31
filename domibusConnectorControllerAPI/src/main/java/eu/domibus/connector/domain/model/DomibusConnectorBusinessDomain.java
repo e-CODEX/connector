@@ -1,27 +1,49 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.domain.model;
 
 import eu.domibus.connector.domain.enums.ConfigurationSource;
-
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+/**
+ * The DomibusConnectorBusinessDomain class represents a business domain in Domibus. A business
+ * domain is a logical grouping of messaging configurations and properties.
+ *
+ * <p>This class has the following properties: - id: The unique identifier of the business domain.
+ * - description: A description of the business domain. - enabled: A flag indicating whether the
+ * business domain is enabled or not. - messageLaneProperties: A map of message lane properties. -
+ * configurationSource: The source of configuration for the business domain.
+ *
+ * <p>This class also contains a nested class BusinessDomainId, which represents the identifier of
+ * a business domain.
+ *
+ * <p>Usage example:
+ */
+@Data
+@NoArgsConstructor
 public class DomibusConnectorBusinessDomain {
-
     public static final String DEFAULT_LANE_NAME = "defaultBusinessDomain";
-
     private BusinessDomainId id;
-
     private String description;
-
     private boolean enabled;
-
     private Map<String, String> messageLaneProperties = new HashMap<>();
-
     private ConfigurationSource configurationSource;
 
+    /**
+     * Returns the default message lane for the Domibus Connector.
+     *
+     * @return the default message lane as a DomibusConnectorBusinessDomain object
+     */
     public static DomibusConnectorBusinessDomain getDefaultMessageLane() {
-        DomibusConnectorBusinessDomain defaultMessageLane = new DomibusConnectorBusinessDomain();
+        var defaultMessageLane = new DomibusConnectorBusinessDomain();
         defaultMessageLane.setId(new BusinessDomainId(DEFAULT_LANE_NAME));
         defaultMessageLane.setDescription("default message lane");
         defaultMessageLane.setMessageLaneProperties(new HashMap<>());
@@ -32,52 +54,14 @@ public class DomibusConnectorBusinessDomain {
         return getDefaultMessageLane().getId();
     }
 
-    public BusinessDomainId getId() {
-        return id;
-    }
-
-    public void setId(BusinessDomainId id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Map<String, String> getMessageLaneProperties() {
-        return messageLaneProperties;
-    }
-
-    public void setMessageLaneProperties(Map<String, String> messageLaneProperties) {
-        this.messageLaneProperties = messageLaneProperties;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public ConfigurationSource getConfigurationSource() {
-        return configurationSource;
-    }
-
-    public void setConfigurationSource(ConfigurationSource configurationSource) {
-        this.configurationSource = configurationSource;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DomibusConnectorBusinessDomain)) return false;
-
-        DomibusConnectorBusinessDomain that = (DomibusConnectorBusinessDomain) o;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DomibusConnectorBusinessDomain that)) {
+            return false;
+        }
 
         return id != null ? id.equals(that.id) : that.id == null;
     }
@@ -87,24 +71,24 @@ public class DomibusConnectorBusinessDomain {
         return id != null ? id.hashCode() : 0;
     }
 
-    public static class BusinessDomainId {
-
-        public BusinessDomainId() {}
-
+    /**
+     * Represents a unique identifier for a business domain.
+     *
+     * <p>The BusinessDomainId class is a value object that holds the message lane identifier for a
+     * business domain. It provides methods for creating an instance of the class, getting and
+     * setting the message lane identifier, and comparing two instances for equality.
+     *
+     * @since 1.0
+     */
+    @Data
+    @NoArgsConstructor
+    public static class BusinessDomainId implements Serializable {
         public BusinessDomainId(String id) {
             this.messageLaneId = id;
         }
 
         @NotBlank
         private String messageLaneId;
-
-        public String getMessageLaneId() {
-            return messageLaneId;
-        }
-
-        public void setMessageLaneId(String messageLaneId) {
-            this.messageLaneId = messageLaneId;
-        }
 
         @Override
         public String toString() {
@@ -113,12 +97,15 @@ public class DomibusConnectorBusinessDomain {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof BusinessDomainId)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof BusinessDomainId that)) {
+                return false;
+            }
 
-            BusinessDomainId that = (BusinessDomainId) o;
-
-            return messageLaneId != null ? messageLaneId.equals(that.messageLaneId) : that.messageLaneId == null;
+            return messageLaneId != null ? messageLaneId.equals(that.messageLaneId) :
+                that.messageLaneId == null;
         }
 
         @Override
@@ -126,5 +113,4 @@ public class DomibusConnectorBusinessDomain {
             return messageLaneId != null ? messageLaneId.hashCode() : 0;
         }
     }
-
 }

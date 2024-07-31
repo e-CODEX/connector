@@ -1,10 +1,15 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 /**
- * This package provides interface contract to be implemented for pulling from or submitting
- * a message to a link partner.
- * Link eg: gateway-ws-link, gateway-jms-link, backend-ws-link, ...
+ * This package provides interface contract to be implemented for pulling from or submitting a
+ * message to a link partner. Link eg: gateway-ws-link, gateway-jms-link, backend-ws-link, ...
  *
- * @since 4.4.12
  * @author komi
  * @version 1.0
+ * @since 4.4.12
  */
+
 package eu.domibus.connector.link.service;

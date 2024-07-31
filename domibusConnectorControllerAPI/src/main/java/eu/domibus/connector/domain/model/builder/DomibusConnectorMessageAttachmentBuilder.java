@@ -1,26 +1,31 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
 package eu.domibus.connector.domain.model.builder;
 
-import eu.domibus.connector.domain.model.LargeFileReference;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageAttachment;
+import eu.domibus.connector.domain.model.LargeFileReference;
 
 /**
- *
- * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
+ * The DomibusConnectorMessageAttachmentBuilder class is used to construct instances of
+ * DomibusConnectorMessageAttachment. It provides a fluent builder interface to set various
+ * properties of the attachment before building the final object.
  */
 public final class DomibusConnectorMessageAttachmentBuilder {
-
     private String identifier;
-	private LargeFileReference attachment;
-	private String name;
-	private String mimeType;
-	private String description;
-    
+    private LargeFileReference attachment;
+    private String name;
+    private String mimeType;
+    private String description;
+
     public static DomibusConnectorMessageAttachmentBuilder createBuilder() {
         return new DomibusConnectorMessageAttachmentBuilder();
     }
-    
-    private DomibusConnectorMessageAttachmentBuilder() {}
+
+    private DomibusConnectorMessageAttachmentBuilder() {
+    }
 
     public DomibusConnectorMessageAttachmentBuilder setIdentifier(String identifier) {
         this.identifier = identifier;
@@ -46,8 +51,16 @@ public final class DomibusConnectorMessageAttachmentBuilder {
         this.description = description;
         return this;
     }
-    
-    public DomibusConnectorMessageAttachmentBuilder copyPropertiesFrom(DomibusConnectorMessageAttachment attachment) {
+
+    /**
+     * Copies properties from the given {@link DomibusConnectorMessageAttachment} to the current
+     * instance.
+     *
+     * @param attachment the {@link DomibusConnectorMessageAttachment} to copy properties from
+     * @return the updated {@link DomibusConnectorMessageAttachmentBuilder} instance
+     */
+    public DomibusConnectorMessageAttachmentBuilder copyPropertiesFrom(
+        DomibusConnectorMessageAttachment attachment) {
         this.attachment = attachment.getAttachment();
         this.description = attachment.getDescription();
         this.identifier = attachment.getIdentifier();
@@ -56,6 +69,12 @@ public final class DomibusConnectorMessageAttachmentBuilder {
         return this;
     }
 
+    /**
+     * Builds a DomibusConnectorMessageAttachment object with the provided properties.
+     *
+     * @return The built DomibusConnectorMessageAttachment object
+     * @throws IllegalArgumentException if attachment or identifier is null
+     */
     public DomibusConnectorMessageAttachment build() {
         if (this.attachment == null) {
             throw new IllegalArgumentException("Attachment must be provided!");
@@ -63,13 +82,11 @@ public final class DomibusConnectorMessageAttachmentBuilder {
         if (this.identifier == null) {
             throw new IllegalArgumentException("identifier must be provided!");
         }
-        DomibusConnectorMessageAttachment domibusConnectorMessageAttachment = new DomibusConnectorMessageAttachment(attachment, identifier);
+        var domibusConnectorMessageAttachment =
+            new DomibusConnectorMessageAttachment(attachment, identifier);
         domibusConnectorMessageAttachment.setDescription(description);
         domibusConnectorMessageAttachment.setMimeType(mimeType);
         domibusConnectorMessageAttachment.setName(name);
         return domibusConnectorMessageAttachment;
     }
-
-    
-    
 }

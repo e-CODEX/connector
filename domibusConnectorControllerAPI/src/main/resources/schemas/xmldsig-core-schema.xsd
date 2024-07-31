@@ -15,10 +15,11 @@
     [1] http://www.w3.org/Consortium/Legal/copyright-software-19980720
     [2] http://www.w3.org/Consortium/Legal/IPR-FAQ-20000620.html#DTD
 -->
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" targetNamespace="http://www.w3.org/2000/09/xmldsig#" version="0.1" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+        targetNamespace="http://www.w3.org/2000/09/xmldsig#" version="0.1" elementFormDefault="qualified">
     <!--  Basic Types Defined for Signatures  -->
     <simpleType name="CryptoBinary">
-        <restriction base="base64Binary"> </restriction>
+        <restriction base="base64Binary"></restriction>
     </simpleType>
     <!--  Start Signature  -->
     <element name="Signature" type="ds:SignatureType"/>

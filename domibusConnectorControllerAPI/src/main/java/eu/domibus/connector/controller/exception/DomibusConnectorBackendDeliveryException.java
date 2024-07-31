@@ -1,7 +1,15 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.exception;
 
+/**
+ * Exception thrown when there is an error in delivering a message using Domibus connector backend.
+ * This exception is a subclass of DomibusConnectorBackendException.
+ */
 public class DomibusConnectorBackendDeliveryException extends DomibusConnectorBackendException {
-
     public DomibusConnectorBackendDeliveryException() {
     }
 
@@ -17,7 +25,9 @@ public class DomibusConnectorBackendDeliveryException extends DomibusConnectorBa
         super(cause);
     }
 
-    public DomibusConnectorBackendDeliveryException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public DomibusConnectorBackendDeliveryException(String message, Throwable cause,
+                                                    boolean enableSuppression,
+                                                    boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

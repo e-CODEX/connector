@@ -1,31 +1,34 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
 package eu.domibus.connector.domain.model.builder;
 
 import eu.domibus.connector.domain.model.DetachedSignature;
 import eu.domibus.connector.domain.model.DetachedSignatureMimeType;
-
 import javax.validation.constraints.NotNull;
-
+import lombok.NoArgsConstructor;
 
 /**
  * Builder for @see eu.domibus.connector.domain.model.DetachedSignatureBuilder
- * 
+ *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
+@NoArgsConstructor
 public final class DetachedSignatureBuilder {
+    private byte[] detachedSignature;
+    private String detachedSignatureName;
+    private DetachedSignatureMimeType mimeType;
 
-    private byte detachedSignature[];
-	private String detachedSignatureName;
-	private DetachedSignatureMimeType mimeType;
-    
     public static DetachedSignatureBuilder createBuilder() {
         return new DetachedSignatureBuilder();
     }
-    
-    private DetachedSignatureBuilder() {};
-    
+
     /**
-     * the signature @see eu.domibus.connector.domain.model.DetachedSignatureBuilder#detachedSignature
+     * The signature @see
+     * eu.domibus.connector.domain.model.DetachedSignatureBuilder#detachedSignature
+     *
      * @param signature - the signature, must be not null
      * @return the builder
      */
@@ -33,9 +36,11 @@ public final class DetachedSignatureBuilder {
         this.detachedSignature = signature;
         return this;
     }
-    
+
     /**
-     * the name @see eu.domibus.connector.domain.model.DetachedSignatureBuilder#detachedSignatureName
+     * The name @see
+     * eu.domibus.connector.domain.model.DetachedSignatureBuilder#detachedSignatureName
+     *
      * @param name - the name
      * @return the builder
      */
@@ -43,23 +48,24 @@ public final class DetachedSignatureBuilder {
         this.detachedSignatureName = name;
         return this;
     }
-    
+
     /**
      * the mimeType @see eu.domibus.connector.domain.model.DetachedSignatureBuilder#mimeType
+     *
      * @param mimeType - mimeType
-     * @return  the builder
+     * @return the builder
      */
     public DetachedSignatureBuilder setMimeType(@NotNull DetachedSignatureMimeType mimeType) {
         this.mimeType = mimeType;
         return this;
     }
-    
+
     /**
-     * creates the DetachedSignature based 
-     * on the provided properties, also checks 
-     * if the requirements are fullfilled
-     * @throws IllegalArgumentException if an argument is missing or illegal
+     * Creates the DetachedSignature based on the provided properties, also checks if the
+     * requirements are fulfilled.
+     *
      * @return the created DetachedSignature
+     * @throws IllegalArgumentException if an argument is missing or illegal
      */
     public DetachedSignature build() {
         if (detachedSignature == null || detachedSignature.length < 1) {
@@ -73,6 +79,4 @@ public final class DetachedSignatureBuilder {
         }
         return new DetachedSignature(detachedSignature, detachedSignatureName, mimeType);
     }
-    
-    
 }

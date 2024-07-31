@@ -1,12 +1,29 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.routing;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
+import lombok.Getter;
 
+/**
+ * Represents a binary operator expression.
+ */
+@Getter
 public class BinaryOperatorExpression extends Expression {
     private final TokenType operand;
     private final Expression exp1;
     private final Expression exp2;
 
+    /**
+     * Represents a binary operator expression.
+     *
+     * @param t    The token type of the binary operator.
+     * @param exp1 The first expression operand.
+     * @param exp2 The second expression operand.
+     */
     public BinaryOperatorExpression(TokenType t, Expression exp1, Expression exp2) {
         this.operand = t;
         this.exp1 = exp1;
@@ -15,28 +32,14 @@ public class BinaryOperatorExpression extends Expression {
 
     @Override
     boolean evaluate(DomibusConnectorMessage message) {
-        if (operand == TokenType.OR) {
-            return exp1.evaluate(message) || exp2.evaluate(message);
-        } else if (operand == TokenType.AND) {
-            return exp1.evaluate(message) && exp2.evaluate(message);
-        } else {
-            throw new RuntimeException(String.format("Unsupported OPERAND %s", operand));
-        }
+        return switch (operand) {
+            case TokenType.OR -> exp1.evaluate(message) || exp2.evaluate(message);
+            case TokenType.AND -> exp1.evaluate(message) && exp2.evaluate(message);
+            default -> throw new RuntimeException(String.format("Unsupported OPERAND %s", operand));
+        };
     }
 
     public String toString() {
         return String.format("%s(%s, %s)", operand.toString(), exp1, exp2);
-    }
-
-    public TokenType getOperand() {
-        return operand;
-    }
-
-    public Expression getExp1() {
-        return exp1;
-    }
-
-    public Expression getExp2() {
-        return exp2;
     }
 }

@@ -1,36 +1,42 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
 package eu.domibus.connector.persistence.service;
 
 import eu.domibus.connector.domain.model.DomibusConnectorAction;
 import java.util.List;
 
-
 /**
+ * The DomibusConnectorActionPersistenceService interface provides methods for managing
+ * DomibusConnectorAction objects, which represent actions associated with messages in the Domibus
+ * system.
  *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
- * @deprecated use DomibusConnectorPModeService instead and also make use of default DomibusConnectorMessageLane
+ * @deprecated use DomibusConnectorPModeService instead and also make use of default
+ *      DomibusConnectorMessageLane.
  */
 @Deprecated
 public interface DomibusConnectorActionPersistenceService {
+    DomibusConnectorAction persistNewAction(DomibusConnectorAction service);
 
-    public DomibusConnectorAction persistNewAction(DomibusConnectorAction service);
-    
-    public List<DomibusConnectorAction> getActionList();
-    
-    public DomibusConnectorAction updateAction(DomibusConnectorAction oldAction, DomibusConnectorAction newAction);
-    
-    public void deleteAction(DomibusConnectorAction deleteAction);
-    
-    public DomibusConnectorAction getAction(String action);
+    List<DomibusConnectorAction> getActionList();
 
-    public DomibusConnectorAction getRelayREMMDAcceptanceRejectionAction();
+    DomibusConnectorAction updateAction(DomibusConnectorAction oldAction,
+                                        DomibusConnectorAction newAction);
 
-    public DomibusConnectorAction getRelayREMMDFailure();
+    void deleteAction(DomibusConnectorAction deleteAction);
 
-    public DomibusConnectorAction getDeliveryNonDeliveryToRecipientAction();
+    DomibusConnectorAction getAction(String action);
 
-    public DomibusConnectorAction getRetrievalNonRetrievalToRecipientAction();
+    DomibusConnectorAction getRelayREMMDAcceptanceRejectionAction();
 
-	List<String> getActionListString();
+    DomibusConnectorAction getRelayREMMDFailure();
 
+    DomibusConnectorAction getDeliveryNonDeliveryToRecipientAction();
+
+    DomibusConnectorAction getRetrievalNonRetrievalToRecipientAction();
+
+    List<String> getActionListString();
 }

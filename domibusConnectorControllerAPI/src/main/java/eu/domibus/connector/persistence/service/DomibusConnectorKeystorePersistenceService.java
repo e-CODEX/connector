@@ -1,15 +1,20 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service;
 
 import eu.domibus.connector.domain.model.DomibusConnectorKeystore;
 
+/**
+ * This interface provides methods to interact with the Domibus Connector Keystore persistence.
+ */
+@SuppressWarnings("checkstyle:ParameterName")
 public interface DomibusConnectorKeystorePersistenceService {
-	
-//	DomibusConnectorKeystore persistNewKeystore(String uuid, byte[] keystoreBytes, String password, String description, DomibusConnectorKeystore.KeystoreType type);
-	
-	DomibusConnectorKeystore getKeystoreByUUID(String uuid);
+    DomibusConnectorKeystore getKeystoreByUUID(String uuid);
 
-	DomibusConnectorKeystore persistNewKeystore(DomibusConnectorKeystore pKeystore);
+    DomibusConnectorKeystore persistNewKeystore(DomibusConnectorKeystore pKeystore);
 
-	void updateKeystorePassword(DomibusConnectorKeystore pKeystore, String newKeystorePassword);
-	
+    void updateKeystorePassword(DomibusConnectorKeystore pKeystore, String newKeystorePassword);
 }

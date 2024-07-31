@@ -1,58 +1,72 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.routing;
-
-import eu.domibus.connector.domain.model.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RoutingRuleEvaluationTest {
+import eu.domibus.connector.domain.model.DomibusConnectorAction;
+import eu.domibus.connector.domain.model.DomibusConnectorMessage;
+import eu.domibus.connector.domain.model.DomibusConnectorMessageDetails;
+import eu.domibus.connector.domain.model.DomibusConnectorParty;
+import eu.domibus.connector.domain.model.DomibusConnectorService;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-
+class RoutingRuleEvaluationTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
-    public void testMatch_shouldEvaluateToTrue(String expression, DomibusConnectorMessage message) {
-        //ExpressionParser expressionParser = new ExpressionParser(expression);
-
+    void testMatch_shouldEvaluateToTrue(String expression, DomibusConnectorMessage message) {
         RoutingRulePattern rulePattern = new RoutingRulePattern(expression);
         boolean result = rulePattern.matches(message);
         assertThat(result).isTrue();
-
     }
 
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
-                Arguments.of("&(equals(ServiceName, 'EPO_SERVICE'), |(equals(FromPartyId, 'gw01'), equals(FromPartyId, 'gw02')))", getMessage1()),
-                Arguments.of("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))", getMessage2())
+            Arguments.of(
+                "&(equals(ServiceName, 'EPO_SERVICE'), |(equals(FromPartyId, 'gw01'), "
+                    + "equals(FromPartyId, 'gw02')))",
+                getMessage1()
+            ),
+            Arguments.of(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, "
+                    + "'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))",
+                getMessage2()
+            )
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideNotMatchingParameters")
-    public void testMatch_shouldNotMatch(String expression, DomibusConnectorMessage message) {
-        //ExpressionParser expressionParser = new ExpressionParser(expression);
-
+    void testMatch_shouldNotMatch(String expression, DomibusConnectorMessage message) {
         RoutingRulePattern rulePattern = new RoutingRulePattern(expression);
         boolean result = rulePattern.matches(message);
         assertThat(result).isFalse();
-
     }
 
     private static Stream<Arguments> provideNotMatchingParameters() {
         return Stream.of(
-                Arguments.of("not(&(equals(ServiceName, 'EPO_SERVICE'), |(equals(FromPartyId, 'gw01'), equals(FromPartyId, 'gw02'))))", getMessage1()),
-                Arguments.of("&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, 'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))", getMessage1())
+            Arguments.of(
+                "not(&(equals(ServiceName, 'EPO_SERVICE'), |(equals(FromPartyId, "
+                    + "'gw01'), equals(FromPartyId, 'gw02'))))",
+                getMessage1()
+            ),
+            Arguments.of(
+                "&(&(equals(Action, 'ConTest_Form'), equals(ServiceName, "
+                    + "'Connector-TEST')), equals(ServiceType, 'urn:e-codex:services:'))",
+                getMessage1()
+            )
 
         );
     }
 
-
     private static DomibusConnectorMessage getMessage1() {
-        DomibusConnectorMessage message = new DomibusConnectorMessage();
+        var message = new DomibusConnectorMessage();
         message.setMessageDetails(new DomibusConnectorMessageDetails());
         message.getMessageDetails().setAction(new DomibusConnectorAction());
         message.getMessageDetails().getAction().setAction("OtherAction");
@@ -65,7 +79,7 @@ public class RoutingRuleEvaluationTest {
     }
 
     private static DomibusConnectorMessage getMessage2() {
-        DomibusConnectorMessage message = new DomibusConnectorMessage();
+        var message = new DomibusConnectorMessage();
         message.setMessageDetails(new DomibusConnectorMessageDetails());
         message.getMessageDetails().setAction(new DomibusConnectorAction());
         message.getMessageDetails().getAction().setAction("ConTest_Form");
@@ -76,6 +90,4 @@ public class RoutingRuleEvaluationTest {
         message.getMessageDetails().getFromParty().setPartyId("gw01");
         return message;
     }
-
-
 }

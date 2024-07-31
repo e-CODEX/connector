@@ -1,37 +1,42 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.domain.model;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
-
 import javax.activation.DataSource;
 import javax.validation.constraints.NotNull;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.lang.Nullable;
 
 /**
- * Represents a reference to a storage system for big files
- *
+ * Represents a reference to a storage system for big files.
  */
+@Data
+@NoArgsConstructor
 public class LargeFileReference implements DataSource, Serializable {
-
     private String storageProviderName = "";
-
     private String storageIdReference = "";
-
     private String name = "";
-
     private String mimetype = "";
-
-    private Long size = -1l;
-
+    private Long size = -1L;
     private String text = "";
-
     private ZonedDateTime creationDate;
 
-    public LargeFileReference() {}
-
+    /**
+     * Represents a large file reference.
+     *
+     * @param storageIdReference The unique identifier for the storage of the file.
+     */
     public LargeFileReference(@NotNull String storageIdReference) {
         if (storageIdReference == null) {
             throw new IllegalArgumentException("StorageIdReference cannot be null!");
@@ -39,6 +44,12 @@ public class LargeFileReference implements DataSource, Serializable {
         this.storageIdReference = storageIdReference;
     }
 
+    /**
+     * Creates a new LargeFileReference object by copying the fields from another LargeFileReference
+     * object.
+     *
+     * @param ref The reference to copy fields from
+     */
     public LargeFileReference(LargeFileReference ref) {
         this.storageIdReference = ref.storageIdReference;
         this.storageProviderName = ref.storageProviderName;
@@ -54,32 +65,34 @@ public class LargeFileReference implements DataSource, Serializable {
         return storageIdReference;
     }
 
-    public void setStorageIdReference(String storageIdReference) {
-        this.storageIdReference = storageIdReference;
-    }
-  
     @Override
     public InputStream getInputStream() throws IOException {
         throw new IOException("not initialized yet!");
     }
-    
-    
+
     @Override
     public OutputStream getOutputStream() throws IOException {
         throw new IOException("not initialized yet!");
     }
 
     /**
-     * Is readable if a valid input stream can be returned
+     * Is readable if a valid input stream can be returned.
+     *
      * @return - if it's readable
      */
-    public boolean isReadable() { return false; }
-    
+    public boolean isReadable() {
+        return false;
+    }
+
     /**
-     * @return is true if a writeable output stream can be returned!
+     * Determines if the file is writeable.
+     *
+     * @return true if the file is writeable, false otherwise.
      */
-    public boolean isWriteable() { return false; }
-    
+    public boolean isWriteable() {
+        return false;
+    }
+
     @Override
     public String getContentType() {
         return this.mimetype;
@@ -90,57 +103,17 @@ public class LargeFileReference implements DataSource, Serializable {
         return this.name;
     }
 
-    public void setMimetype(String contentType) {
-        this.mimetype = contentType;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStorageProviderName() {
-        return storageProviderName;
-    }
-
-    public void setStorageProviderName(String storageProviderName) {
-        this.storageProviderName = storageProviderName;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public ZonedDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(ZonedDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
     @Override
     public String toString() {
-        ToStringCreator builder = new ToStringCreator(this);
+        var builder = new ToStringCreator(this);
         builder.append("storageReference", this.getStorageIdReference());
         builder.append("provider", this.getStorageProviderName());
-        return builder.toString();        
+        return builder.toString();
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        var hash = 7;
         hash = 37 * hash + Objects.hashCode(this.storageIdReference);
         return hash;
     }
@@ -157,12 +130,6 @@ public class LargeFileReference implements DataSource, Serializable {
             return false;
         }
         final LargeFileReference other = (LargeFileReference) obj;
-        if (!Objects.equals(this.storageIdReference, other.storageIdReference)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.storageIdReference, other.storageIdReference);
     }
-
-
-
 }

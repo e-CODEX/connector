@@ -12,20 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * This domain object contains all data of a message. At least the {@link
- * DomibusConnectorMessageDetails} and the {@link DomibusConnectorMessageContent}
- * must be given at the time of creation as they represent the minimum structure
- * of a message. While the message is processed by the domibusConnector, the data
- * inside this structure changes up to the point where the message is completely
- * finished.
+ * This domain object contains all data of a message. At least the
+ * {@link DomibusConnectorMessageDetails} and the {@link DomibusConnectorMessageContent} must be
+ * given at the time of creation as they represent the minimum structure of a message. While the
+ * message is processed by the domibusConnector, the data inside this structure changes up to the
+ * point where the message is completely finished.
  *
  * @author riederb
  * @version 1.0
  */
+@Data
+@NoArgsConstructor
 @Validated
 public class DomibusConnectorMessage implements Serializable {
     @NotNull
@@ -40,27 +43,19 @@ public class DomibusConnectorMessage implements Serializable {
     private DomibusConnectorMessageDetails messageDetails;
     private DomibusConnectorMessageContent messageContent;
     private final List<DomibusConnectorMessageAttachment> messageAttachments = new ArrayList<>();
-    //holds all message confirmations which are transported with this message
+    // holds all message confirmations which are transported with this message
     private final List<DomibusConnectorMessageConfirmation> transportedMessageConfirmations =
         new ArrayList<>();
-    //holds all message confirmations which are related to this business message
+    // holds all message confirmations which are related to this business message
     private final List<DomibusConnectorMessageConfirmation> relatedMessageConfirmations =
         new ArrayList<>();
-    //holds all errors which occured during message processing...
+    // holds all errors which occurred during message processing...
     private final List<DomibusConnectorMessageError> messageProcessErrors = new ArrayList<>();
     private DCMessageProcessSettings dcMessageProcessSettings = new DCMessageProcessSettings();
 
     /**
-     * Default constructor, needed for frameworks
-     * to serialize and deserialize objects of this class.
-     */
-    public DomibusConnectorMessage() {
-    }
-
-    /**
-     * This constructor initializes an instance of a DomibusConnectorMessage in case
-     * it is not a confirmation message. At least the messageDetails and the
-     * messageContent must be given.
+     * This constructor initializes an instance of a DomibusConnectorMessage in case it is not a
+     * confirmation message. At least the messageDetails and the messageContent must be given.
      *
      * @param messageDetails The details for message routing.
      * @param messageContent The content of the message.
@@ -72,9 +67,8 @@ public class DomibusConnectorMessage implements Serializable {
     }
 
     /**
-     * This constructor initializes an instance of a DomibusConnectorMessage in case
-     * it is not a confirmation message. At least the messageDetails and the
-     * messageContent must be given.
+     * This constructor initializes an instance of a DomibusConnectorMessage in case it is not a
+     * confirmation message. At least the messageDetails and the messageContent must be given.
      *
      * @param connectorMessageId The internal connector message process id
      * @param messageDetails     The details for message routing.
@@ -90,9 +84,8 @@ public class DomibusConnectorMessage implements Serializable {
     }
 
     /**
-     * This constructor initializes an instance of a DomibusConnectorMessage in case
-     * it is a confirmation message. At least the messageDetails and the
-     * messageConfirmation must be given.
+     * This constructor initializes an instance of a DomibusConnectorMessage in case it is a
+     * confirmation message. At least the messageDetails and the messageConfirmation must be given.
      *
      * @param messageDetails      messageDetails
      * @param messageConfirmation messageConfirmation
@@ -104,9 +97,8 @@ public class DomibusConnectorMessage implements Serializable {
     }
 
     /**
-     * This constructor initializes an instance of a DomibusConnectorMessage in case
-     * it is a confirmation message. At least the messageDetails and the
-     * messageConfirmation must be given.
+     * This constructor initializes an instance of a DomibusConnectorMessage in case it is a
+     * confirmation message. At least the messageDetails and the messageConfirmation must be given.
      *
      * @param connectorMessageId  internal connector message process id
      * @param messageDetails      messageDetails
@@ -121,30 +113,6 @@ public class DomibusConnectorMessage implements Serializable {
         addTransportedMessageConfirmation(messageConfirmation);
     }
 
-    public DomibusConnectorMessageDetails getMessageDetails() {
-        return this.messageDetails;
-    }
-
-    public void setMessageDetails(DomibusConnectorMessageDetails messageDetails) {
-        this.messageDetails = messageDetails;
-    }
-
-    public DomibusConnectorMessageContent getMessageContent() {
-        return this.messageContent;
-    }
-
-    public List<DomibusConnectorMessageAttachment> getMessageAttachments() {
-        return this.messageAttachments;
-    }
-
-    public List<DomibusConnectorMessageConfirmation> getTransportedMessageConfirmations() {
-        return this.transportedMessageConfirmations;
-    }
-
-    public List<DomibusConnectorMessageConfirmation> getRelatedMessageConfirmations() {
-        return relatedMessageConfirmations;
-    }
-
     public DomibusConnectorBusinessDomain.BusinessDomainId getMessageLaneId() {
         return businessDomainId;
     }
@@ -154,8 +122,7 @@ public class DomibusConnectorMessage implements Serializable {
     }
 
     /**
-     * Method to add a new {@link DomibusConnectorMessageConfirmation} to the
-     * collection.
+     * Method to add a new {@link DomibusConnectorMessageConfirmation} to the collection.
      *
      * <p>The confirmations here are related to the message document/content
      *
@@ -171,8 +138,8 @@ public class DomibusConnectorMessage implements Serializable {
     }
 
     /**
-     * Method to add a new {@link DomibusConnectorMessageAttachment} to the collection.
-     * The collection is initialized, so no new collection needs to be created or set.
+     * Method to add a new {@link DomibusConnectorMessageAttachment} to the collection. The
+     * collection is initialized, so no new collection needs to be created or set.
      *
      * @param attachment attachment
      */
@@ -181,12 +148,10 @@ public class DomibusConnectorMessage implements Serializable {
     }
 
     /**
-     * Method to add a new {@link DomibusConnectorMessageConfirmation} to the
-     * collection. This collection holds only Confirmations which are transported
-     * with this message. In case of a business message they are also related
-     * to it.
-     * The collection is initialized, so no new collection needs to be
-     * created or set.
+     * Method to add a new {@link DomibusConnectorMessageConfirmation} to the collection. This
+     * collection holds only Confirmations which are transported with this message. In case of a
+     * business message they are also related to it. The collection is initialized, so no new
+     * collection needs to be created or set.
      *
      * @param confirmation confirmation
      */
@@ -195,16 +160,24 @@ public class DomibusConnectorMessage implements Serializable {
         if (!this.transportedMessageConfirmations.contains(confirmation)) {
             return this.transportedMessageConfirmations.add(confirmation);
         } else {
-            return false; //duplicate
+            return false; // duplicate
         }
     }
 
-    public DCMessageProcessSettings getDcMessageProcessSettings() {
-        return dcMessageProcessSettings;
+    /**
+     * Method to add a new {@link DomibusConnectorMessageError} to the collection. This collection
+     * is filled during the processing of the message inside the domibusConnector, or, if there are
+     * message related errors reported by the gateway.
+     *
+     * @param error error
+     */
+    public void addError(final DomibusConnectorMessageError error) {
+        this.messageProcessErrors.add(error);
     }
 
-    public void setDcMessageProcessSettings(DCMessageProcessSettings dcMessageProcessSettings) {
-        this.dcMessageProcessSettings = dcMessageProcessSettings;
+    @JsonProperty
+    public DomibusConnectorMessageId getConnectorMessageId() {
+        return connectorMessageId;
     }
 
     @JsonIgnore
@@ -213,35 +186,11 @@ public class DomibusConnectorMessage implements Serializable {
     }
 
     /**
-     * Method to add a new {@link DomibusConnectorMessageError} to the collection.
-     * This collection is filled during the processing of the message inside the
-     * domibusConnector, or, if there are message related errors reported by the
-     * gateway.
+     * Sets the connector message ID for the DomibusConnectorMessage.
      *
-     * @param error error
+     * @param connectorMessageId The connector message ID to be set.
+     * @deprecated This method is deprecated and should not be used.
      */
-    public void addError(final DomibusConnectorMessageError error) {
-        this.messageProcessErrors.add(error);
-    }
-
-    /**
-     * Retrieves the connector message ID as a string.
-     *
-     * @return The connector message ID as a string, or null if the connectorMessageId is null.
-     *
-     * @deprecated This method is no longer supported and may be removed in future versions.
-     * @see DomibusConnectorMessage#getConnectorMessageId()
-     * @see DomibusConnectorMessageId#getConnectorMessageId()
-     */
-    @Deprecated
-    @JsonIgnore
-    public String getConnectorMessageIdAsString() {
-        if (connectorMessageId == null) {
-            return null;
-        }
-        return connectorMessageId.getConnectorMessageId();
-    }
-
     @Deprecated
     @JsonIgnore
     public void setConnectorMessageId(String connectorMessageId) {
@@ -253,20 +202,26 @@ public class DomibusConnectorMessage implements Serializable {
         this.connectorMessageId = messageId;
     }
 
-    @JsonProperty
-    public DomibusConnectorMessageId getConnectorMessageId() {
-        return connectorMessageId;
+    /**
+     * Retrieves the connector message ID as a string.
+     *
+     * @return The connector message ID as a string. Returns null if connectorMessageId is null.
+     * @deprecated This method is deprecated and should not be used.
+     */
+    @Deprecated
+    @JsonIgnore
+    public String getConnectorMessageIdAsString() {
+        if (connectorMessageId == null) {
+            return null;
+        }
+        return connectorMessageId.getConnectorMessageId();
     }
 
     @Override
     public String toString() {
-        ToStringCreator builder = new ToStringCreator(this);
+        var builder = new ToStringCreator(this);
         builder.append("connectorMessageId", this.connectorMessageId);
         builder.append("messageDetails", this.messageDetails);
         return builder.toString();
-    }
-
-    public void setMessageContent(DomibusConnectorMessageContent messageContent) {
-        this.messageContent = messageContent;
     }
 }

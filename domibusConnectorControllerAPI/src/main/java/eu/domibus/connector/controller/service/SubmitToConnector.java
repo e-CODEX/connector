@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.service;
 
 import eu.domibus.connector.controller.exception.DomibusConnectorSubmitToLinkException;
@@ -10,12 +15,14 @@ import eu.domibus.connector.domain.model.DomibusConnectorMessage;
  * from any link modules (gwjmsplugin, ...)
  */
 public interface SubmitToConnector {
-
-    default public void submitToConnector(DomibusConnectorMessage message, DomibusConnectorLinkPartner linkPartner) throws DomibusConnectorSubmitToLinkException {
+    default void submitToConnector(DomibusConnectorMessage message,
+                                   DomibusConnectorLinkPartner linkPartner)
+        throws DomibusConnectorSubmitToLinkException {
         submitToConnector(message, linkPartner.getLinkPartnerName(), linkPartner.getLinkType());
     }
 
-    public void submitToConnector(DomibusConnectorMessage message, DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName
-            , LinkType linkType) throws DomibusConnectorSubmitToLinkException;
-
+    void submitToConnector(
+        DomibusConnectorMessage message,
+        DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName, LinkType linkType)
+        throws DomibusConnectorSubmitToLinkException;
 }

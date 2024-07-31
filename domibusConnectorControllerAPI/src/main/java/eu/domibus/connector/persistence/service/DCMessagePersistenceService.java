@@ -1,3 +1,7 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
 package eu.domibus.connector.persistence.service;
 
@@ -5,17 +9,17 @@ import eu.domibus.connector.domain.enums.DomibusConnectorMessageDirection;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
-
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 
 /**
+ * DCMessagePersistenceService interface provides methods for persisting and retrieving connector
+ * messages in the database.
  *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 public interface DCMessagePersistenceService {
-
     boolean checkMessageConfirmed(DomibusConnectorMessage message);
 
     default boolean checkMessageConfirmedOrRejected(DomibusConnectorMessage message) {
@@ -27,27 +31,28 @@ public interface DCMessagePersistenceService {
     boolean checkMessageRejected(DomibusConnectorMessage message);
 
     /**
-     * marks the message as rejected
-     * @throws IllegalArgumentException is thrown, if the message is null,
-     *  or the message does not contain a connector id
-     * @throws RuntimeException - if the message is not successfully marked as
-     * rejected
+     * Marks the message as rejected.
+     *
      * @param message - the message
+     * @throws IllegalArgumentException is thrown, if the message is null, or the message does not
+     *                                  contain a connector id
+     * @throws RuntimeException         - if the message is not successfully marked as rejected
      */
     void rejectMessage(DomibusConnectorMessage message);
 
     /**
-     * marks the message as confirmed
-     * @throws IllegalArgumentException  is thrown, if the message is null,
-     *  or the message does not contain a db id
-     * @throws RuntimeException - if the message is not successfully marked as
-     * confirmed
+     * Marks the message as confirmed.
+     *
      * @param message - the message to confirm
+     * @throws IllegalArgumentException is thrown, if the message is null, or the message does not
+     *                                  contain a db id
+     * @throws RuntimeException         - if the message is not successfully marked as confirmed
      */
     void confirmMessage(DomibusConnectorMessage message);
 
     /**
-     * all messages which are going to the national system
+     * All messages which are going to the national system.
+     *
      * @return the list of unconfirmed messages
      */
     List<DomibusConnectorMessage> findIncomingUnconfirmedMessages();
@@ -55,62 +60,75 @@ public interface DCMessagePersistenceService {
     DomibusConnectorMessage findMessageByConnectorMessageId(String connectorMessageId);
 
     /**
+     * Finds a message in the persistence storage by ebmsMessageId and messageDirection.
      *
-     *
-     * @param ebmsMessageId - the ebmsId of the message
+     * @param ebmsMessageId    - the ebmsId of the message
      * @param messageDirection - the direction of the message
-     * @return the found message or an empty Optional if no message found with this ebmsId and direction
+     * @return the optional of DomibusConnectorMessage found with the specified ebmsMessageId and
+     *      messageDirection, or an empty optional if no message is found
      */
-    Optional<DomibusConnectorMessage> findMessageByEbmsIdAndDirection(String ebmsMessageId, DomibusConnectorMessageDirection messageDirection);
+    Optional<DomibusConnectorMessage> findMessageByEbmsIdAndDirection(
+        String ebmsMessageId,
+        DomibusConnectorMessageDirection messageDirection);
 
     /**
-     * finds the message by the national id and direction
-     * the nationalId is not set if the message was received from the gw
+     * finds the message by the national id and direction the nationalId is not set if the message
+     * was received from the gw.
+     *
      * @param nationalMessageId - the nationalMessageId
-     * @param messageDirection - the direction of the message
-     * @return the found message or an empty Optional if no message found with this nationalMessageId and direction
+     * @param messageDirection  - the direction of the message
+     * @return the found message or an empty Optional if no message found with this
+     *      nationalMessageId and direction
      */
-    Optional<DomibusConnectorMessage> findMessageByNationalIdAndDirection(String nationalMessageId, DomibusConnectorMessageDirection messageDirection);
-
+    Optional<DomibusConnectorMessage> findMessageByNationalIdAndDirection(
+        String nationalMessageId,
+        DomibusConnectorMessageDirection messageDirection);
 
     /**
+     * Finds a message in the persistence storage by the given ebmsMessageId and messageDirection.
      *
-     *
-     * @param ebmsMessageId - the ebmsId of the message
-     * @param messageDirection - the direction of the message
-     * @return the found message or an empty Optional if no message found with this ebmsId and direction
+     * @param ebmsMessageId    the ebmsId of the message
+     * @param messageDirection the direction of the message
+     * @return the optional of DomibusConnectorMessage found with the specified ebmsMessageId and
+     *      messageDirection, or an empty optional if no message is found
      */
-    Optional<DomibusConnectorMessage> findMessageByEbmsIdOrBackendIdAndDirection(String ebmsMessageId, DomibusConnectorMessageDirection messageDirection);
+    Optional<DomibusConnectorMessage> findMessageByEbmsIdOrBackendIdAndDirection(
+        String ebmsMessageId, DomibusConnectorMessageDirection messageDirection);
 
     /**
-     * returns all messages related to the
-     * conversation id
+     * Returns all messages related to the conversation id.
+     *
      * @param conversationId - the conversation id
-     * @return - a list of messages, if there are no messages found
-     *  the list will be empty
+     * @return - a list of messages, if there are no messages found the list will be empty
      */
     List<DomibusConnectorMessage> findMessagesByConversationId(String conversationId);
 
     /**
+     * Finds all outgoing messages that are not rejected, not confirmed, and without delivery.
      *
-     * @return a list of Messages or an emtpy List if nothing found
+     * @return a list of outgoing messages that match the criteria
      */
     List<DomibusConnectorMessage> findOutgoingMessagesNotRejectedNorConfirmedAndWithoutDelivery();
 
     /**
+     * Finds all outgoing messages that are not rejected, not confirmed, and without relay REMMD.
      *
-     * @return a list of Messages or an emtpy List if nothing found
+     * @return a list of outgoing messages that match the criteria
      */
     List<DomibusConnectorMessage> findOutgoingMessagesNotRejectedNorConfirmedAndWithoutRelayREMMD();
 
     /**
-     * all messages which are going to the GW
+     * All messages which are going to the GW.
+     *
      * @return the list of unconfirmed messages
      */
     List<DomibusConnectorMessage> findOutgoingUnconfirmedMessages();
 
     /**
-     * Only updates
+     * Merges the given {@link DomibusConnectorMessage} with the database. This method updates the
+     * fields of the message in the database.
+     *
+     * <p>Only updates.
      * <ul>
      *   <li>action</li>
      *   <li>service</li>
@@ -121,42 +139,47 @@ public interface DCMessagePersistenceService {
      * </ul>
      *  of the provided message details
      *
-     * also stores/updates message content
+     * <p>Also stores/updates message content
      * <ul>
      *  <li>all attachments</li>
      *  <li>message content xml content</li>
      *  <li>message message content document with signature</li>
      * </ul>
      *
-     *
-     * @param message - the message
-     * @return the message with eventually updated fields
-     * @throws PersistenceException in case of an error
+     * @param message The {@link DomibusConnectorMessage} to merge with the database.
+     * @return The updated {@link DomibusConnectorMessage}.
+     * @throws PersistenceException If there is a failure with persistence.
+     * @deprecated This method is deprecated and should not be used anymore. It is recommended to
+     *      commended to use the persistBusinessMessageIntoDatabase method instead.
      */
     @Deprecated
-    DomibusConnectorMessage mergeMessageWithDatabase(@Nonnull DomibusConnectorMessage message) throws PersistenceException;
+    DomibusConnectorMessage mergeMessageWithDatabase(@Nonnull DomibusConnectorMessage message)
+        throws PersistenceException;
 
     /**
-     * stores a new message into storage
+     * Stores a new message into storage.
      *
-     * @deprecated  the method persistBusinessMessageIntoDatabase should be used instead
-     * @param message - the message
+     * @param message   - the message
      * @param direction - direction of the message
      * @return the message with eventually updated fields
      * @throws PersistenceException - in case of failures with persistence
-     *
+     * @deprecated the method persistBusinessMessageIntoDatabase should be used instead
      */
     @Deprecated
-    DomibusConnectorMessage persistMessageIntoDatabase(@Nonnull DomibusConnectorMessage message, DomibusConnectorMessageDirection direction) throws PersistenceException;
+    DomibusConnectorMessage persistMessageIntoDatabase(@Nonnull DomibusConnectorMessage message,
+                                                       DomibusConnectorMessageDirection direction)
+        throws PersistenceException;
 
     /**
-     * Marks the message as delivered to the gateway
+     * Marks the message as delivered to the gateway.
+     *
      * @param message - the message, which should be marked
      */
     void setDeliveredToGateway(DomibusConnectorMessage message);
 
     /**
-     * Marks the message as delivered to national backend
+     * Marks the message as delivered to national backend.
+     *
      * @param message - the message, which should be marked
      */
     void setMessageDeliveredToNationalSystem(DomibusConnectorMessage message);
@@ -164,10 +187,8 @@ public interface DCMessagePersistenceService {
     void updateMessageDetails(DomibusConnectorMessage message);
 
     /**
-     * stores a business messsage into database
-     *  -) the message details
-     *  -) the message content
-     *  -) the message attachments
+     * stores a business message into database -) the message details -) the message content -) the
+     * message attachments.
      *
      * @param message - the connector message
      */

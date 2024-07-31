@@ -1,31 +1,44 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.controller.exception;
 
-public class ErrorCode {
+import java.io.Serializable;
+import lombok.Getter;
 
-    public static ErrorCode EVIDENCE_IGNORED_MESSAGE_ALREADY_REJECTED = new ErrorCode("E101", "The processed evidence is ignored, because the business message is already in rejected state");
-    public static ErrorCode EVIDENCE_IGNORED_DUE_DUPLICATE = new ErrorCode("E102", "The processed evidence is ignored, because max occurence number of evidence type exceeded");
-    public static ErrorCode EVIDENCE_IGNORED_DUE_HIGHER_PRIORITY = new ErrorCode("E103", "The processed evidence is not relevant due another evidence with higher priority");
-
-    public static ErrorCode LINK_PARTNER_NOT_FOUND = new ErrorCode("L104", "The requested LinkPartner is not configured");
-    public static ErrorCode LINK_PARTNER_NOT_ACTIVE = new ErrorCode("L101", "The requested LinkPartner is not active");
-
-    private final String errorCode;
+/**
+ * The ErrorCode class represents an error code and its corresponding description.
+ */
+@Getter
+public class ErrorCode implements Serializable {
+    public static final ErrorCode EVIDENCE_IGNORED_MESSAGE_ALREADY_REJECTED = new ErrorCode(
+        "E101",
+        "The processed evidence is ignored, because the business message is already "
+            + "in rejected state"
+    );
+    public static final ErrorCode EVIDENCE_IGNORED_DUE_DUPLICATE = new ErrorCode(
+        "E102",
+        "The processed evidence is ignored, because max occurrence number of evidence type exceeded"
+    );
+    public static final ErrorCode EVIDENCE_IGNORED_DUE_HIGHER_PRIORITY = new ErrorCode(
+        "E103",
+        "The processed evidence is not relevant due another evidence with higher priority"
+    );
+    public static final ErrorCode LINK_PARTNER_NOT_FOUND =
+        new ErrorCode("L104", "The requested LinkPartner is not configured");
+    public static final ErrorCode LINK_PARTNER_NOT_ACTIVE =
+        new ErrorCode("L101", "The requested LinkPartner is not active");
+    private final String code;
     private final String description;
 
-    public ErrorCode(String errorCode, String description) {
-        this.errorCode = errorCode;
+    public ErrorCode(String code, String description) {
+        this.code = code;
         this.description = description;
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public String toString() {
-        return this.errorCode + ": " + this.description;
+        return this.code + ": " + this.description;
     }
 }

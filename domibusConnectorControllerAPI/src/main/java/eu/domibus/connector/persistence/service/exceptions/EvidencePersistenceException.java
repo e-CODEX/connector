@@ -1,7 +1,15 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service.exceptions;
 
+/**
+ * This exception is thrown when there is an error in the persistence of evidence. It extends the
+ * PersistenceException class.
+ */
 public class EvidencePersistenceException extends PersistenceException {
-
     public EvidencePersistenceException() {
     }
 

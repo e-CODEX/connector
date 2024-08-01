@@ -1,6 +1,14 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.utils.service;
 
 import eu.domibus.connector.common.annotations.ConnectorConversationService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -9,24 +17,33 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * The PropertyMapToBeanConverter class provides methods to convert a map of properties to a Java
+ * bean object.
+ */
 @Component
 public class PropertyMapToBeanConverter {
-
     private static final Logger LOGGER = LogManager.getLogger(PropertyMapToBeanConverter.class);
-
     private final ConversionService conversionService;
 
-    public PropertyMapToBeanConverter(@ConnectorConversationService ConversionService conversionService) {
+    public PropertyMapToBeanConverter(
+        @ConnectorConversationService ConversionService conversionService) {
         this.conversionService = conversionService;
     }
 
-    public <T> T loadConfigurationOnlyFromMap(Map<String, String> map, Class<T> clazz, String prefix) {
+    /**
+     * Loads a configuration object of type T only from a map of properties.
+     *
+     * @param map    The map of properties.
+     * @param clazz  The class of the configuration object.
+     * @param prefix The prefix for the properties.
+     * @param <T>    The type of the configuration object.
+     * @return The loaded configuration object of type T.
+     * @throws IllegalArgumentException If clazz or prefix is null.
+     */
+    public <T> T loadConfigurationOnlyFromMap(Map<String, String> map, Class<T> clazz,
+                                              String prefix) {
         if (clazz == null) {
             throw new IllegalArgumentException("Clazz is not allowed to be null!");
         }
@@ -35,17 +52,14 @@ public class PropertyMapToBeanConverter {
         }
         LOGGER.debug("Loading property class [{}]", clazz);
 
-        MapConfigurationPropertySource mapConfigurationPropertySource = new MapConfigurationPropertySource(map);
+        var mapConfigurationPropertySource = new MapConfigurationPropertySource(map);
 
         List<ConfigurationPropertySource> configSources = new ArrayList<>();
         configSources.add(mapConfigurationPropertySource);
 
-        Binder binder = new Binder(configSources, null, conversionService, null);
+        var binder = new Binder(configSources, null, conversionService, null);
 
         Bindable<T> bindable = Bindable.of(clazz);
-        T t = binder.bindOrCreate(prefix, bindable);
-
-        return t;
+        return binder.bindOrCreate(prefix, bindable);
     }
-
 }

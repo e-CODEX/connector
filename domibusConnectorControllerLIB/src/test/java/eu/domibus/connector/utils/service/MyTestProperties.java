@@ -2,105 +2,60 @@ package eu.domibus.connector.utils.service;
 
 import eu.domibus.connector.common.annotations.BusinessDomainScoped;
 import eu.domibus.connector.common.annotations.MapNested;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.stereotype.Component;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.stereotype.Component;
 
+/**
+ * This class represents the properties for the MyTestProperties component.
+ */
+@Getter
+@Setter
 @Component
 @BusinessDomainScoped
 @ConfigurationProperties(prefix = "test.example")
 public class MyTestProperties {
-
     private String prop1;
-
     private Integer prop2;
-
     @NestedConfigurationProperty
     @MapNested
     private NestedProp nested = new NestedProp();
-
     private List<@MapNested NestedProp> nestedPropList = new ArrayList<>();
-
     private Map<String, @MapNested NestedProp> nestedPropMap = new HashMap<>();
 
+    /**
+     * This class represents a nested configuration property. It is annotated with @MapNested to
+     * indicate that it should be mapped as a nested property.
+     */
     @MapNested
     public static class NestedProp {
+        @Getter
+        @Setter
         private String abc;
+        @Getter
+        @Setter
         private Duration duration;
+        @SuppressWarnings("checkstyle:MemberName")
         private String aVeryLongPropertyName;
-
-        public String getAbc() {
-            return abc;
-        }
-
-        public void setAbc(String abc) {
-            this.abc = abc;
-        }
-
-        public Duration getDuration() {
-            return duration;
-        }
-
-        public void setDuration(Duration duration) {
-            this.duration = duration;
-        }
 
         public String getaVeryLongPropertyName() {
             return aVeryLongPropertyName;
         }
 
+        @SuppressWarnings("checkstyle:ParameterName")
         public void setaVeryLongPropertyName(String aVeryLongPropertyName) {
             this.aVeryLongPropertyName = aVeryLongPropertyName;
         }
     }
 
-    public String getProp1() {
-        return prop1;
-    }
-
-    public void setProp1(String prop1) {
-        this.prop1 = prop1;
-    }
-
-    public Integer getProp2() {
-        return prop2;
-    }
-
-    public void setProp2(Integer prop2) {
-        this.prop2 = prop2;
-    }
-
-    public NestedProp getNested() {
-        return nested;
-    }
-
-    public void setNested(NestedProp nested) {
-        this.nested = nested;
-    }
-
     public String getProp1AsAnotherString() {
         return prop1;
-    }
-
-    public List<NestedProp> getNestedPropList() {
-        return nestedPropList;
-    }
-
-    public void setNestedPropList(List<NestedProp> nestedPropList) {
-        this.nestedPropList = nestedPropList;
-    }
-
-    public Map<String, NestedProp> getNestedPropMap() {
-        return nestedPropMap;
-    }
-
-    public void setNestedPropMap(Map<String, NestedProp> nestedPropMap) {
-        this.nestedPropMap = nestedPropMap;
     }
 }

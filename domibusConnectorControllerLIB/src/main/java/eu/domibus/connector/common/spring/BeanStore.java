@@ -1,28 +1,24 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.common.spring;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.Scope;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
 class BeanStore {
-
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(BeanStore.class.getName());
-
+        .getLogger(BeanStore.class.getName());
     private final Map<String, Object> objects = new HashMap<>();
-
     private final Map<String, Runnable> destructionCallbacks = new HashMap<>();
 
-
     synchronized Object get(String name, ObjectFactory<?> objectFactory) {
-//        return objectFactory.getObject();
-        Object bean = objects.get(name);
+        var bean = objects.get(name);
         if (bean == null) {
             bean = objectFactory.getObject();
             objects.put(name, bean);
@@ -50,10 +46,4 @@ class BeanStore {
         destructionCallbacks.clear();
         objects.clear();
     }
-
-
-
-
-
-
 }

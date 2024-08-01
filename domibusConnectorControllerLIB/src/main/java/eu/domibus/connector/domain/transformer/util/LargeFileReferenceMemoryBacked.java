@@ -1,3 +1,7 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
 package eu.domibus.connector.domain.transformer.util;
 
@@ -9,11 +13,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- *
- * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
+ * Represents a memory-backed implementation of a LargeFileReference.
+ * This class provides methods to store and retrieve file content in memory.
  */
 public class LargeFileReferenceMemoryBacked extends LargeFileReference {
-
     private transient byte[] bytes;
     private boolean read = false;
     private boolean write = false;
@@ -22,11 +25,11 @@ public class LargeFileReferenceMemoryBacked extends LargeFileReference {
         this.read = true;
         this.bytes = bytes;
     }
-    
+
     public LargeFileReferenceMemoryBacked() {
         this.write = true;
     }
-    
+
     @Override
     public InputStream getInputStream() throws IOException {
         return new ByteArrayInputStream(bytes);
@@ -46,5 +49,4 @@ public class LargeFileReferenceMemoryBacked extends LargeFileReference {
     public boolean isWriteable() {
         return this.write;
     }
-
 }

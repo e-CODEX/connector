@@ -1,16 +1,23 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.lib.spring.configuration.validation;
 
+import java.io.IOException;
+import java.net.URL;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 
-import javax.validation.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-public class ResourceReadableValidator implements ConstraintValidator<CheckResourceIsReadable, String> {
-
+/**
+ * This class is a validator for the {@link CheckResourceIsReadable} annotation. It checks whether a
+ * given resource is readable.
+ */
+public class ResourceReadableValidator
+    implements ConstraintValidator<CheckResourceIsReadable, String> {
     private final ApplicationContext ctx;
 
     public ResourceReadableValidator(ApplicationContext ctx) {
@@ -29,19 +36,26 @@ public class ResourceReadableValidator implements ConstraintValidator<CheckResou
         }
         context.disableDefaultConstraintViolation();
         try {
-            Resource r = ctx.getResource(value);
+            var resource = ctx.getResource(value);
 
-            if (!r.exists()) {
-//                context.buildConstraintViolationWithTemplate("eu.domibus.connector.lib.spring.configuration.validation.resource_input_stream_valid")
-//                        .addConstraintViolation();
-                String message = String.format("Cannot open provided resource [%s]! Check if the path is correct and exists!", value);
+            if (!resource.exists()) {
+                // context.buildConstraintViolationWithTemplate("eu.domibus.connector.lib.spring
+                // .configuration.validation.resource_input_stream_valid")
+                //  .addConstraintViolation();
+                var message = String.format(
+                    "Cannot open provided resource [%s]! Check if the path is correct and exists!",
+                    value
+                );
                 context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
                 return false;
             }
-            r.getInputStream().close();
-//            inputStream.close();
+            resource.getInputStream().close();
+            // inputStream.close();
         } catch (IOException e) {
-            String message = String.format("Cannot open provided resource [%s]! Check if the path is correct and exists!", value);
+            var message = String.format(
+                "Cannot open provided resource [%s]! Check if the path is correct and exists!",
+                value
+            );
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }

@@ -1,19 +1,26 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.lib.spring.configuration.validation;
 
 import eu.domibus.connector.common.service.DCKeyStoreService;
 import eu.domibus.connector.lib.spring.configuration.StoreConfigurationProperties;
-
-import javax.validation.*;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-
 import java.util.Set;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class StoreLoadableValidator implements ConstraintValidator<CheckStoreIsLoadable, StoreConfigurationProperties> {
-
+/**
+ * Logger instance for logging.
+ */
+public class StoreLoadableValidator
+    implements ConstraintValidator<CheckStoreIsLoadable, StoreConfigurationProperties> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StoreLoadableValidator.class);
-
     private final Validator validator;
     private final DCKeyStoreService dcKeyStoreService;
 
@@ -24,40 +31,43 @@ public class StoreLoadableValidator implements ConstraintValidator<CheckStoreIsL
 
     @Override
     public void initialize(CheckStoreIsLoadable constraintAnnotation) {
-//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//        validator = factory.getValidator();
+        //        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        //        validator = factory.getValidator();
     }
 
+    @SuppressWarnings("squid:S1135")
     @Override
     public boolean isValid(StoreConfigurationProperties value, ConstraintValidatorContext context) {
         try {
             if (value == null) {
                 return true;
             }
-            Set<ConstraintViolation<StoreConfigurationProperties>> pathValidation = validator.validateProperty(value, "path");
+            Set<ConstraintViolation<StoreConfigurationProperties>> pathValidation =
+                validator.validateProperty(value, "path");
             if (!pathValidation.isEmpty()) {
                 return false;
             }
             try {
-//                value.loadKeyStore();
+                // value.loadKeyStore();
                 dcKeyStoreService.loadKeyStore(value);
             } catch (DCKeyStoreService.CannotLoadKeyStoreException exception) {
-                //TODO: nice message add property path...
+                // TODO: nice message add property path...
                 LOGGER.warn("error while loading store", exception);
                 Exception ecx = exception;
                 while (ecx.getCause() != null && ecx.getCause() instanceof Exception) {
                     ecx = (Exception) ecx.getCause();
-                    context.buildConstraintViolationWithTemplate(ecx.getMessage()).addConstraintViolation();
+                    context.buildConstraintViolationWithTemplate(ecx.getMessage())
+                           .addConstraintViolation();
                 }
                 return false;
             }
         } catch (Exception e) {
             LOGGER.error("exception occured while checking CheckStore is loadable constraint", e);
-            //throw new RuntimeException(e);
-            context.buildConstraintViolationWithTemplate(e.getCause().getMessage()).addConstraintViolation();
+            // throw new RuntimeException(e);
+            context.buildConstraintViolationWithTemplate(e.getCause().getMessage())
+                   .addConstraintViolation();
             return false;
         }
-
 
         return true;
     }

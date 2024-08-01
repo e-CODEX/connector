@@ -1,27 +1,38 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.common.service;
 
 import eu.domibus.connector.common.configuration.ConnectorConfigurationProperties;
 import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.persistence.service.DCBusinessDomainPersistenceService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+/**
+ * This class represents a manager for handling business domains in the DC application.
+ */
 @Service
 public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
-
     private static final Logger LOGGER = LogManager.getLogger(DCBusinessDomainManagerImpl.class);
-
     private final ConnectorConfigurationProperties businessDomainConfigurationProperties;
     private final DCBusinessDomainPersistenceService businessDomainPersistenceService;
 
-    public DCBusinessDomainManagerImpl(ConnectorConfigurationProperties businessDomainConfigurationProperties,
-                                       DCBusinessDomainPersistenceService businessDomainPersistenceService) {
+    public DCBusinessDomainManagerImpl(
+        ConnectorConfigurationProperties businessDomainConfigurationProperties,
+        DCBusinessDomainPersistenceService businessDomainPersistenceService) {
         this.businessDomainConfigurationProperties = businessDomainConfigurationProperties;
         this.businessDomainPersistenceService = businessDomainPersistenceService;
     }
@@ -31,56 +42,71 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
         Set<DomibusConnectorBusinessDomain.BusinessDomainId> collect = new HashSet<>();
         if (businessDomainConfigurationProperties.isLoadBusinessDomainsFromDb()) {
             businessDomainPersistenceService
-                    .findAll()
-                    .stream()
-                    .filter(DomibusConnectorBusinessDomain::isEnabled)
-                    .map(DomibusConnectorBusinessDomain::getId)
-                    .forEach(b -> collect.add(b));
+                .findAll()
+                .stream()
+                .filter(DomibusConnectorBusinessDomain::isEnabled)
+                .map(DomibusConnectorBusinessDomain::getId)
+                .forEach(collect::add);
         }
 
-        businessDomainConfigurationProperties.getBusinessDomain()
-                .entrySet().stream().map(this::mapBusinessConfigToBusinessDomain)
-                .map(DomibusConnectorBusinessDomain::getId)
-                .forEach(b -> {if(!collect.add(b)) {
-                    LOGGER.warn("Database has already provided a business domain with id [{}]. The domain will not be added from environment. DB takes precedence!", b);
-                }});
+        businessDomainConfigurationProperties
+            .getBusinessDomain()
+            .entrySet().stream()
+            .map(this::mapBusinessConfigToBusinessDomain)
+            .map(DomibusConnectorBusinessDomain::getId)
+            .forEach(b -> {
+                if (!collect.add(b)) {
+                    LOGGER.warn(
+                        "Database has already provided a business domain with id [{}]. "
+                            + "The domain will not be added from environment. DB takes precedence!",
+                        b
+                    );
+                }
+            });
 
         return new ArrayList<>(collect);
     }
 
     @Override
-    public Optional<DomibusConnectorBusinessDomain> getBusinessDomain(DomibusConnectorBusinessDomain.BusinessDomainId id) {
+    public Optional<DomibusConnectorBusinessDomain> getBusinessDomain(
+        DomibusConnectorBusinessDomain.BusinessDomainId id) {
         Optional<DomibusConnectorBusinessDomain> db = Optional.empty();
         if (businessDomainConfigurationProperties.isLoadBusinessDomainsFromDb()) {
             db = businessDomainPersistenceService.findById(id);
         }
         if (!db.isPresent()) {
             db = businessDomainConfigurationProperties.getBusinessDomain()
-                    .entrySet().stream().map(this::mapBusinessConfigToBusinessDomain)
-                    .filter(b -> b.getId().equals(id))
-                    .findAny();
+                                                      .entrySet().stream()
+                                                      .map(this::mapBusinessConfigToBusinessDomain)
+                                                      .filter(b -> b.getId().equals(id))
+                                                      .findAny();
         }
         return db;
     }
 
     @Override
-    public void updateConfig(DomibusConnectorBusinessDomain.BusinessDomainId id, Map<String, String> properties) {
-        Optional<DomibusConnectorBusinessDomain> byId = businessDomainPersistenceService.findById(id);
+    public void updateConfig(
+        DomibusConnectorBusinessDomain.BusinessDomainId id, Map<String, String> properties) {
+        Optional<DomibusConnectorBusinessDomain> byId =
+            businessDomainPersistenceService.findById(id);
         if (byId.isPresent()) {
-            DomibusConnectorBusinessDomain domibusConnectorBusinessDomain = byId.get();
+            var domibusConnectorBusinessDomain = byId.get();
             if (domibusConnectorBusinessDomain.getConfigurationSource() != ConfigurationSource.DB) {
                 LOGGER.warn("Cannot update other than DB source!");
                 return;
             }
 
-            Map<String, String> updatedProperties = updateChangedProperties(domibusConnectorBusinessDomain.getMessageLaneProperties(), properties);
+            Map<String, String> updatedProperties =
+                updateChangedProperties(
+                    domibusConnectorBusinessDomain.getMessageLaneProperties(),
+                    properties
+                );
             domibusConnectorBusinessDomain.setMessageLaneProperties(updatedProperties);
 
             businessDomainPersistenceService.update(domibusConnectorBusinessDomain);
         } else {
             throw new RuntimeException("no business domain found for update config!");
         }
-
     }
 
     @Override
@@ -88,23 +114,28 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
         businessDomainPersistenceService.create(businessDomain);
     }
 
-    Map<String, String> updateChangedProperties(Map<String, String> currentProperties, Map<String, String> properties) {
+    Map<String, String> updateChangedProperties(
+        Map<String, String> currentProperties, Map<String, String> properties) {
         currentProperties.putAll(properties);
-        Map<String, String> collect = currentProperties.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        return collect;
+        return currentProperties.entrySet()
+                                .stream()
+                                .filter(entry -> entry.getValue() != null)
+                                .collect(Collectors.toMap(
+                                    Map.Entry::getKey,
+                                    Map.Entry::getValue
+                                ));
     }
 
-    private DomibusConnectorBusinessDomain mapBusinessConfigToBusinessDomain(Map.Entry<DomibusConnectorBusinessDomain.BusinessDomainId, ConnectorConfigurationProperties.BusinessDomainConfig> messageLaneIdBusinessDomainConfigEntry) {
-        DomibusConnectorBusinessDomain lane = new DomibusConnectorBusinessDomain();
-        lane.setDescription(messageLaneIdBusinessDomainConfigEntry.getValue().getDescription());
-        lane.setId(messageLaneIdBusinessDomainConfigEntry.getKey());
+    private DomibusConnectorBusinessDomain mapBusinessConfigToBusinessDomain(
+        Map.Entry<DomibusConnectorBusinessDomain.BusinessDomainId,
+            ConnectorConfigurationProperties.BusinessDomainConfig> businessDomainConfigEntry) {
+        var lane = new DomibusConnectorBusinessDomain();
+        lane.setDescription(businessDomainConfigEntry.getValue().getDescription());
+        lane.setId(businessDomainConfigEntry.getKey());
         lane.setConfigurationSource(ConfigurationSource.ENV);
-        Map<String, String> p = new HashMap<>(messageLaneIdBusinessDomainConfigEntry.getValue().getProperties());
+        Map<String, String> p =
+            new HashMap<>(businessDomainConfigEntry.getValue().getProperties());
         lane.setMessageLaneProperties(p);
         return lane;
     }
-
 }

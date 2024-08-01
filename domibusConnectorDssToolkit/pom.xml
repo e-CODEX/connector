@@ -62,6 +62,10 @@
         </dependency>
         <!-- other dependencies -->
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.santuario</groupId>
             <artifactId>xmlsec</artifactId>
         </dependency>

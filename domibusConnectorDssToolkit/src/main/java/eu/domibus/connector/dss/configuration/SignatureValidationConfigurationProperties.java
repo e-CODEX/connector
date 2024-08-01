@@ -1,18 +1,27 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.dss.configuration;
 
 import eu.domibus.connector.common.annotations.MapNested;
 import eu.domibus.connector.dss.configuration.validation.ValidEtsiValidationPolicyXml;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationDescription;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Setter;
 
+/**
+ * This class represents the configuration properties for Signature Validation. It inherits
+ * properties from the CertificateVerifierConfigurationProperties class. It contains properties for
+ * the validation constraints XML file path.
+ */
+@Setter
 @MapNested
-public class SignatureValidationConfigurationProperties extends CertificateVerifierConfigurationProperties {
-
+public class SignatureValidationConfigurationProperties
+    extends CertificateVerifierConfigurationProperties {
     @NotBlank
     @ValidEtsiValidationPolicyXml
     @ConfigurationLabel("Validation Constraints")
@@ -23,9 +32,4 @@ public class SignatureValidationConfigurationProperties extends CertificateVerif
     public String getValidationConstraintsXml() {
         return validationConstraintsXml;
     }
-
-    public void setValidationConstraintsXml(String validationConstraintsXml) {
-        this.validationConstraintsXml = validationConstraintsXml;
-    }
-
 }

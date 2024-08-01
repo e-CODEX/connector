@@ -1,4 +1,11 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.dss.service;
+
+import static eu.domibus.connector.dss.configuration.BasicDssConfiguration.DEFAULT_DATALOADER_BEAN_NAME;
 
 import eu.domibus.connector.common.service.DCKeyStoreService;
 import eu.domibus.connector.dss.configuration.BasicDssConfigurationProperties;
@@ -16,73 +23,83 @@ import eu.europa.esig.dss.tsl.function.OfficialJournalSchemeInformationURI;
 import eu.europa.esig.dss.tsl.job.TLValidationJob;
 import eu.europa.esig.dss.tsl.source.LOTLSource;
 import eu.europa.esig.dss.tsl.source.TLSource;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import static eu.domibus.connector.dss.configuration.BasicDssConfiguration.DEFAULT_DATALOADER_BEAN_NAME;
+import javax.annotation.PostConstruct;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
- * Runs the DSS TSL (Trusted Lists, Trusted Lists of Lists)
- * validation on Startup
+ * Runs the DSS TSL (Trusted Lists, Trusted Lists of Lists) validation on Startup.
  *
- * Registers also a timer job for that purpose
- *
+ * <p>Registers also a timer job for that purpose
  */
+@SuppressWarnings("squid:S1135")
 @Component
 public class DSSTrustedListsManager {
-
     private static final Logger LOGGER = LogManager.getLogger(DSSTrustedListsManager.class);
-
     private final BasicDssConfigurationProperties basicDssConfigurationProperties;
     private final DCKeyStoreService dcKeyStoreService;
     private final DataLoader dataLoader;
+    private final Map<String, TrustedListsCertificateSource> trustedListsCertificateSourceMap =
+        new HashMap<>();
 
-    private Map<String, TrustedListsCertificateSource> trustedListsCertificateSourceMap = new HashMap<>();
-
-    public DSSTrustedListsManager(BasicDssConfigurationProperties basicDssConfigurationProperties,
-                                  DCKeyStoreService dcKeyStoreService,
-                                  @Qualifier(DEFAULT_DATALOADER_BEAN_NAME) DataLoader dataLoader) {
+    /**
+     * Initializes an instance of DSSTrustedListsManager with the given parameters.
+     *
+     * @param basicDssConfigurationProperties The basic DSS configuration properties.
+     * @param dcKeyStoreService               The DCKeyStoreService for loading and storing
+     *                                        keystores.
+     * @param dataLoader                      The DataLoader for loading data.
+     */
+    public DSSTrustedListsManager(
+        BasicDssConfigurationProperties basicDssConfigurationProperties,
+        DCKeyStoreService dcKeyStoreService,
+        @Qualifier(DEFAULT_DATALOADER_BEAN_NAME) DataLoader dataLoader) {
         this.basicDssConfigurationProperties = basicDssConfigurationProperties;
         this.dcKeyStoreService = dcKeyStoreService;
         this.dataLoader = dataLoader;
     }
 
+    /**
+     * Initializes the DSSTrustedListsManager by iterating over the trust list sources and calling
+     * the initTrustSource method for each source. This method is annotated with @PostConstruct to
+     * ensure that it is automatically called after the DSSTrustedListsManager bean is constructed.
+     */
     @PostConstruct
     public void init() {
-
-        Map<String, TrustListSourceConfigurationProperties> trustSource = basicDssConfigurationProperties.getTrustListSources();
+        Map<String, TrustListSourceConfigurationProperties> trustSource =
+            basicDssConfigurationProperties.getTrustListSources();
         trustSource.forEach(this::initTrustSource);
-
-
-
     }
 
-    private void initTrustSource(String s, TrustListSourceConfigurationProperties trustListSourceConfigurationProperties) {
+    private void initTrustSource(
+        String s, TrustListSourceConfigurationProperties trustListSourceConfigurationProperties) {
+        var trustedListsCertificateSource = new TrustedListsCertificateSource();
+        var tlValidationJob = new TLValidationJob();
 
-        TrustedListsCertificateSource trustedListsCertificateSource = new TrustedListsCertificateSource();
-
-        TLValidationJob tlValidationJob = new TLValidationJob();
-
-        tlValidationJob.setTrustedListSources(trustListSourceConfigurationProperties.getTlSources()
+        tlValidationJob.setTrustedListSources(
+            trustListSourceConfigurationProperties
+                .getTlSources()
                 .stream()
-                .map(this::mapTLConfig).toArray(TLSource[]::new));
+                .map(this::mapTLConfig)
+                .toArray(TLSource[]::new)
+        );
 
-        tlValidationJob.setListOfTrustedListSources(trustListSourceConfigurationProperties.getLotlSources()
-            .stream()
-            .map(this::mapLotlConfig).toArray(LOTLSource[]::new));
+        tlValidationJob.setListOfTrustedListSources(
+            trustListSourceConfigurationProperties
+                .getLotlSources()
+                .stream()
+                .map(this::mapLotlConfig)
+                .toArray(LOTLSource[]::new)
+        );
 
         tlValidationJob.setDebug(LOGGER.getLevel().isMoreSpecificThan(Level.INFO));
         tlValidationJob.setOfflineDataLoader(offlineDataLoader());
@@ -93,11 +110,13 @@ public class DSSTrustedListsManager {
 
         tlValidationJob.onlineRefresh();
 
-        LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Configured TrustedListsCertificateSource with name [{}]", s);
+        LOGGER.info(
+            LoggingMarker.Log4jMarker.CONFIG,
+            "Configured TrustedListsCertificateSource with name [{}]", s
+        );
         trustedListsCertificateSourceMap.put(s, trustedListsCertificateSource);
-
-        //TODO: register quartz job!
-        //TODO: update on config changes...
+        // TODO: register quartz job!
+        // TODO: update on config changes...
     }
 
     public Optional<TrustedListsCertificateSource> getCertificateSource(String name) {
@@ -105,72 +124,86 @@ public class DSSTrustedListsManager {
     }
 
     private DSSFileLoader offlineDataLoader() {
-        FileCacheDataLoader offlineFileLoader = new FileCacheDataLoader();
-        offlineFileLoader.setCacheExpirationTime(basicDssConfigurationProperties.getTlCacheExpiration().toMillis());
+        var offlineFileLoader = new FileCacheDataLoader();
+        offlineFileLoader.setCacheExpirationTime(
+            basicDssConfigurationProperties.getTlCacheExpiration().toMillis());
         offlineFileLoader.setDataLoader(new IgnoreDataLoader()); // do not download from Internet
-        offlineFileLoader.setFileCacheDirectory(basicDssConfigurationProperties.getTlCacheLocation().toFile());
+        offlineFileLoader.setFileCacheDirectory(
+            basicDssConfigurationProperties.getTlCacheLocation().toFile());
         return offlineFileLoader;
     }
 
     private DSSFileLoader onlineDataLoader() {
-        FileCacheDataLoader onlineFileLoader = new FileCacheDataLoader();
+        var onlineFileLoader = new FileCacheDataLoader();
         onlineFileLoader.setCacheExpirationTime(0);
         onlineFileLoader.setDataLoader(dataLoader);
-        onlineFileLoader.setFileCacheDirectory(basicDssConfigurationProperties.getTlCacheLocation().toFile());
+        onlineFileLoader.setFileCacheDirectory(
+            basicDssConfigurationProperties.getTlCacheLocation().toFile());
         return onlineFileLoader;
     }
 
     private TLSource mapTLConfig(TrustListSourceConfigurationProperties.TlSourceConfig tlConfig) {
         try {
-            TLSource tlSource = new TLSource();
+            var tlSource = new TLSource();
             tlSource.setUrl(tlConfig.getTlUrl());
 
             if (tlConfig.getSigningCerts() != null) {
-                CommonTrustedCertificateSource trustedCertSource = getCommonTrustedCertificateSource(tlConfig.getSigningCerts());
+                var trustedCertSource =
+                    getCommonTrustedCertificateSource(tlConfig.getSigningCerts());
                 tlSource.setCertificateSource(trustedCertSource);
             }
 
             LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Configured TL source [{}]", tlConfig);
             return tlSource;
-
         } catch (IOException ioe) {
-            String error = String.format("Unable to open TrustStore from [%s]", tlConfig.getSigningCerts());
+            var error =
+                String.format("Unable to open TrustStore from [%s]", tlConfig.getSigningCerts());
             throw new RuntimeException(error, ioe);
         }
     }
 
-
-    private LOTLSource mapLotlConfig(TrustListSourceConfigurationProperties.LotlSourceConfig lotlConfig) {
+    private LOTLSource mapLotlConfig(
+        TrustListSourceConfigurationProperties.LotlSourceConfig lotlConfig) {
         try {
-            LOTLSource lotlSource = new LOTLSource();
+            var lotlSource = new LOTLSource();
             lotlSource.setPivotSupport(lotlConfig.isPivotSupport());
             lotlSource.setUrl(lotlConfig.getLotlUrl());
 
             if (StringUtils.hasText(lotlConfig.getSigningCertificatesAnnouncementUri())) {
-                OfficialJournalSchemeInformationURI officialJournalSchemeInformationURI = new OfficialJournalSchemeInformationURI(lotlConfig.getSigningCertificatesAnnouncementUri());
-                lotlSource.setSigningCertificatesAnnouncementPredicate(officialJournalSchemeInformationURI);
+                var officialJournalSchemeInformationURI =
+                    new OfficialJournalSchemeInformationURI(
+                        lotlConfig.getSigningCertificatesAnnouncementUri());
+                lotlSource.setSigningCertificatesAnnouncementPredicate(
+                    officialJournalSchemeInformationURI);
             }
 
             if (lotlConfig.getSigningCerts() != null) {
-                CommonTrustedCertificateSource trustedCertSource = getCommonTrustedCertificateSource(lotlConfig.getSigningCerts());
+                var trustedCertSource =
+                    getCommonTrustedCertificateSource(lotlConfig.getSigningCerts());
                 lotlSource.setCertificateSource(trustedCertSource);
             }
 
-            LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Configured LOTL source [{}]", lotlConfig);
+            LOGGER.info(
+                LoggingMarker.Log4jMarker.CONFIG, "Configured LOTL source [{}]", lotlConfig);
 
             return lotlSource;
         } catch (IOException ioe) {
-            String error = String.format("Unable to open TrustStore from [%s]", lotlConfig.getSigningCerts());
+            var error =
+                String.format("Unable to open TrustStore from [%s]", lotlConfig.getSigningCerts());
             throw new RuntimeException(error, ioe);
         }
     }
 
-    private CommonTrustedCertificateSource getCommonTrustedCertificateSource(StoreConfigurationProperties signingCerts) throws IOException {
-        Resource resource = dcKeyStoreService.loadKeyStoreAsResource(signingCerts);
-        InputStream inputStream = resource.getInputStream();
-        KeyStoreCertificateSource keyStoreCertificateSource = new KeyStoreCertificateSource(inputStream, signingCerts.getType(), signingCerts.getPassword());
+    private CommonTrustedCertificateSource getCommonTrustedCertificateSource(
+        StoreConfigurationProperties signingCerts) throws IOException {
+        var resource = dcKeyStoreService.loadKeyStoreAsResource(signingCerts);
+        var inputStream = resource.getInputStream();
+        var keyStoreCertificateSource = new KeyStoreCertificateSource(
+            inputStream, signingCerts.getType(),
+            signingCerts.getPassword()
+        );
 
-        CommonTrustedCertificateSource trustedCertSource = new CommonTrustedCertificateSource();
+        var trustedCertSource = new CommonTrustedCertificateSource();
         trustedCertSource.importAsTrusted(keyStoreCertificateSource);
         return trustedCertSource;
     }
@@ -178,6 +211,4 @@ public class DSSTrustedListsManager {
     public Collection<String> getAllSourceNames() {
         return this.trustedListsCertificateSourceMap.keySet();
     }
-
-
 }

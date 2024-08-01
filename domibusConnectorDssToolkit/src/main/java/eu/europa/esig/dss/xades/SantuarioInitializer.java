@@ -1,27 +1,11 @@
-package eu.europa.esig.dss.xades;
-
-/**
- * DSS - Digital Signature Services
- * Copyright (C) 2015 European Commission, provided under the CEF programme
- *
- * This file is part of the "DSS - Digital Signature Services" project.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
  */
 
+package eu.europa.esig.dss.xades;
 
+import lombok.experimental.UtilityClass;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
@@ -39,28 +23,25 @@ import org.slf4j.LoggerFactory;
 /**
  * Customized Initialization of Santuario.
  *
- * We don't use the secureValidation parameter because it ignores some signature
- * algorithms
- */
-
-/*
- *  This class overwrites the class from dss toolkits to align it with a
- *  more recent xmlsec lib version
+ * <p>This class overwrites the class from dss toolkits to align it with a *  more recent xmlsec
+ * library version
  *
+ * <p>We don't use the secureValidation parameter because it ignores some signature algorithms
  */
+@UtilityClass
 public class SantuarioInitializer {
-
     private static final Logger LOG = LoggerFactory.getLogger(SantuarioInitializer.class);
-
-    /** Field alreadyInitialized */
+    /**
+     * Field alreadyInitialized.
+     */
     private static boolean alreadyInitialized = false;
 
     /**
-     * Method isInitialized
+     * Method isInitialized.
      *
      * @return true if the library is already initialized.
      */
-    public static final synchronized boolean isInitialized() {
+    public static synchronized boolean isInitialized() {
         if (Init.isInitialized()) {
             LOG.info("Santuario is already initialized with its default configuration");
             return true;
@@ -69,8 +50,7 @@ public class SantuarioInitializer {
     }
 
     /**
-     * Method init
-     *
+     * Method init.
      */
     public static synchronized void init() {
         if (isInitialized()) {
@@ -83,8 +63,7 @@ public class SantuarioInitializer {
     }
 
     /**
-     * Dynamically initialise the library by registering the default
-     * algorithms/implementations
+     * Dynamically initialise the library by registering the default algorithms/implementations.
      */
     private static void dynamicInit() {
         //
@@ -139,10 +118,10 @@ public class SantuarioInitializer {
 
     /**
      * Customized
-     * org.apache.xml.security.utils.resolver.ResourceResolver.registerDefaultResolvers()
+     * org.apache.xml.security.utils.resolver.ResourceResolver.registerDefaultResolvers().
      *
-     * Ignore references which point to a file (file://) or external http urls
-     * Enforce ResolverFragment against XPath injections
+     * <p>Ignore references which point to a file (file://) or external http urls Enforce
+     * ResolverFragment against XPath injections
      */
     public static void registerDefaultResolvers() {
         try {
@@ -151,11 +130,10 @@ public class SantuarioInitializer {
             throw new IllegalArgumentException("Cannot register resolver", e);
         }
         try {
-            ResourceResolver.register(ResolverXPointer.class.getName() );
+            ResourceResolver.register(ResolverXPointer.class.getName());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new IllegalArgumentException("Cannot register resolver", e);
         }
     }
-
 }
 

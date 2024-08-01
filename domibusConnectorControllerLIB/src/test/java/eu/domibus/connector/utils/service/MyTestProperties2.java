@@ -1,101 +1,51 @@
 package eu.domibus.connector.utils.service;
 
 import eu.domibus.connector.common.annotations.BusinessDomainScoped;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * The MyTestProperties2 class represents a set of configuration properties for the "test.example2"
+ * namespace. It is annotated with @Component and @BusinessDomainScoped, indicating that it is a
+ * component scoped to a specific business domain.
+ *
+ * <p>The properties are defined as private fields within the class, with corresponding getter and
+ * setter methods for each property. The class also contains a nested class called NestedProp, which
+ * represents a subset of properties within MyTestProperties2.
+ */
 @Component
 @BusinessDomainScoped
 @ConfigurationProperties(prefix = "test.example2")
+@Getter
+@Setter
 public class MyTestProperties2 {
-
     private String prop1;
-
     private Integer prop2;
-
     @NestedConfigurationProperty
     private NestedProp nested = new NestedProp();
-
     private List<String> list = new ArrayList<>();
-
     private List<NestedProp> nestedProps = new ArrayList<>();
 
+    /**
+     * This class represents a nested property with three fields: abc, duration, and
+     * aVeryLongPropertyName. It provides getter and setter methods for each field.
+     */
+    @Getter
+    @Setter
     public static class NestedProp {
         private String abc;
         private Duration duration;
+        @SuppressWarnings("checkstyle:MemberName")
         private String aVeryLongPropertyName;
-
-        public String getAbc() {
-            return abc;
-        }
-
-        public void setAbc(String abc) {
-            this.abc = abc;
-        }
-
-        public Duration getDuration() {
-            return duration;
-        }
-
-        public void setDuration(Duration duration) {
-            this.duration = duration;
-        }
-
-        public String getaVeryLongPropertyName() {
-            return aVeryLongPropertyName;
-        }
-
-        public void setaVeryLongPropertyName(String aVeryLongPropertyName) {
-            this.aVeryLongPropertyName = aVeryLongPropertyName;
-        }
-    }
-
-    public String getProp1() {
-        return prop1;
-    }
-
-    public void setProp1(String prop1) {
-        this.prop1 = prop1;
-    }
-
-    public Integer getProp2() {
-        return prop2;
-    }
-
-    public void setProp2(Integer prop2) {
-        this.prop2 = prop2;
-    }
-
-    public NestedProp getNested() {
-        return nested;
-    }
-
-    public void setNested(NestedProp nested) {
-        this.nested = nested;
     }
 
     public String getProp1AsAnotherString() {
         return prop1;
-    }
-
-    public List<String> getList() {
-        return list;
-    }
-
-    public void setList(List<String> list) {
-        this.list = list;
-    }
-
-    public List<NestedProp> getNestedProps() {
-        return nestedProps;
-    }
-
-    public void setNestedProps(List<NestedProp> nestedProps) {
-        this.nestedProps = nestedProps;
     }
 }

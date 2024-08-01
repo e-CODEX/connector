@@ -1,17 +1,23 @@
-package eu.domibus.connector.lib.spring;
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
-import org.springframework.util.StringUtils;
+package eu.domibus.connector.lib.spring;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.util.StringUtils;
 
+/**
+ * The DomibusConnectorDuration class represents a duration of time in the Domibus connector. It
+ * provides methods to convert the duration to milliseconds and to obtain a Duration object.
+ */
 public class DomibusConnectorDuration {
-
-    private static final Map<String, TimeUnit> UNITS = new HashMap<String, TimeUnit>() {
+    private static final Map<String, TimeUnit> UNITS = new HashMap<>() {
         {
             put("ms", TimeUnit.MILLISECONDS);
             put("s", TimeUnit.SECONDS);
@@ -20,9 +26,7 @@ public class DomibusConnectorDuration {
             put("d", TimeUnit.DAYS);
         }
     };
-
     private static final Pattern PARSE_PATTERN = Pattern.compile("([0-9]+)(ms|s|m|h|d)");
-
     private final long duration;
     private final TimeUnit unit;
 
@@ -30,7 +34,6 @@ public class DomibusConnectorDuration {
         this.duration = value;
         this.unit = unit;
     }
-
 
     public DomibusConnectorDuration(long milliseconds) {
         this(milliseconds, TimeUnit.MILLISECONDS);
@@ -53,19 +56,18 @@ public class DomibusConnectorDuration {
      */
     public static DomibusConnectorDuration valueOf(String s) throws NumberFormatException {
         if (!StringUtils.hasText(s)) {
-            throw new NumberFormatException("Null or empty string cannot be converted to duration.");
+            throw new NumberFormatException(
+                "Null or empty string cannot be converted to duration.");
         }
 
-        Matcher m = PARSE_PATTERN.matcher(s.trim());
+        var m = PARSE_PATTERN.matcher(s.trim());
         if (!m.matches()) {
             throw new NumberFormatException("Invalid duration format: " + s);
         }
 
-        Long value = Long.valueOf(m.group(1));
+        var value = Long.valueOf(m.group(1));
         String unit = m.group(2);
 
         return new DomibusConnectorDuration(value, UNITS.get(unit));
     }
-
-
 }

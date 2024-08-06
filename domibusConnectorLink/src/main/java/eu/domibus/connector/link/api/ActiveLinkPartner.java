@@ -1,54 +1,38 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.link.api;
 
-import eu.domibus.connector.link.service.SubmitToLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
-import lombok.Data;
+import eu.domibus.connector.link.service.SubmitToLinkPartner;
+import java.util.Optional;
+import javax.annotation.CheckForNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import javax.annotation.CheckForNull;
-import java.util.Optional;
-
+/**
+ * The ActiveLinkPartner class represents an active link partner in the Domibus Connector. It
+ * contains information about the link partner, parent link, child context, and submit to link
+ * partner.
+ */
+@Getter
+@Setter
 public class ActiveLinkPartner {
-
     private DomibusConnectorLinkPartner linkPartner;
-
     private ActiveLink parentLink;
-
     @CheckForNull
     private ConfigurableApplicationContext childContext;
-
     @CheckForNull
     private SubmitToLinkPartner submitToLink;
-
-    public DomibusConnectorLinkPartner getLinkPartner() {
-        return linkPartner;
-    }
-
-    public void setLinkPartner(DomibusConnectorLinkPartner linkPartner) {
-        this.linkPartner = linkPartner;
-    }
-
-    public ActiveLink getParentLink() {
-        return parentLink;
-    }
-
-    public void setParentLink(ActiveLink parentLink) {
-        this.parentLink = parentLink;
-    }
 
     public Optional<ConfigurableApplicationContext> getChildContext() {
         return Optional.ofNullable(childContext);
     }
 
-    public void setChildContext(ConfigurableApplicationContext childContext) {
-        this.childContext = childContext;
-    }
-
     public Optional<SubmitToLinkPartner> getSubmitToLink() {
         return Optional.ofNullable(submitToLink);
-    }
-
-    public void setSubmitToLink(SubmitToLinkPartner submitToLink) {
-        this.submitToLink = submitToLink;
     }
 }

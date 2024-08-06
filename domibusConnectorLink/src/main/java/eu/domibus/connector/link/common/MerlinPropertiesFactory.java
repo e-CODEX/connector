@@ -1,80 +1,92 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.link.common;
 
-import eu.domibus.connector.common.service.DCKeyStoreService;
 import eu.domibus.connector.lib.spring.configuration.CxfTrustKeyStoreConfigurationProperties;
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreAndTrustStoreConfigurationProperties;
 import eu.domibus.connector.lib.spring.configuration.StoreConfigurationProperties;
+import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.util.Properties;
-
+/**
+ * The MerlinPropertiesFactory class is responsible for mapping own configured properties to the
+ * crypto Properties used by the WSS4J library. It provides a method to map the key store and trust
+ * store configuration properties to the crypto Properties.
+ */
 @Service
 public class MerlinPropertiesFactory {
-
-    private final static Logger LOGGER = LogManager.getLogger(MerlinPropertiesFactory.class);
-
-//    private final DCKeyStoreService dcKeyStoreService;
-//
-//    public MerlinPropertiesFactory(DCKeyStoreService dcKeyStoreService) {
-//        this.dcKeyStoreService = dcKeyStoreService;
-//    }
-
-    //    public Map<String, Object> mapCertAndStoreConfigPropertiesToMerlinProperties(KeyAndKeyStoreAndTrustStoreConfigurationProperties config, String prefix);
-//    CxfTrustKeyStoreConfigurationProperties
+    private static final Logger LOGGER = LogManager.getLogger(MerlinPropertiesFactory.class);
 
     /**
-     * Maps the own configured properties to the crypto Properties
-     * also see https://ws.apache.org/wss4j/config.html
+     * Maps the own configured properties to the crypto Properties also see
+     * https://ws.apache.org/wss4j/config.html.
      *
      * @return the wss Properties
      */
-    public Properties mapCertAndStoreConfigPropertiesToMerlinProperties(KeyAndKeyStoreAndTrustStoreConfigurationProperties config, String prefix) {
+    public Properties mapCertAndStoreConfigPropertiesToMerlinProperties(
+        KeyAndKeyStoreAndTrustStoreConfigurationProperties config, String prefix) {
         if (config == null) {
             throw new IllegalArgumentException(prefix + ".config.* properties are missing!");
         }
         StoreConfigurationProperties keyStore = config.getKeyStore();
         if (keyStore == null) {
-            throw new IllegalArgumentException(prefix + ".config.key-store.* properties are missing or wrong!");
+            throw new IllegalArgumentException(
+                prefix + ".config.key-store.* properties are missing or wrong!");
         }
 
-//        HashMap<String, Object> p = new HashMap<>();
-        Properties p = new Properties();
-        p.put("org.apache.wss4j.crypto.provider", "org.apache.wss4j.common.crypto.Merlin");
-        p.put("org.apache.wss4j.crypto.merlin.keystore.type", keyStore.getType());
-        p.put("org.apache.wss4j.crypto.merlin.keystore.password", keyStore.getPassword());
-        LOGGER.debug("setting [org.apache.wss4j.crypto.merlin.keystore.file={}]", keyStore.getPath());
+        var properties = new Properties();
+        properties.put("org.apache.wss4j.crypto.provider", "org.apache.wss4j.common.crypto.Merlin");
+        properties.put("org.apache.wss4j.crypto.merlin.keystore.type", keyStore.getType());
+        properties.put("org.apache.wss4j.crypto.merlin.keystore.password", keyStore.getPassword());
+        LOGGER.debug(
+            "setting [org.apache.wss4j.crypto.merlin.keystore.file={}]", keyStore.getPath());
         try {
-//            p.put("org.apache.wss4j.crypto.merlin.keystore.file", keyStore.getPathUrlAsString());
-            p.put("org.apache.wss4j.crypto.merlin.keystore.file", keyStore.getPath());
+            properties.put("org.apache.wss4j.crypto.merlin.keystore.file", keyStore.getPath());
         } catch (Exception e) {
-            throw new RuntimeException("Error with property: [" + prefix + ".config.key-store.path]\n" +
-                    "value is [" + keyStore.getPath() + "]");
+            throw new RuntimeException(
+                "Error with property: [" + prefix + ".config.key-store.path]\n"
+                    + "value is [" + keyStore.getPath() + "]");
         }
-        p.put("org.apache.wss4j.crypto.merlin.keystore.alias", config.getPrivateKey().getAlias());
-        p.put("org.apache.wss4j.crypto.merlin.keystore.private.password", config.getPrivateKey().getPassword());
-
+        properties.put(
+            "org.apache.wss4j.crypto.merlin.keystore.alias", config.getPrivateKey().getAlias());
+        properties.put(
+            "org.apache.wss4j.crypto.merlin.keystore.private.password",
+            config.getPrivateKey().getPassword()
+        );
 
         StoreConfigurationProperties trustStore = config.getTrustStore();
-        p.put("org.apache.wss4j.crypto.merlin.truststore.type", trustStore.getType());
-        p.put("org.apache.wss4j.crypto.merlin.truststore.password", trustStore.getPassword());
+        properties.put("org.apache.wss4j.crypto.merlin.truststore.type", trustStore.getType());
+        properties.put(
+            "org.apache.wss4j.crypto.merlin.truststore.password", trustStore.getPassword());
         try {
-            LOGGER.debug("setting [org.apache.wss4j.crypto.merlin.truststore.file={}]", trustStore.getPath());
-            p.put("org.apache.wss4j.crypto.merlin.truststore.file", trustStore.getPath());
+            LOGGER.debug(
+                "setting [org.apache.wss4j.crypto.merlin.truststore.file={}]",
+                trustStore.getPath()
+            );
+            properties.put("org.apache.wss4j.crypto.merlin.truststore.file", trustStore.getPath());
         } catch (Exception e) {
-            LOGGER.info("Trust Store Property: [" + prefix + ".config.trust-store.path]" +
-                            "\n cannot be processed. Using the configured key store [{}] as trust store",
-                    p.get("org.apache.wss4j.crypto.merlin.keystore.file"));
+            String info = "Trust Store Property: [{}.config.trust-store.path]\n "
+                + "cannot be processed. Using the configured key store [{}] as trust store";
+            LOGGER.info(
+                info, prefix, properties.get("org.apache.wss4j.crypto.merlin.keystore.file")
+            );
         }
 
-        if (config instanceof CxfTrustKeyStoreConfigurationProperties) {
-            CxfTrustKeyStoreConfigurationProperties cxfConfig = (CxfTrustKeyStoreConfigurationProperties) config;
-            p.put("org.apache.wss4j.crypto.merlin.load.cacerts", Boolean.toString(cxfConfig.isLoadCaCerts()));
-            p.put("security.encryption.username", cxfConfig.getEncryptAlias());
+        if (config instanceof CxfTrustKeyStoreConfigurationProperties configurationProperties) {
+            properties.put(
+                "org.apache.wss4j.crypto.merlin.load.cacerts",
+                Boolean.toString(configurationProperties.isLoadCaCerts())
+            );
+            properties.put(
+                "security.encryption.username", configurationProperties.getEncryptAlias()
+            );
         }
 
-        return p;
+        return properties;
     }
-
 }

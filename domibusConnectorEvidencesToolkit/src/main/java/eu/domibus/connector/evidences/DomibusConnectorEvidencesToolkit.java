@@ -1,5 +1,9 @@
-package eu.domibus.connector.evidences;
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
+package eu.domibus.connector.evidences;
 
 import eu.domibus.connector.domain.enums.DomibusConnectorEvidenceType;
 import eu.domibus.connector.domain.enums.DomibusConnectorRejectionReason;
@@ -9,12 +13,12 @@ import eu.domibus.connector.evidences.exception.DomibusConnectorEvidencesToolkit
 
 /**
  * Interface to publish methods for creation of eCodex Evidence Messages.
- * 
+ *
  * @author riederb
- * 
  */
 public interface DomibusConnectorEvidencesToolkit {
-
-	DomibusConnectorMessageConfirmation  createEvidence(DomibusConnectorEvidenceType type, DomibusConnectorMessage message, DomibusConnectorRejectionReason rejectionReason, String details) throws DomibusConnectorEvidencesToolkitException;
-	
+    DomibusConnectorMessageConfirmation createEvidence(
+        DomibusConnectorEvidenceType type, DomibusConnectorMessage message,
+        DomibusConnectorRejectionReason rejectionReason, String details)
+        throws DomibusConnectorEvidencesToolkitException;
 }

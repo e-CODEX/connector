@@ -1,80 +1,43 @@
-package eu.domibus.connector.evidences.spring;
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+package eu.domibus.connector.evidences.spring;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 /**
- * This configuration properties are holding
- * the address information which is appended to
- * the generated ETSI-REM-evidences
+ * This configuration properties are holding the address information which is appended to the
+ * generated ETSI-REM-evidences.
  */
+@Getter
+@Setter
 @Validated
 @Valid
 public class PostalAdressConfigurationProperties {
-
     /**
-     * The street
+     * The street.
      */
     @NotBlank
     private String street;
-
     /**
      * Locality, eg, Brussels, Vienna, ...
      */
     @NotBlank
     private String locality;
-
     /**
-     * The zipCode
+     * The zipCode.
      */
     @NotBlank
     private String zipCode;
-
     /**
-     * The country, preferred the
-     * ISO 2-letter Country Code
-     * eg. AT, DE, ...
-     *
-     *
+     * The country, preferred the ISO 2-letter Country Code eg. AT, DE, ...
      */
     @NotBlank
     private String country;
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getLocality() {
-        return locality;
-    }
-
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 }

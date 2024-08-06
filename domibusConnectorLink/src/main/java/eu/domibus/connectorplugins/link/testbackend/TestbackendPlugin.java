@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connectorplugins.link.testbackend;
 
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
@@ -7,31 +12,20 @@ import eu.domibus.connector.link.api.ActiveLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.api.PluginFeature;
 import eu.domibus.connector.link.service.SubmitToLinkPartner;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 /**
- * The testbackendPlugin acts as a special plugin.
- *  This plugin does not transport any message to another service/gateway/backend/...
- *  It's only purpose is to respond with a delivery evidence for any received message.
- *
+ * The testbackendPlugin acts as a special plugin. This plugin does not transport any message to
+ * another service/gateway/backend/... It's only purpose is to respond with a delivery evidence for
+ * any received message.
  */
 //@Profile("plugin-" + TestbackendPlugin.IMPL_NAME)
 @Component
 public class TestbackendPlugin implements LinkPlugin {
-
-    private static final Logger LOGGER = LogManager.getLogger(TestbackendPlugin.class);
-
     public static final String IMPL_NAME = "testbackend";
-
     private final SubmitToTestLink submitToTestLink;
 
     public TestbackendPlugin(SubmitToTestLink submitToTestLink) {
@@ -48,23 +42,24 @@ public class TestbackendPlugin implements LinkPlugin {
         return "Domibus Connector Testbackend";
     }
 
-
     @Override
     public ActiveLink startConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
-        ActiveLink activeLink = new ActiveLink();
+        var activeLink = new ActiveLink();
         activeLink.setLinkConfiguration(linkConfiguration);
         activeLink.setSubmitToLink(submitToTestLink);
         return activeLink;
     }
 
+    @SuppressWarnings("squid:S1135")
     @Override
     public void shutdownConfiguration(ActiveLink activeLink) {
-
+        // TODO figure out why this method body is empty
     }
 
     @Override
-    public ActiveLinkPartner enableLinkPartner(DomibusConnectorLinkPartner linkPartner, ActiveLink activeLink) {
-        ActiveLinkPartner activeLinkPartner = new ActiveLinkPartner();
+    public ActiveLinkPartner enableLinkPartner(
+        DomibusConnectorLinkPartner linkPartner, ActiveLink activeLink) {
+        var activeLinkPartner = new ActiveLinkPartner();
         activeLinkPartner.setLinkPartner(linkPartner);
         activeLinkPartner.setParentLink(activeLink);
         activeLinkPartner.setSubmitToLink(submitToTestLink);
@@ -83,18 +78,19 @@ public class TestbackendPlugin implements LinkPlugin {
         return submitToTestLink;
     }
 
-
     @Override
     public List<PluginFeature> getFeatures() {
-        return Stream.<PluginFeature>of(
-                PluginFeature.RCV_PASSIVE_MODE
-        ).collect(Collectors.toList());
+        return Stream.of(
+            PluginFeature.RCV_PASSIVE_MODE
+        ).toList();
     }
 
+    @Override
     public List<Class<?>> getPluginConfigurationProperties() {
         return new ArrayList<>();
     }
 
+    @Override
     public List<Class<?>> getPartnerConfigurationProperties() {
         return new ArrayList<>();
     }

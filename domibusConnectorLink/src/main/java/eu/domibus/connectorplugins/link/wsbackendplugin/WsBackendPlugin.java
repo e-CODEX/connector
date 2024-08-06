@@ -1,7 +1,13 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connectorplugins.link.wsbackendplugin;
 
+import static eu.domibus.connector.tools.logging.LoggingMarker.Log4jMarker.CONFIG;
+
 import eu.domibus.connector.domain.enums.LinkType;
-import eu.domibus.connector.link.service.SubmitToLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.api.ActiveLink;
@@ -9,11 +15,17 @@ import eu.domibus.connector.link.api.ActiveLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.api.PluginFeature;
 import eu.domibus.connector.link.api.exception.LinkPluginException;
+import eu.domibus.connector.link.service.SubmitToLinkPartner;
 import eu.domibus.connector.link.utils.LinkPluginUtils;
 import eu.domibus.connectorplugins.link.wsbackendplugin.childctx.WsActiveLinkPartnerManager;
 import eu.domibus.connectorplugins.link.wsbackendplugin.childctx.WsBackendPluginConfiguration;
 import eu.domibus.connectorplugins.link.wsbackendplugin.childctx.WsBackendPluginConfigurationProperties;
 import eu.domibus.connectorplugins.link.wsbackendplugin.childctx.WsBackendPluginLinkPartnerConfigurationProperties;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -24,20 +36,14 @@ import org.springframework.boot.context.properties.source.MapConfigurationProper
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.validation.Validator;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static eu.domibus.connector.tools.logging.LoggingMarker.Log4jMarker.CONFIG;
-
-
+/**
+ * The WsBackendPlugin class is an implementation of the LinkPlugin interface. It provides
+ * functionality for starting and shutting down configurations, enabling and shutting down link
+ * partners, and getting features and configuration properties for the plugin.
+ */
 public class WsBackendPlugin implements LinkPlugin {
-
     private static final Logger LOGGER = LogManager.getLogger(WsBackendPlugin.class);
     public static final String IMPL_NAME = "wsbackendplugin";
-
     private final ConfigurableApplicationContext applicationContext;
     private final Validator validator;
 
@@ -55,16 +61,17 @@ public class WsBackendPlugin implements LinkPlugin {
     public ActiveLink startConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
 
         LOGGER.info("Starting Configuration for [{}]", linkConfiguration);
-//        LOGGER.debug("Using Properties")
+        //        LOGGER.debug("Using Properties")
 
-        ConfigurableApplicationContext childCtx = LinkPluginUtils.getChildContextBuilder(applicationContext)
-                .withDomibusConnectorLinkConfiguration(linkConfiguration)
-                .withSources(WsBackendPluginConfiguration.class)
-                .withProfiles(WsBackendPluginConfiguration.WS_BACKEND_PLUGIN_PROFILE_NAME)
-                .run();
+        ConfigurableApplicationContext childCtx =
+            LinkPluginUtils.getChildContextBuilder(applicationContext)
+                           .withDomibusConnectorLinkConfiguration(linkConfiguration)
+                           .withSources(WsBackendPluginConfiguration.class)
+                           .withProfiles(
+                               WsBackendPluginConfiguration.WS_BACKEND_PLUGIN_PROFILE_NAME)
+                           .run();
 
-
-        ActiveLink activeLink = new ActiveLink();
+        var activeLink = new ActiveLink();
         activeLink.setLinkConfiguration(linkConfiguration);
         activeLink.setChildContext(childCtx);
 
@@ -78,39 +85,47 @@ public class WsBackendPlugin implements LinkPlugin {
         }
     }
 
-
-
     @Override
-    public ActiveLinkPartner enableLinkPartner(DomibusConnectorLinkPartner linkPartner, ActiveLink activeLink) {
+    public ActiveLinkPartner enableLinkPartner(
+        DomibusConnectorLinkPartner linkPartner, ActiveLink activeLink) {
         LOGGER.debug("Enabling LinkPartner [{}]", linkPartner);
         Map<String, String> properties = linkPartner.getProperties();
 
-        LOGGER.debug("Binding properties [{}] to linkPartnerConfig [{}]", properties, WsBackendPluginLinkPartnerConfigurationProperties.class);
+        LOGGER.debug(
+            "Binding properties [{}] to linkPartnerConfig [{}]", properties,
+            WsBackendPluginLinkPartnerConfigurationProperties.class
+        );
 
-        ValidationBindHandler validationBindHandler = new ValidationBindHandler(validator);
+        var validationBindHandler = new ValidationBindHandler(validator);
 
-
-        Binder binder = new Binder(new MapConfigurationPropertySource(properties));
-        BindResult<WsBackendPluginLinkPartnerConfigurationProperties> bindingResult = binder.bind("", Bindable.of(WsBackendPluginLinkPartnerConfigurationProperties.class), validationBindHandler);
+        var binder = new Binder(new MapConfigurationPropertySource(properties));
+        BindResult<WsBackendPluginLinkPartnerConfigurationProperties> bindingResult =
+            binder.bind("", Bindable.of(WsBackendPluginLinkPartnerConfigurationProperties.class),
+                        validationBindHandler
+            );
         if (!bindingResult.isBound()) {
-            String error = String.format("Binding properties [%s] to linkPartnerConfig [%s] failed", properties, WsBackendPluginLinkPartnerConfigurationProperties.class);
+            var error = String.format(
+                "Binding properties [%s] to linkPartnerConfig [%s] failed",
+                properties,
+                WsBackendPluginLinkPartnerConfigurationProperties.class
+            );
             throw new LinkPluginException(error);
         }
 
-        WsBackendPluginLinkPartnerConfigurationProperties linkPartnerConfig = bindingResult.get();
-
         ConfigurableApplicationContext childContext = activeLink.getChildContext();
         if (childContext == null) {
-            throw new LinkPluginException("Cannot start LinkPartner, because context of Link is null");
+            throw new LinkPluginException(
+                "Cannot start LinkPartner, because context of Link is null");
         }
-        WsBackendPluginActiveLinkPartner activeLinkPartner = new WsBackendPluginActiveLinkPartner();
+        var linkPartnerConfig = bindingResult.get();
+        var activeLinkPartner = new WsBackendPluginActiveLinkPartner();
         activeLinkPartner.setLinkPartner(linkPartner);
         activeLinkPartner.setChildContext(childContext);
         activeLinkPartner.setParentLink(activeLink);
         activeLinkPartner.setConfig(linkPartnerConfig);
         activeLinkPartner.setSubmitToLink(childContext.getBean(SubmitToLinkPartner.class));
 
-        //register certificate DN for authentication
+        // register certificate DN for authentication
         WsActiveLinkPartnerManager bean = childContext.getBean(WsActiveLinkPartnerManager.class);
         bean.registerDn(activeLinkPartner);
 
@@ -120,53 +135,54 @@ public class WsBackendPlugin implements LinkPlugin {
 
     @Override
     public void shutdownActiveLinkPartner(ActiveLinkPartner linkPartner) {
-        if (linkPartner instanceof WsBackendPluginActiveLinkPartner) {
-            WsBackendPluginActiveLinkPartner lp = (WsBackendPluginActiveLinkPartner) linkPartner;
+        if (linkPartner instanceof WsBackendPluginActiveLinkPartner activeLinkPartner) {
             if (linkPartner.getChildContext().isPresent()) {
                 ConfigurableApplicationContext ctx = linkPartner.getChildContext().get();
                 WsActiveLinkPartnerManager bean = ctx.getBean(WsActiveLinkPartnerManager.class);
-                bean.deregister(lp);
+                bean.deregister(activeLinkPartner);
             } else {
                 throw new RuntimeException("Error no context found!");
             }
         } else {
-            throw new IllegalArgumentException("The provided link partner is not of type " + WsBackendPluginActiveLinkPartner.class);
+            throw new IllegalArgumentException("The provided link partner is not of type "
+                                                   + WsBackendPluginActiveLinkPartner.class);
         }
-
     }
 
     @Override
     public SubmitToLinkPartner getSubmitToLink(ActiveLinkPartner linkPartner) {
-        return linkPartner.getChildContext().map( ctx -> ctx.getBean(SubmitToLinkPartner.class)).orElse(null);
+        return linkPartner.getChildContext().map(ctx -> ctx.getBean(SubmitToLinkPartner.class))
+                          .orElse(null);
     }
 
     @Override
     public List<PluginFeature> getFeatures() {
         return Stream
-                .of(PluginFeature.RCV_PASSIVE_MODE,
-                        PluginFeature.SEND_PUSH_MODE,
-                        PluginFeature.SEND_PASSIVE_MODE,
-                        PluginFeature.SUPPORTS_LINK_PARTNER_SHUTDOWN,
-                        PluginFeature.BACKEND_PLUGIN,
-                        PluginFeature.SUPPORTS_MULTIPLE_PARTNERS)
-                .collect(Collectors.toList());
+            .of(
+                PluginFeature.RCV_PASSIVE_MODE,
+                PluginFeature.SEND_PUSH_MODE,
+                PluginFeature.SEND_PASSIVE_MODE,
+                PluginFeature.SUPPORTS_LINK_PARTNER_SHUTDOWN,
+                PluginFeature.BACKEND_PLUGIN,
+                PluginFeature.SUPPORTS_MULTIPLE_PARTNERS
+            )
+            .toList();
     }
 
     @Override
     public List<Class<?>> getPluginConfigurationProperties() {
         return Stream.of(WsBackendPluginConfigurationProperties.class)
-                .collect(Collectors.toList());
+                     .collect(Collectors.toList());
     }
 
     @Override
     public List<Class<?>> getPartnerConfigurationProperties() {
         return Stream.of(WsBackendPluginLinkPartnerConfigurationProperties.class)
-                .collect(Collectors.toList());
+                     .collect(Collectors.toList());
     }
 
     @Override
     public Set<LinkType> getSupportedLinkTypes() {
         return Stream.of(LinkType.BACKEND).collect(Collectors.toSet());
     }
-
 }

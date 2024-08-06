@@ -1,9 +1,18 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.link.common;
 
-public class WsPolicyLoaderException extends RuntimeException {
-    public WsPolicyLoaderException() {
-    }
+import lombok.NoArgsConstructor;
 
+/**
+ * Exception thrown by the WsPolicyLoader class when there is an error loading or handling web
+ * service policies.
+ */
+@NoArgsConstructor
+public class WsPolicyLoaderException extends RuntimeException {
     public WsPolicyLoaderException(String message) {
         super(message);
     }
@@ -16,7 +25,8 @@ public class WsPolicyLoaderException extends RuntimeException {
         super(cause);
     }
 
-    public WsPolicyLoaderException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public WsPolicyLoaderException(
+        String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

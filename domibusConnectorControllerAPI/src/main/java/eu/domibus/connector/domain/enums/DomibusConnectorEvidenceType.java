@@ -5,9 +5,10 @@
 
 package eu.domibus.connector.domain.enums;
 
+import lombok.Getter;
+
 /**
- * Brings the ETSI-REM evidence model
- * into the connector.
+ * Brings the ETSI-REM evidence model into the connector.
  *
  * <p>A higher priority overrules the meaning of an evidence
  * with lower priority
@@ -15,9 +16,10 @@ package eu.domibus.connector.domain.enums;
  * <p>the maxOccurence is telling the connector how often
  * an evidence can occur (-1 means no limit)
  *
- * <p>if positive is true a evidence is confirming a message
+ * <p>if positive is true an evidence is confirming a message
  * if negative the message has failed or has been rejected
  */
+// @Getter
 public enum DomibusConnectorEvidenceType {
     SUBMISSION_ACCEPTANCE(1, true, 1),
     SUBMISSION_REJECTION(2, false, 1),

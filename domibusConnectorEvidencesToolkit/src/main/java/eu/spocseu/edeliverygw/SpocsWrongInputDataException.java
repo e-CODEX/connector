@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 /* ---------------------------------------------------------------------------
              COMPETITIVENESS AND INNOVATION FRAMEWORK PROGRAMME
                    ICT Policy Support Programme (ICT PSP)
@@ -21,32 +26,28 @@ $Revision: 86 $
 
 See SPOCS_WP3_LICENSE_URL for license information
 --------------------------------------------------------------------------- */
+
 package eu.spocseu.edeliverygw;
 
 /**
- * This exception will be thrown in the case of wrong input data. For example if
- * the input data could not be parsed with jaxb. In this case the user has to
- * change the input parameter and try it then again.
- * 
+ * This exception will be thrown in the case of wrong input data. For example if the input data
+ * could not be parsed with jaxb. In this case the user has to change the input parameter and try it
+ * then again.
+ *
  * @author Lindemann
- * 
  */
-public class SpocsWrongInputDataException extends Exception
-{
-	private static final long serialVersionUID = -3191051364594522380L;
+public class SpocsWrongInputDataException extends Exception {
+    private static final long serialVersionUID = -3191051364594522380L;
 
-	public SpocsWrongInputDataException(String _message, Throwable _cause)
-	{
-		super(_message, _cause);
-	}
+    public SpocsWrongInputDataException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public SpocsWrongInputDataException(Throwable _cause)
-	{
-		super(_cause);
-	}
+    public SpocsWrongInputDataException(Throwable cause) {
+        super(cause);
+    }
 
-	public SpocsWrongInputDataException(String _message)
-	{
-		super(_message);
-	}
+    public SpocsWrongInputDataException(String message) {
+        super(message);
+    }
 }

@@ -1,8 +1,12 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.evidences;
 
 import eu.domibus.connector.evidences.exception.DomibusConnectorEvidencesToolkitException;
 import eu.ecodex.evidences.ECodexEvidenceBuilder;
-import eu.ecodex.evidences.exception.ECodexEvidenceBuilderException;
 import eu.ecodex.evidences.types.ECodexMessageDetails;
 import eu.spocseu.edeliverygw.REMErrorEvent;
 import eu.spocseu.edeliverygw.configuration.EDeliveryDetails;
@@ -12,23 +16,36 @@ import org.bouncycastle.util.encoders.Hex;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
-public class EvidenceBuilderExplorationTests {
-
-
+@SuppressWarnings("checkstyle:LocalVariableName")
+class EvidenceBuilderExplorationTests {
     @Test
-    public void testEvidenceBuilderWithoutValidKeyStore() throws ECodexEvidenceBuilderException, DomibusConnectorEvidencesToolkitException {
-        ECodexEvidenceBuilder eCodexEvidenceBuilder = new ECodexEvidenceBuilder(new ClassPathResource(""), "JKS", "", "", "");
+    void testEvidenceBuilderWithoutValidKeyStore()
+        throws DomibusConnectorEvidencesToolkitException {
+        ECodexEvidenceBuilder eCodexEvidenceBuilder = new ECodexEvidenceBuilder(
+            new ClassPathResource(""), "JKS", "", "", ""
+        );
 
-        byte[] submissionAcceptanceRejection = eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(false, REMErrorEvent.OTHER, buildEDeliveryDetails(), buildMessageDetails());
-        //if there is an error the generated evidence gets null!
+        byte[] submissionAcceptanceRejection =
+            eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(false, REMErrorEvent.OTHER,
+                                                                      buildEDeliveryDetails(),
+                                                                      buildMessageDetails()
+            );
+        // if there is an error the generated evidence gets null!
         Assertions.assertThat(submissionAcceptanceRejection).isNull();
     }
 
     @Test
-    public void testEvidenceBuilderWithtValidKeyStore() throws ECodexEvidenceBuilderException, DomibusConnectorEvidencesToolkitException {
-        ECodexEvidenceBuilder eCodexEvidenceBuilder = new ECodexEvidenceBuilder(new ClassPathResource("/keystore/evidence_test.jks"), "JKS", "12345", "test", "12345");
+    void testEvidenceBuilderWithValidKeyStore()
+        throws DomibusConnectorEvidencesToolkitException {
+        var eCodexEvidenceBuilder = new ECodexEvidenceBuilder(
+            new ClassPathResource("/keystore/evidence_test.jks"), "JKS", "12345", "test", "12345"
+        );
 
-        byte[] submissionAcceptanceRejection = eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(false, REMErrorEvent.OTHER, buildEDeliveryDetails(), buildMessageDetails());
+        byte[] submissionAcceptanceRejection =
+            eCodexEvidenceBuilder.createSubmissionAcceptanceRejection(false, REMErrorEvent.OTHER,
+                                                                      buildEDeliveryDetails(),
+                                                                      buildMessageDetails()
+            );
 
         Assertions.assertThat(submissionAcceptanceRejection).isNotNull();
     }
@@ -48,39 +65,39 @@ public class EvidenceBuilderExplorationTests {
         postalAddress.setCountry("postCountry");
         detail.setPostalAdress(postalAddress);
 
-        EDeliveryDetails evidenceIssuerDetails = new EDeliveryDetails(detail);
-        return evidenceIssuerDetails;
+        return new EDeliveryDetails(detail);
     }
 
-    private ECodexMessageDetails buildMessageDetails() throws DomibusConnectorEvidencesToolkitException {
+    private ECodexMessageDetails buildMessageDetails()
+        throws DomibusConnectorEvidencesToolkitException {
 
-        String nationalMessageId = "nat1";
-        String senderAddress = "sender";
-        String recipientAddress = "recipientAddress";
-        String hash = "87213521ac44d4fe";
+        var nationalMessageId = "nat1";
+        var hash = "87213521ac44d4fe";
 
         ECodexMessageDetails messageDetails = new ECodexMessageDetails();
 
         messageDetails.setHashAlgorithm("MD5");
-        if (hash != null)
+        if (hash != null) {
             messageDetails.setHashValue(Hex.decode(hash));
+        }
 
         if (nationalMessageId == null || nationalMessageId.isEmpty()) {
             throw new DomibusConnectorEvidencesToolkitException(
-                    "the nationalMessageId may not be null for building a submission evidence!");
+                "the nationalMessageId may not be null for building a submission evidence!");
         }
+        var recipientAddress = "recipientAddress";
         if (recipientAddress == null || recipientAddress.isEmpty()) {
             throw new DomibusConnectorEvidencesToolkitException(
-                    "the recipientAddress may not be null for building a submission evidence!");
+                "the recipientAddress may not be null for building a submission evidence!");
         }
+        var senderAddress = "sender";
         if (senderAddress == null || senderAddress.isEmpty()) {
             throw new DomibusConnectorEvidencesToolkitException(
-                    "the senderAddress may not be null for building a submission evidence!");
+                "the senderAddress may not be null for building a submission evidence!");
         }
         messageDetails.setNationalMessageId(nationalMessageId);
         messageDetails.setRecipientAddress(recipientAddress);
         messageDetails.setSenderAddress(senderAddress);
         return messageDetails;
     }
-
 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 /* ---------------------------------------------------------------------------
              COMPETITIVENESS AND INNOVATION FRAMEWORK PROGRAMME
                    ICT Policy Support Programme (ICT PSP)
@@ -21,89 +26,87 @@ $Revision: 86 $
 
 See SPOCS_WP3_LICENSE_URL for license information
 --------------------------------------------------------------------------- */
+
 package eu.spocseu.edeliverygw;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import lombok.experimental.UtilityClass;
 
 /**
- * This class represents a Holder for the adressing, spocs and etsi JAXB
- * Context.
- * 
+ * This class represents a Holder for the addressing, spocs and etsi JAXB Context.
+ *
  * @author R. Lindemann
  */
-public class JaxbContextHolder
-{
+@UtilityClass
+public class JaxbContextHolder {
+    private static javax.xml.bind.JAXBContext spocsContext = null;
+    private static javax.xml.bind.JAXBContext soapContext = null;
+    private static javax.xml.bind.JAXBContext addressingContext = null;
+    private static javax.xml.bind.JAXBContext etsi_vi = null;
 
-	private static javax.xml.bind.JAXBContext spocsContext = null;
-	private static javax.xml.bind.JAXBContext soapContext = null;
-	private static javax.xml.bind.JAXBContext addressingContext = null;
+    /**
+     * Internal method to get the JAXB context to marshal and unmarshal spocs objects.
+     *
+     * @return The created JAXB context.
+     * @throws JAXBException In case of errors creating the JAXB context.
+     */
+    public static javax.xml.bind.JAXBContext getSpocsJaxBContext()
+        throws JAXBException {
+        if (spocsContext == null) {
+            spocsContext = JAXBContext
+                .newInstance(
+                    org.etsi.uri._02640.v2.ObjectFactory.class,
+                    org.etsi.uri._02640.soapbinding.v1_.ObjectFactory.class
+                );
+        }
+        return spocsContext;
+    }
 
-	private static javax.xml.bind.JAXBContext etsi_vi = null;
+    /**
+     * Retrieves the JAXB context for soapbinding objects.
+     *
+     * @return The JAXB context for soapbinding objects.
+     * @throws JAXBException In case of errors creating the JAXB context.
+     */
+    public static javax.xml.bind.JAXBContext getSoapBindingJaxBContext()
+        throws JAXBException {
+        if (soapContext == null) {
+            soapContext = JAXBContext
+                .newInstance(org.etsi.uri._02640.soapbinding.v1_.ObjectFactory.class);
+        }
+        return soapContext;
+    }
 
-	/**
-	 * Internal method to get the JAXB context to marshal and unmarshal spocs
-	 * objects.
-	 * 
-	 * @return The created JAXB context.
-	 * @throws JAXBException
-	 *             In case of errors creating the JAXB context.
-	 */
-	public static javax.xml.bind.JAXBContext getSpocsJaxBContext()
-			throws JAXBException
-	{
-		if (spocsContext == null) {
-			spocsContext = JAXBContext
-					.newInstance(org.etsi.uri._02640.v2.ObjectFactory.class, org.etsi.uri._02640.soapbinding.v1_.ObjectFactory.class);
-		}
-		return spocsContext;
-	}
-	
-	
-	public static javax.xml.bind.JAXBContext getSoapBindingJaxBContext()
-			throws JAXBException
-	{
-		if (soapContext == null) {
-			soapContext = JAXBContext
-					.newInstance(org.etsi.uri._02640.soapbinding.v1_.ObjectFactory.class);
-		}
-		return soapContext;
-	}
+    /*
+    /**
+     * Internal method to get the JAXB context to marshal and unmarshal addressing objects.
+     *
+     * @return The created JAXB context.
+     * @throws JAXBException In case of errors creating the JAXB context.
+     */
+    /*
+    public static javax.xml.bind.JAXBContext getAddressingJaxBContext()
+        throws JAXBException {
+        if (addressingContext == null) {
+            addressingContext = JAXBContext.newInstance(ObjectFactory.class);
+        }
+        return addressingContext;
+    }
+    */
 
-	/**
-	 * Internal method to get the JAXB context to marshal and unmarshal
-	 * addressing objects.
-	 * 
-	 * @return The created JAXB context.
-	 * @throws JAXBException
-	 *             In case of errors creating the JAXB context.
-	 */
-	/*
-	public static javax.xml.bind.JAXBContext getAddressingJaxBContext()
-			throws JAXBException
-	{
-		if (addressingContext == null) {
-			addressingContext = JAXBContext.newInstance(ObjectFactory.class);
-		}
-		return addressingContext;
-	}
-	*/
-
-	/**
-	 * Internal method to get the JAXB context to marshal and unmarshal etsiV1
-	 * objects.
-	 * 
-	 * @return The created JAXB context.
-	 * @throws JAXBException
-	 *             In case of errors creating the JAXB context.
-	 */
-	public static javax.xml.bind.JAXBContext getETSIV2JaxBContext()
-			throws JAXBException
-	{
-		if (etsi_vi == null) {
-			etsi_vi = JAXBContext
-					.newInstance(org.etsi.uri._02640.v2.ObjectFactory.class);
-		}
-		return etsi_vi;
-	}
+    /**
+     * Internal method to get the JAXB context to marshal and unmarshal etsiV1 objects.
+     *
+     * @return The created JAXB context.
+     * @throws JAXBException In case of errors creating the JAXB context.
+     */
+    public static javax.xml.bind.JAXBContext getETSIV2JaxBContext()
+        throws JAXBException {
+        if (etsi_vi == null) {
+            etsi_vi = JAXBContext
+                .newInstance(org.etsi.uri._02640.v2.ObjectFactory.class);
+        }
+        return etsi_vi;
+    }
 }

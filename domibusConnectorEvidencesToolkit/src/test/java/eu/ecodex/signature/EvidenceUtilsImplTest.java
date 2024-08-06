@@ -1,8 +1,16 @@
 package eu.ecodex.signature;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.*;
-import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.security.Key;
 import java.security.KeyPair;
@@ -11,7 +19,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.List;
-
 import javax.xml.crypto.MarshalException;
 import javax.xml.crypto.dom.DOMStructure;
 import javax.xml.crypto.dsig.Reference;
@@ -19,10 +26,7 @@ import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,10 +34,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The class <code>EvidenceUtilsImplTest</code> contains tests for the class
@@ -41,49 +42,46 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author cheny01
  * @version $Revision: 1.0 $
- *
  */
 public class EvidenceUtilsImplTest {
-
     private static final String PATH_OUTPUT_FILES = "target/test/EvidenceUtilsImplTest/";
     private static final String SIGN_BYTE_ARRAY_FILE = "SignByteArrayTestoutputFile.xml";
-
     XMLSignatureFactory signFactory;
-
-
     Resource javaKeyStorePath = new ClassPathResource("keystore.jks");
     String javaKeyStorePassword = "test123";
     String alias = "new_Testcert";
     String keyPassword = "test123";
     String javaKeyStoreType = "JKS";
 
+    /**
+     * Sets up the test environment before running test cases.
+     *
+     * @throws IOException if an I/O exception occurs while deleting or creating directories
+     */
     @BeforeAll
     public static void setUpTestEnv() throws IOException {
         File testDir = Paths.get(PATH_OUTPUT_FILES).toFile();
         try {
             FileUtils.forceDelete(testDir);
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         FileUtils.forceMkdir(testDir);
     }
 
-    /**
-     * Run the EvidenceUtilsImpl(String,String,String,String) constructor test.
-     *
-     * @throws Exception
-     *
-     */
     @Test
-    public void testEvidenceUtilsImpl() throws Exception {
-
-        EvidenceUtilsImpl result = new EvidenceUtilsImpl(javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword);
+    void testEvidenceUtilsImpl() {
+        EvidenceUtilsImpl result =
+            new EvidenceUtilsImpl(
+                javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword
+            );
         // add additional test code here
         assertNotNull(result);
     }
 
     // create array bytes from xmlFile
     private byte[] getBytesFromFile(String xmlFilePath) throws Exception {
-
-        byte[] bytes = null;
+        byte[] bytes;
         File file = new File(xmlFilePath);
         InputStream is;
         is = new FileInputStream(file);
@@ -91,15 +89,15 @@ public class EvidenceUtilsImplTest {
         long length = file.length();
         // to ensure that file is not larger than Integer.MAX_VALUE.
         if (length > Integer.MAX_VALUE) {
-            // throw new Exception("Too large file");
             System.err.println("Too large file");
         }
         // Create the byte array to hold the data
         bytes = new byte[(int) length];
         // Read in the bytes
         int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+        int numRead;
+        while (offset < bytes.length
+            && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
             offset += numRead;
         }
         // Ensure all the bytes have been read in
@@ -111,47 +109,23 @@ public class EvidenceUtilsImplTest {
         return bytes;
     }
 
-    // /**
-    // * Run the REMEvidenceType convertIntoEvidenceType(byte[]) method test.
-    // *
-    // * @throws Exception
-    // *
-    // *
-    // */
-    // @Test
-    // public void testConvertIntoEvidenceType()
-    // throws Exception {
-    //
-    // String xmlFile
-    // ="src/test/resources/ConvertIntoEvidenceTypetestFileA.xml";
-    // byte[] xmlData = getBytesFromFile(xmlFile);
-    // EvidenceUtilsImpl fixture= new EvidenceUtilsImpl(javaKeyStorePath,
-    // javaKeyStorePassword, alias, keyPassword);
-    //
-    // REMEvidenceType remEvidenceType = null;
-    // remEvidenceType= fixture.convertIntoEvidenceType(xmlData);
-    // //
-    // System.out.print((remEvidenceType.getEvidenceIssuerDetails().getNamesPostalAddresses()).getNamePostalAddress().get(0).getEntityName().getName());
-    // assertTrue("failure by runing the method convertIntoEvidenceType",
-    // (remEvidenceType.getEvidenceIssuerDetails().getNamesPostalAddresses()).getNamePostalAddress().get(0).getEntityName().getName().toString().equalsIgnoreCase("[gatewayname]"));
-    //
-    // }
-
     // private method to get the keypair
-    private KeyPair getKeyPairFromKeyStore(Resource store, String keyStoreType, String storePass, String alias, String keyPass) throws Exception {
+    private KeyPair getKeyPairFromKeyStore(
+        Resource store, String keyStoreType, String storePass, String alias, String keyPass)
+        throws Exception {
         KeyStore ks;
         InputStream kfis;
-        KeyPair keyPair = null;
-
-        Key key = null;
-        PublicKey publicKey = null;
-        PrivateKey privateKey = null;
 
         ks = KeyStore.getInstance(keyStoreType);
-//        final URL ksLocation = new URL(store);
 
         kfis = store.getInputStream();
         ks.load(kfis, (storePass == null) ? null : storePass.toCharArray());
+
+        KeyPair keyPair;
+
+        Key key;
+        PublicKey publicKey;
+        PrivateKey privateKey;
 
         if (ks.containsAlias(alias)) {
             key = ks.getKey(alias, keyPass.toCharArray());
@@ -169,46 +143,43 @@ public class EvidenceUtilsImplTest {
         return keyPair;
     }
 
-    /**
-     * Run the byte[] signByteArray(byte[]) method test.
-     *
-     * @throws Exception
-     *
-     */
     @Test
-    public void testSignByteArray() throws Exception {
-
+    void testSignByteArray() throws Exception {
         // create signature with methode signByteArray
-        InputStream xmlFileInputStream = new ClassPathResource("ConvertIntoEvidenceTypetestFileA.xml").getInputStream();
+        InputStream xmlFileInputStream =
+            new ClassPathResource("ConvertIntoEvidenceTypetestFileA.xml").getInputStream();
         byte[] xmlData = StreamUtils.copyToByteArray(xmlFileInputStream);
-        EvidenceUtilsImpl fixture = new EvidenceUtilsImpl(javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword);
+        EvidenceUtilsImpl fixture =
+            new EvidenceUtilsImpl(
+                javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword
+            );
 
-        byte[] signedxmlData = fixture.signByteArray(xmlData);
+        byte[] signedXmlData = fixture.signByteArray(xmlData);
 
         File xmloutputfile = new File(PATH_OUTPUT_FILES + SIGN_BYTE_ARRAY_FILE);
-        FileOutputStream fileoutXML = new FileOutputStream(xmloutputfile);
-        fileoutXML.write(signedxmlData);
-        fileoutXML.close();
+        FileOutputStream fileOutXML = new FileOutputStream(xmloutputfile);
+        fileOutXML.write(signedXmlData);
+        fileOutXML.close();
 
         // validate Signature
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         Document document;
-        document = dbf.newDocumentBuilder().parse(new ByteArrayInputStream(signedxmlData));
+        document = dbf.newDocumentBuilder().parse(new ByteArrayInputStream(signedXmlData));
 
-        KeyPair keypair = getKeyPairFromKeyStore(javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword);
+        KeyPair keypair =
+            getKeyPairFromKeyStore(
+                javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword
+            );
 
         PublicKey publicKey = keypair.getPublic();
 
-        // System.out.println(keypair.getPublic().toString());
         try {
-
             assertTrue(signatureValidate(document, publicKey), "Signature failed");
         } catch (MarshalException ex) {
             fail("Unmarshal failed: " + ex.getMessage());
             ex.printStackTrace();
         }
-
     }
 
     // Signature validation
@@ -218,42 +189,40 @@ public class EvidenceUtilsImplTest {
         if (nl.getLength() == 0) {
             throw new Exception("Cannot find Signature element");
         }
-        Node signatureNode = nl.item(0);
-        XMLSignatureFactory factory = getSignatureFactory();
-        XMLSignature signature = factory.unmarshalXMLSignature(new DOMStructure(signatureNode));
+        var signatureNode = nl.item(0);
+        var factory = getSignatureFactory();
+        var signature = factory.unmarshalXMLSignature(new DOMStructure(signatureNode));
         // Create ValidateContext
-        DOMValidateContext valContext = new DOMValidateContext(publicKey, signatureNode);
+        var valContext = new DOMValidateContext(publicKey, signatureNode);
 
         // Validate the XMLSignature
         signStatus = signStatus && signature.validate(valContext);
         // check the validation status of each Reference
         List<?> refs = signature.getSignedInfo().getReferences();
-        for (int i = 0; i < refs.size(); i++) {
-            Reference ref = (Reference) refs.get(i);
-            // System.out.println("Reference[" + i + "] validity status: "
-            // + ref.validate(valContext));
+        for (Object o : refs) {
+            Reference ref = (Reference) o;
             signStatus = signStatus && ref.validate(valContext);
         }
         return signStatus;
     }
 
-    private XMLSignatureFactory getSignatureFactory() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        if (signFactory == null)
+    private XMLSignatureFactory getSignatureFactory() {
+        if (signFactory == null) {
             signFactory = XMLSignatureFactory.getInstance("DOM");
+        }
         return signFactory;
-
     }
 
     /**
      * Run the boolean verifySignature(byte[]) method test.
-     *
-     * @throws Exception
-     *
      */
     @Test
-    public void testVerifySignature() throws Exception {
-        EvidenceUtilsImpl fixture = new EvidenceUtilsImpl(javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword);
-        byte[] xmlData = new byte[]{};
+    void testVerifySignature() {
+        EvidenceUtilsImpl fixture =
+            new EvidenceUtilsImpl(javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias,
+                                  keyPassword
+            );
+        byte[] xmlData = new byte[] {};
 
         boolean result = fixture.verifySignature(xmlData);
 
@@ -261,11 +230,7 @@ public class EvidenceUtilsImplTest {
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
-
+    public void setUp() {
         signFactory = XMLSignatureFactory.getInstance("DOM");
     }
-
-
-
 }

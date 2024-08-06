@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 /* ---------------------------------------------------------------------------
              COMPETITIVENESS AND INNOVATION FRAMEWORK PROGRAMME
                    ICT Policy Support Programme (ICT PSP)
@@ -21,78 +26,61 @@ $Revision: 86 $
 
 See SPOCS_WP3_LICENSE_URL for license information
 --------------------------------------------------------------------------- */
+
 package eu.spocseu.edeliverygw.evidences.exception;
-
-
-import org.etsi.uri._02640.v2.EventReasonType;
-import org.etsi.uri._02640.v2.EventReasonsType;
 
 import eu.spocseu.edeliverygw.REMErrorEvent;
 import eu.spocseu.edeliverygw.evidences.Evidence;
+import lombok.Getter;
+import lombok.Setter;
+import org.etsi.uri._02640.v2.EventReasonType;
+import org.etsi.uri._02640.v2.EventReasonsType;
 
 /**
- * The EvidenceException will be thrown in the case of evidences with fault
- * codes.
- * 
+ * The EvidenceException will be thrown in the case of evidences with fault codes.
+ *
  * @author Lindemann
- * 
  */
-public class EvidenceException extends Exception
-{
+@Getter
+@Setter
+public class EvidenceException extends Exception {
+    private static final long serialVersionUID = 1L;
+    private final Evidence evidence;
+    private REMErrorEvent errorEvent;
 
-	private static final long serialVersionUID = 1L;
-	private Evidence evidence;
-	private REMErrorEvent errorEvent;
+    protected EvidenceException(
+        String message, Evidence evidence,
+        REMErrorEvent errorEvent, Throwable cause) {
+        super(message, cause);
+        this.evidence = evidence;
+        this.errorEvent = errorEvent;
+    }
 
-	protected EvidenceException(String message, Evidence _evidence,
-			REMErrorEvent _errorEvent, Throwable _cause)
-	{
-		super(message, _cause);
-		evidence = _evidence;
-		errorEvent = _errorEvent;
-	}
+    protected EvidenceException(
+        Evidence evidence, REMErrorEvent errorEvent,
+        Throwable cause) {
+        super(cause);
+        this.evidence = evidence;
+        if (this.evidence.getXSDObject().getEventReasons() == null) {
+            this.errorEvent = errorEvent;
+            var reasons = new EventReasonsType();
+            var reason = new EventReasonType();
+            reason.setCode(this.errorEvent.getEventCode());
+            if (cause != null) {
+                reason.setDetails(cause.getMessage());
+            } else {
+                reason.setDetails(this.errorEvent.getEventDetails());
+            }
+            reasons.getEventReason().add(reason);
+            this.evidence.getXSDObject().setEventReasons(reasons);
+        }
+    }
 
-	protected EvidenceException(Evidence _evidence, REMErrorEvent _errorEvent,
-			Throwable _cause)
-	{
-		super(_cause);
-		evidence = _evidence;
-		if (evidence.getXSDObject().getEventReasons() == null) {
-			errorEvent = _errorEvent;
-			EventReasonsType reasons = new EventReasonsType();
-			EventReasonType reason = new EventReasonType();
-			reason.setCode(errorEvent.getEventCode());
-			if (_cause != null) {
-				reason.setDetails(_cause.getMessage());
-			} else {
-				reason.setDetails(errorEvent.getEventDetails());
-			}
-			reasons.getEventReason().add(reason);
-			evidence.getXSDObject().setEventReasons(reasons);
-		}
-
-	}
-
-	protected EvidenceException(String message, Evidence _evidence,
-			REMErrorEvent _errorEvent)
-	{
-		super(message);
-		evidence = _evidence;
-		errorEvent = _errorEvent;
-	}
-
-	public Evidence getEvidence()
-	{
-		return evidence;
-	}
-
-	public void setEvidence(Evidence _evidence)
-	{
-		this.evidence = _evidence;
-	}
-
-	public REMErrorEvent getErrorEvent()
-	{
-		return errorEvent;
-	}
+    protected EvidenceException(
+        String message, Evidence evidence,
+        REMErrorEvent errorEvent) {
+        super(message);
+        this.evidence = evidence;
+        this.errorEvent = errorEvent;
+    }
 }

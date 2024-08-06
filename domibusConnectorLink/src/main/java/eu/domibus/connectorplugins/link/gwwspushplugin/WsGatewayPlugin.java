@@ -1,37 +1,40 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connectorplugins.link.gwwspushplugin;
 
 import eu.domibus.connector.domain.enums.LinkType;
-import eu.domibus.connector.link.service.SubmitToLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.api.ActiveLink;
 import eu.domibus.connector.link.api.ActiveLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
 import eu.domibus.connector.link.api.PluginFeature;
-import eu.domibus.connectorplugins.link.gwwspushplugin.WsGatewayPluginConfiguration;
+import eu.domibus.connector.link.service.SubmitToLinkPartner;
 import eu.domibus.connector.link.utils.LinkPluginUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 
-
+/**
+ * Represents a plugin for the WS Gateway in Domibus.
+ */
+@SuppressWarnings("squid:S6813")
 public class WsGatewayPlugin implements LinkPlugin {
-
     public static final String IMPL_NAME = "gwwspushplugin";
-
     @Autowired
     ConfigurableApplicationContext applicationContext;
-
     private SubmitToLinkPartner submitToLink;
 
     @Override
     public ActiveLink startConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
-        ActiveLink activeLink = new ActiveLink();
+        var activeLink = new ActiveLink();
         activeLink.setLinkConfiguration(linkConfiguration);
         activeLink.setLinkPlugin(this);
         return activeLink;
@@ -48,22 +51,24 @@ public class WsGatewayPlugin implements LinkPlugin {
     }
 
     @Override
-    public synchronized ActiveLinkPartner enableLinkPartner(DomibusConnectorLinkPartner linkPartner, ActiveLink activeLink) {
+    public synchronized ActiveLinkPartner enableLinkPartner(
+        DomibusConnectorLinkPartner linkPartner, ActiveLink activeLink) {
 
         if (submitToLink != null) {
             throw new RuntimeException("Plugin already activated!");
         }
 
-        ActiveLinkPartner activeLinkPartner = new ActiveLinkPartner();
+        var activeLinkPartner = new ActiveLinkPartner();
         activeLinkPartner.setLinkPartner(linkPartner);
         activeLinkPartner.setParentLink(activeLink);
 
-        ConfigurableApplicationContext childCtx = LinkPluginUtils.getChildContextBuilder(applicationContext)
-                .withDomibusConnectorLinkConfiguration(activeLink.getLinkConfiguration())
-                .withDomibusConnectorLinkPartner(linkPartner)
-                .withSources(WsGatewayPluginConfiguration.class)
-                .withProfiles(WsGatewayPluginConfiguration.WS_GATEWAY_PLUGIN)
-                .run();
+        ConfigurableApplicationContext childCtx =
+            LinkPluginUtils.getChildContextBuilder(applicationContext)
+                           .withDomibusConnectorLinkConfiguration(activeLink.getLinkConfiguration())
+                           .withDomibusConnectorLinkPartner(linkPartner)
+                           .withSources(WsGatewayPluginConfiguration.class)
+                           .withProfiles(WsGatewayPluginConfiguration.WS_GATEWAY_PLUGIN)
+                           .run();
 
         activeLinkPartner.setChildContext(childCtx);
 
@@ -86,16 +91,18 @@ public class WsGatewayPlugin implements LinkPlugin {
     @Override
     public List<PluginFeature> getFeatures() {
         return Stream
-                .of(PluginFeature.RCV_PASSIVE_MODE,
-                        PluginFeature.GATEWAY_PLUGIN,
-                        PluginFeature.SEND_PUSH_MODE)
-                .collect(Collectors.toList());
+            .of(
+                PluginFeature.RCV_PASSIVE_MODE,
+                PluginFeature.GATEWAY_PLUGIN,
+                PluginFeature.SEND_PUSH_MODE
+            )
+            .toList();
     }
 
     @Override
     public List<Class<?>> getPluginConfigurationProperties() {
         return Stream.of(WsGatewayPluginConfigurationProperties.class)
-                .collect(Collectors.toList());
+                     .collect(Collectors.toList());
     }
 
     @Override

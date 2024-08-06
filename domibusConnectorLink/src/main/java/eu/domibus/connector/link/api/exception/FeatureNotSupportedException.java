@@ -1,9 +1,18 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.link.api.exception;
 
 import eu.domibus.connector.link.api.PluginFeature;
+import lombok.Getter;
 
+/**
+ * Exception thrown when a feature is not supported by a plugin.
+ */
+@Getter
 public class FeatureNotSupportedException extends LinkPluginException {
-
     private final PluginFeature pluginFeature;
 
     public FeatureNotSupportedException(PluginFeature pluginFeature) {
@@ -15,7 +24,8 @@ public class FeatureNotSupportedException extends LinkPluginException {
         this.pluginFeature = pluginFeature;
     }
 
-    public FeatureNotSupportedException(String message, Throwable cause, PluginFeature pluginFeature) {
+    public FeatureNotSupportedException(
+        String message, Throwable cause, PluginFeature pluginFeature) {
         super(message, cause);
         this.pluginFeature = pluginFeature;
     }
@@ -25,12 +35,10 @@ public class FeatureNotSupportedException extends LinkPluginException {
         this.pluginFeature = pluginFeature;
     }
 
-    public FeatureNotSupportedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, PluginFeature pluginFeature) {
+    public FeatureNotSupportedException(
+        String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace,
+        PluginFeature pluginFeature) {
         super(message, cause, enableSuppression, writableStackTrace);
         this.pluginFeature = pluginFeature;
-    }
-
-    public PluginFeature getPluginFeature() {
-        return pluginFeature;
     }
 }

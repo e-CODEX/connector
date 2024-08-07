@@ -1,24 +1,32 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service.impl;
 
 import eu.domibus.connector.domain.model.DomibusConnectorAction;
 import eu.domibus.connector.persistence.dao.DomibusConnectorActionDao;
 import eu.domibus.connector.persistence.model.PDomibusConnectorAction;
-import org.springframework.beans.BeanUtils;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Implementation of the DomibusConnectorActionPersistenceService interface that provides methods
+ * for managing DomibusConnectorAction objects, which represent actions associated with messages in
+ * the Domibus system.
+ */
 @Service
-public class DomibusConnectorActionPersistenceServiceImpl implements eu.domibus.connector.persistence.service.DomibusConnectorActionPersistenceService {
-
-    static final String RETRIEVAL_NON_RETRIEVAL_TO_RECIPIENT_ACTION = "RetrievalNonRetrievalToRecipient";
-    static final String DELIVERY_NON_DELIVERY_TO_RECIPIENT_ACTION = "DeliveryNonDeliveryToRecipient";
+public class DomibusConnectorActionPersistenceServiceImpl
+    implements eu.domibus.connector.persistence.service.DomibusConnectorActionPersistenceService {
+    static final String RETRIEVAL_NON_RETRIEVAL_TO_RECIPIENT_ACTION =
+        "RetrievalNonRetrievalToRecipient";
+    static final String DELIVERY_NON_DELIVERY_TO_RECIPIENT_ACTION =
+        "DeliveryNonDeliveryToRecipient";
     static final String RELAY_REMMD_FAILURE_ACTION = "RelayREMMDFailure";
     static final String RELAY_REMMD_ACCEPTANCE_REJECTION_ACTION = "RelayREMMDAcceptanceRejection";
-
     DomibusConnectorActionDao actionDao;
 
     @Autowired
@@ -27,8 +35,10 @@ public class DomibusConnectorActionPersistenceServiceImpl implements eu.domibus.
     }
 
     @Override
-    public eu.domibus.connector.domain.model.DomibusConnectorAction getRelayREMMDAcceptanceRejectionAction() {
-        return getAction(DomibusConnectorActionPersistenceServiceImpl.RELAY_REMMD_ACCEPTANCE_REJECTION_ACTION);
+    public eu.domibus.connector.domain.model.DomibusConnectorAction
+    getRelayREMMDAcceptanceRejectionAction() {
+        return getAction(
+            DomibusConnectorActionPersistenceServiceImpl.RELAY_REMMD_ACCEPTANCE_REJECTION_ACTION);
     }
 
     @Override
@@ -37,15 +47,19 @@ public class DomibusConnectorActionPersistenceServiceImpl implements eu.domibus.
     }
 
     @Override
-    public eu.domibus.connector.domain.model.DomibusConnectorAction getDeliveryNonDeliveryToRecipientAction() {
-        return getAction(DomibusConnectorActionPersistenceServiceImpl.DELIVERY_NON_DELIVERY_TO_RECIPIENT_ACTION);
+    public eu.domibus.connector.domain.model.DomibusConnectorAction
+    getDeliveryNonDeliveryToRecipientAction() {
+        return getAction(
+            DomibusConnectorActionPersistenceServiceImpl.DELIVERY_NON_DELIVERY_TO_RECIPIENT_ACTION);
     }
 
     @Override
-    public eu.domibus.connector.domain.model.DomibusConnectorAction getRetrievalNonRetrievalToRecipientAction() {
-        return getAction(DomibusConnectorActionPersistenceServiceImpl.RETRIEVAL_NON_RETRIEVAL_TO_RECIPIENT_ACTION);
+    public eu.domibus.connector.domain.model.DomibusConnectorAction
+    getRetrievalNonRetrievalToRecipientAction() {
+        return getAction(
+            DomibusConnectorActionPersistenceServiceImpl.RETRIEVAL_NON_RETRIEVAL_TO_RECIPIENT_ACTION
+        );
     }
-
 
     @Override
     public DomibusConnectorAction persistNewAction(DomibusConnectorAction action) {
@@ -62,18 +76,19 @@ public class DomibusConnectorActionPersistenceServiceImpl implements eu.domibus.
         }
         return actions;
     }
-    
+
     @Override
-    public List<String> getActionListString(){
-    	List<String> actions = new ArrayList<>();
-    	for (PDomibusConnectorAction dbAction : this.actionDao.findAll()) {
+    public List<String> getActionListString() {
+        List<String> actions = new ArrayList<>();
+        for (PDomibusConnectorAction dbAction : this.actionDao.findAll()) {
             actions.add(dbAction.getAction());
         }
         return actions;
     }
 
     @Override
-    public DomibusConnectorAction updateAction(DomibusConnectorAction oldAction, DomibusConnectorAction newAction) {
+    public DomibusConnectorAction updateAction(
+        DomibusConnectorAction oldAction, DomibusConnectorAction newAction) {
         PDomibusConnectorAction newDbAction = ActionMapper.mapActionToPersistence(newAction);
         newDbAction = this.actionDao.save(newDbAction);
         return ActionMapper.mapActionToDomain(newDbAction);
@@ -87,10 +102,8 @@ public class DomibusConnectorActionPersistenceServiceImpl implements eu.domibus.
 
     @Override
     public DomibusConnectorAction getAction(String action) {
-//        PDomibusConnectorAction findOne = actionDao.findById(action).get();
-//        return ActionMapper.mapActionToDomain(findOne);
+        // PDomibusConnectorAction findOne = actionDao.findById(action).get();
+        //  return ActionMapper.mapActionToDomain(findOne);
         return null;
     }
-
-
 }

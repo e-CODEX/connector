@@ -3,23 +3,24 @@ package eu.domibus.connector.persistence.service.impl.helper;
 import eu.domibus.connector.domain.enums.DomibusConnectorMessageDirection;
 import eu.domibus.connector.persistence.model.enums.PMessageDirection;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
+/**
+ * This class is a JUnit test class for {@link MessageDirectionMapper} class. It tests the mapping
+ * from domain layer to persistence layer and vice versa.
+ */
 public class PMessageDirectionMapperTest {
-
-
     @Test
-    public void mapFromDomainToPersistence() throws Exception {
-        for (DomibusConnectorMessageDirection direction : DomibusConnectorMessageDirection.values()) {
+    void mapFromDomainToPersistence() {
+        for (DomibusConnectorMessageDirection direction :
+            DomibusConnectorMessageDirection.values()) {
             MessageDirectionMapper.mapFromDomainToPersistence(direction);
         }
     }
 
     @Test
-    public void mapFromPersistenceToDomain() throws Exception {
+    void mapFromPersistenceToDomain() {
         for (PMessageDirection direction : PMessageDirection.values()) {
             MessageDirectionMapper.mapFromPersistenceToDomain(direction);
         }
     }
-
 }

@@ -1,20 +1,28 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service.impl;
 
 import eu.domibus.connector.domain.model.DomibusConnectorAction;
 import eu.domibus.connector.persistence.model.PDomibusConnectorAction;
+import javax.annotation.Nullable;
+import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanUtils;
 
-import javax.annotation.Nullable;
-
+/**
+ * The ActionMapper class provides static methods to map actions between the persistence layer and
+ * the domain layer.
+ */
+@UtilityClass
 public class ActionMapper {
-
-
-    static @Nullable DomibusConnectorAction mapActionToDomain(@Nullable PDomibusConnectorAction persistenceAction) {
+    static @Nullable DomibusConnectorAction mapActionToDomain(
+        @Nullable PDomibusConnectorAction persistenceAction) {
         if (persistenceAction != null) {
-            eu.domibus.connector.domain.model.DomibusConnectorAction action
-                    = new eu.domibus.connector.domain.model.DomibusConnectorAction(
-                    persistenceAction.getAction()
-//                    persistenceAction.isDocumentRequired()
+            var action
+                = new eu.domibus.connector.domain.model.DomibusConnectorAction(
+                persistenceAction.getAction()
             );
             action.setDbKey(persistenceAction.getId());
             return action;
@@ -22,15 +30,14 @@ public class ActionMapper {
         return null;
     }
 
-
-    static @Nullable PDomibusConnectorAction mapActionToPersistence(@Nullable DomibusConnectorAction action) {
+    static @Nullable PDomibusConnectorAction mapActionToPersistence(
+        @Nullable DomibusConnectorAction action) {
         if (action != null) {
-            PDomibusConnectorAction persistenceAction = new PDomibusConnectorAction();
+            var persistenceAction = new PDomibusConnectorAction();
             BeanUtils.copyProperties(action, persistenceAction);
             persistenceAction.setId(action.getDbKey());
             return persistenceAction;
         }
         return null;
     }
-
 }

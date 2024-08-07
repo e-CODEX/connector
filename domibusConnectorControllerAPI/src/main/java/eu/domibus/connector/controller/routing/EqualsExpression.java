@@ -40,6 +40,6 @@ public class EqualsExpression extends MatchExpression {
     }
 
     public String toString() {
-        return String.format("%s(%s, '%s')", TokenType.EQUALS, as4Attribute, valueString);
+        return "%s(%s, '%s')".formatted(TokenType.EQUALS, as4Attribute, valueString);
     }
 }

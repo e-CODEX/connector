@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = PDomibusConnectorMessageInfo.TABLE_NAME)

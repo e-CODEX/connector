@@ -19,7 +19,6 @@ import eu.domibus.connector.ui.enums.UserRole;
 import eu.domibus.connector.ui.service.WebUserService;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +48,7 @@ public class UserList extends VerticalLayout implements AfterNavigationObserver 
 	ComboBox<UserRole> roleFilterBox = new ComboBox<UserRole>();
 	LumoCheckbox lockedFilterBox = new LumoCheckbox();
 
-	public UserList(@Autowired WebUserService service, @Autowired UserDetails userDetails) {
+	public UserList(WebUserService service, UserDetails userDetails) {
 		this.userService = service;
 		this.userDetails = userDetails;
 

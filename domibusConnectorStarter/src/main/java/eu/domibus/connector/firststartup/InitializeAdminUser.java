@@ -6,17 +6,17 @@ import eu.domibus.connector.persistence.model.PDomibusConnectorUser;
 import eu.domibus.connector.persistence.model.PDomibusConnectorUserPassword;
 import eu.domibus.connector.persistence.model.enums.UserRole;
 import eu.domibus.connector.tools.logging.LoggingMarker;
+import jakarta.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.transaction.Transactional;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.transaction.Transactional;
+import jakarta.xml.bind.DatatypeConverter;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -130,7 +130,7 @@ public class InitializeAdminUser {
         String hex = bi.toString(16);
         int paddingLength = (array.length * 2) - hex.length();
         if (paddingLength > 0) {
-            return String.format("%0" + paddingLength + "d", 0) + hex;
+            return ("%0" + paddingLength + "d").formatted(0) + hex;
         } else {
             return hex;
         }

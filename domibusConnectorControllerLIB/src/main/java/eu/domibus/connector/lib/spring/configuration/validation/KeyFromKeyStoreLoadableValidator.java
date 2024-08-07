@@ -8,10 +8,10 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreConfigurationProperties;
 import java.util.HashSet;
 import java.util.Set;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 
 /**
  * The KeyFromKeyStoreLoadableValidator class is a constraint validator used to validate if a key

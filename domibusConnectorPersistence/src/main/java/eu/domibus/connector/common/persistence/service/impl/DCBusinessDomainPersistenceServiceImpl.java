@@ -46,7 +46,7 @@ public class DCBusinessDomainPersistenceServiceImpl implements DCBusinessDomainP
             PDomibusConnectorMessageLane save = businessDomainDao.save(dbBusinessDomain);
             return this.mapToDomain(save);
         } else {
-            throw new IllegalArgumentException(String.format("No BusinessDomain configured with id [%s]", domibusConnectorBusinessDomain.getId()));
+            throw new IllegalArgumentException("No BusinessDomain configured with id [%s]".formatted(domibusConnectorBusinessDomain.getId()));
         }
     }
 

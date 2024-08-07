@@ -26,7 +26,6 @@ import eu.domibus.connector.ui.dto.WebReportEntry;
 import eu.domibus.connector.ui.service.WebReportsService;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -53,7 +52,7 @@ public class Reports extends VerticalLayout {
 	
 	VerticalLayout reportDataArea = new VerticalLayout(); 
 
-	public Reports(@Autowired WebReportsService reportsService) {
+	public Reports(WebReportsService reportsService) {
 		
 		this.reportsService = reportsService;
 		
@@ -180,7 +179,7 @@ public class Reports extends VerticalLayout {
 						dummy);
 				oName.setVisible(false);
 				file.setVisible(false);
-				this.getUI().get().getPage().executeJavaScript("window.open('"+link.getHref()+"');");
+				this.getUI().get().getPage().open(link.getHref());
 			});
 			
 			downloadExcel.add(download);

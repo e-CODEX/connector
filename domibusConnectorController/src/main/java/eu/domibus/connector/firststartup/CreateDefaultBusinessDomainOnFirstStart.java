@@ -9,9 +9,10 @@ import eu.domibus.connector.common.persistence.dao.DomibusConnectorBusinessDomai
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.persistence.model.PDomibusConnectorMessageLane;
 import eu.domibus.connector.tools.logging.LoggingMarker;
+import jakarta.annotation.PostConstruct;
+
 import java.util.Optional;
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;

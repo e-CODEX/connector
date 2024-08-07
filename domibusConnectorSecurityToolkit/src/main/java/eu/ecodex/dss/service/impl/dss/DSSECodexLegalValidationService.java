@@ -93,8 +93,8 @@ public class DSSECodexLegalValidationService implements ECodexLegalValidationSer
         // klara: added switch for authentication-based certificate decision      
         if(token.getAdvancedElectronicSystem() == AdvancedSystemType.AUTHENTICATION_BASED) {
         	if(signatures != null && !signatures.isEmpty() && signatures.size() == 1 &&
-        			signatures.get(0).getAuthenticationCertValidation() != null && 
-        			signatures.get(0).getAuthenticationCertValidation().isValidationSuccessful() &&
+        			signatures.getFirst().getAuthenticationCertValidation() != null && 
+        			signatures.getFirst().getAuthenticationCertValidation().isValidationSuccessful() &&
         			token.getTechnicalValidationResult().getTrustLevel().equals(TechnicalTrustLevel.SUCCESSFUL)) {
                 result.setTrustLevel(LegalTrustLevel.SUCCESSFUL);
                 result.setDisclaimer("e-CODEX approves the validity of the document. The signature on the document has been created by a valid authentication service provider. It is attested that the document fulfils the requirements to be legally valid in the sending country.");

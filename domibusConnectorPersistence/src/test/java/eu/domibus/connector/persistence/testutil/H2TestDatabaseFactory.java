@@ -46,7 +46,7 @@ public class H2TestDatabaseFactory implements TestDatabaseFactory {
 
     @Override
     public String getName() {
-        return String.format("H2 %s", dbType);
+        return "H2 %s".formatted(dbType);
     }
 
     class H2TestDatabase implements TestDatabase {
@@ -72,7 +72,7 @@ public class H2TestDatabaseFactory implements TestDatabaseFactory {
 
         @Override
         public String getName() {
-            return String.format("H2 %s data: [%s]", dbType, version == null ? "empty" : version);
+            return "H2 %s data: [%s]".formatted(dbType, version == null ? "empty" : version);
         }
 
 

@@ -10,10 +10,9 @@ import eu.domibus.connector.controller.test.util.ConnectorControllerTestDomainCr
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageError;
 import eu.domibus.connector.persistence.service.DomibusConnectorMessageErrorPersistenceService;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,12 +21,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
-    StoreMessageExceptionIntoDatabaseAspectTest.TestContextConfiguration.class})
+@SpringJUnitConfig(classes = {
+        StoreMessageExceptionIntoDatabaseAspectTest.TestContextConfiguration.class})
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class StoreMessageExceptionIntoDatabaseAspectTest {
     @Configuration

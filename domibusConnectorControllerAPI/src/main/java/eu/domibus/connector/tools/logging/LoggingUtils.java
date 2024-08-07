@@ -32,8 +32,8 @@ public class LoggingUtils {
         if (logger.isTraceEnabled() || logger.getLevel().isLessSpecificThan(REQUIRED_LEVEL)) {
             return password.toString();
         } else {
-            return String.format(
-                "**increase logger [%s] log level to [%s]] to see**", logger, REQUIRED_LEVEL);
+            return 
+                    "**increase logger [%s] log level to [%s]] to see**".formatted(logger, REQUIRED_LEVEL);
         }
     }
 }

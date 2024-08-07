@@ -2,11 +2,11 @@ package wp4.testenvironment.configurations;
 
 import eu.europa.esig.dss.policy.EtsiValidationPolicy;
 import eu.europa.esig.dss.policy.ValidationPolicyFacade;
+import jakarta.xml.bind.JAXBException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;

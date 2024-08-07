@@ -92,14 +92,8 @@
             <artifactId>flow-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.vaadin.klaudeta</groupId>
-            <artifactId>grid-pagination</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>vaadin</artifactId>
-                    <groupId>com.vaadin</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>in.virit</groupId>
+            <artifactId>viritin</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

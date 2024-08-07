@@ -6,8 +6,8 @@
 package eu.domibus.connector.controller.service;
 
 import java.util.List;
-import javax.jms.Message;
-import javax.jms.Queue;
+import jakarta.jms.Message;
+import jakarta.jms.Queue;
 
 /**
  * This interface represents a class that has a manageable dead letter queue (DLQ).

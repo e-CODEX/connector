@@ -61,9 +61,9 @@ public class LotlCreator {
                 TLSource tlSource = new TLSource();
                 tlSource.setUrl("inmemory:intermediatetsl");
                 job.setTrustedListSources(tlSource);
-            }else if(authenticationCertificateTSL instanceof String){
+            }else if(authenticationCertificateTSL instanceof String string){
                 LOTLSource lotlSource = new LOTLSource();
-                lotlSource.setUrl((String) authenticationCertificateTSL);
+                lotlSource.setUrl(string);
                 job.setListOfTrustedListSources(lotlSource);
             }else if(authenticationCertificateTSL instanceof InputStream){
                 LOTLSource lotlSource = new LOTLSource();
@@ -82,9 +82,9 @@ public class LotlCreator {
 		} catch (Exception e) {
 			throw new RuntimeException(new ECodexException(e));
 		} finally {
-            if(authenticationCertificateTSL instanceof InputStream) {
+            if(authenticationCertificateTSL instanceof InputStream stream) {
                 try {
-                    ((InputStream) authenticationCertificateTSL).close();
+                    stream.close();
                 } catch (IOException e) {
                     //ignore
                 }

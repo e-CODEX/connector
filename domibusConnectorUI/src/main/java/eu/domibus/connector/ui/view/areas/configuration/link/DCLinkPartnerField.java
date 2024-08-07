@@ -143,7 +143,7 @@ public class DCLinkPartnerField extends CustomField<DomibusConnectorLinkPartner>
             if (rcvItems.contains(linkMode)) {
                 return ValidationResult.ok();
             } else {
-                return ValidationResult.error(String.format("Only [%s] LinkModes  are supported", rcvItems.stream().map(LinkMode::toString).collect(Collectors.joining(","))));
+                return ValidationResult.error("Only [%s] LinkModes  are supported".formatted(rcvItems.stream().map(LinkMode::toString).collect(Collectors.joining(","))));
             }
         }
         return ValidationResult.ok();
@@ -166,7 +166,7 @@ public class DCLinkPartnerField extends CustomField<DomibusConnectorLinkPartner>
             if (rcvItems.contains(linkMode)) {
                 return ValidationResult.ok();
             } else {
-                return ValidationResult.error(String.format("Only [%s] LinkModes  are supported", rcvItems.stream().map(LinkMode::toString).collect(Collectors.joining(","))));
+                return ValidationResult.error("Only [%s] LinkModes  are supported".formatted(rcvItems.stream().map(LinkMode::toString).collect(Collectors.joining(","))));
             }
         }
         ;

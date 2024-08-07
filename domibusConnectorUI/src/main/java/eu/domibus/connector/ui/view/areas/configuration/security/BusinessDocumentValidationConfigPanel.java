@@ -44,7 +44,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
-import javax.validation.Validator;
+import jakarta.validation.Validator;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.stream.Collectors;

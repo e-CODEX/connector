@@ -9,6 +9,9 @@
     <artifactId>domibusConnectorControllerAPI</artifactId>
     <name>${project.artifactId}</name>
     <description>This module provides the internal connector interfaces for binding a GatewayLink-Module or a BackendLink module to the connectorModule</description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>
@@ -25,6 +28,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
@@ -37,10 +44,21 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
         </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.3</version>
+      <scope>test</scope>
+    </dependency>
         <!-- other dependencies -->
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -55,8 +73,9 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>10.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

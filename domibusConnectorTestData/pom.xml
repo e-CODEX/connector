@@ -9,6 +9,9 @@
     <artifactId>domibusConnectorTestData</artifactId>
     <name>${project.artifactId}</name>
     <description>This module contains testData for Tests. To make the TestData reusable through the different modules of the project.</description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>
@@ -53,6 +56,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.3</version>
+      <scope>provided</scope>
+    </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

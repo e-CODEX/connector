@@ -8,7 +8,7 @@ package eu.domibus.connector.domain.model.builder;
 import eu.domibus.connector.domain.model.DetachedSignature;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageDocument;
 import eu.domibus.connector.domain.model.LargeFileReference;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 /**

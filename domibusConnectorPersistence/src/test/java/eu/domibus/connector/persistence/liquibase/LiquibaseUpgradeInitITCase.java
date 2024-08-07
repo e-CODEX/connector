@@ -3,6 +3,7 @@ package eu.domibus.connector.persistence.liquibase;
 import eu.domibus.connector.persistence.testutil.FromVersion;
 import eu.domibus.connector.persistence.testutil.LiquibaseTemplateInvocationContextProvider;
 import eu.domibus.connector.testutil.junit5.SetMdcContextExtension;
+import jakarta.annotation.PostConstruct;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
@@ -39,9 +40,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -89,8 +89,8 @@ public class LiquibaseUpgradeInitITCase {
             private List<PropertiesPropertySource> findPropertiesPropertySources() {
                 List<PropertiesPropertySource> propertiesPropertySources = new LinkedList<>();
                 for (PropertySource<?> propertySource : environment.getPropertySources()) {
-                    if (propertySource instanceof PropertiesPropertySource) {
-                        propertiesPropertySources.add((PropertiesPropertySource) propertySource);
+                    if (propertySource instanceof PropertiesPropertySource source) {
+                        propertiesPropertySources.add(source);
                     }
                 }
                 return propertiesPropertySources;
@@ -151,7 +151,7 @@ public class LiquibaseUpgradeInitITCase {
 
         args.add("--spring.datasource.url=" + p.getProperty("spring.datasource.url"));
         args.add("--spring.datasource.username=" + p.getProperty("spring.datasource.username"));
-        if (!StringUtils.isEmpty(p.getProperty("spring.datasource.password"))) {
+        if (!ObjectUtils.isEmpty(p.getProperty("spring.datasource.password"))) {
             args.add("--spring.datasource.password=" + p.getProperty("spring.datasource.password"));
         }
         args.add("--spring.datasource.driver-class-name=" + p.getProperty("spring.datasource.driver-class-name"));

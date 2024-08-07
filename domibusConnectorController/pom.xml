@@ -9,6 +9,9 @@
     <artifactId>domibusConnectorController</artifactId>
     <name>${project.artifactId}</name>
     <description>Does the business work with the messages: Generates the evidences, resolves and verifies the ASIC-S container, creates the TRUST-Tokens. It hands over the messages to the GWLink module for GW-Communication and to the BackendLinkModule for communication with the connectorClients. For this purpose it uses other modules like persistence, evidenceToolkit, securityToolkit,...</description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>
@@ -148,6 +151,12 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.3</version>
+      <scope>test</scope>
+    </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>

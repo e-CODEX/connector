@@ -69,10 +69,10 @@ public class ConfigurationProperties {
 			boolean readonly = !userRole.equals(UserRole.ADMIN);
 			if(c instanceof ComboBox<?>) {
 				((ComboBox<String>)c).setReadOnly(readonly);
-			}else if(c instanceof Checkbox) {
-					((Checkbox)c).setReadOnly(readonly);
-			}else if (c instanceof TextField) {
-					((TextField)c).setReadOnly(readonly);
+			}else if(c instanceof Checkbox checkbox) {
+					checkbox.setReadOnly(readonly);
+			}else if (c instanceof TextField field) {
+					field.setReadOnly(readonly);
 			}
 		}
 	}
@@ -83,10 +83,10 @@ public class ConfigurationProperties {
 			com.vaadin.flow.component.Component c = getConfigurationcomponents().get(componentId);
 			if(c instanceof ComboBox<?>) {
 				((ComboBox<String>)c).setValue(properties.getProperty(componentId));
-			}else if(c instanceof Checkbox) {
-					((Checkbox)c).setValue(Boolean.valueOf(properties.getProperty(componentId)));
-			}else if (c instanceof TextField) {
-					((TextField)c).setValue(properties.getProperty(componentId));
+			}else if(c instanceof Checkbox checkbox) {
+					checkbox.setValue(Boolean.valueOf(properties.getProperty(componentId)));
+			}else if (c instanceof TextField field) {
+					field.setValue(properties.getProperty(componentId));
 			}
 			}
 		}

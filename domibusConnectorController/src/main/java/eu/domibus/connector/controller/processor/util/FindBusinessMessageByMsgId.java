@@ -65,10 +65,10 @@ public class FindBusinessMessageByMsgId {
             return messageByEbmsIdOrBackendIdAndDirection.get();
         }
 
-        var error = String.format(
-            "Was not able to find related message for refToEbmsId [%s] or refToBackendId [%s] "
-                + "and direction [%s]!",
-            refToEbmsId, refToBackendId, direction
+        var error = (
+                "Was not able to find related message for refToEbmsId [%s] or refToBackendId [%s] "
+                        + "and direction [%s]!").formatted(
+                refToEbmsId, refToBackendId, direction
         );
         throw new DomibusConnectorMessageException(
             refMessage, FindBusinessMessageByMsgId.class, error);

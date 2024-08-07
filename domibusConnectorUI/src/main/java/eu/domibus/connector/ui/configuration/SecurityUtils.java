@@ -1,7 +1,7 @@
 package eu.domibus.connector.ui.configuration;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.server.ServletHelper.RequestType;
+import com.vaadin.flow.server.HandlerHelper;
 import com.vaadin.flow.shared.ApplicationConstants;
 import eu.domibus.connector.tools.logging.LoggingMarker;
 import eu.domibus.connector.ui.dto.WebUser;
@@ -16,7 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.stream.Stream;
 
 /**
@@ -44,7 +44,7 @@ public final class SecurityUtils {
     static boolean isFrameworkInternalRequest(HttpServletRequest request) {
         final String parameterValue = request.getParameter(ApplicationConstants.REQUEST_TYPE_PARAMETER);
         return parameterValue != null
-                && Stream.of(RequestType.values()).anyMatch(r -> r.getIdentifier().equals(parameterValue));
+                && Stream.of(HandlerHelper.RequestType.values()).anyMatch(r -> r.getIdentifier().equals(parameterValue));
     }
 
     /**
@@ -76,8 +76,8 @@ public final class SecurityUtils {
         if (principal == null) {
             return "";
         }
-        if (principal instanceof WebUser) {
-            return ((WebUser) principal).getUsername();
+        if (principal instanceof WebUser user) {
+            return user.getUsername();
         } else {
             return principal.toString();
         }

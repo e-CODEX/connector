@@ -8,11 +8,12 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import eu.domibus.connector.ui.layout.DCMainLayout;
 import eu.domibus.connector.ui.utils.DCTabHandler;
 import eu.domibus.connector.ui.view.areas.configuration.ConfigurationLayout;
+import jakarta.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 @UIScope

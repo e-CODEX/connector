@@ -2,7 +2,7 @@ package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.select.Select;
 import eu.domibus.connector.dss.configuration.SignatureConfigurationProperties;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
@@ -27,7 +27,7 @@ public class SignatureConfigurationField extends CustomField<SignatureConfigurat
 
     private SpringBeanValidationBinder<SignatureConfigurationProperties> binder;
 
-    private Label statusLabel = new Label("");
+    private NativeLabel statusLabel = new NativeLabel("");
     private FormLayout formLayout = new FormLayout();
 
     private SignatureConfigurationProperties value;
@@ -42,8 +42,10 @@ public class SignatureConfigurationField extends CustomField<SignatureConfigurat
         add(statusLabel);
         add(formLayout);
 
-        encryptionAlgorithm = new Select<>(EncryptionAlgorithm.values());
-        digestAlgorithm = new Select<>(DigestAlgorithm.values());
+        encryptionAlgorithm = new Select<>();
+        encryptionAlgorithm.setItems(EncryptionAlgorithm.values());
+        digestAlgorithm = new Select<>();
+        digestAlgorithm.setItems(DigestAlgorithm.values());
 
         formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
         formLayout.addFormItem(encryptionAlgorithm, "Encryption Algorithm");

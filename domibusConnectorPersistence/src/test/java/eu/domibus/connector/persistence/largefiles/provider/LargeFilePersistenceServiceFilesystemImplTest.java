@@ -19,7 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
@@ -56,7 +56,7 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
 
 
         DomibusConnectorFilesystemPersistenceProperties fsProps = new DomibusConnectorFilesystemPersistenceProperties();
-        fsProps.setStoragePath(Paths.get(testStorageLocation.getAbsolutePath()));
+        fsProps.setStoragePath(Path.of(testStorageLocation.getAbsolutePath()));
         fsProps.setEncryptionActive(true);
 
         filesystemImpl = new LargeFilePersistenceServiceFilesystemImpl();
@@ -107,7 +107,7 @@ public class LargeFilePersistenceServiceFilesystemImplTest {
 
         //TODO: assert file exists in FS
         File f = new File(testStorageLocation + File.separator + storageIdReference);
-        assertThat(f.exists()).as(String.format("A file <%s> should exist", f.getAbsolutePath())).isTrue();
+        assertThat(f.exists()).as("A file <%s> should exist".formatted(f.getAbsolutePath())).isTrue();
 
         FileBasedLargeFileReference fRef = (FileBasedLargeFileReference) largeFileReference;
         System.out.println("key: " + fRef.getEncryptionKey() + " iv: " + fRef.getInitVector() + " cipher-suite: " + fRef.getCipherSuite());

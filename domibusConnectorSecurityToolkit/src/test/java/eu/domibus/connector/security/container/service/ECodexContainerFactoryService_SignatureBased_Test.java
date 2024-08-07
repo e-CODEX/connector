@@ -4,7 +4,6 @@ import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.persistence.service.DCBusinessDomainPersistenceService;
 import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import eu.domibus.connector.persistence.service.testutil.LargeFilePersistenceServicePassthroughImpl;
-import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
@@ -18,7 +17,6 @@ import test.context.SecurityToolkitTestContext;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 
 
 //@TestPropertySource({"classpath:test.properties", "classpath:test-sig.properties"})

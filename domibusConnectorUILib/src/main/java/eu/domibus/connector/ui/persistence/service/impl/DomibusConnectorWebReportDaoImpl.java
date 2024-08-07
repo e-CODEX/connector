@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import eu.domibus.connector.ui.dto.WebReportEntry;
 import eu.domibus.connector.ui.persistence.dao.DomibusConnectorWebReportDao;
 
+@DependsOnDatabaseInitialization
 @Repository
 public class DomibusConnectorWebReportDaoImpl extends JdbcDaoSupport implements DomibusConnectorWebReportDao, InitializingBean {
 
@@ -34,7 +35,6 @@ public class DomibusConnectorWebReportDaoImpl extends JdbcDaoSupport implements 
 	private String reportIncludingEvidencesSQL;
 	private String reportExcludingEvidencesSQL;
 
-	@Autowired
 	public DomibusConnectorWebReportDaoImpl(DataSource ds) {
 		this.setDataSource(ds);
 	}

@@ -5,8 +5,9 @@
 
 package eu.domibus.connector.domain.enums;
 
+import jakarta.annotation.Nullable;
+
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 
 /**
  * Enum representing the source of a message target.

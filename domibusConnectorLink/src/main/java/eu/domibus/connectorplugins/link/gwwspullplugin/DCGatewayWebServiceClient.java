@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

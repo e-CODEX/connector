@@ -9,7 +9,7 @@ USER root
 
 RUN mkdir -p /app/config /app/data /app/logs /app/temp /app/lib
 #RUN echo "export JAVA_OPTS=\"\$JAVA_OPTS\"" >> /app/run.sh \
-RUN echo "exec java \$JAVA_OPTS -Dloader.path=/app/lib -Dspring.config.name=connector -cp /app/connector.jar org.springframework.boot.loader.PropertiesLauncher" >> /app/run.sh
+RUN echo "exec java \$JAVA_OPTS -Dloader.path=/app/lib -Dspring.config.name=connector -cp /app/connector.jar org.springframework.boot.loader.launch.PropertiesLauncher" >> /app/run.sh
 
 RUN groupadd --system connector && useradd --system -g connector connector && chown -R connector:connector /app
 WORKDIR /app

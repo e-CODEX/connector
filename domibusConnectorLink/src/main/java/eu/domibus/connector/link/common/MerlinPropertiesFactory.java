@@ -68,8 +68,7 @@ public class MerlinPropertiesFactory {
                     p.get("org.apache.wss4j.crypto.merlin.keystore.file"));
         }
 
-        if (config instanceof CxfTrustKeyStoreConfigurationProperties) {
-            CxfTrustKeyStoreConfigurationProperties cxfConfig = (CxfTrustKeyStoreConfigurationProperties) config;
+        if (config instanceof CxfTrustKeyStoreConfigurationProperties cxfConfig) {
             p.put("org.apache.wss4j.crypto.merlin.load.cacerts", Boolean.toString(cxfConfig.isLoadCaCerts()));
             p.put("security.encryption.username", cxfConfig.getEncryptAlias());
         }

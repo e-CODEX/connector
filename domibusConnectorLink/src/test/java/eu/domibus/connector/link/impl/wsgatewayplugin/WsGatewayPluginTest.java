@@ -14,16 +14,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.SocketUtils;
+import org.springframework.test.util.TestSocketUtils;
 import test.eu.domibus.connector.link.LinkTestContext;
 import test.eu.domibus.connector.link.wsgatewayplugin.TestGW;
 
@@ -36,7 +34,6 @@ import static eu.domibus.connector.link.service.DCLinkPluginConfiguration.LINK_P
 import static org.assertj.core.api.Assertions.assertThat;
 import static test.eu.domibus.connector.link.LinkTestContext.SUBMIT_TO_CONNECTOR_QUEUE;
 
-@ExtendWith({SpringExtension.class})
 @SpringBootTest(classes = {LinkTestContext.class },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
@@ -57,7 +54,7 @@ class WsGatewayPluginTest {
      */
     public static int GET_PORT() {
         if (PORT == null) {
-            PORT = SocketUtils.findAvailableTcpPort();
+            PORT = TestSocketUtils.findAvailableTcpPort();
         }
         return PORT;
     }

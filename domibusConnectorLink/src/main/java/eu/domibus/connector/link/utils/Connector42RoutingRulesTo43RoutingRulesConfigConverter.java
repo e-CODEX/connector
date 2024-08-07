@@ -40,7 +40,7 @@ public class Connector42RoutingRulesTo43RoutingRulesConfigConverter {
                         rr.setDescription("From old config imported routing rule");
                         rr.setLinkName(backendName);
                         rr.setPriority(20);
-                        String matchPattern = String.format("equals(ServiceName, '%s')", serviceName);
+                        String matchPattern = "equals(ServiceName, '%s')".formatted(serviceName);
                         rr.setMatchClause(new RoutingRulePattern(matchPattern));
                         LOGGER.info("Created imported routing rule [{}]", rr);
                         return rr;

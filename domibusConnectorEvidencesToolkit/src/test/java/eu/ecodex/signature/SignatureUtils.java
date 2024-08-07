@@ -24,8 +24,8 @@ import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
 import javax.xml.crypto.MarshalException;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
@@ -510,11 +510,11 @@ import eu.spocseu.edeliverygw.messageparts.SpocsFragments;
 			ks.load(kfis, storePass.toCharArray());
 			if (ks.containsAlias(alias)) {
 				key = ks.getKey(alias, keyPass.toCharArray());
-				if (key instanceof PrivateKey) {
+				if (key instanceof PrivateKey privateKey1) {
 					X509Certificate cert = (X509Certificate) ks
 							.getCertificate(alias);
 					publicKey = cert.getPublicKey();
-					privateKey = (PrivateKey) key;
+					privateKey = privateKey1;
 					keyPair = new KeyPair(publicKey, privateKey);
 				} else {
 					keyPair = null;

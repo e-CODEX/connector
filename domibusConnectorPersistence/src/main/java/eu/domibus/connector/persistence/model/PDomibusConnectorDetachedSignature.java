@@ -2,7 +2,7 @@ package eu.domibus.connector.persistence.model;
 
 import eu.domibus.connector.domain.model.DetachedSignatureMimeType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import static eu.domibus.connector.persistence.model.PDomibusConnectorPersistenceModel.*;
 

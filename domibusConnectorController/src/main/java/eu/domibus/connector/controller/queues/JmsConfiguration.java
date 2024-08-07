@@ -7,8 +7,8 @@ package eu.domibus.connector.controller.queues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.domibus.connector.common.annotations.DomainModelJsonObjectMapper;
-import javax.jms.Queue;
-import javax.validation.Validator;
+import jakarta.jms.Queue;
+import jakarta.validation.Validator;
 import org.apache.activemq.artemis.api.core.RoutingType;
 import org.apache.activemq.artemis.api.core.SimpleString;
 import org.apache.activemq.artemis.core.settings.impl.AddressSettings;

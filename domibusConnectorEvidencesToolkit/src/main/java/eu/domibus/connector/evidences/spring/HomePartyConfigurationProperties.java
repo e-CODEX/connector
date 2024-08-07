@@ -4,8 +4,8 @@ import eu.domibus.connector.common.annotations.BusinessDomainScoped;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 
 @Valid

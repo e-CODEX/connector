@@ -10,6 +10,9 @@
     <description>
         This module provides services which can be used for certificate verification and signing.
     </description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>
@@ -89,6 +92,10 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
         </dependency>
     </dependencies>
 </project>

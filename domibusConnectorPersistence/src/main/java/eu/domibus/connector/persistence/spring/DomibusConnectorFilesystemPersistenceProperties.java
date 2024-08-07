@@ -7,9 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Component
 @ConfigurationProperties(prefix = "connector.persistence.filesystem")
@@ -23,7 +22,7 @@ public class DomibusConnectorFilesystemPersistenceProperties {
      *  is managing the data
      */
     @NotNull
-    private Path storagePath = Paths.get("./data/fsstorage");
+    private Path storagePath = Path.of("./data/fsstorage");
 
     /**
      * Should the written files be encrypted?

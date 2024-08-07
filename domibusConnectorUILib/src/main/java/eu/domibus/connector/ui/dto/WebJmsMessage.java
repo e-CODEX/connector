@@ -2,7 +2,7 @@ package eu.domibus.connector.ui.dto;
 
 import lombok.Getter;
 
-import javax.jms.Message;
+import jakarta.jms.Message;
 
 @Getter
 public class WebJmsMessage {

@@ -139,7 +139,7 @@ public class DCLinkPartnerView extends VerticalLayout implements HasUrlParameter
             saveButton.setEnabled(linkPartner.getConfigurationSource() == ConfigurationSource.DB);
         } else if (editMode == EditMode.CREATE && linkConfigName != null) {
             Optional<DomibusConnectorLinkConfiguration> domibusConnectorLinkConfiguration = dcLinkFacade.loadLinkConfig(new DomibusConnectorLinkConfiguration.LinkConfigName(linkConfigName));
-            if (!domibusConnectorLinkConfiguration.isPresent()) {
+            if (domibusConnectorLinkConfiguration.isEmpty()) {
                 throw new IllegalArgumentException("Illegal parameter supplied");
             }
             this.lnkConfig = domibusConnectorLinkConfiguration.get();

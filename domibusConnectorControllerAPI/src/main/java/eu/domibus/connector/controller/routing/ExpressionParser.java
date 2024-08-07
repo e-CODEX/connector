@@ -116,12 +116,12 @@ public class ExpressionParser {
         } else if (t == TokenType.NOT) {
             exp = processNotToken(tv);
         } else {
-            throw new ParsingException(lastConsumedToken, tv, String.format(
-                "Parsing error at %d: I would expect one of these: %s", tv.end + 1,
-                TokenType.ALL_OPERATOR_TOKEN_TYPES
-                    .stream()
-                    .map(Enum::toString)
-                    .collect(Collectors.joining(","))
+            throw new ParsingException(lastConsumedToken, tv, 
+                    "Parsing error at %d: I would expect one of these: %s".formatted(tv.end + 1,
+                    TokenType.ALL_OPERATOR_TOKEN_TYPES
+                            .stream()
+                            .map(Enum::toString)
+                            .collect(Collectors.joining(","))
             ));
         }
 
@@ -182,25 +182,25 @@ public class ExpressionParser {
             .map(TokenType::toString).collect(Collectors.joining(","));
         if (tokens.isEmpty()) {
             throw new ParsingException(
-                lastConsumedToken, String.format(
-                "Parsing error at %d: I would expect one of these: %s",
-                this.lastConsumedToken.end + 1, expectedTokensString
+                lastConsumedToken, 
+                    "Parsing error at %d: I would expect one of these: %s".formatted(
+                    this.lastConsumedToken.end + 1, expectedTokensString
             ));
         }
         Token token = tokens.removeFirst();
         if (token.tokenType == TokenType.ILLEGAL_TOKEN) {
             throw new ParsingException(
-                lastConsumedToken, token, String.format(
-                "Parsing error at %d: Invalid Token found. I would expect one of these: %s",
-                this.lastConsumedToken.end + 1, expectedTokensString
+                lastConsumedToken, token, 
+                    "Parsing error at %d: Invalid Token found. I would expect one of these: %s".formatted(
+                    this.lastConsumedToken.end + 1, expectedTokensString
             ));
         }
         if (isNotToken(token, expectedTokenTypes)) {
             if (tokens.isEmpty()) {
                 throw new ParsingException(
-                    lastConsumedToken, token, String.format(
-                    "Parsing error at %d: I would expect one of these: %s, but i got %s",
-                    this.lastConsumedToken.end + 1, expectedTokensString, token
+                    lastConsumedToken, token, 
+                        "Parsing error at %d: I would expect one of these: %s, but i got %s".formatted(
+                        this.lastConsumedToken.end + 1, expectedTokensString, token
                 ));
             }
         }

@@ -16,7 +16,7 @@ import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.domain.testutil.DomainEntityCreator;
 import java.time.Duration;
-import javax.jms.ConnectionFactory;
+import jakarta.jms.ConnectionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

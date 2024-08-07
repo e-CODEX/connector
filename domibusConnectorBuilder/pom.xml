@@ -12,4 +12,7 @@
         <module>domibusConnectorBuilderStandalone</module>
         <module>domibusConnectorBuilderDeployable</module>
     </modules>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
 </project>

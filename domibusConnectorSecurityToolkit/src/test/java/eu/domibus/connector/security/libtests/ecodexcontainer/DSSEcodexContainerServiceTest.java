@@ -97,14 +97,14 @@ public class DSSEcodexContainerServiceTest {
         ProxyProperties httpsProxyProperties = new ProxyProperties();
         httpsProxyProperties.setHost(properties.getProperty("https.proxy.host"));
         httpsProxyProperties.setPort(Integer.valueOf(properties.getProperty("https.proxy.port")));
-        httpsProxyProperties.setPassword(properties.getProperty("https.proxy.password"));
+        httpsProxyProperties.setPassword(properties.getProperty("https.proxy.password").toCharArray());
         httpsProxyProperties.setUser(properties.getProperty("https.proxy.user"));
         proxyConfig.setHttpsProperties(httpsProxyProperties);
         
         ProxyProperties httpProxyProperties = new ProxyProperties();
         httpProxyProperties.setHost(properties.getProperty("http.proxy.host"));
         httpProxyProperties.setPort(Integer.valueOf(properties.getProperty("http.proxy.port")));
-        httpProxyProperties.setPassword(properties.getProperty("http.proxy.password"));
+        httpProxyProperties.setPassword(properties.getProperty("http.proxy.password").toCharArray());
         httpProxyProperties.setUser(properties.getProperty("http.proxy.user"));
         proxyConfig.setHttpProperties(httpProxyProperties);
         

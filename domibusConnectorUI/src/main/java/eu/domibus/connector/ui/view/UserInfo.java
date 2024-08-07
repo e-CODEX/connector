@@ -7,16 +7,14 @@ import eu.domibus.connector.ui.component.LumoLabel;
 import eu.domibus.connector.ui.dto.WebUser;
 import eu.domibus.connector.ui.login.LoginView;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -48,9 +46,9 @@ public class UserInfo extends HorizontalLayout implements AfterNavigationObserve
 		Button logoutButton = new Button("Logout");
 		logoutButton.addClickListener(e -> {
 			Dialog logoutDialog = new Dialog();
-			
+
 			Div logout2Div = new Div();
-			Label logoutText = new Label("Logout call success!");
+			NativeLabel logoutText = new NativeLabel("Logout call success!");
 			logoutText.getStyle().set("font-weight", "bold");
 			logoutText.getStyle().set("color", "red");
 			logout2Div.add(logoutText);
@@ -91,8 +89,8 @@ public class UserInfo extends HorizontalLayout implements AfterNavigationObserve
 		SecurityContext context = SecurityContextHolder.getContext();
 		if (context != null) {
 			Object principal = context.getAuthentication().getPrincipal();
-			if (principal instanceof WebUser) {
-				this.username.setText(((WebUser) principal).getUsername());
+			if (principal instanceof WebUser user) {
+				this.username.setText(user.getUsername());
 			} else {
 				this.username.setText(principal.toString());
 			}

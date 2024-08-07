@@ -7,13 +7,12 @@ package eu.domibus.connector.dss.configuration;
 
 import eu.europa.esig.dss.service.http.proxy.ProxyProperties;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -39,7 +38,7 @@ public class BasicDssConfigurationProperties {
     @NotNull
     private Duration tlCacheExpiration = Duration.ofDays(1);
     @NotNull
-    private Path tlCacheLocation = Paths.get("./tlcache");
+    private Path tlCacheLocation = Path.of("./tlcache");
 
     /**
      * This class represents a TSP (Time Stamping Protocol) configuration.

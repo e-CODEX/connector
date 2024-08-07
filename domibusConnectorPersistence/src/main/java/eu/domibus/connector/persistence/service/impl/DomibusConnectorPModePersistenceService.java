@@ -44,7 +44,7 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
     @Override
     public List<DomibusConnectorAction> findByExample(DomibusConnectorBusinessDomain.BusinessDomainId lane, DomibusConnectorAction searchAction) {
         Optional<PDomibusConnectorPModeSet> currentPModeSetOptional = getCurrentDBPModeSet(lane);
-        if (!currentPModeSetOptional.isPresent()) {
+        if (currentPModeSetOptional.isEmpty()) {
             return new ArrayList<>();
         }
         List<DomibusConnectorAction> foundActions = findByExample(ActionMapper.mapActionToPersistence(searchAction), currentPModeSetOptional)
@@ -61,19 +61,19 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
 
     public Optional<PDomibusConnectorAction> getConfiguredSingleDB(DomibusConnectorBusinessDomain.BusinessDomainId lane, PDomibusConnectorAction searchAction) {
         Optional<PDomibusConnectorPModeSet> currentPModeSetOptional = getCurrentDBPModeSet(lane);
-        if (!currentPModeSetOptional.isPresent()) {
+        if (currentPModeSetOptional.isEmpty()) {
             return Optional.empty();
         }
         List<PDomibusConnectorAction> foundActions = findByExample(searchAction, currentPModeSetOptional)
                 .collect(Collectors.toList());
         if (foundActions.size() > 1) {
-            throw new IncorrectResultSizeException(String.format("Found %d Actions which match Action [%s] in MessageLane [%s]", foundActions.size(), searchAction, lane));
+            throw new IncorrectResultSizeException("Found %d Actions which match Action [%s] in MessageLane [%s]".formatted(foundActions.size(), searchAction, lane));
         }
         if (foundActions.isEmpty()) {
             LOGGER.debug("Found no Actions which match Action [{}] in MessageLane [{}]", searchAction, lane);
             return Optional.empty();
         }
-        return Optional.of(foundActions.get(0));
+        return Optional.of(foundActions.getFirst());
     }
 
     private Stream<PDomibusConnectorAction> findByExample(PDomibusConnectorAction searchAction, Optional<PDomibusConnectorPModeSet> currentPModeSetOptional) {
@@ -100,7 +100,7 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
     @Override
     public List<DomibusConnectorService> findByExample(DomibusConnectorBusinessDomain.BusinessDomainId lane, DomibusConnectorService searchService) {
         Optional<PDomibusConnectorPModeSet> currentPModeSetOptional = getCurrentDBPModeSet(lane);
-        if (!currentPModeSetOptional.isPresent()) {
+        if (currentPModeSetOptional.isEmpty()) {
             return new ArrayList<>();
         }
         List<DomibusConnectorService> foundServices = findByExampleStream(ServiceMapper.mapServiceToPersistence(searchService), currentPModeSetOptional)
@@ -112,19 +112,19 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
 
     public Optional<PDomibusConnectorService> getConfiguredSingleDB(DomibusConnectorBusinessDomain.BusinessDomainId lane, PDomibusConnectorService searchService) {
         Optional<PDomibusConnectorPModeSet> currentPModeSetOptional = getCurrentDBPModeSet(lane);
-        if (!currentPModeSetOptional.isPresent()) {
+        if (currentPModeSetOptional.isEmpty()) {
             return Optional.empty();
         }
         List<PDomibusConnectorService> foundServices = findByExampleStream(searchService, currentPModeSetOptional)
                 .collect(Collectors.toList());
         if (foundServices.size() > 1) {
-            throw new IncorrectResultSizeException(String.format("Found %d Services which match Service [%s] in MessageLane [%s]", foundServices.size(), searchService, lane));
+            throw new IncorrectResultSizeException("Found %d Services which match Service [%s] in MessageLane [%s]".formatted(foundServices.size(), searchService, lane));
         }
         if (foundServices.isEmpty()) {
             LOGGER.debug("Found no Services which match Service [{}] in MessageLane [{}]", searchService, lane);
             return Optional.empty();
         }
-        return Optional.of(foundServices.get(0));
+        return Optional.of(foundServices.getFirst());
     }
 
     private Stream<PDomibusConnectorService> findByExampleStream(PDomibusConnectorService searchService, Optional<PDomibusConnectorPModeSet> currentPModeSetOptional) {
@@ -149,7 +149,7 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
     public List<DomibusConnectorParty> findByExample(DomibusConnectorBusinessDomain.BusinessDomainId lane, DomibusConnectorParty exampleParty) throws IncorrectResultSizeException {
         PDomibusConnectorParty searchParty = PartyMapper.mapPartyToPersistence(exampleParty);
         Optional<PDomibusConnectorPModeSet> currentPModeSetOptional = getCurrentDBPModeSet(lane);
-        if (!currentPModeSetOptional.isPresent()) {
+        if (currentPModeSetOptional.isEmpty()) {
             return new ArrayList<>();
         }
         Stream<PDomibusConnectorParty> stream = findByExampleStream(searchParty, currentPModeSetOptional);
@@ -167,20 +167,20 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
 
     public Optional<PDomibusConnectorParty> getConfiguredSingleDB(DomibusConnectorBusinessDomain.BusinessDomainId lane, PDomibusConnectorParty searchParty) throws IncorrectResultSizeException {
         Optional<PDomibusConnectorPModeSet> currentPModeSetOptional = getCurrentDBPModeSet(lane);
-        if (!currentPModeSetOptional.isPresent()) {
+        if (currentPModeSetOptional.isEmpty()) {
             return Optional.empty();
         }
         List<PDomibusConnectorParty> foundParties =
                 findByExampleStream(searchParty, currentPModeSetOptional).collect(Collectors.toList());
 
         if (foundParties.size() > 1) {
-            throw new IncorrectResultSizeException(String.format("Found %d Parties which match Party [%s] in MessageLane [%s]", foundParties.size(), searchParty, lane));
+            throw new IncorrectResultSizeException("Found %d Parties which match Party [%s] in MessageLane [%s]".formatted(foundParties.size(), searchParty, lane));
         }
         if (foundParties.isEmpty()) {
             LOGGER.debug("Found no Parties which match Party [{}] in MessageLane [{}]", searchParty, lane);
             return Optional.empty();
         }
-        return Optional.of(foundParties.get(0));
+        return Optional.of(foundParties.getFirst());
     }
 
     private Stream<PDomibusConnectorParty> findByExampleStream(PDomibusConnectorParty searchParty, Optional<PDomibusConnectorPModeSet> currentPModeSetOptional) {
@@ -246,7 +246,7 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
         connectorPModeSet.getServices().forEach(s -> s.setDbKey(null));
 
         Optional<PDomibusConnectorMessageLane> messageLaneOptional = messageLaneDao.findByName(lane);
-        PDomibusConnectorMessageLane pDomibusConnectorMessageLane = messageLaneOptional.orElseThrow(() -> new RuntimeException(String.format("No message lane found with name [%s]", lane)));
+        PDomibusConnectorMessageLane pDomibusConnectorMessageLane = messageLaneOptional.orElseThrow(() -> new RuntimeException("No message lane found with name [%s]".formatted(lane)));
 
         PDomibusConnectorPModeSet dbPmodeSet = new PDomibusConnectorPModeSet();
         dbPmodeSet.setDescription(connectorPModeSet.getDescription());
@@ -264,8 +264,8 @@ public class DomibusConnectorPModePersistenceService implements DomibusConnector
             throw new IllegalArgumentException("You must provide a already persisted keystore!");
         }
         Optional<PDomibusConnectorKeystore> connectorstore = keystoreDao.findByUuid(connectorPModeSet.getConnectorstore().getUuid());
-        if (!connectorstore.isPresent()) {
-            String error = String.format("There is no JavaKeyStore with id [%s]", connectorPModeSet.getConnectorstore());
+        if (connectorstore.isEmpty()) {
+            String error = "There is no JavaKeyStore with id [%s]".formatted(connectorPModeSet.getConnectorstore());
             throw new IllegalArgumentException(error);
         }
 

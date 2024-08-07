@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -141,7 +141,7 @@ public class ConfigurationPropertyLoaderServiceImpl implements ConfigurationProp
             );
         } else {
             throw new IllegalArgumentException(
-                String.format("No active business domain for id [%s]", laneId));
+                    "No active business domain for id [%s]".formatted(laneId));
         }
     }
 

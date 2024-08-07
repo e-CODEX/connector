@@ -8,13 +8,12 @@ import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.api.exception.LinkPluginException;
 import eu.domibus.connector.persistence.service.DCLinkPersistenceService;
 import eu.domibus.connector.tools.logging.LoggingMarker;
+import jakarta.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import javax.annotation.PostConstruct;
 
 import java.util.List;
 
@@ -73,14 +72,14 @@ public class DomibusConnectorLinkCreatorConfigurationService {
         if (backends.isEmpty() && !config.isFailOnLinkPluginError()) {
             LOGGER.warn("No backends are configured!");
         } else if (backends.isEmpty()) {
-            String error = String.format("No backends are configured under [%s.backend]\nConnector will not start!", DCLinkPluginConfigurationProperties.PREFIX);
+            String error = "No backends are configured under [%s.backend]\nConnector will not start!".formatted(DCLinkPluginConfigurationProperties.PREFIX);
             throw new IllegalStateException(error);
         }
 
         int i = 0;
         String configPrefix = "";
         for (DCLinkPluginConfigurationProperties.DCLnkPropertyConfig backend : backends) {
-            configPrefix = String.format("%s.backend[%d]", DCLinkPluginConfigurationProperties.PREFIX, i);
+            configPrefix = "%s.backend[%d]".formatted(DCLinkPluginConfigurationProperties.PREFIX, i);
             DomibusConnectorLinkConfiguration linkConfig = backend.getLinkConfig();
             if (linkConfig == null) {
                 LOGGER.warn("Backend configuration is incomplete!\nCheck config under [{}[{}].*]!", configPrefix, i);
@@ -89,14 +88,14 @@ public class DomibusConnectorLinkCreatorConfigurationService {
             linkConfig.setConfigurationSource(ConfigurationSource.ENV);
 
             int linkPartnerIndex = 0;
-            String linkPartnerConfigPrefix = String.format("%s.link-partner[%d]", configPrefix, linkPartnerIndex);
+            String linkPartnerConfigPrefix = "%s.link-partner[%d]".formatted(configPrefix, linkPartnerIndex);
             for (DomibusConnectorLinkPartner linkPartner : backend.getLinkPartners()) {
                 linkPartner.setLinkConfiguration(linkConfig);
                 try {
                     linkPartner.setLinkType(LinkType.BACKEND);
                     this.activateLink(linkPartner);
                 } catch (Exception e) {
-                    String error = String.format("Exception thrown while activating link partner under: [%s.*]", linkPartnerConfigPrefix);
+                    String error = "Exception thrown while activating link partner under: [%s.*]".formatted(linkPartnerConfigPrefix);
                     LOGGER.warn(error, e);
                     if (config.isFailOnLinkPluginError()) {
                         throw new RuntimeException(error, e);
@@ -114,7 +113,7 @@ public class DomibusConnectorLinkCreatorConfigurationService {
             LOGGER.warn("No gateway configured!");
             return;
         } else if (gateway == null) {
-            String error = String.format("No gateway is configured under [%s.gateway]\nConnector will not start!", DCLinkPluginConfigurationProperties.PREFIX);
+            String error = "No gateway is configured under [%s.gateway]\nConnector will not start!".formatted(DCLinkPluginConfigurationProperties.PREFIX);
             throw new IllegalStateException(error);
         }
         DomibusConnectorLinkConfiguration linkConfig = gateway.getLinkConfig();
@@ -129,7 +128,7 @@ public class DomibusConnectorLinkCreatorConfigurationService {
 
         int gwLinkCount = gateway.getLinkPartners().size();
         if (gwLinkCount != 1) {
-            String error = String.format("There are [%d] configured gateway links - only ONE gateway link is supported!", gwLinkCount);
+            String error = "There are [%d] configured gateway links - only ONE gateway link is supported!".formatted(gwLinkCount);
             LOGGER.error(error);
             throw new RuntimeException("Illegal Configuration! " + error);
         }
@@ -152,9 +151,9 @@ public class DomibusConnectorLinkCreatorConfigurationService {
         try {
             linkManager.activateLinkPartner(linkInfo);
         } catch (LinkPluginException e) {
-            String error = String.format("Exception while activating Link [%s]", linkInfo);
+            String error = "Exception while activating Link [%s]".formatted(linkInfo);
             if (config.isFailOnLinkPluginError()) {
-                String msg = String.format("Failing startup because property [%s.fail-on-link-plugin-error=true]: %s",
+                String msg = "Failing startup because property [%s.fail-on-link-plugin-error=true]: %s".formatted(
                         DCLinkPluginConfigurationProperties.PREFIX, error);
                 throw new RuntimeException(msg, e);
             } else {

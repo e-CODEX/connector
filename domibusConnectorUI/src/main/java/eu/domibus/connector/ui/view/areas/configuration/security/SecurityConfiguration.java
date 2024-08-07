@@ -13,7 +13,6 @@ import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationItemChapterDiv;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class SecurityConfiguration extends VerticalLayout{
 	TextField truststorePathField = FormsUtil.getFormattedTextField();
 	TextField truststorePasswordField = FormsUtil.getFormattedTextField();
 
-	public SecurityConfiguration(@Autowired ConfigurationUtil util) {
+	public SecurityConfiguration(ConfigurationUtil util) {
 		this.util = util;
 		
 		add(new ConfigurationItemChapterDiv("Token issuer configuration:"));

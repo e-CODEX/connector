@@ -9,7 +9,7 @@ import eu.domibus.connector.domain.model.LargeFileReference;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

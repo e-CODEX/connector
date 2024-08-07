@@ -7,7 +7,7 @@ package eu.domibus.connector.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 
 /**

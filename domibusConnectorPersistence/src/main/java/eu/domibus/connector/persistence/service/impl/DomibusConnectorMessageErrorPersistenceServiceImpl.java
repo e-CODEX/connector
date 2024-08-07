@@ -60,7 +60,7 @@ public class DomibusConnectorMessageErrorPersistenceServiceImpl implements Domib
     @Override
     public List<DomibusConnectorMessageError> getMessageErrors(DomibusConnectorMessage message) throws PersistenceException {
         Optional<PDomibusConnectorMessage> dbMessage = messageDao.findOneByConnectorMessageId(message.getConnectorMessageIdAsString());
-        if (!dbMessage.isPresent()) {
+        if (dbMessage.isEmpty()) {
             //no message reference
             return new ArrayList<>();
         }

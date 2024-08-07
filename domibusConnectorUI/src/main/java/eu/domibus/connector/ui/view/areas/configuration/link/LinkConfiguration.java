@@ -28,10 +28,9 @@ import eu.domibus.connector.link.api.exception.LinkPluginException;
 import eu.domibus.connector.link.service.DCLinkFacade;
 import eu.domibus.connector.ui.dialogs.EditBeanDialogBuilder;
 import eu.domibus.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
-
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.ApplicationContext;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -98,9 +97,9 @@ public abstract class LinkConfiguration extends DCVerticalLayoutWithTitleAndHelp
                 .setHeader("Delete");
 
         treeGrid.addComponentColumn((ValueProvider<WebLinkItem, ? extends Component>) webLinkItem -> {
-            if (webLinkItem instanceof WebLinkItem.WebLinkConfigurationItem) {
+            if (webLinkItem instanceof WebLinkItem.WebLinkConfigurationItem item) {
                 Button b = new Button(new Icon(VaadinIcon.PLUS));
-                b.addClickListener((event) -> addLinkPartner((WebLinkItem.WebLinkConfigurationItem) webLinkItem, event));
+                b.addClickListener((event) -> addLinkPartner(item, event));
                 b.setEnabled(webLinkItem.getConfigurationSource() == ConfigurationSource.DB);
                 return b;
             } else {

@@ -9,8 +9,8 @@ import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.ui.controller.QueueController;
 import eu.domibus.connector.ui.dto.WebQueue;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 import java.util.List;
 
 public class MessageGrid extends Grid<Message> {
@@ -27,7 +27,7 @@ public class MessageGrid extends Grid<Message> {
         this.parentView = parentView;
 
         this.setWidth("90%");
-        this.setHeightByRows(true);
+        this.setAllRowsVisible(true); //TODO: Compare with behaviour before
 
         addColumn(this::getJMSMessageID).setHeader("Message ID (JMS ID)").setWidth("35%");
         addColumn(this::getConnectorId).setHeader("Connector ID").setWidth("35%");

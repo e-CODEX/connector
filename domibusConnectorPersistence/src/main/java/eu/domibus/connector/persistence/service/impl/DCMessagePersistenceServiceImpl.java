@@ -9,13 +9,14 @@ import eu.domibus.connector.persistence.model.*;
 import eu.domibus.connector.persistence.service.DCMessagePersistenceService;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
 import eu.domibus.connector.persistence.service.impl.helper.MessageDirectionMapper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +112,7 @@ public class DCMessagePersistenceServiceImpl implements DCMessagePersistenceServ
             LOGGER.trace("#persistMessageIntoDatabase: Saving message [{}] into storage", dbMessage);
             dbMessage = messageDao.save(dbMessage);
         } catch (DuplicateKeyException cve) {
-            String error = String.format("Message already persisted! The domibusConnectorMessageId [%s] already exist.",
+            String error = "Message already persisted! The domibusConnectorMessageId [%s] already exist.".formatted(
                     dbMessage.getConnectorMessageId());
             LOGGER.error(error);
             throw new PersistenceException(error, cve);
@@ -152,7 +153,7 @@ public class DCMessagePersistenceServiceImpl implements DCMessagePersistenceServ
             LOGGER.trace("#persistMessageIntoDatabase: Saving message [{}] into storage", dbMessage);
             dbMessage = messageDao.save(dbMessage);
         } catch (DuplicateKeyException cve) {
-            String error = String.format("Message already persisted! The domibusConnectorMessageId [%s] already exist.",
+            String error = "Message already persisted! The domibusConnectorMessageId [%s] already exist.".formatted(
                     dbMessage.getConnectorMessageId());
             LOGGER.error(error);
             throw new PersistenceException(error, cve);
@@ -177,7 +178,7 @@ public class DCMessagePersistenceServiceImpl implements DCMessagePersistenceServ
     PDomibusConnectorMessage findMessageByMessage(@Nonnull DomibusConnectorMessage message) {
         String connectorMessageId = message.getConnectorMessageIdAsString();
         Optional<PDomibusConnectorMessage> dbMessage = messageDao.findOneByConnectorMessageId(connectorMessageId);
-        if (!dbMessage.isPresent()) {
+        if (dbMessage.isEmpty()) {
             LOGGER.warn("No message found with connector message id [{}] ", connectorMessageId);
         }
         return dbMessage.orElse(null);
@@ -195,8 +196,8 @@ public class DCMessagePersistenceServiceImpl implements DCMessagePersistenceServ
         }
         PDomibusConnectorMessage dbMessage = findMessageByMessage(message);
         if (dbMessage == null) {
-            String error = String.format("No db message found for domain message %s in storage!%n"
-                    + "Can only merge a message wich has already been persisted", message);
+            String error = ("No db message found for domain message %s in storage!%n"
+                    + "Can only merge a message wich has already been persisted").formatted(message);
             LOGGER.error(error + "\nThrowing exception!");
             throw new PersistenceException(error);
         }

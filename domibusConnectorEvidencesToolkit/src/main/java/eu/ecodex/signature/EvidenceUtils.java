@@ -16,8 +16,8 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -71,10 +71,10 @@ public abstract class EvidenceUtils {
 
             if (ks.containsAlias(alias)) {
                 key = ks.getKey(alias, keyPass.toCharArray());
-                if (key instanceof PrivateKey) {
+                if (key instanceof PrivateKey privateKey1) {
                     X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
                     publicKey = cert.getPublicKey();
-                    privateKey = (PrivateKey) key;
+                    privateKey = privateKey1;
                     keyPair = new KeyPair(publicKey, privateKey);
                 } else {
                     keyPair = null;

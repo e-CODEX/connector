@@ -6,7 +6,7 @@
 package eu.domibus.connector.controller.spring;
 
 import eu.domibus.connector.lib.spring.DomibusConnectorDuration;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -38,10 +38,10 @@ public class ContentDeletionConfigurationProperties {
     @PostConstruct
     public void validate() {
         if (checkTimeoutEnabled && checkTimeout == null) {
-            var error = String.format(
-                "If %s.check-timeout-enabled is true, then %s.check-timeout must be set to a "
-                    + "duration (eg. 24h)",
-                PREFIX, PREFIX
+            var error = (
+                    "If %s.check-timeout-enabled is true, then %s.check-timeout must be set to a "
+                            + "duration (eg. 24h)").formatted(
+                    PREFIX, PREFIX
             );
             throw new IllegalArgumentException(error);
         }

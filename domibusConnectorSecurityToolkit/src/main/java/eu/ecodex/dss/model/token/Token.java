@@ -13,10 +13,10 @@ package eu.ecodex.dss.model.token;
 import eu.europa.esig.xmldsig.jaxb.DigestMethodType;
 import org.apache.commons.lang.StringUtils;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 import java.util.List;
@@ -274,7 +274,7 @@ public class Token implements Serializable {
     public Signature getValidationVerificationSignatureData() {
 		final ValidationVerification o = getValidationVerificationData();
 		if (!isValidationVerificationSignatureUnsigned()) {
-			return o.getSignatureData().get(0);
+			return o.getSignatureData().getFirst();
 		} else {
 			return null;
 		}
@@ -416,11 +416,11 @@ public class Token implements Serializable {
 
     	// Pre 1.09 version of "being unsigned"
 		if (signatures != null 	&& !signatures.isEmpty()) {
-			if(signatures.get(0).getAuthenticationCertValidation() == null &&
-					signatures.get(0).getCertificateInformation() == null &&
-					signatures.get(0).getSignatureInformation() == null &&
-					signatures.get(0).getSigningTime() == null &&
-					signatures.get(0).getTechnicalResult() == null) {
+			if(signatures.getFirst().getAuthenticationCertValidation() == null &&
+					signatures.getFirst().getCertificateInformation() == null &&
+					signatures.getFirst().getSignatureInformation() == null &&
+					signatures.getFirst().getSigningTime() == null &&
+					signatures.getFirst().getTechnicalResult() == null) {
 				return true;
 			} else {
 				return false;

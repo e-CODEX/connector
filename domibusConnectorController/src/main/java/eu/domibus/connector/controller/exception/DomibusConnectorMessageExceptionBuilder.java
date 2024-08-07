@@ -7,7 +7,8 @@ package eu.domibus.connector.controller.exception;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -136,14 +136,14 @@ public class ConfigurationUtil {
 				componentValue = ((ComboBox<String>)c).getValue();
 				if(componentValue!=null && contextValue!=null && !componentValue.equals(contextValue))
 					((ComboBox<String>)c).setValue(contextValue);
-			}else if(c instanceof Checkbox) {
-				componentValue = ((Checkbox)c).getValue().toString().toLowerCase();
+			}else if(c instanceof Checkbox checkbox) {
+				componentValue = checkbox.getValue().toString().toLowerCase();
 				if(componentValue!=null && contextValue!=null && !componentValue.equals(contextValue.toLowerCase()))
-					((Checkbox)c).setValue(Boolean.valueOf(contextValue));
-			}else if (c instanceof TextField) {
-				componentValue = ((TextField)c).getValue();
+					checkbox.setValue(Boolean.valueOf(contextValue));
+			}else if (c instanceof TextField field) {
+				componentValue = field.getValue();
 				if(componentValue!=null && contextValue!=null && !componentValue.equals(contextValue))
-					((TextField)c).setValue(contextValue);
+					field.setValue(contextValue);
 			}
 		}
 		propertiesPersistenceService.resetProperties(configurationProperties.getProperties());
@@ -156,10 +156,10 @@ public class ConfigurationUtil {
 			Object initialValue = configurationProperties.getInitialproperties().get(componentId);
 			if(c instanceof ComboBox<?>) {
 				((ComboBox<String>)c).setValue((String) initialValue);
-			}else if(c instanceof Checkbox) {
-				((Checkbox)c).setValue((Boolean) initialValue);
-			}else if (c instanceof TextField) {
-				((TextField)c).setValue(getPropertyValue((String) initialValue));
+			}else if(c instanceof Checkbox checkbox) {
+				checkbox.setValue((Boolean) initialValue);
+			}else if (c instanceof TextField field) {
+				field.setValue(getPropertyValue((String) initialValue));
 			}
 		}
 		configurationProperties.clearChanges();
@@ -172,10 +172,10 @@ public class ConfigurationUtil {
 			Object value = null;
 			if(c instanceof ComboBox<?>) {
 				value = ((ComboBox<String>)c).getValue();
-			}else if(c instanceof Checkbox) {
-				value = ((Checkbox)c).getValue();
-			}else if (c instanceof TextField) {
-				value = ((TextField)c).getValue();
+			}else if(c instanceof Checkbox checkbox) {
+				value = checkbox.getValue();
+			}else if (c instanceof TextField field) {
+				value = field.getValue();
 			}
 			if(value!=null)
 				configurationProperties.getInitialproperties().put(componentId, value);

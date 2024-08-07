@@ -14,7 +14,7 @@
         The default admin user password can be found in the log.
     </description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
         <!-- domibus modules and libs-->

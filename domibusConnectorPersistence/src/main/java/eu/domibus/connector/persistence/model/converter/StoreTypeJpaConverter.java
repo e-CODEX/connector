@@ -3,8 +3,8 @@ package eu.domibus.connector.persistence.model.converter;
 import eu.domibus.connector.domain.model.DetachedSignatureMimeType;
 import eu.domibus.connector.persistence.service.impl.helper.StoreType;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class StoreTypeJpaConverter implements AttributeConverter<StoreType, String> {

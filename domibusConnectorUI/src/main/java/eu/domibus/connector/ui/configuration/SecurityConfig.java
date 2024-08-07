@@ -1,5 +1,6 @@
 package eu.domibus.connector.ui.configuration;
 
+import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import eu.domibus.connector.spring.WebUserAuthenticationProvider;
 import eu.domibus.connector.ui.login.LoginView;
 import org.apache.commons.lang3.StringUtils;
@@ -15,10 +16,14 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * Configures Spring Security
@@ -27,13 +32,17 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig extends VaadinWebSecurity {
 
     private final static Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
 
-    @Autowired
+    final
     WebUserAuthenticationProvider authProvider;
 
+    @Autowired
+    public SecurityConfig(WebUserAuthenticationProvider authProvider) {
+        this.authProvider = authProvider;
+    }
 
 
     /**
@@ -47,125 +56,49 @@ public class SecurityConfig {
         return new ProviderManager(authProviders);
     }
 
-    @Configuration
-    @Order(1)
-    public static class ActuatorWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private String actuatorBasePath = "actuator";
 
-        private String actuatorBasePath = "actuator";
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // Delegating the responsibility of general configurations
+        // of http security to the super class. It's configuring
+        // the followings: Vaadin's CSRF protection by ignoring
+        // framework's internal requests, default request cache,
+        // ignoring public views annotated with @AnonymousAllowed,
+        // restricting access to other views/endpoints, and enabling
+        // NavigationAccessControl authorization.
+        // You can add any possible extra configurations of your own
+        // here (the following is just an example):
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        // http.rememberMe().alwaysRemember(false);
 
-            if (StringUtils.isNotEmpty(actuatorBasePath)) {
-                http
-                        .antMatcher("/" + actuatorBasePath + "/**")
-                        .httpBasic()
-                        .and()
-                        .authorizeRequests()
-                        .anyRequest()
-                        .hasAnyRole("ACTUATOR", "ADMIN");
-            }
-        }
+        // Configure your static resources with public access before calling
+        // super.configure(HttpSecurity) as it adds final anyRequest matcher
+        http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers(new AntPathRequestMatcher("/public/**"))
+                    .permitAll();
+        });
+        http.securityMatcher("/" + actuatorBasePath + "/**")
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/" + actuatorBasePath + "/**")
+                        .hasAnyRole("ACTUATOR", "ADMIN")
+                ).httpBasic(withDefaults());
+
+        super.configure(http);
+
+
+
+        // This is important to register your login view to the
+        // navigation access control mechanism:
+        setLoginView(http, LoginView.class);
+
     }
 
-    @Configuration
-    @Order(500)
-    public static class VaadinWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-        private static final String LOGIN_PROCESSING_URL = "/" + LoginView.ROUTE;
-        private static final String LOGIN_FAILURE_URL = "/login?error";
-        private static final String LOGIN_URL = "/" + LoginView.ROUTE;
-        private static final String LOGOUT_SUCCESS_URL = "/" + LoginView.ROUTE;
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            //disable csrf so vaadin works!
-            http.csrf().disable()
-            // Register our CustomRequestCache, that saves unauthorized access attempts, so
-            // the user is redirected after login.
-            .requestCache().requestCache(new CustomRequestCache())
-
-            // Restrict access to our application.
-            .and().authorizeRequests()
-
-            // Allow all flow internal requests.
-            .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
-
-            // Allow all requests by logged in users.
-            .anyRequest().authenticated()
-
-//             Configure the login page.
-            .and().formLogin().loginPage(LOGIN_URL).permitAll().loginProcessingUrl(LOGIN_PROCESSING_URL)
-            .failureUrl(LOGIN_FAILURE_URL)
-
-//             Configure logout
-            .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
-
-        }
-
-        /**
-         * Allows access to static resources, bypassing Spring security.
-         */
-        @Override
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers(
-                    // Vaadin Flow static resources
-                    "/VAADIN/**",
-
-                    // the standard favicon URI
-                    "/favicon.ico",
-
-                    // the robots exclusion standard
-                    "/robots.txt",
-
-                    // web application manifest
-                    "/manifest.webmanifest",
-                    "/sw.js",
-                    "/offline-page.html",
-
-                    // icons and images
-                    "/icons/**",
-                    "/images/**",
-
-                    // (production mode) static resources
-                    "/frontend-es5/**", "/frontend-es6/**",
-                    // (development mode) static resources
-                    "/frontend/**",
-
-                    // (development mode) webjars
-                    "/webjars/**",
-
-                    // (development mode) H2 debugging console
-                    "/h2-console/**",
-                    //allow access to webservices
-                    "/services/**",
-                    "/static/**", //allow access to static content
-
-                    "/documentation/**" //allow access to documentation
-
-                    );
-        }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        // Customize your WebSecurity configuration.
+        super.configure(web);
     }
 
-
-
-
-//    @Configuration
-//    @Order(499)
-//    @Profile("dev")
-    public static class VaadinDevelopmentWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-        @Autowired
-        ConnectorUiConfigurationProperties connectorUiConfigurationProperties;
-
-        @Override
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers(
-
-
-            );
-        }
-    }
-
-} 
+}
 

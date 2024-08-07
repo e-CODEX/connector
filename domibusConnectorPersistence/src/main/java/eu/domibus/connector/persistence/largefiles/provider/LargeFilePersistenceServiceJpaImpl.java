@@ -11,8 +11,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.persistence.spring.DomibusConnectorPersistenceProperties;
@@ -80,8 +80,8 @@ public class LargeFilePersistenceServiceJpaImpl implements LargeFilePersistenceP
             if(bigDataOptional.isPresent()) {
             	bigData = bigDataOptional.get();
             } else {
-                throw new RuntimeException(String.format("No data found in DB for JPA based LargeFileReference with id [%s]\n" +
-                        "Check Table %s", storageRef, PDomibusConnectorBigData.TABLE_NAME));
+                throw new RuntimeException(("No data found in DB for JPA based LargeFileReference with id [%s]\n" +
+                        "Check Table %s").formatted(storageRef, PDomibusConnectorBigData.TABLE_NAME));
             }
 
             JpaBasedLargeFileReference jpaBasedDomibusConnectorBigDataReference = new JpaBasedLargeFileReference(this);
@@ -94,7 +94,7 @@ public class LargeFilePersistenceServiceJpaImpl implements LargeFilePersistenceP
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content);
                 jpaBasedDomibusConnectorBigDataReference.setInputStream(byteArrayInputStream);
             } else {
-                String error = String.format("Blob Content of bigDataStorage with reference [%d] is null!", storageRef);
+                String error = "Blob Content of bigDataStorage with reference [%d] is null!".formatted(storageRef);
                 throw new IllegalStateException(error);
             }
 
@@ -109,7 +109,7 @@ public class LargeFilePersistenceServiceJpaImpl implements LargeFilePersistenceP
 
 
         } catch (NumberFormatException nfe) {
-            String error = String.format("Cannot load big data with storage reference [%s]\nThe actual implementation expects a Long as storage ref key!", storageReference);
+            String error = "Cannot load big data with storage reference [%s]\nThe actual implementation expects a Long as storage ref key!".formatted(storageReference);
             throw new RuntimeException(error, nfe);
         }
 //        } catch (SQLException e) {
@@ -274,7 +274,7 @@ public class LargeFilePersistenceServiceJpaImpl implements LargeFilePersistenceP
         try {
             return Long.parseLong(storageRef);
         } catch (NumberFormatException nfe) {
-            String error = String.format("The provided storage reference [%s] cannot be converted to a big data database reference", storageRef);
+            String error = "The provided storage reference [%s] cannot be converted to a big data database reference".formatted(storageRef);
             throw new IllegalStateException(error, nfe);
         }
     }
@@ -303,7 +303,7 @@ public class LargeFilePersistenceServiceJpaImpl implements LargeFilePersistenceP
 
         public String toString() {
             long byteCount = this.toByteArray() == null ? -1 : this.toByteArray().length;
-            return String.format("DbBackedOutputStream with bytes [%d] and with storageRef: [%s]", byteCount, storageReference);
+            return "DbBackedOutputStream with bytes [%d] and with storageRef: [%s]".formatted(byteCount, storageReference);
         }
     }
 

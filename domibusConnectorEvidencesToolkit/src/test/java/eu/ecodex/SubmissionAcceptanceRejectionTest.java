@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -60,7 +60,7 @@ public class SubmissionAcceptanceRejectionTest  {
 
 	@BeforeAll
 	public static void setUpTestEnv() throws IOException {
-		File testDir = Paths.get(PATH_OUTPUT_FILES).toFile();
+		File testDir = Path.of(PATH_OUTPUT_FILES).toFile();
 		try {
 			FileUtils.forceDelete(testDir);
 		} catch (IOException e) {}

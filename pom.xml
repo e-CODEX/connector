@@ -76,6 +76,13 @@
             <name>libs-snapshot</name>
             <url>https://scm.ecodex.eu/artifactory/libs-snapshot</url>
         </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>cxf-snapshots</id>
+            <url>https://repository.apache.org/content/groups/snapshots</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -91,6 +98,13 @@
             <id>snapshots</id>
             <name>libs-snapshot</name>
             <url>https://scm.ecodex.eu/artifactory/libs-snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>cxf-snapshots</id>
+            <url>https://repository.apache.org/content/groups/snapshots</url>
         </pluginRepository>
     </pluginRepositories>
     <!-- shared version number properties -->
@@ -131,30 +145,30 @@
         <asciidoctor.maven-plugin.version>3.0.0</asciidoctor.maven-plugin.version>
         <asciidoctor.pdf.version>2.3.15</asciidoctor.pdf.version>
         <!-- always update with cxf -->
-        <com.fasterxml.woodstox.woodstox-core.version>6.6.2</com.fasterxml.woodstox.woodstox-core.version>
-        <org.apache.santuario.xmlsec.version>2.2.4</org.apache.santuario.xmlsec.version>
+        <com.fasterxml.woodstox.woodstox-core.version>7.0.0</com.fasterxml.woodstox.woodstox-core.version>
+        <org.apache.santuario.xmlsec.version>3.0.4</org.apache.santuario.xmlsec.version>
         <!-- vaadin -->
-        <vaadin.version>14.10.5</vaadin.version>
-        <vaadin.grid-pagination.version>2.0.10</vaadin.grid-pagination.version>
+        <vaadin.version>24.4.8</vaadin.version>
+        <vaadin.viritin.version>2.8.22</vaadin.viritin.version>
         <!-- soap web service -->
-        <com.sun.xml.bind.jaxb.version>2.3.0</com.sun.xml.bind.jaxb.version>
+        <com.sun.xml.bind.jaxb.version>2.3.1</com.sun.xml.bind.jaxb.version>
         <com.sun.xml.bind.jaxb-core.version>4.0.5</com.sun.xml.bind.jaxb-core.version>
-        <com.sun.xml.bind.jaxb-impl.version>4.0.5</com.sun.xml.bind.jaxb-impl.version>
+        <com.sun.xml.bind.jaxb-impl.version>2.3.6</com.sun.xml.bind.jaxb-impl.version>
         <com.sun.xml.bind.jaxb-xjc.version>4.0.5</com.sun.xml.bind.jaxb-xjc.version>
         <jakarta.xml.soap.jakarta.xml.soap-api.version>1.4.2</jakarta.xml.soap.jakarta.xml.soap-api.version>
-        <jakarta.jws.jakarta.jws-api.version>2.1.0</jakarta.jws.jakarta.jws-api.version>
+        <jakarta.jws.jakarta.jws-api.version>3.0.0</jakarta.jws.jakarta.jws-api.version>
         <javax.xml.bind.jaxb-api.version>2.3.1</javax.xml.bind.jaxb-api.version>
         <javax.xml.ws.jaxws-api.version>2.3.1</javax.xml.ws.jaxws-api.version>
         <javax.ws.rs>1.1.1</javax.ws.rs>
-        <org.apache.cxf.version>3.4.10</org.apache.cxf.version>
-        <org.glassfish.jaxb-runtime.version>2.3.8</org.glassfish.jaxb-runtime.version>
+        <org.apache.cxf.version>4.1.0-SNAPSHOT</org.apache.cxf.version>
+        <org.glassfish.jaxb-runtime.version>4.0.5</org.glassfish.jaxb-runtime.version>
         <!-- database -->
         <org.postgresql.postgresql.version>42.3.8</org.postgresql.postgresql.version>
         <org.mariadb.jdbc.mariadb-java-client.version>3.0.9</org.mariadb.jdbc.mariadb-java-client.version>
         <com.oracle.database.jdbc.ojdbc8.version>23.4.0.24.05</com.oracle.database.jdbc.ojdbc8.version>
         <com.oracle.database.jdbc.ojdbc-bom.version>23.4.0.24.05</com.oracle.database.jdbc.ojdbc-bom.version>
         <com.h2database.h2.version>1.4.200</com.h2database.h2.version>
-        <org.liquibase-core.version>4.8.0</org.liquibase-core.version>
+        <org.liquibase-core.version>4.27.0</org.liquibase-core.version>
         <com.github.database-rider.rider-spring.version>1.10.1</com.github.database-rider.rider-spring.version>
         <mysql.mysql-connector-java.version>8.0.32</mysql.mysql-connector-java.version>
         <!-- other -->
@@ -167,8 +181,7 @@
         <commons-collections.commons-collections.version>3.2.2</commons-collections.commons-collections.version>
         <commons-io.commons-io.version>2.5</commons-io.commons-io.version>
         <commons-cli.commons-cli.version>1.4</commons-cli.commons-cli.version>
-        <dss.tools.version>5.12.1</dss.tools.version>
-        <javax.annotation.javax.annotation-api>1.3.2</javax.annotation.javax.annotation-api>
+        <dss.tools.version>6.0</dss.tools.version>
         <javax.jms.javax.jms-api.version>2.0.1</javax.jms.javax.jms-api.version>
         <javax.mail.mail.version>1.5.0-b01</javax.mail.mail.version>
         <javax.servlet-api>4.0.1</javax.servlet-api>
@@ -184,10 +197,10 @@
         <org.ow2.asm.asm.version>9.2</org.ow2.asm.asm.version>
         <org.testcontainers.testcontainers.version>1.15.3</org.testcontainers.testcontainers.version>
         <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
-        <spring.boot.version>2.7.18</spring.boot.version>
+        <spring.boot.version>3.3.2</spring.boot.version>
         <tomcat.version>8.5.32</tomcat.version>
         <xml-apis.xml-apis.version>1.4.1</xml-apis.xml-apis.version>
-        <lombok.version>1.18.32</lombok.version>
+        <lombok.version>1.18.34</lombok.version>
         <!-- testing -->
         <assertj.version>3.26.0</assertj.version>
         <hamcrest.version>2.2</hamcrest.version>
@@ -226,7 +239,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>3.3.2</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>spring-boot-starter-logging</artifactId>
@@ -241,17 +254,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring.boot.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>junit</artifactId>
-                        <groupId>junit</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>junit-vintage-engine</artifactId>
-                        <groupId>org.junit.vintage</groupId>
-                    </exclusion>
-                </exclusions>
+                <version>3.3.2</version>
             </dependency>
             <!-- dss dependencies -->
             <dependency>
@@ -312,6 +315,11 @@
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.joinup.sd-dss</groupId>
+                <artifactId>dss-xml-utils</artifactId>
+                <version>${dss.tools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.joinup.sd-dss</groupId>
                 <artifactId>dss-token</artifactId>
                 <version>${dss.tools.version}</version>
             </dependency>
@@ -324,9 +332,9 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.vaadin.klaudeta</groupId>
-                <artifactId>grid-pagination</artifactId>
-                <version>${vaadin.grid-pagination.version}</version>
+                <groupId>in.virit</groupId>
+                <artifactId>viritin</artifactId>
+                <version>${vaadin.viritin.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
@@ -351,19 +359,9 @@
             </dependency>
             <!-- jaxb -->
             <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${javax.xml.bind.jaxb-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-core</artifactId>
-                <version>${com.sun.xml.bind.jaxb-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>${com.sun.xml.bind.jaxb-impl.version}</version>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>4.0.2</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.bind</groupId>
@@ -371,14 +369,24 @@
                 <version>${com.sun.xml.bind.jaxb-xjc.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${com.sun.xml.bind.jaxb-impl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${com.sun.xml.bind.jaxb.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${org.glassfish.jaxb-runtime.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.xml.ws</groupId>
-                <artifactId>jaxws-api</artifactId>
-                <version>${javax.xml.ws.jaxws-api.version}</version>
+                <groupId>jakarta.xml.ws</groupId>
+                <artifactId>jakarta.xml.ws-api</artifactId>
+                <version>4.0.2</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.xml.soap</groupId>
@@ -465,9 +473,9 @@
                 <version>${com.google.code.findbugs.annotations.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.annotation</groupId>
-                <artifactId>javax.annotation-api</artifactId>
-                <version>${javax.annotation.javax.annotation-api}</version>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>1.3.5</version>
             </dependency>
             <!-- commons lang -->
             <dependency>
@@ -541,14 +549,14 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>javax.jms</groupId>
-                <artifactId>javax.jms-api</artifactId>
-                <version>${javax.jms.javax.jms-api.version}</version>
+                <groupId>jakarta.jms</groupId>
+                <artifactId>jakarta.jms-api</artifactId>
+                <version>3.1.0</version>
             </dependency>
             <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${javax.validation.validation-api.version}</version>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>3.1.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>
@@ -581,9 +589,9 @@
                 <version>${xml-apis.xml-apis.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${javax.servlet-api}</version>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>6.1.0</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -843,9 +851,9 @@
                     <version>${org.apache.cxf.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.jvnet.jaxb2.maven2</groupId>
-                    <artifactId>maven-jaxb2-plugin</artifactId>
-                    <version>0.15.1</version>
+                    <groupId>org.jvnet.jaxb</groupId>
+                    <artifactId>jaxb-maven-plugin</artifactId>
+                    <version>3.0.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>

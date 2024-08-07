@@ -16,9 +16,9 @@ import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.domain.testutil.DomainEntityCreator;
 import java.util.List;
-import javax.jms.ConnectionFactory;
-import javax.jms.Message;
-import javax.jms.Queue;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Message;
+import jakarta.jms.Queue;
 import org.apache.activemq.artemis.jms.client.ActiveMQQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -122,7 +122,7 @@ class MoveMessagesFromDlqToQueueTest {
 
         nonXaJmsTemplate.convertAndSend(dlq1, message);
         final List<Message> messages = sut.listAllMessagesInDlq();
-        final Message jmsMessage = messages.get(0);
+        final Message jmsMessage = messages.getFirst();
 
         // Act
         sut.moveMsgFromDlqToQueue(jmsMessage);

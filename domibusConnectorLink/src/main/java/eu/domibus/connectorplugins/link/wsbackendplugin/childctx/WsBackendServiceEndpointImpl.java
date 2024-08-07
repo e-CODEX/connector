@@ -20,6 +20,7 @@ import eu.domibus.connector.persistence.service.DCMessagePersistenceService;
 import eu.domibus.connector.tools.LoggingMDCPropertyNames;
 import eu.domibus.connector.ws.backend.webservice.*;
 import eu.domibus.connectorplugins.link.wsbackendplugin.WsBackendPluginActiveLinkPartner;
+import jakarta.annotation.Resource;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxws.context.WrappedMessageContext;
 import org.apache.cxf.message.Message;
@@ -29,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionManager;
@@ -37,9 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.Resource;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.WebServiceContext;
+import jakarta.xml.ws.handler.MessageContext;
 import java.security.Principal;
 import java.util.*;
 import java.util.function.Function;
@@ -49,6 +50,7 @@ import java.util.stream.Collectors;
  * Handles transmitting messages (push/pull) from and to backendClients over webservice
  * pushing messages to backendClients are handled in different service
  */
+@Service
 public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebService {
 
     private static final Logger LOGGER = LogManager.getLogger(WsBackendServiceEndpointImpl.class);
@@ -94,8 +96,7 @@ public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebS
                 List<DomibusConnectorMessageType> collect = pendingTransportsForLinkPartner.stream()
                         .map(DomibusConnectorTransportStep::getTransportedMessage)
                         //java9 should handle this better: Optional::streamOf
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
+                        .flatMap(Optional::stream)
                         .map(msg -> transformerService.transformDomainToTransition(msg))
                         .collect(Collectors.toList());
                 getMessagesResponse.getMessages().addAll(collect);
@@ -151,7 +152,7 @@ public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebS
                         answer.setMessageId(msg.getConnectorMessageIdAsString());
                     }
                 } else {
-                    java.lang.String error = java.lang.String.format("The requested backend user is not available on connector!\nCheck server logs for details!");
+                    java.lang.String error = "The requested backend user is not available on connector!\nCheck server logs for details!".formatted();
                     throw new RuntimeException(error);
                 }
 
@@ -212,14 +213,14 @@ public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebS
 
                     return transformerService.transformDomainToTransition(msg);
                 } else {
-                    throw new IllegalStateException(String.format("The message with transport id [%s] is not readable anymore!", messageTransportId));
+                    throw new IllegalStateException("The message with transport id [%s] is not readable anymore!".formatted(messageTransportId));
                 }
             } else {
-                throw new IllegalArgumentException(String.format("The message with transport id [%s] is not in pending state!", messageTransportId));
+                throw new IllegalArgumentException("The message with transport id [%s] is not in pending state!".formatted(messageTransportId));
             }
 
         } else {
-            throw new IllegalArgumentException(String.format("The provided transport id [%s] is not available!", messageTransportId));
+            throw new IllegalArgumentException("The provided transport id [%s] is not available!".formatted(messageTransportId));
         }
     }
 
@@ -249,12 +250,12 @@ public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebS
         Principal userPrincipal = webServiceContext.getUserPrincipal();
         java.lang.String certificateDn = userPrincipal == null ? null : userPrincipal.getName();
         if (userPrincipal == null || certificateDn == null) {
-            java.lang.String error = java.lang.String.format("checkBackendClient: Cannot handle request because userPrincipal is [%s] the userName is [%s]. Cannot identify backend!", userPrincipal, certificateDn);
+            java.lang.String error = "checkBackendClient: Cannot handle request because userPrincipal is [%s] the userName is [%s]. Cannot identify backend!".formatted(userPrincipal, certificateDn);
             LOGGER.error("#checkBackendClient: Throwing Exception: {}", error);
             throw new DomibusConnectorBackendDeliveryException(error);
         }
         Optional<WsBackendPluginActiveLinkPartner> linkPartner =  wsActiveLinkPartnerManager.getDomibusConnectorLinkPartnerByDn(certificateDn);
-        if (!linkPartner.isPresent()) {
+        if (linkPartner.isEmpty()) {
             LOGGER.warn("No backend with certificate dn [{}] found!", certificateDn);
         } else {
             LOGGER.debug("#checkBackendClient: returning link partner: [{}]", linkPartner.get());

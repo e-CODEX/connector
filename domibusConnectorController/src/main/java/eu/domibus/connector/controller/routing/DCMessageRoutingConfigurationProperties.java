@@ -7,10 +7,11 @@ package eu.domibus.connector.controller.routing;
 
 import eu.domibus.connector.common.DomibusConnectorDefaults;
 import eu.domibus.connector.common.annotations.BusinessDomainScoped;
+import jakarta.annotation.PostConstruct;
+
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -22,6 +22,8 @@ import eu.domibus.connector.domain.model.builder.DomibusConnectorPartyBuilder;
 import eu.domibus.connector.domain.model.builder.DomibusConnectorServiceBuilder;
 import eu.domibus.connector.domain.testutil.LargeFileReferenceGetSetBased;
 import eu.domibus.connector.testdata.LoadStoreTransitionMessage;
+import jakarta.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +32,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -158,16 +159,16 @@ public class LoadStoreMessageFromPath {
             try {
                 DomibusConnectorMessageConfirmation confirmation = messageConfirmations.get(i);
 
-                String evidenceFilePropertyName = String
-                    .format("%s.%s.%s",
-                            LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
-                            i, "file"
-                    );
-                String evidenceTypePropertyName = String
-                    .format("%s.%s.%s",
-                            LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
-                            i, "type"
-                    );
+                String evidenceFilePropertyName = "%s.%s.%s"
+                        .formatted(
+                                LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
+                                i, "file"
+                        );
+                String evidenceTypePropertyName = "%s.%s.%s"
+                        .formatted(
+                                LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
+                                i, "type"
+                        );
 
                 messageProperties.put(
                     evidenceTypePropertyName, confirmation.getEvidenceType().name());
@@ -190,9 +191,9 @@ public class LoadStoreMessageFromPath {
                 DomibusConnectorMessageAttachment a = attachments.get(i);
 
                 String attachmentPropertyFile =
-                    String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
-                                  i, "file"
-                    );
+                        "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
+                                i, "file"
+                        );
 
                 String fileName = a.getName();
                 if (fileName == null) {
@@ -203,9 +204,9 @@ public class LoadStoreMessageFromPath {
                 messageProperties.put(attachmentPropertyFile, fileName);
 
                 String attachmentPropertyName =
-                    String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
-                                  i, "identifier"
-                    );
+                        "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
+                                i, "identifier"
+                        );
                 messageProperties.put(attachmentPropertyName, a.getIdentifier());
             } catch (IOException ioe) {
                 throw new RuntimeException(ioe);
@@ -319,15 +320,15 @@ public class LoadStoreMessageFromPath {
             .map(k -> {
 
                 String evidenceFilePropertyName =
-                    String.format("%s.%s.%s",
-                                  LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
-                                  k, "file"
-                    );
+                        "%s.%s.%s".formatted(
+                                LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
+                                k, "file"
+                        );
                 String evidenceTypePropertyName =
-                    String.format("%s.%s.%s",
-                                  LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
-                                  k, "type"
-                    );
+                        "%s.%s.%s".formatted(
+                                LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX,
+                                k, "type"
+                        );
 
                 Resource resEvidenceFile =
                     createRelativeResource(messageProperties.getProperty(evidenceFilePropertyName));
@@ -359,15 +360,15 @@ public class LoadStoreMessageFromPath {
                     DomibusConnectorMessageAttachmentBuilder builder =
                         DomibusConnectorMessageAttachmentBuilder.createBuilder();
                     String filePropertyName =
-                        String.format("%s.%s.%s",
-                                      LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
-                                      k, "file"
-                        );
+                            "%s.%s.%s".formatted(
+                                    LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
+                                    k, "file"
+                            );
                     String identifierPropertyName =
-                        String.format("%s.%s.%s",
-                                      LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
-                                      k, "identifier"
-                        );
+                            "%s.%s.%s".formatted(
+                                    LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX,
+                                    k, "identifier"
+                            );
                     Resource res =
                         basicFolder.createRelative(messageProperties.getProperty(filePropertyName));
                     builder.setAttachment(loadResourceAsBigDataRef(res));

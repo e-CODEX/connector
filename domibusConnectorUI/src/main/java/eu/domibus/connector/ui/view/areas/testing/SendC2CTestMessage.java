@@ -9,7 +9,6 @@ import java.util.UUID;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -73,9 +72,9 @@ public class SendC2CTestMessage extends DCVerticalLayoutWithTitleAndHelpButton i
 
     boolean filesEnabled = false;
 
-    public SendC2CTestMessage(@Autowired WebPModeService pModeService,
-                              @Autowired WebConnectorTestService webTestService,
-                              @Autowired DomibusConnectorMessageIdGenerator messageIdGenerator) {
+    public SendC2CTestMessage(WebPModeService pModeService,
+                              WebConnectorTestService webTestService,
+                              DomibusConnectorMessageIdGenerator messageIdGenerator) {
     	super(HELP_ID, TITLE);
         this.messageForm = new ConnectorTestMessageForm();
         this.webTestService = webTestService;

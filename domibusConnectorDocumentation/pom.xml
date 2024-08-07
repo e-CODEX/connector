@@ -10,6 +10,7 @@
     <name>domibusConnectorDocumentation</name>
     <description>This module contains the documentation like the create, migrate sql scripts</description>
     <properties>
+    <maven.compiler.release>21</maven.compiler.release>
         <!--  This needs to be set to be able to call the sites from the UI! -->
         <html.docu.output.directory>${project.basedir}/target/classes/META-INF/resources/documentation</html.docu.output.directory>
     </properties>

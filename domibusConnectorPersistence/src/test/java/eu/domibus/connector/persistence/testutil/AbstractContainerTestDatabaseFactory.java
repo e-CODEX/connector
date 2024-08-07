@@ -46,7 +46,7 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
 
         @Override
         public String getName() {
-            return String.format("%s within docker data: [%s]", getDatabaseType(), version == null ? "empty" : version);
+            return "%s within docker data: [%s]".formatted(getDatabaseType(), version == null ? "empty" : version);
         }
 
         @Override
@@ -104,7 +104,7 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
         boolean docker = true;
         String command = "docker ps";
         try {
-            Process child = Runtime.getRuntime().exec(command);
+            Process child = Runtime.getRuntime().exec(command.split(" "));
             child.waitFor();
             if(child.exitValue() != 0) {
                 LOGGER.warn("Docker not available!, calling 'docker ps' failed with exit code != 0");

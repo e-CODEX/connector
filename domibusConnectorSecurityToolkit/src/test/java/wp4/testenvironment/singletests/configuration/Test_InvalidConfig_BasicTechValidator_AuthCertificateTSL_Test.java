@@ -71,7 +71,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         
@@ -128,7 +128,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         
@@ -184,7 +184,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         
@@ -241,7 +241,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         
@@ -297,7 +297,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         
@@ -353,7 +353,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         
@@ -409,7 +409,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         
@@ -468,7 +468,7 @@ public class Test_InvalidConfig_BasicTechValidator_AuthCertificateTSL_Test {
         Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessDocument()));
         // The Attachments are in place
         Assertions.assertNotNull(container.getBusinessAttachments());
-        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().get(0)));
+        Assertions.assertTrue(DocumentStreamUtil.hasData(container.getBusinessAttachments().getFirst()));
         
         CheckResult checkResult = containerService.check(container);
         

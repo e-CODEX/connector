@@ -3,7 +3,7 @@ package eu.domibus.connector.ui.service;
 import java.io.IOException;
 import java.util.Optional;
 
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 import javax.xml.transform.Source;
 
 import eu.domibus.connector.c2ctests.config.ConnectorTestConfigurationProperties;

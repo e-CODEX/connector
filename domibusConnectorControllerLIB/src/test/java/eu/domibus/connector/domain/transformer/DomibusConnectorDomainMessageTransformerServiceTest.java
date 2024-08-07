@@ -32,7 +32,7 @@ import eu.domibus.connector.testdata.TransitionCreator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

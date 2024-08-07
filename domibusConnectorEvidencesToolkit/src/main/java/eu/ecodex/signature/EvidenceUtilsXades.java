@@ -74,7 +74,7 @@ public class EvidenceUtilsXades extends EvidenceUtils {
 
         KeyInfos keyInfos = getKeyInfosFromKeyStore(javaKeyStorePath, javaKeyStoreType, javaKeyStorePassword, alias, keyPassword);
         if (keyInfos == null) {
-            throw new RuntimeException(String.format("Was not able to load keyInfo from javaKeyStorePath=[%s], javaKeyStoreType=[%s], javaKeyStorePassword=[%s], alias=[%s], keyPassword=[%s]",
+            throw new RuntimeException("Was not able to load keyInfo from javaKeyStorePath=[%s], javaKeyStoreType=[%s], javaKeyStorePassword=[%s], alias=[%s], keyPassword=[%s]".formatted(
                     javaKeyStorePath, javaKeyStoreType, logPassword(LOGGER, javaKeyStorePassword), alias, logPassword(LOGGER, keyPassword)));
         }
 
@@ -101,9 +101,9 @@ public class EvidenceUtilsXades extends EvidenceUtils {
         final List<CertificateToken> x509Certs = new ArrayList<CertificateToken>();
         final List<X509Certificate> certs = keyInfos.getCertChain();
         for (final Certificate certificate : certs) {
-            if (certificate instanceof X509Certificate) {
+            if (certificate instanceof X509Certificate x509Certificate) {
                 //ChainCertificate chainCert = new ChainCertificate(new CertificateToken((X509Certificate) certificate));
-                x509Certs.add(new CertificateToken((X509Certificate) certificate));
+                x509Certs.add(new CertificateToken(x509Certificate));
             } else {
                 LOG.warn("the alias {} has a certificate chain item that does not represent an X509Certificate; it is ignored");
             }
@@ -212,15 +212,15 @@ public class EvidenceUtilsXades extends EvidenceUtils {
 
             if (ks.containsAlias(alias)) {
                 key = ks.getKey(alias, keyPass.toCharArray());
-                if (key instanceof PrivateKey) {
+                if (key instanceof PrivateKey privateKey1) {
                     X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
 
                     keyInfos.setCert(cert);
-                    privateKey = (PrivateKey) key;
+                    privateKey = privateKey1;
                     keyInfos.setPrivKey(privateKey);
                 } else {
                     //keyInfos = null;
-                    throw new IllegalArgumentException(String.format("The provided alias [%s] in store [%s] is not a private key", alias, store));
+                    throw new IllegalArgumentException("The provided alias [%s] in store [%s] is not a private key".formatted(alias, store));
                 }
 
                 try {
@@ -231,7 +231,7 @@ public class EvidenceUtilsXades extends EvidenceUtils {
 
             } else {
 //                keyInfos = null;
-                throw new RuntimeException(String.format("The provided store [%s] does not contain an alias [%s]", store, alias));
+                throw new RuntimeException("The provided store [%s] does not contain an alias [%s]".formatted(store, alias));
             }
         } catch (UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
             throw new RuntimeException(e);

@@ -10,6 +10,9 @@
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
     <description>This module is responsibly for persisting the messages and message contents into a persistent storage (Database).</description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>
@@ -144,6 +147,12 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>test</scope>
         </dependency>
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.3</version>
+      <scope>test</scope>
+    </dependency>
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>

@@ -10,6 +10,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -32,6 +33,7 @@ public class SetupPersistenceContext {
     private DatabaseDataSourceConnection dbUnitConnection;
 
     @Bean
+    @DependsOnDatabaseInitialization
     public DatabaseDataSourceConnection getDbUnitConnection(DataSource ds) {
         if (this.dbUnitConnection != null) {
             return dbUnitConnection;

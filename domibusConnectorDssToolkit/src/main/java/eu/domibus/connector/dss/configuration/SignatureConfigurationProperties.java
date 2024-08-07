@@ -8,7 +8,7 @@ package eu.domibus.connector.dss.configuration;
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreConfigurationProperties;
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -22,9 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -73,8 +72,8 @@ public class DomibusConnectorEvidencePersistenceServiceImpl implements DomibusCo
     public void persistEvidenceMessageToBusinessMessage(DomibusConnectorMessage businessMessage, DomibusConnectorMessageId transportId, DomibusConnectorMessageConfirmation confirmation) {
         String connectorMessageId = businessMessage.getConnectorMessageId().getConnectorMessageId();
         Optional<PDomibusConnectorMessage> optionalMessage = messageDao.findOneByConnectorMessageId(connectorMessageId);
-        if (!optionalMessage.isPresent()) {
-            String error = String.format("Could not find business message with id [%s] within DB!", connectorMessageId);
+        if (optionalMessage.isEmpty()) {
+            String error = "Could not find business message with id [%s] within DB!".formatted(connectorMessageId);
             throw new PersistenceException(error);
         }
         PDomibusConnectorMessage oneByConnectorMessageId = optionalMessage.get();
@@ -86,7 +85,7 @@ public class DomibusConnectorEvidencePersistenceServiceImpl implements DomibusCo
             List<PDomibusConnectorEvidence> byMessageAndEvidenceType = evidenceDao.findByMessageAndEvidenceType(oneByConnectorMessageId, dbEvidenceType);
             if (byMessageAndEvidenceType.size() >= confirmation.getEvidenceType().getMaxOccurence() &&
                     byMessageAndEvidenceType != null) {
-                String error = String.format("There is already a evidence persisted of type [%s] for message [%s]", dbEvidenceType, oneByConnectorMessageId);
+                String error = "There is already a evidence persisted of type [%s] for message [%s]".formatted(dbEvidenceType, oneByConnectorMessageId);
                 throw new DuplicateEvidencePersistenceException(error);
             }
         }
@@ -97,7 +96,7 @@ public class DomibusConnectorEvidencePersistenceServiceImpl implements DomibusCo
         dbEvidence.setBusinessMessage(oneByConnectorMessageId);
 
         String evidenceXml = MapperHelper.convertByteArrayToString(confirmation.getEvidence());
-        if (StringUtils.isEmpty(evidenceXml)) {
+        if (ObjectUtils.isEmpty(evidenceXml)) {
             throw new EvidencePersistenceException("Evidence string is not allowed to be null!");
         }
         dbEvidence.setEvidence(evidenceXml);

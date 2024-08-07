@@ -59,35 +59,35 @@ public class InternalMessageInfoPersistenceServiceImpl {
         PDomibusConnectorAction dbAction = messageInfo.getAction();
         Optional<PDomibusConnectorAction> dbActionFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbAction);
         checkNull(dbAction, dbActionFound,
-                String.format("No action [%s] is configured at the connector!", dbAction.getId()));
+                "No action [%s] is configured at the connector!".formatted(dbAction.getId()));
         messageInfo.setAction(dbActionFound.get());
 
         PDomibusConnectorService dbService = messageInfo.getService();
         Optional<PDomibusConnectorService> dbServiceFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbService);
         checkNull(dbService, dbServiceFound,
-                String.format("No service [%s] is configured at the connector!", dbService.getId()));
+                "No service [%s] is configured at the connector!".formatted(dbService.getId()));
         messageInfo.setService(dbServiceFound.get());
 
         PDomibusConnectorParty dbFromParty = messageInfo.getFrom();
 
         Optional<PDomibusConnectorParty> dbFromPartyFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbFromParty);
         checkNull(dbFromParty, dbFromPartyFound,
-                String.format("No party [%s] is configured at the connector!", dbFromParty));
+                "No party [%s] is configured at the connector!".formatted(dbFromParty));
         messageInfo.setFrom(dbFromPartyFound.get());
 
         PDomibusConnectorParty dbToParty = messageInfo.getTo();
 
         Optional<PDomibusConnectorParty> dbToPartyFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbToParty);
         checkNull(dbToParty, dbToPartyFound,
-                String.format("No party [%s] is configured at the connector!", dbToParty));
+                "No party [%s] is configured at the connector!".formatted(dbToParty));
         messageInfo.setTo(dbToPartyFound.get());
 
         return messageInfo;
     }
 
     private void checkNull(Object provided, Optional foundInDb, String errorMessage) throws PersistenceException {
-        if (! foundInDb.isPresent()) {
-            String error = String.format("%s [%s] is not configured in database!", provided.getClass().getSimpleName(), provided);
+        if (foundInDb.isEmpty()) {
+            String error = "%s [%s] is not configured in database!".formatted(provided.getClass().getSimpleName(), provided);
 
             LOGGER.error(LoggingMarker.BUSINESS_LOG, "{} Check your p-modes or reimport them into the connector.", errorMessage);
             throw new PersistenceException(error);

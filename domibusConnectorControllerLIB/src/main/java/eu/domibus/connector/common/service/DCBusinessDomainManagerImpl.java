@@ -74,7 +74,7 @@ public class DCBusinessDomainManagerImpl implements DCBusinessDomainManager {
         if (businessDomainConfigurationProperties.isLoadBusinessDomainsFromDb()) {
             db = businessDomainPersistenceService.findById(id);
         }
-        if (!db.isPresent()) {
+        if (db.isEmpty()) {
             db = businessDomainConfigurationProperties.getBusinessDomain()
                                                       .entrySet().stream()
                                                       .map(this::mapBusinessConfigToBusinessDomain)

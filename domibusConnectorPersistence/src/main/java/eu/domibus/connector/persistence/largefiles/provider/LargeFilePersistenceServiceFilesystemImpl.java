@@ -7,6 +7,7 @@ import eu.domibus.connector.persistence.service.exceptions.LargeFileException;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
 import eu.domibus.connector.persistence.spring.DomibusConnectorFilesystemPersistenceProperties;
 import eu.domibus.connector.persistence.spring.DomibusConnectorPersistenceProperties;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StreamUtils;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -62,9 +62,9 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
 
     @Override
     public LargeFileReference getReadableDataSource(LargeFileReference ref) {
-        if (ref instanceof FileBasedLargeFileReference && ((FileBasedLargeFileReference) ref).inputStream != null) {
+        if (ref instanceof FileBasedLargeFileReference reference && reference.inputStream != null) {
             try {
-                ((FileBasedLargeFileReference) ref).inputStream.close();
+                reference.inputStream.close();
             } catch (IOException e) {
                 //ignore
             }
@@ -85,7 +85,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
                 return fis;
             }
         } catch (FileNotFoundException e) {
-            throw new PersistenceException(String.format("Could not found the required file [%s]!", filePath), e);
+            throw new PersistenceException("Could not found the required file [%s]!".formatted(filePath), e);
         }
 
     }
@@ -113,10 +113,10 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             Files.createDirectory(messageFolder);
         } catch (java.nio.file.FileAlreadyExistsException alreadyExists) {
             if (!Files.isDirectory(messageFolder)) {
-                throw new RuntimeException(String.format("Cannot use directory path [%s] because it is a file!"));
+                throw new RuntimeException("Cannot use directory path [%s] because it is a file!".formatted());
             }
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Cannot create directory [%s]", messageFolder), e);
+            throw new RuntimeException("Cannot create directory [%s]".formatted(messageFolder), e);
         }
 
         String storageFileName = simpleDateFormat.format(new Date()) + UUID.randomUUID().toString();
@@ -129,9 +129,9 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         try {
             Files.createFile(storageFile);
         } catch (FileAlreadyExistsException alreadyExistsException) {
-            throw new PersistenceException(String.format("Error while creating file [%s], looks like the file has already written! You can only write once to a bigDataReference OutputStream!", storageFile), alreadyExistsException);
+            throw new PersistenceException("Error while creating file [%s], looks like the file has already written! You can only write once to a bigDataReference OutputStream!".formatted(storageFile), alreadyExistsException);
         } catch (IOException e) {
-            throw new PersistenceException(String.format("Error while creating file [%s]", storageFile), e);
+            throw new PersistenceException("Error while creating file [%s]".formatted(storageFile), e);
         }
 
 
@@ -140,15 +140,15 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
                 StreamUtils.copy(input, os);
                 bigDataReference.setOutputStream(os);
             } catch(FileNotFoundException e){
-                throw new PersistenceException(String.format("Error while creating FileOutpuStream for file [%s]", storageFile), e);
+                throw new PersistenceException("Error while creating FileOutpuStream for file [%s]".formatted(storageFile), e);
             } catch(IOException e){
-                throw new PersistenceException(String.format("Error while writing to file [%s]", storageFile), e);
+                throw new PersistenceException("Error while writing to file [%s]".formatted(storageFile), e);
             }
         } else {
             try {
                 bigDataReference.setOutputStream(getOutputStream(bigDataReference));
             } catch (FileNotFoundException e) {
-                throw new PersistenceException(String.format("Error while creating FileOutpuStream for file [%s]", storageFile), e);
+                throw new PersistenceException("Error while creating FileOutpuStream for file [%s]".formatted(storageFile), e);
             }
         }
 
@@ -161,7 +161,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         LOGGER.debug("Storage file path is [{}]", storageFile.toAbsolutePath());
 
         if (!Files.exists(storageFile)) {
-            throw new PersistenceException(String.format("The requested file [%s] does not exist yet! Looks like this method is not called correctly!", storageFile));
+            throw new PersistenceException("The requested file [%s] does not exist yet! Looks like this method is not called correctly!".formatted(storageFile));
         }
 
         FileOutputStream fos = new FileOutputStream(storageFile.toFile());
@@ -180,8 +180,8 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         FileBasedLargeFileReference reference;
         LOGGER.trace("#deleteDomibusConnectorBigDataReference:: called with reference [{}]", ref);
         Path storageFile = getStoragePath().resolve(ref.getStorageIdReference());
-        if ((ref instanceof FileBasedLargeFileReference)) {
-            reference = (FileBasedLargeFileReference) ref;
+        if ((ref instanceof FileBasedLargeFileReference fileReference)) {
+            reference = fileReference;
         } else {
             reference = new FileBasedLargeFileReference(this, ref);
         }
@@ -195,7 +195,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         try {
             Files.delete(storageFile);
         } catch (IOException e) {
-            LargeFileDeletionException largeFileDeletionException = new LargeFileDeletionException(String.format("Unable to delete file [%s] due exception:", storageFile), e);
+            LargeFileDeletionException largeFileDeletionException = new LargeFileDeletionException("Unable to delete file [%s] due exception:".formatted(storageFile), e);
             largeFileDeletionException.setReferenceFailedToDelete(reference);
             throw largeFileDeletionException;
         } finally {
@@ -227,7 +227,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
                             this::listReferences
                     ));
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Error while ls files in directory [%s]", storagePath));
+            throw new RuntimeException("Error while ls files in directory [%s]".formatted(storagePath));
         }
     }
 
@@ -240,7 +240,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
                     .map(s -> mapMessageFolderAndFileNameToReference(messageFolderName, s))
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Error while listing all files in messageFolder [%s]", messageFolder), e);
+            throw new RuntimeException("Error while listing all files in messageFolder [%s]".formatted(messageFolder), e);
         }
     }
 
@@ -251,7 +251,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         try {
             ref.setCreationDate(Files.getLastModifiedTime(filePath).toInstant().atZone(ZoneId.systemDefault()));
         } catch (IOException e) {
-            throw new LargeFileException(String.format("Unable to read file reference [%s]", storageIdRef), e);
+            throw new LargeFileException("Unable to read file reference [%s]".formatted(storageIdRef), e);
         }
         ref.setStorageIdReference(storageIdRef);
         return ref;
@@ -280,7 +280,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             LOGGER.info("Creating missing directory path [{}]", storagePath);
             f.mkdirs();
         } else if (!f.exists()) {
-            throw new IllegalArgumentException(String.format("The by configuration (%s) provided file path [%s] does not exist an file path creation (%s) is false!",
+            throw new IllegalArgumentException("The by configuration (%s) provided file path [%s] does not exist an file path creation (%s) is false!".formatted(
                     "connector.persistence.filesystem.storage-path", //TODO: call property service for correct property name
                     storagePath,
                     "connector.persistence.filesystem.create-dir") ); //TODO: call property service for correct property name
@@ -361,7 +361,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
     SecretKey loadFromKeyString(String str) {
         String[] split = str.split("#@#");
         if (split.length != 2) {
-            throw new IllegalArgumentException(String.format("The provided string [%s] does not match the format! Maybe the data is corrupted!", str));
+            throw new IllegalArgumentException("The provided string [%s] does not match the format! Maybe the data is corrupted!".formatted(str));
         }
         String keyAlgorithm = split[0];
         byte[] keyBinary = Base64Utils.decodeFromString(split[1]);

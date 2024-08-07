@@ -23,10 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
@@ -153,7 +153,7 @@ public class WebPModeService {
                 .get();
 
         EvidencesToolkitConfigurationProperties homePartyConfigurationProperties = configurationPropertyManagerService.loadConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), EvidencesToolkitConfigurationProperties.class);
-        homePartyConfigurationProperties.getIssuerInfo().getAs4Party().setName(homeParty.getIdentifier().get(0).getPartyId());
+        homePartyConfigurationProperties.getIssuerInfo().getAs4Party().setName(homeParty.getIdentifier().getFirst().getPartyId());
         homePartyConfigurationProperties.getIssuerInfo().getAs4Party().setEndpointAddress(homeParty.getEndpoint());
 
         configurationPropertyManagerService.updateConfiguration(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), homePartyConfigurationProperties);
@@ -329,7 +329,7 @@ public class WebPModeService {
         LOGGER.trace("#deleteParty: called, use partyDao to delete");
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getParties().remove(p);
-        pModes.setDescription(String.format("delete party %s clicked in UI", p));
+        pModes.setDescription("delete party %s clicked in UI".formatted(p));
         updatePModeSet(pModes);
     }
 
@@ -339,7 +339,7 @@ public class WebPModeService {
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getParties().remove(oldParty);
         pModes.getParties().add(updatedParty);
-        pModes.setDescription(String.format("updated party %s in UI", updatedParty));
+        pModes.setDescription("updated party %s in UI".formatted(updatedParty));
         //find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getParties()
@@ -354,7 +354,7 @@ public class WebPModeService {
         LOGGER.trace("#createParty: called with party [{}]", party);
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getParties().add(party);
-        pModes.setDescription(String.format("added party %s in UI", party));
+        pModes.setDescription("added party %s in UI".formatted(party));
         //find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getParties()
@@ -369,7 +369,7 @@ public class WebPModeService {
         LOGGER.trace("deleteAction: delete Action [{}]", action);
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getActions().remove(action);
-        pModes.setDescription(String.format("delete action %s clicked in UI", action));
+        pModes.setDescription("delete action %s clicked in UI".formatted(action));
         updatePModeSet(pModes);
     }
 
@@ -378,7 +378,7 @@ public class WebPModeService {
         LOGGER.trace("#createAction: called with action [{}]", action);
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getActions().add(action);
-        pModes.setDescription(String.format("added action %s in UI", action));
+        pModes.setDescription("added action %s in UI".formatted(action));
         //find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getActions()
@@ -394,7 +394,7 @@ public class WebPModeService {
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getActions().remove(oldAction);
         pModes.getActions().add(updatedAction);
-        pModes.setDescription(String.format("updated action %s in UI", updatedAction));
+        pModes.setDescription("updated action %s in UI".formatted(updatedAction));
         //find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getActions()
@@ -409,7 +409,7 @@ public class WebPModeService {
         LOGGER.trace("createService: with service [{}]", service);
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getServices().add(service);
-        pModes.setDescription(String.format("added service %s in UI", service));
+        pModes.setDescription("added service %s in UI".formatted(service));
         //find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getServices()
@@ -425,7 +425,7 @@ public class WebPModeService {
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getServices().remove(oldService);
         pModes.getServices().add(updatedService);
-        pModes.setDescription(String.format("updated service %s in UI", updatedService));
+        pModes.setDescription("updated service %s in UI".formatted(updatedService));
         //find party in new p-modes by equals
         return updatePModeSet(pModes)
                 .getServices()
@@ -440,7 +440,7 @@ public class WebPModeService {
         LOGGER.trace("deleteService: with service [{}]", service);
         DomibusConnectorPModeSet pModes = this.getCurrentPModeSetOrNewSet();
         pModes.getServices().remove(service);
-        pModes.setDescription(String.format("delete service %s clicked in UI", service));
+        pModes.setDescription("delete service %s clicked in UI".formatted(service));
         updatePModeSet(pModes);
     }
 

@@ -20,15 +20,13 @@ import eu.domibus.connector.ws.backend.webservice.ListPendingMessageIdsResponse;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
 import test.eu.domibus.connector.link.LinkTestContext;
 import test.eu.domibus.connector.link.wsbackendplugin.ConnectorClientTestBackend;
@@ -46,7 +44,6 @@ import static eu.domibus.connector.link.service.DCLinkPluginConfiguration.LINK_P
 import static org.assertj.core.api.Assertions.assertThat;
 import static test.eu.domibus.connector.link.LinkTestContext.SUBMIT_TO_CONNECTOR_QUEUE;
 
-@ExtendWith({SpringExtension.class})
 @SpringBootTest(classes = {LinkTestContext.class },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )

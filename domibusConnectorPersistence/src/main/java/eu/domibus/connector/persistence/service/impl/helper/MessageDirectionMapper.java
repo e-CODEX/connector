@@ -3,8 +3,7 @@ package eu.domibus.connector.persistence.service.impl.helper;
 import eu.domibus.connector.domain.enums.DomibusConnectorMessageDirection;
 import eu.domibus.connector.domain.enums.MessageTargetSource;
 import eu.domibus.connector.persistence.model.enums.PMessageDirection;
-
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class MessageDirectionMapper {
 

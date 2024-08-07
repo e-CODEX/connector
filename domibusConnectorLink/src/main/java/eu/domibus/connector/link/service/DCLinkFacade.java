@@ -103,7 +103,7 @@ public class DCLinkFacade {
 
     public void startLinkPartner(DomibusConnectorLinkPartner linkPartner) {
         Optional<ActiveLinkPartner> activeLinkPartner = this.linkManager.activateLinkPartner(linkPartner);
-        if (!activeLinkPartner.isPresent()) {
+        if (activeLinkPartner.isEmpty()) {
             throw new LinkPluginException("Start failed!");
         }
     }

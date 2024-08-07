@@ -14,13 +14,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Service
 public class DCLinkPersistenceService {
@@ -68,7 +69,7 @@ public class DCLinkPersistenceService {
 
         Map<String, String> dbProperties = dbLinkInfo.getProperties();
         String pullInterval = dbProperties.get(PULL_INTERVAL_PROPERTY);
-        if (!StringUtils.isEmpty(pullInterval)) {
+        if (!ObjectUtils.isEmpty(pullInterval)) {
             linkPartner.setPullInterval(Duration.parse(pullInterval));
         }
         linkPartner.setSendLinkMode(mapOrDefault(dbProperties.get(SEND_LINK_MODE_PROPERTY)));

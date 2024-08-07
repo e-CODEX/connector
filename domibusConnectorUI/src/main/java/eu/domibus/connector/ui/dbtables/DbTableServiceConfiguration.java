@@ -2,10 +2,11 @@ package eu.domibus.connector.ui.dbtables;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import javax.sql.DataSource;
 
 @Configuration
@@ -14,6 +15,7 @@ import javax.sql.DataSource;
 public class DbTableServiceConfiguration {
 
     @Bean
+    @DependsOnDatabaseInitialization
     DbTableService dbTableService(EntityManager entityManager, DataSource ds, DbTableServiceConfigurationProperties config) {
         return new DbTableService(entityManager,
                 ds, config);

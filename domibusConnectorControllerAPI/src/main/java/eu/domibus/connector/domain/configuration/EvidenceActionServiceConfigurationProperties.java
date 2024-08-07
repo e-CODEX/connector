@@ -8,10 +8,11 @@ package eu.domibus.connector.domain.configuration;
 import eu.domibus.connector.common.service.ConfigurationPropertyManagerService;
 import eu.domibus.connector.domain.model.DomibusConnectorAction;
 import eu.domibus.connector.domain.model.DomibusConnectorService;
-import javax.annotation.Nullable;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.annotation.Nullable;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;

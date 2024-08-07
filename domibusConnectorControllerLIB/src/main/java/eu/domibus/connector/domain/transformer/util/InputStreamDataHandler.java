@@ -5,8 +5,8 @@
 
 package eu.domibus.connector.domain.transformer.util;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 
 /**
  * The InputStreamDataHandler class is a subclass of the DataHandler class. It provides a way to

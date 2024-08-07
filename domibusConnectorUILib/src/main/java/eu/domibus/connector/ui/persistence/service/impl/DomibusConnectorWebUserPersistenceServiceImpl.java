@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.xml.bind.DatatypeConverter;
 
 import eu.domibus.connector.persistence.dao.DomibusConnectorUserPasswordDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -297,7 +297,7 @@ public class DomibusConnectorWebUserPersistenceServiceImpl implements DomibusCon
         String hex = bi.toString(16);
         int paddingLength = (array.length * 2) - hex.length();
         if (paddingLength > 0) {
-            return String.format("%0" + paddingLength + "d", 0) + hex;
+            return ("%0" + paddingLength + "d").formatted(0) + hex;
         } else {
             return hex;
         }

@@ -11,9 +11,8 @@ import eu.domibus.connector.lib.logging.MDC;
 import eu.domibus.connector.link.api.ActiveLinkPartner;
 import eu.domibus.connector.tools.LoggingMDCPropertyNames;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import javax.transaction.Transactional;
+import org.springframework.util.ObjectUtils;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -33,12 +32,12 @@ public class SubmitToLinkServiceImpl implements SubmitToLinkService {
         DomibusConnectorMessageDirection direction = message.getMessageDetails().getDirection();
         DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName;
         if (direction.getTarget() == MessageTargetSource.BACKEND) {
-            if (StringUtils.isEmpty(message.getMessageDetails().getConnectorBackendClientName())) {
+            if (ObjectUtils.isEmpty(message.getMessageDetails().getConnectorBackendClientName())) {
                 throw new DomibusConnectorSubmitToLinkException(message, "The backendClientName is empty!");
             }
             linkPartnerName = new DomibusConnectorLinkPartner.LinkPartnerName(message.getMessageDetails().getConnectorBackendClientName());
         } else if (direction.getTarget() == MessageTargetSource.GATEWAY) {
-            if (StringUtils.isEmpty(message.getMessageDetails().getGatewayName())) {
+            if (ObjectUtils.isEmpty(message.getMessageDetails().getGatewayName())) {
                 throw new DomibusConnectorSubmitToLinkException(message, "The gatewayName is empty!");
             }
             linkPartnerName = new DomibusConnectorLinkPartner.LinkPartnerName(message.getMessageDetails().getGatewayName());
@@ -50,7 +49,7 @@ public class SubmitToLinkServiceImpl implements SubmitToLinkService {
         if (submitToLinkPartner.isPresent()) {
             submitToLinkPartner.ifPresent(s -> s.submitToLink(message, linkPartnerName));
         } else {
-            String errorMessage = String.format("The LinkPartner with name [%s] could not be found/is not active!", linkPartnerName);
+            String errorMessage = "The LinkPartner with name [%s] could not be found/is not active!".formatted(linkPartnerName);
             throw new DomibusConnectorSubmitToLinkException(message, errorMessage);
         }
     }

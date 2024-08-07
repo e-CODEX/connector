@@ -197,7 +197,7 @@ public class Connector42LinkConfigTo43LinkConfigConverter {
         if (oldProperties.containsKey(oldPropName)) {
             return oldProperties.get(oldPropName).toString();
         } else {
-            throw new IllegalArgumentException(String.format("The provided 'old' properties does not contain the property [%s], which is required!", oldPropName));
+            throw new IllegalArgumentException("The provided 'old' properties does not contain the property [%s], which is required!".formatted(oldPropName));
         }
     }
 

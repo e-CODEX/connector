@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
-import org.springframework.util.SocketUtils;
+import org.springframework.test.util.TestSocketUtils;
 import test.eu.domibus.connector.link.util.GetServerAddress;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class ConnectorClientTestBackend {
     //client alice...
     public static void main(String[] args) {
         Map<String, Object> props = new HashMap<>();
-        startContext("alice", "http://localhost:8021/services/backend", SocketUtils.findAvailableTcpPort());
+        startContext("alice", "http://localhost:8021/services/backend", TestSocketUtils.findAvailableTcpPort());
     }
 
     public static ConnectorClientTestBackend startContext(String clientName, String connectorAddress, int serverPort) {

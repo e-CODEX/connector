@@ -2,10 +2,10 @@ package eu.domibus.connector.link.api;
 
 import eu.domibus.connector.link.service.SubmitToLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
+import jakarta.annotation.Nullable;
 import lombok.Data;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import javax.annotation.CheckForNull;
 import java.util.Optional;
 
 public class ActiveLinkPartner {
@@ -14,10 +14,10 @@ public class ActiveLinkPartner {
 
     private ActiveLink parentLink;
 
-    @CheckForNull
+    @Nullable
     private ConfigurableApplicationContext childContext;
 
-    @CheckForNull
+    @Nullable
     private SubmitToLinkPartner submitToLink;
 
     public DomibusConnectorLinkPartner getLinkPartner() {

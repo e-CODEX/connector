@@ -77,7 +77,7 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
         if (foundTransport.isPresent()) {
             return mapTransportStepToDomain(foundTransport.get());
         } else {
-            throw new RuntimeException(java.lang.String.format("No Transport found with transport id [%s]", transportId));
+            throw new RuntimeException("No Transport found with transport id [%s]".formatted(transportId));
         }
     }
 

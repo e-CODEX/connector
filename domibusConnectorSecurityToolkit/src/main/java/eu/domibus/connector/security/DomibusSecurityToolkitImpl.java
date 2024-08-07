@@ -14,6 +14,7 @@ import eu.ecodex.dss.model.token.Token;
 import eu.ecodex.dss.service.ECodexContainerService;
 import eu.europa.esig.dss.enumerations.MimeType;
 import eu.europa.esig.dss.enumerations.MimeTypeEnum;
+import jakarta.annotation.Nonnull;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -40,7 +41,6 @@ import eu.europa.esig.dss.model.InMemoryDocument;
 
 
 import java.io.OutputStream;
-import javax.annotation.Nonnull;
 
 import org.springframework.util.StreamUtils;
 
@@ -435,7 +435,7 @@ public class DomibusSecurityToolkitImpl implements DomibusConnectorSecurityToolk
             }
             return asicInputStream;
         } catch (IOException ioe) {
-            throw new RuntimeException(String.format("error while initializing asicInputStream from big data reference %s",
+            throw new RuntimeException("error while initializing asicInputStream from big data reference %s".formatted(
                     asicContainerDataRef.getStorageIdReference()), ioe);
         }
     }
@@ -450,7 +450,7 @@ public class DomibusSecurityToolkitImpl implements DomibusConnectorSecurityToolk
             }
             return tokenStream;
         } catch (IOException ioe) {
-            throw new RuntimeException(String.format("error while initializing xmlTokenDataRef get input stream from %s",
+            throw new RuntimeException("error while initializing xmlTokenDataRef get input stream from %s".formatted(
                     xmlTokenDataRef.getStorageIdReference()), ioe);
         }
     }

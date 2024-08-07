@@ -6,7 +6,7 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.server.Command;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 public class ConfirmDialogBuilder {
 
@@ -38,7 +38,7 @@ public class ConfirmDialogBuilder {
     }
 
     public void show() {
-        if (StringUtils.isEmpty(messageText)) {
+        if (ObjectUtils.isEmpty(messageText)) {
             throw new IllegalArgumentException("Message Text is not allowed to be null!");
         }
 

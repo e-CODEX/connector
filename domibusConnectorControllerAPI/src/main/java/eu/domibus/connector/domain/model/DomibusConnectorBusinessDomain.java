@@ -9,7 +9,7 @@ import eu.domibus.connector.domain.enums.ConfigurationSource;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -92,7 +92,7 @@ public class DomibusConnectorBusinessDomain {
 
         @Override
         public String toString() {
-            return String.format("MessageLaneId: [%s]", this.messageLaneId);
+            return "MessageLaneId: [%s]".formatted(this.messageLaneId);
         }
 
         @Override

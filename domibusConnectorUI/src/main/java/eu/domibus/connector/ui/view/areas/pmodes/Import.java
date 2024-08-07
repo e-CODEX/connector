@@ -22,7 +22,6 @@ import eu.domibus.connector.ui.service.WebPModeService;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
 import io.micrometer.core.instrument.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +62,7 @@ public class Import extends DCVerticalLayoutWithTitleAndHelpButton implements Af
 	TextField connectorstorePwd = new TextField("Connectorstore password");
 	ComboBox<KeystoreType> connectorstoreType = new ComboBox<KeystoreType>();
 
-	public Import(@Autowired WebPModeService pmodeService, @Autowired ConfigurationUtil util) {
+	public Import(WebPModeService pmodeService, ConfigurationUtil util) {
 		super(HELP_ID, TITLE);
 		
 		this.pmodeService = pmodeService;

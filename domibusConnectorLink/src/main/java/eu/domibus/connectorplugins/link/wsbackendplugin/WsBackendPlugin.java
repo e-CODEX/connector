@@ -93,7 +93,7 @@ public class WsBackendPlugin implements LinkPlugin {
         Binder binder = new Binder(new MapConfigurationPropertySource(properties));
         BindResult<WsBackendPluginLinkPartnerConfigurationProperties> bindingResult = binder.bind("", Bindable.of(WsBackendPluginLinkPartnerConfigurationProperties.class), validationBindHandler);
         if (!bindingResult.isBound()) {
-            String error = String.format("Binding properties [%s] to linkPartnerConfig [%s] failed", properties, WsBackendPluginLinkPartnerConfigurationProperties.class);
+            String error = "Binding properties [%s] to linkPartnerConfig [%s] failed".formatted(properties, WsBackendPluginLinkPartnerConfigurationProperties.class);
             throw new LinkPluginException(error);
         }
 
@@ -120,8 +120,7 @@ public class WsBackendPlugin implements LinkPlugin {
 
     @Override
     public void shutdownActiveLinkPartner(ActiveLinkPartner linkPartner) {
-        if (linkPartner instanceof WsBackendPluginActiveLinkPartner) {
-            WsBackendPluginActiveLinkPartner lp = (WsBackendPluginActiveLinkPartner) linkPartner;
+        if (linkPartner instanceof WsBackendPluginActiveLinkPartner lp) {
             if (linkPartner.getChildContext().isPresent()) {
                 ConfigurableApplicationContext ctx = linkPartner.getChildContext().get();
                 WsActiveLinkPartnerManager bean = ctx.getBean(WsActiveLinkPartnerManager.class);

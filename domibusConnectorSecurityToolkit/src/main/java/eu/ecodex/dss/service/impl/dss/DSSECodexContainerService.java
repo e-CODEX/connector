@@ -467,15 +467,15 @@ public class DSSECodexContainerService implements ECodexContainerService {
 		List<Signature> sigList = valVeri != null ? valVeri.getSignatureData() : null;
 		
         if(issuer.getAdvancedElectronicSystem() == AdvancedSystemType.AUTHENTICATION_BASED && 
-        		technicalValidationService instanceof DSSECodexTechnicalValidationService) {
+        		technicalValidationService instanceof DSSECodexTechnicalValidationService service) {
         	if(sigList != null && !sigList.isEmpty()) {
 	        	if(sigList.size() != 1) {
 	        		LOG.lWarn("Invalid number of authentication certificates detected: {} - Only one signature/certificate is supported!", sigList.size());
 	        		tokenValidation.getTechnicalResult().setTrustLevel(TechnicalTrustLevel.FAIL);
 	        		tokenValidation.getTechnicalResult().setComment("Invalid count of signatures on the authentication data.");
 	        	} else {
-	        		Signature curSig = sigList.get(0);
-	            	AuthenticationCertificate authenticationCertValidation = ((DSSECodexTechnicalValidationService) technicalValidationService).verifyAuthenticationCertificate(businessDocument, detachedSignature);
+	        		Signature curSig = sigList.getFirst();
+	            	AuthenticationCertificate authenticationCertValidation = service.verifyAuthenticationCertificate(businessDocument, detachedSignature);
 	            	curSig.setAuthenticationCertValidation(authenticationCertValidation);
 	        	}
         	} else {

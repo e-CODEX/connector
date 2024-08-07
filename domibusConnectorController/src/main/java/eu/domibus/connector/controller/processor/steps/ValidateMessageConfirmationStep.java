@@ -70,10 +70,10 @@ public class ValidateMessageConfirmationStep implements MessageProcessStep {
 
         DomibusConnectorAction action = domibusConnectorMessage.getMessageDetails().getAction();
         if (!requiredEvidenceAction.equals(action)) {
-            var error = String.format(
-                "Enforcing the AS4 action is [%s] and the action [%s] is illegal for this "
-                    + "type [%s] of evidence",
-                enforcing, action, evidenceType
+            var error = (
+                    "Enforcing the AS4 action is [%s] and the action [%s] is illegal for this "
+                            + "type [%s] of evidence").formatted(
+                    enforcing, action, evidenceType
             );
             if (enforcing) {
                 throwError(domibusConnectorMessage, error);

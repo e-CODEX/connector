@@ -2,8 +2,6 @@ package eu.domibus.connector.ui.view.areas.testing;
 
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 

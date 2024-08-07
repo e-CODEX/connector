@@ -3,7 +3,7 @@ package eu.domibus.connector.persistence.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = PDomibusConnectorProperties.TABLE_NAME)

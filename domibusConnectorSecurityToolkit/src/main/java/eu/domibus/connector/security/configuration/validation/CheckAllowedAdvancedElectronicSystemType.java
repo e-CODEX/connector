@@ -3,9 +3,9 @@ package eu.domibus.connector.security.configuration.validation;
 
 import eu.domibus.connector.dss.configuration.validation.ValidEtisValidationPolicyXmlValidator;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+import jakarta.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

@@ -57,8 +57,8 @@ public class ECodexException extends Exception {
      * @return the wrapped (or not-wrapped) exception
      */
     public static ECodexException wrap(final Exception e) {
-        if (e instanceof ECodexException) {
-            return (ECodexException)e;
+        if (e instanceof ECodexException exception) {
+            return exception;
         } else {
             return new ECodexException(e);
         }

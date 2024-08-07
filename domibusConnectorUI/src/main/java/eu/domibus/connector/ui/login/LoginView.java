@@ -4,7 +4,6 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -31,7 +30,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
 //		if (!CollectionUtils.isEmpty(strings)) {
 //			afterLoginGoTo = strings.get(0);
 //		}
-		if (!StringUtils.isEmpty(parameter) && !LoginView.ROUTE.equals(parameter)) {
+		if (!ObjectUtils.isEmpty(parameter) && !LoginView.ROUTE.equals(parameter)) {
 			afterLoginGoTo = parameter;
 		}
 //		event.getUI().getPage().
@@ -68,9 +67,9 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
 
 
 	public LoginView(
-			@Autowired WebUserService userService,
-			@Autowired DomibusConnectorAdminHeader header,
-			@Autowired AuthenticationManager authenticationManager
+			WebUserService userService,
+			DomibusConnectorAdminHeader header,
+			AuthenticationManager authenticationManager
 	) {
 		this.authenticationManager = authenticationManager;
 		this.webUserService = userService;

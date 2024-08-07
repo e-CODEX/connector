@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.sql.DataSource;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.apache.activemq.artemis.api.core.management.QueueControl;
 import org.apache.activemq.artemis.api.core.management.ResourceNames;
 import org.apache.activemq.artemis.core.management.impl.ActiveMQServerControlImpl;
@@ -207,7 +207,7 @@ class ConnectorMessageFlowITCase {
 
             DomibusConnectorMessage relayRemmdEvidenceMsg = toGwDeliveredMessages.take();
             assertThat(
-                relayRemmdEvidenceMsg.getTransportedMessageConfirmations().get(0).getEvidenceType())
+                relayRemmdEvidenceMsg.getTransportedMessageConfirmations().getFirst().getEvidenceType())
                 .as("RelayREMMD acceptance message")
                 .isEqualTo(DomibusConnectorEvidenceType.RELAY_REMMD_ACCEPTANCE);
             DomibusConnectorMessageDetails relayRemmdEvidenceMsgDetails =
@@ -321,7 +321,7 @@ class ConnectorMessageFlowITCase {
                 .as("Message must be evidence message of type Delivery")
                 .isEqualTo(DomibusConnectorEvidenceType.DELIVERY);
             assertThat(
-                deliveryEvidenceMessage.getTransportedMessageConfirmations().get(0).getEvidence())
+                deliveryEvidenceMessage.getTransportedMessageConfirmations().getFirst().getEvidence())
                 .as("Generated evidence must be longer than 100 bytes! Ensure that there "
                         + "was really a evidence generated!")
                 .hasSizeGreaterThan(100);
@@ -470,7 +470,7 @@ class ConnectorMessageFlowITCase {
                 .as("Message must be evidence message of type Delivery")
                 .isEqualTo(DomibusConnectorEvidenceType.DELIVERY);
             assertThat(
-                deliveryEvidenceMessage.getTransportedMessageConfirmations().get(0).getEvidence())
+                deliveryEvidenceMessage.getTransportedMessageConfirmations().getFirst().getEvidence())
                 .as("Generated evidence must be longer than 100 bytes! Ensure that there "
                         + "was really a evidence generated!")
                 .hasSizeGreaterThan(100);
@@ -595,12 +595,12 @@ class ConnectorMessageFlowITCase {
             submitFromBackendToController(nonDeliveryTriggerMessage);
 
             DomibusConnectorMessage deliveryEvidenceMessage = toGwDeliveredMessages.take();
-            assertThat(deliveryEvidenceMessage.getTransportedMessageConfirmations().get(0)
+            assertThat(deliveryEvidenceMessage.getTransportedMessageConfirmations().getFirst()
                            .getEvidenceType())
                 .as("Message must be evidence message of type Delivery")
                 .isEqualTo(DomibusConnectorEvidenceType.NON_DELIVERY);
             assertThat(
-                deliveryEvidenceMessage.getTransportedMessageConfirmations().get(0).getEvidence())
+                deliveryEvidenceMessage.getTransportedMessageConfirmations().getFirst().getEvidence())
                 .as("Generated evidence must be longer than 100 bytes! Ensure that there "
                         + "was really a evidence generated!"
                 )
@@ -738,10 +738,10 @@ class ConnectorMessageFlowITCase {
             // check retrieval msg.
             DomibusConnectorMessage retrievalMsg = toGwDeliveredMessages.take();
 
-            assertThat(retrievalMsg.getTransportedMessageConfirmations().get(0).getEvidenceType())
+            assertThat(retrievalMsg.getTransportedMessageConfirmations().getFirst().getEvidenceType())
                 .as("Message must be evidence message of type Delivery")
                 .isEqualTo(DomibusConnectorEvidenceType.RETRIEVAL);
-            assertThat(retrievalMsg.getTransportedMessageConfirmations().get(0).getEvidence())
+            assertThat(retrievalMsg.getTransportedMessageConfirmations().getFirst().getEvidence())
                 .as("Generated evidence must be longer than 100 bytes! Ensure that "
                         + "there was really a evidence generated!"
                 )
@@ -819,7 +819,7 @@ class ConnectorMessageFlowITCase {
                 Stream.of(gwmsg1, gwmsg2).collect(Collectors.toList());
 
             assertThat(toGwDeliveredMessages)
-                .extracting(m -> m.getTransportedMessageConfirmations().get(0).getEvidenceType())
+                .extracting(m -> m.getTransportedMessageConfirmations().getFirst().getEvidenceType())
                 .as("First a RelayRemmdAcceptance message is transported back to gw, "
                         + "then a NonDelivery"
                 )
@@ -890,7 +890,7 @@ class ConnectorMessageFlowITCase {
                     .collect(Collectors.toList());
 
             assertThat(collect)
-                .extracting(m -> m.getTransportedMessageConfirmations().get(0).getEvidenceType())
+                .extracting(m -> m.getTransportedMessageConfirmations().getFirst().getEvidenceType())
                 .containsOnly(
                     DomibusConnectorEvidenceType.RELAY_REMMD_ACCEPTANCE,
                     DomibusConnectorEvidenceType.NON_DELIVERY
@@ -951,7 +951,7 @@ class ConnectorMessageFlowITCase {
             assertThat(take.getTransportedMessageConfirmations()).as(
                     "submission acceptance evidence must be a part of message")
                 .hasSize(1); // SUBMISSION_ACCEPTANCE
-            assertThat(take.getTransportedMessageConfirmations().get(0).getEvidenceType())
+            assertThat(take.getTransportedMessageConfirmations().getFirst().getEvidenceType())
                 .as("evidence must be of type submission acceptance")
                 .isEqualTo(SUBMISSION_ACCEPTANCE);
 
@@ -973,9 +973,9 @@ class ConnectorMessageFlowITCase {
             DomibusConnectorMessageDetails toBackendEvidenceMsgDetails =
                 toBackendEvidence.getMessageDetails();
             assertThat(
-                toBackendEvidence.getTransportedMessageConfirmations().get(0).getEvidenceType())
+                toBackendEvidence.getTransportedMessageConfirmations().getFirst().getEvidenceType())
                 .isEqualTo(SUBMISSION_ACCEPTANCE);
-            assertThat(toBackendEvidence.getTransportedMessageConfirmations().get(0).getEvidence())
+            assertThat(toBackendEvidence.getTransportedMessageConfirmations().getFirst().getEvidence())
                 .as("Generated evidence must be longer than 100 bytes - make sure this "
                         + "way a evidence has been generated"
                 )
@@ -1054,7 +1054,7 @@ class ConnectorMessageFlowITCase {
             assertThat(toGwSubmittedBusinessMessage.getTransportedMessageConfirmations()).as(
                     "submission acceptance evidence must be a part of message")
                 .hasSize(1); // SUBMISSION_ACCEPTANCE
-            assertThat(toGwSubmittedBusinessMessage.getTransportedMessageConfirmations().get(0)
+            assertThat(toGwSubmittedBusinessMessage.getTransportedMessageConfirmations().getFirst()
                            .getEvidenceType())
                 .as("evidence must be of type submission acceptance")
                 .isEqualTo(SUBMISSION_ACCEPTANCE);
@@ -1095,9 +1095,9 @@ class ConnectorMessageFlowITCase {
             DomibusConnectorMessageDetails toBackendEvidenceMsgDetails =
                 toBackendEvidence.getMessageDetails();
             assertThat(
-                toBackendEvidence.getTransportedMessageConfirmations().get(0).getEvidenceType())
+                toBackendEvidence.getTransportedMessageConfirmations().getFirst().getEvidenceType())
                 .isEqualTo(SUBMISSION_ACCEPTANCE);
-            assertThat(toBackendEvidence.getTransportedMessageConfirmations().get(0).getEvidence())
+            assertThat(toBackendEvidence.getTransportedMessageConfirmations().getFirst().getEvidence())
                 .as("Generated evidence must be longer than 100 bytes - make sure this "
                         + "way a evidence has been generated"
                 )
@@ -1501,7 +1501,7 @@ class ConnectorMessageFlowITCase {
 
             DomibusConnectorMessage toBackendRelayRemmdFailure =
                 toBackendDeliveredMessages.take(); // should be relayRemmdFailure
-            assertThat(toBackendRelayRemmdFailure.getTransportedMessageConfirmations().get(0)
+            assertThat(toBackendRelayRemmdFailure.getTransportedMessageConfirmations().getFirst()
                            .getEvidenceType())
                 .isEqualTo(RELAY_REMMD_FAILURE);
 
@@ -1512,7 +1512,7 @@ class ConnectorMessageFlowITCase {
             DomibusConnectorMessage submittedMessage =
                 submitMessage(EBMS_ID, CONNECTOR_MESSAGE_ID, BACKEND_MESSAGE_ID);
 
-            assertThat(toBackendRelayRemmdFailure.getTransportedMessageConfirmations().get(0)
+            assertThat(toBackendRelayRemmdFailure.getTransportedMessageConfirmations().getFirst()
                            .getEvidence())
                 .as("Generated evidence must be longer than 100 bytes - make sure this "
                         + "way a evidence has been generated"

@@ -3,7 +3,7 @@ package eu.domibus.connector.testdata;
 
 import eu.domibus.connector.domain.transition.*;
 import eu.domibus.connector.domain.transition.tools.ConversionTools;
-
+import jakarta.annotation.Nullable;
 import org.apache.cxf.helpers.FileUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -12,8 +12,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StreamUtils;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -21,11 +21,11 @@ import java.io.*;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 
 /**
  * Load and store a Transition Message to the FileSystem
@@ -75,7 +75,7 @@ public class LoadStoreTransitionMessage {
     public static DomibusConnectorMessageType loadMessageFrom(Resource resource) {
         LOGGER.info("Load message from path [{}]", resource);
         try {
-            Path path = Paths.get(resource.getURI());
+            Path path = Path.of(resource.getURI());
             LoadStoreTransitionMessage load = new LoadStoreTransitionMessage(path);
             return load.loadMessage();
         } catch (IOException ioe) {
@@ -107,7 +107,7 @@ public class LoadStoreTransitionMessage {
     public static void storeMessageTo(Resource resourcePath, DomibusConnectorMessageType message, boolean overwrite) {
         LOGGER.debug("storeMessageTo [{}]", resourcePath);
         try {
-            Path nioPath = Paths.get(resourcePath.getURI());
+            Path nioPath = Path.of(resourcePath.getURI());
             LoadStoreTransitionMessage store = new LoadStoreTransitionMessage(nioPath);
             store.storeMessageTo(message, overwrite);
         } catch (IOException ioe) {
@@ -120,7 +120,7 @@ public class LoadStoreTransitionMessage {
         LOGGER.debug("storeMessage to [{}] with overwrite [{}]", basicFolder, overwrite);
 
         if (Files.exists(basicFolder) && !overwrite) {
-            throw new RuntimeException(String.format("Overwrite is false, cannot overwrite message in folder %s", basicFolder));
+            throw new RuntimeException("Overwrite is false, cannot overwrite message in folder %s".formatted(basicFolder));
         }
 
         if (!Files.exists(basicFolder)) {
@@ -191,7 +191,7 @@ public class LoadStoreTransitionMessage {
 //            try {
             DomibusConnectorMessageAttachmentType a = messageAttachments.get(i);
 
-            String attachmentPropertyFile = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "file");
+            String attachmentPropertyFile = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "file");
 
             String fileName = a.getName();
             if (fileName == null) {
@@ -201,7 +201,7 @@ public class LoadStoreTransitionMessage {
             writeBigDataReferenceToResource(attachmentOutputResource, a.getAttachment());
             messageProperties.put(attachmentPropertyFile, fileName);
 
-            String attachmentPropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "identifier");
+            String attachmentPropertyName = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, i, "identifier");
             messageProperties.put(attachmentPropertyName, a.getIdentifier());
 //            } catch (IOException ioe) {
 //                throw new RuntimeException(ioe);
@@ -214,8 +214,8 @@ public class LoadStoreTransitionMessage {
             try {
                 DomibusConnectorMessageConfirmationType confirmation = messageConfirmations.get(i);
 
-                String evidenceFilePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "file");
-                String evidenceTypePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "type");
+                String evidenceFilePropertyName = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "file");
+                String evidenceTypePropertyName = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, i, "type");
 
                 messageProperties.put(evidenceTypePropertyName, confirmation.getConfirmationType().name());
 
@@ -405,8 +405,8 @@ public class LoadStoreTransitionMessage {
                 .map((k) -> {
 
 
-                    String evidenceFilePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, k, "file");
-                    String evidenceTypePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, k, "type");
+                    String evidenceFilePropertyName = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, k, "file");
+                    String evidenceTypePropertyName = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX, k, "type");
 
                     Resource resEvidenceFile = createRelativeResource(messageProperties.getProperty(evidenceFilePropertyName));
 
@@ -447,8 +447,8 @@ public class LoadStoreTransitionMessage {
                 .map((k) -> {
 //                    try {
                     DomibusConnectorMessageAttachmentType attachment = new DomibusConnectorMessageAttachmentType();
-                    String filePropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, k, "file");
-                    String identifierPropertyName = String.format("%s.%s.%s", LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, k, "identifier");
+                    String filePropertyName = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, k, "file");
+                    String identifierPropertyName = "%s.%s.%s".formatted(LoadStoreTransitionMessage.MESSAGE_ATTACHMENT_PREFIX, k, "identifier");
                     Path res = basicFolder.resolve(messageProperties.getProperty(filePropertyName));
                     attachment.setAttachment(loadResourceAsDataHandler(new FileSystemResource(res.toFile())));
                     attachment.setIdentifier(messageProperties.getProperty(identifierPropertyName));

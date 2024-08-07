@@ -62,11 +62,11 @@ public class CertificateSourceFromKeyStoreCreator {
             res = dcKeyStoreService.loadKeyStoreAsResource(storeConfigurationProperties)
                                    .getInputStream();
         } catch (IOException ioException) {
-            var error = String.format(
-                "Failed to load keystore: location [%s], type [%s], password [%s] ",
-                storeConfigurationProperties.getPath(),
-                storeConfigurationProperties.getType(),
-                LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword())
+            var error = 
+                    "Failed to load keystore: location [%s], type [%s], password [%s] ".formatted(
+                    storeConfigurationProperties.getPath(),
+                    storeConfigurationProperties.getType(),
+                    LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword())
             );
             throw new RuntimeException(error, ioException);
         }
@@ -76,11 +76,11 @@ public class CertificateSourceFromKeyStoreCreator {
                                               storeConfigurationProperties.getPassword()
                 );
         } catch (DSSException dssException) {
-            var error = String.format(
-                "Failed to load keystore: location [%s], type [%s], password [%s] ",
-                storeConfigurationProperties.getPath(),
-                storeConfigurationProperties.getType(),
-                LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword())
+            var error = 
+                    "Failed to load keystore: location [%s], type [%s], password [%s] ".formatted(
+                    storeConfigurationProperties.getPath(),
+                    storeConfigurationProperties.getType(),
+                    LoggingUtils.logPassword(LOGGER, storeConfigurationProperties.getPassword())
             );
             throw new RuntimeException(error, dssException);
         }

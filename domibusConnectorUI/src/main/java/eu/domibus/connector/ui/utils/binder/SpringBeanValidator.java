@@ -5,8 +5,8 @@ import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.internal.BeanUtil;
 import com.vaadin.flow.data.binder.Validator;
 
-import javax.validation.*;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.validation.*;
+import jakarta.validation.metadata.ConstraintDescriptor;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class SpringBeanValidator implements Validator<Object> {
 
-    private final javax.validation.Validator javaxValidator;
+    private final jakarta.validation.Validator javaxValidator;
     private String propertyName;
     private Class<?> beanType;
 
@@ -30,7 +30,7 @@ public class SpringBeanValidator implements Validator<Object> {
      * @throws IllegalStateException if {@link BeanUtil#checkBeanValidationAvailable()} returns
      *                               false
      */
-    public SpringBeanValidator(javax.validation.Validator javaxValidator, Class<?> beanType, String propertyName) {
+    public SpringBeanValidator(jakarta.validation.Validator javaxValidator, Class<?> beanType, String propertyName) {
         Objects.requireNonNull(beanType, "bean class cannot be null");
         Objects.requireNonNull(propertyName, "property name cannot be null");
 
@@ -39,7 +39,7 @@ public class SpringBeanValidator implements Validator<Object> {
         this.javaxValidator = javaxValidator;
     }
 
-    public javax.validation.Validator getJavaxBeanValidator() {
+    public jakarta.validation.Validator getJavaxBeanValidator() {
         return this.javaxValidator;
     }
 
@@ -99,7 +99,7 @@ public class SpringBeanValidator implements Validator<Object> {
 
     @Override
     public String toString() {
-        return String.format("%s[%s.%s]", getClass().getSimpleName(),
+        return "%s[%s.%s]".formatted(getClass().getSimpleName(),
                 beanType.getSimpleName(), propertyName);
     }
 

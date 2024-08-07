@@ -144,9 +144,9 @@ public class WebKeystoreService {
 			keyStore.load(is, pwdArray);
 			return keyStore;
 		} catch (NoSuchAlgorithmException | CertificateException | IOException e) {
-			throw new CannotLoadKeyStoreException(String.format("Cannot load key store!"), e);
+			throw new CannotLoadKeyStoreException("Cannot load key store!".formatted(), e);
 		} catch (KeyStoreException e) {
-			throw new CannotLoadKeyStoreException(String.format("Cannot load key store!"), e);
+			throw new CannotLoadKeyStoreException("Cannot load key store!".formatted(), e);
 		}
         
     }
@@ -186,8 +186,7 @@ public class WebKeystoreService {
 				Date notAfter = null;
 				String algorithm = null;
 				String type = "undefined";
-				if(certificate instanceof X509Certificate) {
-                    X509Certificate x = (X509Certificate ) certificate;
+				if(certificate instanceof X509Certificate x) {
                     subject = x.getSubjectX500Principal().getName();
                     issuer = x.getIssuerX500Principal().getName();
                     notBefore = x.getNotBefore();

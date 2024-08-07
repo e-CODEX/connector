@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.validation.constraints.NotNull;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -108,7 +108,7 @@ public class ConversionTools {
     }
 
     /**
-     * Converts a {@link javax.activation.DataHandler} object to a byte[].
+     * Converts a {@link jakarta.activation.DataHandler} object to a byte[].
      *
      * @param dataHandler The DataHandler object to be converted.
      * @return The byte array representation of the DataHandler.

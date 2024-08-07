@@ -6,8 +6,9 @@
 package eu.domibus.connector.lib.spring.configuration;
 
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+import jakarta.annotation.Nullable;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;

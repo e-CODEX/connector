@@ -24,13 +24,12 @@ import eu.domibus.connector.ui.forms.ConnectorMessageForm;
 import eu.domibus.connector.ui.service.WebMessageService;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import io.micrometer.core.instrument.util.StringUtils;
+import jakarta.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 //@HtmlImport("styles/shared-styles.html")
@@ -52,7 +51,7 @@ public class MessageDetails extends VerticalLayout implements HasUrlParameter<St
 	private ConnectorMessageForm messageForm;
 	private VerticalLayout messageEvidencesArea;
 
-	public MessageDetails(@Autowired WebMessageService messageService) {
+	public MessageDetails(WebMessageService messageService) {
 		this.messageService = messageService;
 		this.messageForm = new ConnectorMessageForm();
 		this.messageEvidencesArea = new VerticalLayout();
@@ -98,18 +97,18 @@ public class MessageDetails extends VerticalLayout implements HasUrlParameter<St
 			optionalMessage = messageService.getMessageByConnectorId(connectorMessage.getConnectorMessageId());
 		}
 
-		if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getBackendMessageId())) {
+		if ((optionalMessage.isEmpty()) && !StringUtils.isEmpty(connectorMessage.getBackendMessageId())) {
 			LOGGER.debug("MessageDetails loaded with backendMessageId [{}]", connectorMessage.getBackendMessageId());
 			optionalMessage = messageService.getMessageByBackendMessageId(connectorMessage.getBackendMessageId());
 		}
 
-		if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getEbmsMessageId())) {
+		if ((optionalMessage.isEmpty()) && !StringUtils.isEmpty(connectorMessage.getEbmsMessageId())) {
 			LOGGER.debug("MessageDetails loaded with ebmsMessageId [{}]", connectorMessage.getEbmsMessageId());
 			optionalMessage = messageService.getMessageByEbmsId(connectorMessage.getEbmsMessageId());
 		}
 
-		if (!optionalMessage.isPresent()) {
-			String errorMessage = String.format("No message found within database with connectorMessageId [%s], ebmsMessageId [%s] or backendMessageId [%s] !", connectorMessage.getConnectorMessageId(), connectorMessage.getEbmsMessageId(), connectorMessage.getBackendMessageId());
+		if (optionalMessage.isEmpty()) {
+			String errorMessage = "No message found within database with connectorMessageId [%s], ebmsMessageId [%s] or backendMessageId [%s] !".formatted(connectorMessage.getConnectorMessageId(), connectorMessage.getEbmsMessageId(), connectorMessage.getBackendMessageId());
 			LOGGER.warn(errorMessage);
 			Notification.show(errorMessage);
 		}

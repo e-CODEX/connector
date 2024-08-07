@@ -30,8 +30,8 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -244,7 +244,7 @@ public class SpocsFragments
 	{
 
 		AttributedElectronicAddressType eAdress = (AttributedElectronicAddressType) jaxbObj
-				.getAttributedElectronicAddressOrElectronicAddress().get(0);
+				.getAttributedElectronicAddressOrElectronicAddress().getFirst();
 		if (eAdress.getValue() != null)
 			return eAdress;
 		else {
@@ -270,8 +270,8 @@ public class SpocsFragments
 				.getNamePostalAddress().iterator();
 		while (it.hasNext()) {
 			NamePostalAddressType next = it.next();
-			if (next instanceof NamePostalAddressType) {
-				return (NamePostalAddressType) next;
+			if (next instanceof NamePostalAddressType type) {
+				return type;
 			}
 		}
 		LOG.warn("No NamePostalAddressType found");
@@ -325,8 +325,8 @@ public class SpocsFragments
 		List<Object> elecAdress = details
 				.getAttributedElectronicAddressOrElectronicAddress();
 		for (Object object : elecAdress) {
-			if (object instanceof AttributedElectronicAddressType) {
-				return (AttributedElectronicAddressType) object;
+			if (object instanceof AttributedElectronicAddressType type) {
+				return type;
 			}
 		}
 		return null;

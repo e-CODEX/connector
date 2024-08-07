@@ -4,6 +4,7 @@ import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.domain.model.DomibusConnectorKeystore;
 import eu.domibus.connector.tools.logging.LoggingMarker;
 import eu.domibus.connector.ui.service.WebPModeService;
+import jakarta.annotation.PostConstruct;
 import org.apache.cxf.configuration.security.KeyStoreType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Configuration

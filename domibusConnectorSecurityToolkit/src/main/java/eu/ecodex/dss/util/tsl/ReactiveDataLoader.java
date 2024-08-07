@@ -3,6 +3,7 @@ package eu.ecodex.dss.util.tsl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import eu.ecodex.dss.util.ECodexDataLoader;
 import eu.ecodex.dss.util.LogDelegate;
 
 
-@Deprecated //replace with native DSS classes
+@Deprecated //TODO: replace with native DSS classes
 public class ReactiveDataLoader implements DataLoader {
 
 	private static final LogDelegate LOG = new LogDelegate(ReactiveDataLoader.class);
@@ -70,7 +71,7 @@ public class ReactiveDataLoader implements DataLoader {
 			
 		} else if (givenURL.toLowerCase().startsWith("file:")) {
 	        try {
-	        	final URL location = new URL(givenURL);
+	        	final URL location = URI.create(givenURL).toURL();
 	            InputStream in = location.openStream();
 	            if (in == null) {
 	                throw new IOException("Cannot retrieve the resource from URL " + givenURL);
@@ -95,8 +96,8 @@ public class ReactiveDataLoader implements DataLoader {
 
 			NodeList nodeList = inMemoryTSL.getElementsByTagName("tsl:TSLLocation");
 			
-			if(TSL instanceof String){
-				nodeList.item(0).setTextContent((String) TSL);
+			if(TSL instanceof String string){
+				nodeList.item(0).setTextContent(string);
 			}else if(TSL instanceof InputStream){
 				nodeList.item(0).setTextContent("inmemory:inputstream");
 			}else if(TSL instanceof byte[]){
@@ -163,7 +164,7 @@ public class ReactiveDataLoader implements DataLoader {
 		return null;
 	}
 
-	@Override
+	//@Override TODO: Check functionality, stopped being overridable after DSS 6.0
 	public byte[] get(String url, boolean refresh) {
 		return this.get(url);
 	}

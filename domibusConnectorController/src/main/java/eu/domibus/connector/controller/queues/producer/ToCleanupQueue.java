@@ -9,7 +9,7 @@ import static eu.domibus.connector.controller.queues.JmsConfiguration.TO_CLEANUP
 import static eu.domibus.connector.controller.queues.JmsConfiguration.TO_CLEANUP_QUEUE_BEAN;
 
 import eu.domibus.connector.controller.queues.QueueHelper;
-import javax.jms.Queue;
+import jakarta.jms.Queue;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;

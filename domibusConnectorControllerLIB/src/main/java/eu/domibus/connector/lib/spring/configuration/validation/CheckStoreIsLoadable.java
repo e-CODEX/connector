@@ -15,9 +15,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The CheckStoreIsLoadable annotation is used to validate if a StoreConfigurationProperties object

@@ -1,16 +1,16 @@
 package eu.domibus.connector.ui.dbtables;
 
 import com.vaadin.flow.data.provider.*;
+import jakarta.annotation.security.RolesAllowed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
-import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TupleElement;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TupleElement;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.Connection;
@@ -110,7 +110,7 @@ public class DbTableService {
                 .forEach(entry -> {
                     parameterSource.addValue("key_" + entry.getKey(), entry.getValue());
                 });
-        String sql = String.format("DELETE %s WHERE %s", tableDefinition.getTableName(), tableDefinition.getPrimaryKeyQuery());
+        String sql = "DELETE %s WHERE %s".formatted(tableDefinition.getTableName(), tableDefinition.getPrimaryKeyQuery());
 
         jdbcTemplate.update(sql, parameterSource);
     }
@@ -123,7 +123,7 @@ public class DbTableService {
         String setPart = tableDefinition.getColumnDefinitionMap()
                 .keySet()
                 .stream()
-                .map(c -> String.format("%s=:%s", c, c))
+                .map(c -> "%s=:%s".formatted(c, c))
                 .collect(Collectors.joining(", "));
 
         //set set values
@@ -145,7 +145,7 @@ public class DbTableService {
                 });
 
 
-        String query = String.format("UPDATE %s SET %s WHERE %s", tableDefinition.getTableName(),
+        String query = "UPDATE %s SET %s WHERE %s".formatted(tableDefinition.getTableName(),
                 setPart,
                 primaryKeyQueryPart);
         LOGGER.debug("Created update Query: [{}]", query);
@@ -177,7 +177,7 @@ public class DbTableService {
                     parameterSource.addValue(column, item.getCell(column));
                 });
 
-        String insertQuery = String.format("INSERT INTO %s (%s) VALUES (%s)", tableDefinition.getTableName(), columnList, paramList);
+        String insertQuery = "INSERT INTO %s (%s) VALUES (%s)".formatted(tableDefinition.getTableName(), columnList, paramList);
 
         jdbcTemplate.update(insertQuery, parameterSource);
     }
@@ -275,7 +275,7 @@ public class DbTableService {
 
         public String getPrimaryKeyQuery() {
             return primaryKey.stream()
-                    .map(s ->  String.format(" %s = :key_%s", s, s))
+                    .map(s ->  " %s = :key_%s".formatted(s, s))
                     .collect(Collectors.joining(" AND "));
         }
 

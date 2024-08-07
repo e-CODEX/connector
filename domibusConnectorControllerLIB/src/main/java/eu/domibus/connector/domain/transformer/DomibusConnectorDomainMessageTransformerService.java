@@ -44,14 +44,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.activation.DataHandler;
-import javax.validation.constraints.NotNull;
+import jakarta.activation.DataHandler;
+import jakarta.validation.constraints.NotNull;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
@@ -121,7 +120,7 @@ public class DomibusConnectorDomainMessageTransformerService {
             if (transitionMessage.getMessageContent() == null && !confirmations.isEmpty()) {
                 LOGGER.trace(
                     "#transformTransitionToDomain: transforming message is a confirmation message");
-                DomibusConnectorMessageConfirmation confirmation = confirmations.remove(0);
+                DomibusConnectorMessageConfirmation confirmation = confirmations.removeFirst();
                 domibusConnectorMessage = new DomibusConnectorMessage(messageDetails, confirmation);
                 LOGGER.trace(
                     "#transformTransitionToDomain: added [{}] additional confirmations to "
@@ -203,7 +202,6 @@ public class DomibusConnectorDomainMessageTransformerService {
         }
     }
 
-    @Autowired
     public DomibusConnectorDomainMessageTransformerService(
         LargeFilePersistenceService largeFilePersistenceService) {
         this.largeFilePersistenceService = largeFilePersistenceService;

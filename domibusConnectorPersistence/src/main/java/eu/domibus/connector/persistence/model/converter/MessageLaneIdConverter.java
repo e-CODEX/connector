@@ -2,8 +2,8 @@ package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class MessageLaneIdConverter implements AttributeConverter<DomibusConnectorBusinessDomain.BusinessDomainId, String> {

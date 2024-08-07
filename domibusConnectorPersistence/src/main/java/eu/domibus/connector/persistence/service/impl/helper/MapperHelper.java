@@ -1,6 +1,7 @@
 package eu.domibus.connector.persistence.service.impl.helper;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
+
 import java.io.UnsupportedEncodingException;
 
 public class MapperHelper {

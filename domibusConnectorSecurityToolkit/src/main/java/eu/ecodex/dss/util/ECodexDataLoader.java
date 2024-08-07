@@ -1,6 +1,7 @@
 package eu.ecodex.dss.util;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
@@ -52,7 +53,7 @@ public class ECodexDataLoader extends CommonsDataLoader {
 	
 	protected byte[] fileGet(String urlString) {
 		try {
-			return DSSUtils.toByteArray(new URL(urlString).openStream());
+			return DSSUtils.toByteArray(URI.create(urlString).toURL().openStream());
 		} catch (IOException e) {
 			LOG.warn(e.toString(), e);
 		}

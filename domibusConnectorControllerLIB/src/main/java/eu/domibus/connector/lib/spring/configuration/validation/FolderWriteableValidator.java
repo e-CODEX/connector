@@ -7,8 +7,8 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * The FolderWriteableValidator class is a validator for the CheckFolderWriteable annotation. It
@@ -23,21 +23,21 @@ public class FolderWriteableValidator implements ConstraintValidator<CheckFolder
         }
 
         if (Files.notExists(file)) {
-            var message = String.format(
-                "Provided file path [%s] does not exist! Check if the path is correct and exists!",
-                file
+            var message = 
+                    "Provided file path [%s] does not exist! Check if the path is correct and exists!".formatted(
+                    file
             );
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }
         if (!Files.isDirectory(file)) {
             var message =
-                String.format("Provided file path [%s] is not a directory! Check the path!", file);
+                    "Provided file path [%s] is not a directory! Check the path!".formatted(file);
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }
         if (!Files.isWritable(file)) {
-            var message = String.format("Cannot write to provided path [%s]!", file);
+            var message = "Cannot write to provided path [%s]!".formatted(file);
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;
         }

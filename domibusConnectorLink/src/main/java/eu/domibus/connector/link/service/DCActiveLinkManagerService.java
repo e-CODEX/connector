@@ -7,6 +7,7 @@ import eu.domibus.connector.link.api.*;
 import eu.domibus.connector.link.api.exception.LinkPluginException;
 import eu.domibus.connector.tools.LoggingMDCPropertyNames;
 import eu.domibus.connector.tools.logging.LoggingMarker;
+import jakarta.annotation.PreDestroy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.*;
@@ -14,10 +15,8 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.PreDestroy;
-import javax.validation.constraints.NotNull;
+import org.springframework.util.ObjectUtils;
+import jakarta.validation.constraints.NotNull;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +47,7 @@ public class DCActiveLinkManagerService {
     }
 
     Optional<SubmitToLinkPartner> getSubmitToLinkPartner(String linkName) {
-        if (StringUtils.isEmpty(linkName)) {
+        if (ObjectUtils.isEmpty(linkName)) {
             throw new IllegalArgumentException("Provided link name is empty!");
         }
         return getSubmitToLinkPartner(new DomibusConnectorLinkPartner.LinkPartnerName(linkName));
@@ -57,7 +56,7 @@ public class DCActiveLinkManagerService {
     Optional<SubmitToLinkPartner> getSubmitToLinkPartner(DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) {
         ActiveLinkPartner activeLinkPartner = activeLinkPartners.get(linkPartnerName);
         if (activeLinkPartner == null) {
-            String error = String.format("No linkPartner with name %s available", linkPartnerName);
+            String error = "No linkPartner with name %s available".formatted(linkPartnerName);
             throw new LinkPluginException(error);
         }
 //        DomibusConnectorLinkPartner.LinkPartnerName name = new DomibusConnectorLinkPartner.LinkPartnerName(linkName);
@@ -69,7 +68,7 @@ public class DCActiveLinkManagerService {
         DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName = new DomibusConnectorLinkPartner.LinkPartnerName(linkName);
         ActiveLinkPartner activeLinkPartner = activeLinkPartners.get(linkPartnerName);
         if (activeLinkPartner == null) {
-            String error = String.format("No linkPartner with name %s available", linkName);
+            String error = "No linkPartner with name %s available".formatted(linkName);
             throw new LinkPluginException(error);
         }
 //        DomibusConnectorLinkPartner.LinkPartnerName name = new DomibusConnectorLinkPartner.LinkPartnerName(linkName);
@@ -126,7 +125,7 @@ public class DCActiveLinkManagerService {
 
             return Optional.ofNullable(activeLinkPartner);
         } catch (Exception e) {
-            String error = String.format("Error while activating Link Partner [%s]", linkInfo.getLinkPartnerName());
+            String error = "Error while activating Link Partner [%s]".formatted(linkInfo.getLinkPartnerName());
             throw new LinkPluginException(error, e);
         }
 
@@ -138,7 +137,7 @@ public class DCActiveLinkManagerService {
             return;
         }
         Optional<PullFromLinkPartner> pullFromBean = getPullFromLinkPartner(activeLinkPartner.getLinkPartner().getLinkPartnerName().getLinkName());
-        if (!pullFromBean.isPresent()) {
+        if (pullFromBean.isEmpty()) {
             LOGGER.warn("PULL MODE activated but NO pull bean found!");
             return;
         }
@@ -173,7 +172,7 @@ public class DCActiveLinkManagerService {
             return;
         }
         Optional<PullFromLinkPartner> pullFromBean = getPullFromLinkPartner(activeLinkPartner.getLinkPartner().getLinkPartnerName().getLinkName());
-        if (!pullFromBean.isPresent()) {
+        if (pullFromBean.isEmpty()) {
             LOGGER.warn("PULL MODE activated but NO pull bean found!");
             return;
         }
@@ -206,7 +205,7 @@ public class DCActiveLinkManagerService {
             scheduler.scheduleJob(link_pulls, link_pull_trigger);
 
         } catch (SchedulerException e) {
-            String error = String.format("An error occured while configuring pull for link [%s]", linkInfo);
+            String error = "An error occured while configuring pull for link [%s]".formatted(linkInfo);
             throw new LinkPluginException(error, e);
         }
 
@@ -225,20 +224,20 @@ public class DCActiveLinkManagerService {
     private synchronized ActiveLink startLinkConfiguration(DomibusConnectorLinkConfiguration linkConfiguration) {
         try (MDC.MDCCloseable lc = MDC.putCloseable(LoggingMDCPropertyNames.MDC_LINK_CONFIG_NAME, linkConfiguration.getConfigName().toString())) {
             String linkImpl = linkConfiguration.getLinkImpl();
-            if (StringUtils.isEmpty(linkImpl)) {
-                String error = String.format("link impl of [%s] is empty! No link configuration can be created!", linkConfiguration);
+            if (ObjectUtils.isEmpty(linkImpl)) {
+                String error = "link impl of [%s] is empty! No link configuration can be created!".formatted(linkConfiguration);
                 throw new LinkPluginException(error);
             }
             Optional<LinkPlugin> first = linkPluginFactories.stream().filter(l -> l.canHandle(linkImpl)).findFirst();
-            if (!first.isPresent()) {
-                String error = String.format("No link factory for linkImpl [%s] found! No link configuration will be created!", linkImpl);
+            if (first.isEmpty()) {
+                String error = "No link factory for linkImpl [%s] found! No link configuration will be created!".formatted(linkImpl);
                 throw new LinkPluginException(error);
             }
             LinkPlugin linkPlugin = first.get();
 
             ActiveLink link = linkPlugin.startConfiguration(linkConfiguration);
             if (link == null) {
-                throw new LinkPluginException(String.format("Failed to start configuration [%s]", linkConfiguration));
+                throw new LinkPluginException("Failed to start configuration [%s]".formatted(linkConfiguration));
             }
             link.setLinkPlugin(linkPlugin);
 
@@ -249,7 +248,7 @@ public class DCActiveLinkManagerService {
     public void shutdownLinkPartner(DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) {
         ActiveLinkPartner activeLinkPartner = activeLinkPartners.get(linkPartnerName);
         if (activeLinkPartner == null) {
-            throw new LinkPluginException(String.format("No active linkPartner with name %s found!", linkPartnerName.toString()));
+            throw new LinkPluginException("No active linkPartner with name %s found!".formatted(linkPartnerName.toString()));
         }
 
         this.unconfigurePull(activeLinkPartner.getLinkPartner(), activeLinkPartner);

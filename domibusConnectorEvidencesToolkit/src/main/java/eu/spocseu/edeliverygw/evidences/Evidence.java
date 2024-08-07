@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.etsi.uri._02231.v2_.ElectronicAddressType;
@@ -164,7 +164,7 @@ public abstract class Evidence
 			List<EventReasonType> reasons = jaxbObj.getEventReasons().getEventReason();
 			
 			if(reasons != null && reasons.size() == 1)
-				return reasons.get(0);
+				return reasons.getFirst();
 			else
 				return null;
 		}

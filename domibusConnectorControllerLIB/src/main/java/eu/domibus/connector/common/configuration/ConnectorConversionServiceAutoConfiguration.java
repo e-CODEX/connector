@@ -17,9 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
@@ -28,7 +28,7 @@ import org.springframework.core.convert.converter.Converter;
  * Configuration class that provides the auto-configuration for the ConnectorConversionService. It
  * creates a ConversionService bean that can be used for converting objects.
  */
-@Configuration
+@AutoConfiguration
 public class ConnectorConversionServiceAutoConfiguration {
     private static final Logger LOGGER =
         LoggerFactory.getLogger(ConnectorConversionServiceAutoConfiguration.class);

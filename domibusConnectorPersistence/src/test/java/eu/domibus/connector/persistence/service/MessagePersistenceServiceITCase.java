@@ -75,7 +75,7 @@ public class MessagePersistenceServiceITCase {
         DatabaseDataSourceConnection conn = new DatabaseDataSourceConnection(ds);
         QueryDataSet dataSet = new QueryDataSet(conn);
         dataSet.addTable("DOMIBUS_CONNECTOR_MESSAGE",
-                String.format("SELECT * FROM DOMIBUS_CONNECTOR_MESSAGE WHERE CONNECTOR_MESSAGE_ID='%s'", connectorMessageId));
+                "SELECT * FROM DOMIBUS_CONNECTOR_MESSAGE WHERE CONNECTOR_MESSAGE_ID='%s'".formatted(connectorMessageId));
 
         ITable domibusConnectorTable = dataSet.getTable("DOMIBUS_CONNECTOR_MESSAGE");
 

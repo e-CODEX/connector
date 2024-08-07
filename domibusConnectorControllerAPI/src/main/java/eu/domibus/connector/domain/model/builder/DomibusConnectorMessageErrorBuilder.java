@@ -8,8 +8,8 @@ package eu.domibus.connector.domain.model.builder;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageError;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The DomibusConnectorMessageErrorBuilder class is used to build instances of

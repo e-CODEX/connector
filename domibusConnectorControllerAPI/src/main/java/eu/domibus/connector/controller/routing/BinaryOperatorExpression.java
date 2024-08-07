@@ -35,11 +35,11 @@ public class BinaryOperatorExpression extends Expression {
         return switch (operand) {
             case TokenType.OR -> exp1.evaluate(message) || exp2.evaluate(message);
             case TokenType.AND -> exp1.evaluate(message) && exp2.evaluate(message);
-            default -> throw new RuntimeException(String.format("Unsupported OPERAND %s", operand));
+            default -> throw new RuntimeException("Unsupported OPERAND %s".formatted(operand));
         };
     }
 
     public String toString() {
-        return String.format("%s(%s, %s)", operand.toString(), exp1, exp2);
+        return "%s(%s, %s)".formatted(operand.toString(), exp1, exp2);
     }
 }

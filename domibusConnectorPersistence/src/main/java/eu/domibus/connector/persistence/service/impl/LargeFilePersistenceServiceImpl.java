@@ -6,14 +6,14 @@ import eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistence
 import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import eu.domibus.connector.persistence.service.exceptions.LargeFileDeletionException;
 import eu.domibus.connector.persistence.spring.DomibusConnectorPersistenceProperties;
+import jakarta.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,13 +39,13 @@ public class LargeFilePersistenceServiceImpl implements LargeFilePersistenceServ
                 .stream()
                 //lookup for provider name first, and then for class name
                 .filter(largeFilePersistenceProvider ->
-                                (!StringUtils.isEmpty(defaultProviderName) && defaultProviderName.equals(largeFilePersistenceProvider.getProviderName()) ||
-                                (StringUtils.isEmpty(defaultProviderName) && defaultLargeFileProviderClass != null && defaultLargeFileProviderClass.isAssignableFrom(largeFilePersistenceProvider.getClass()))))
+                                (!ObjectUtils.isEmpty(defaultProviderName) && defaultProviderName.equals(largeFilePersistenceProvider.getProviderName()) ||
+                                (ObjectUtils.isEmpty(defaultProviderName) && defaultLargeFileProviderClass != null && defaultLargeFileProviderClass.isAssignableFrom(largeFilePersistenceProvider.getClass()))))
                 .findFirst()
                 .orElse(null);
         if (p == null) {
-            throw new RuntimeException(String.format("No LargeFilePersistenceProvider provider with Class [%s] or Name [%s] is registered as spring bean!\n" +
-                    "The following LargeFilePersistenceProvider are available:\n[%s]\nPlease consider updating the configuration property [%s]",
+            throw new RuntimeException(("No LargeFilePersistenceProvider provider with Class [%s] or Name [%s] is registered as spring bean!\n" +
+                    "The following LargeFilePersistenceProvider are available:\n[%s]\nPlease consider updating the configuration property [%s]").formatted(
                     defaultLargeFileProviderClass,
                     defaultProviderName,
                     getAvailableStorageProviderAsStringWithNewLine(),
@@ -117,16 +117,16 @@ public class LargeFilePersistenceServiceImpl implements LargeFilePersistenceServ
                 bigDataReference.getStorageIdReference(),
                 storageProviderName);
         LargeFilePersistenceProvider largeFilePersistenceProvider = this.getProviderByName(storageProviderName)
-                .orElseThrow(() -> new RuntimeException(String.format("No  LargeFilePersistenceProvider with name %s is available.\n" +
-                                "The following LargeFilePersistenceProvider are available:\n[%s]",
-                        storageProviderName,
-                        getAvailableStorageProviderAsStringWithNewLine()
-                )));
+                .orElseThrow(() -> new RuntimeException(("No  LargeFilePersistenceProvider with name %s is available.\n" +
+                "The following LargeFilePersistenceProvider are available:\n[%s]").formatted(
+                storageProviderName,
+                getAvailableStorageProviderAsStringWithNewLine()
+        )));
         return largeFilePersistenceProvider;
     }
 
     private Optional<LargeFilePersistenceProvider> getProviderByName(String providerName) {
-        if (StringUtils.isEmpty(providerName)) {
+        if (ObjectUtils.isEmpty(providerName)) {
             throw new IllegalArgumentException("largeFilePersistenceProviderName is not allowed to be empty!");
         }
         return availableLargeFilePersistenceProvider

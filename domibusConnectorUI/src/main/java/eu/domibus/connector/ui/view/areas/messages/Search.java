@@ -1,9 +1,7 @@
 package eu.domibus.connector.ui.view.areas.messages;
 
 import java.util.Optional;
-
-import javax.annotation.PostConstruct;
-
+import jakarta.annotation.PostConstruct;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 

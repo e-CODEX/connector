@@ -39,7 +39,7 @@ public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory
 
         @Override
         public String getName() {
-            return String.format(getDatabaseType() + " %s data: [%s]", version == null ? "empty" : version);
+            return (getDatabaseType() + " %s data: [%s]").formatted(version == null ? "empty" : version);
         }
 
         @Override
@@ -63,7 +63,7 @@ public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory
         try {
             Class.forName(mysqlTestDatabase.driverClassName);
         } catch (ClassNotFoundException e) {
-            Assumptions.assumeTrue(false, String.format("Cannot load " + getDatabaseType() + " driver %s", mysqlTestDatabase.driverClassName));
+            Assumptions.assumeTrue(false, ("Cannot load " + getDatabaseType() + " driver %s").formatted(mysqlTestDatabase.driverClassName));
         }
 
         return mysqlTestDatabase;
@@ -79,12 +79,12 @@ public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory
             Assumptions.assumeTrue(true, "Cannot provide db with data in version " + version);
         }
         Assumptions.assumeTrue("true".equalsIgnoreCase(System.getProperty("test.db.mysql.enabled")),
-                String.format("\nNative Mysql not available! Enable by setting following system properties" +
+                ("\nNative Mysql not available! Enable by setting following system properties" +
                         "\ntest.db.%1$s.enabled=true" +
                         "\ntest.db.%1$s.driverclassname=<driverClassName>" +
                         "\ntest.db.%1$s.url=<driver url>" +
                         "\ntest.db.%1$s.username=<username>" +
-                        "\ntest.db.%1$s.password=<password>", getDatabaseType())
+                        "\ntest.db.%1$s.password=<password>").formatted(getDatabaseType())
         );
         return true;
     }

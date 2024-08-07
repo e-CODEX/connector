@@ -1,9 +1,8 @@
 package eu.domibus.connector.ui.layout;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.ApplicationContext;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

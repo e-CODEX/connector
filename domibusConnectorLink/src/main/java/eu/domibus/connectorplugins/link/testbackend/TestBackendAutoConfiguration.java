@@ -15,22 +15,22 @@ import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.link.service.DCActiveLinkManagerService;
 import eu.domibus.connector.tools.logging.LoggingMarker;
+import jakarta.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
  * Initializes and registers a test backend
  */
 //@Profile("plugin-" + TestbackendPlugin.IMPL_NAME)
-@Configuration
+@AutoConfiguration
 @ComponentScan(basePackageClasses = TestBackendAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "connector.link.plugins." + "plugin-" + TestbackendPlugin.IMPL_NAME, value = "enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnBean(ConfigurationPropertyManagerService.class)
@@ -107,18 +107,18 @@ public class TestBackendAutoConfiguration {
 
                 String rule = "";
                 if (c2cTestProperties.getAction() != null) {
-                    rule = concatAnd(rule, String.format("equals(Action, '%s')", c2cTestProperties.getAction().getAction()));
+                    rule = concatAnd(rule, "equals(Action, '%s')".formatted(c2cTestProperties.getAction().getAction()));
                 }
                 if (c2cTestProperties.getService() != null) {
                     if (StringUtils.hasText(c2cTestProperties.getService().getName())) {
-                        rule = concatAnd(rule, String.format("equals(ServiceName, '%s')", c2cTestProperties.getService().getName()));
+                        rule = concatAnd(rule, "equals(ServiceName, '%s')".formatted(c2cTestProperties.getService().getName()));
                     }
                     if (StringUtils.hasText(c2cTestProperties.getService().getServiceType())) {
-                        rule = concatAnd(rule, String.format("equals(ServiceType, '%s')", c2cTestProperties.getService().getServiceType()));
+                        rule = concatAnd(rule, "equals(ServiceType, '%s')".formatted(c2cTestProperties.getService().getServiceType()));
                     }
                 }
                 if (!StringUtils.hasText(rule)) {
-                    String error = String.format("Cannot create RoutingRule for ConnectorTests. Check Config of BusinessDomain %s", laneId);
+                    String error = "Cannot create RoutingRule for ConnectorTests. Check Config of BusinessDomain %s".formatted(laneId);
                     throw new IllegalArgumentException(error);
                 }
                 try {
@@ -128,7 +128,7 @@ public class TestBackendAutoConfiguration {
                     LOGGER.info(LoggingMarker.Log4jMarker.CONFIG, "Adding the routing rule {} to backend routing rules for testbackend on business domain [{}]", routingRule, laneId);
                     routingRulesManager.addBackendRoutingRule(laneId, routingRule);
                 } catch (Exception e) {
-                    String error = String.format("Cannot create RoutingRule for ConnectorTests. The routing rule %s is illegal. Check Config of BusinessDomain %s", rule, laneId);
+                    String error = "Cannot create RoutingRule for ConnectorTests. The routing rule %s is illegal. Check Config of BusinessDomain %s".formatted(rule, laneId);
                     throw new IllegalArgumentException(error);
                 }
 
@@ -139,7 +139,7 @@ public class TestBackendAutoConfiguration {
 
     private String concatAnd(String rule, String ruleToAppend) {
         if (StringUtils.hasText(rule)) {
-            return String.format("&(%s,%s)", rule, ruleToAppend);
+            return "&(%s,%s)".formatted(rule, ruleToAppend);
         }
         return ruleToAppend;
     }

@@ -40,10 +40,10 @@ public class WsPolicyLoader {
         try {
             is = wsPolicy.getInputStream();
         } catch (IOException ioe) {
-            throw new UncheckedIOException(String.format("ws policy [%s] cannot be read!", wsPolicy), ioe);
+            throw new UncheckedIOException("ws policy [%s] cannot be read!".formatted(wsPolicy), ioe);
         }
         if (is == null) {
-            throw new WsPolicyLoaderException(String.format("ws policy [%s] cannot be read! InputStream is nulL!", wsPolicy));
+            throw new WsPolicyLoaderException("ws policy [%s] cannot be read! InputStream is nulL!".formatted(wsPolicy));
         }
         List<Element> policyElements = new ArrayList<Element>();
         try {

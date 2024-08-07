@@ -297,8 +297,8 @@ class DSSTokenValidationCreator {
 //      int decreaseSigCount = 0;
 //		int decreaseValid = 0;
 
-		List<XmlToken> signatures = simpleReport.getJaxbModel().getSignatureOrTimestamp();
-		List<XmlToken> toRemove = new ArrayList<XmlToken>();
+		List<XmlToken> signatures = simpleReport.getJaxbModel().getSignatureOrTimestampOrEvidenceRecord();
+		List<XmlToken> toRemove = new ArrayList<>();
 
 		for (XmlToken curSig : signatures) {
 			if(idsToRemove.contains(curSig.getId())) {
@@ -478,7 +478,7 @@ class DSSTokenValidationCreator {
 			// 5-1. In case of qualified signatures, the issuing certificate has to be present and verifiable at a national TSL.
 			//      Otherwise the signature can be assessed with “AdES_QC” and the comment “Unable to verify the certificates issuer at a national TSL”.
 			if (!decisionData.validation.trustAnchor) {
-				final SignatureAttributes tokenSignatureAttributes = tValidation.getVerificationData().getSignatureData().get(0).getSignatureInformation();
+				final SignatureAttributes tokenSignatureAttributes = tValidation.getVerificationData().getSignatureData().getFirst().getSignatureInformation();
 				tokenSignatureAttributes.setSignatureLevel(SignatureQualification.ADESIG_QC.name());
 				decide(decisionData, TechnicalTrustLevel.SUFFICIENT, "Unable to verify the certificate's issuer at a national TSL.");
 				return;
@@ -813,7 +813,7 @@ class DSSTokenValidationCreator {
 		 */
 		public static AdvancedSignature getFirst(final List<AdvancedSignature> infos) {
 			final List<AdvancedSignature> sorted = createSortedList(infos);
-			return sorted.isEmpty() ? null : sorted.get(0);
+			return sorted.isEmpty() ? null : sorted.getFirst();
 		}
 
 		/**
@@ -825,7 +825,7 @@ class DSSTokenValidationCreator {
 		public static AdvancedSignature getLast(final List<AdvancedSignature> signatures) {
 
 			final List<AdvancedSignature> sorted = createSortedList(signatures);
-			return sorted.isEmpty() ? null : sorted.get(sorted.size() - 1);
+			return sorted.isEmpty() ? null : sorted.getLast();
 		}
 
 	}

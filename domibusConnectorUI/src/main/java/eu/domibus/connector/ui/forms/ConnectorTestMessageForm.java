@@ -1,11 +1,11 @@
 package eu.domibus.connector.ui.forms;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.textfield.GeneratedVaadinTextField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationResult;
@@ -128,10 +128,14 @@ public class ConnectorTestMessageForm extends FormLayout {
 		
 		toParty.setItems(parties.stream()
 				.filter(p -> p.getRoleType().equals(PartyRoleType.RESPONDER))
-								.map(p -> new WebMessageDetail.Party(p.getPartyId(), p.getPartyIdType(), p.getRole())));
+				.map(p -> new WebMessageDetail.Party(p.getPartyId(), p.getPartyIdType(), p.getRole()))
+				.toList()
+		);
 		fromParty.setItems(parties.stream()
 				.filter(p -> p.getRoleType().equals(PartyRoleType.INITIATOR))
-				.map(p -> new WebMessageDetail.Party(p.getPartyId(), p.getPartyIdType(), p.getRole())));
+				.map(p -> new WebMessageDetail.Party(p.getPartyId(), p.getPartyIdType(), p.getRole()))
+				.toList()
+		);
 	}
 	
 	public void setMessage(WebMessage message) {

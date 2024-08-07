@@ -5,13 +5,14 @@ import eu.domibus.connector.persistence.dao.DomibusConnectorPartyDao;
 import eu.domibus.connector.persistence.model.PDomibusConnectorParty;
 //import eu.domibus.connector.persistence.model.PDomibusConnectorPartyPK;
 import eu.domibus.connector.persistence.service.DomibusConnectorPartyPersistenceService;
+import jakarta.annotation.Nullable;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

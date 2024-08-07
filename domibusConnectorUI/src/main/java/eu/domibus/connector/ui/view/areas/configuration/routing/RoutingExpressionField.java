@@ -140,8 +140,8 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
     }
 
     private HtmlContainer convertToHtml(HtmlContainer htmlContainer, Expression exp) {
-        if (exp instanceof BinaryOperatorExpression) {
-            BinaryOperatorExpression binaryExp = ((BinaryOperatorExpression) exp);
+        if (exp instanceof BinaryOperatorExpression expression) {
+            BinaryOperatorExpression binaryExp =expression;
 
             Select<TokenType> selectOperator = new Select<>();
             selectOperator.setItems(OPERATORS);
@@ -155,8 +155,7 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
             htmlContainer.add(convertToHtml(new Span(), binaryExp.getExp2()));
             htmlContainer.add(new Text(")"));
 
-        } else if (exp instanceof MatchExpression) {
-            MatchExpression matchExpression = (MatchExpression) exp;
+        } else if (exp instanceof MatchExpression matchExpression) {
 
             //build colored html with: <operator>(<as4Attribute>, '<as4valueString>')
 //            Span as4MatchOperator = new Span(matchExpression.getMatchOperator().toString());

@@ -10,7 +10,7 @@
 
 package eu.ecodex.dss.model.token;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 
 import eu.europa.esig.dss.validation.reports.Reports;
 

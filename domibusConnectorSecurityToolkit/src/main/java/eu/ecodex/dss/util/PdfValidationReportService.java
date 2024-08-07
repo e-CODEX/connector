@@ -13,10 +13,10 @@ package eu.ecodex.dss.util;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
-import eu.europa.esig.dss.NamespaceContextMap;
 import eu.europa.esig.dss.diagnostic.DiagnosticData;
 import eu.europa.esig.dss.model.DSSException;
 import eu.europa.esig.dss.simplereport.SimpleReport;
+import eu.europa.esig.dss.xml.utils.NamespaceContextMap;
 import org.apache.commons.io.IOUtils;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.w3c.dom.Node;
@@ -538,7 +538,7 @@ public class PdfValidationReportService {
 		String formattedXPath = null;
 		if (params.length > 0) {
 
-			formattedXPath = String.format(xPath, params);
+			formattedXPath = xPath.formatted(params);
 		} else {
 
 			formattedXPath = xPath;

@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import eu.domibus.connector.domain.enums.MessageTargetSource;
 
 import java.io.Serializable;
 
 import eu.domibus.connector.persistence.model.converter.ZonedDateTimeToTimestampJpaConverter;
+import jakarta.annotation.Nonnull;
 import org.springframework.core.style.ToStringCreator;
 
 @Entity

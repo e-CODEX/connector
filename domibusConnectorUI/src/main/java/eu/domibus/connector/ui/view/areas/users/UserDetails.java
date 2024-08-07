@@ -20,7 +20,6 @@ import eu.domibus.connector.ui.forms.WebUserForm;
 import eu.domibus.connector.ui.service.WebUserService;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +40,7 @@ public class UserDetails extends VerticalLayout implements HasUrlParameter<Strin
 	
 	LumoLabel result = new LumoLabel("");
 
-	public UserDetails(@Autowired WebUserService service) {
+	public UserDetails(WebUserService service) {
 		this.userService = service;
 		
 		Div resultDiv = new Div();

@@ -12,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 
 //import static eu.domibus.connector.persistence.model.test.util.PersistenceEntityCreator.createPartyPKforPartyAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 
 @Disabled("Currently out of order - mocks must be repaired!")
 public class DomibusConnectorPartyPersistenceServiceImplTest {

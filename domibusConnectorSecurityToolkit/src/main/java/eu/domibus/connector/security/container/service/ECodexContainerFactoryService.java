@@ -26,6 +26,7 @@ import eu.europa.esig.dss.spi.tsl.TrustedListsCertificateSource;
 import eu.europa.esig.dss.spi.x509.CertificateSource;
 import eu.europa.esig.dss.validation.CertificateVerifier;
 import eu.europa.esig.dss.validation.executor.signature.DefaultSignatureProcessExecutor;
+import jakarta.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +34,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,7 +119,7 @@ public class ECodexContainerFactoryService {
             Objects.requireNonNull(validationServiceName, "AdvancedSystemType is null in configuration!");
         }
         if (!dcBusinessDocConfig.getAllowedAdvancedSystemTypes().contains(validationServiceName)) {
-            String error = String.format("The used AdvancedSystemType [%s] is not part of the configured allowed ones [%s]",
+            String error = "The used AdvancedSystemType [%s] is not part of the configured allowed ones [%s]".formatted(
                     validationServiceName, dcBusinessDocConfig.getAllowedAdvancedSystemTypes().stream().map(Object::toString).collect(Collectors.joining(",")));
             throw new IllegalArgumentException(error);
         }

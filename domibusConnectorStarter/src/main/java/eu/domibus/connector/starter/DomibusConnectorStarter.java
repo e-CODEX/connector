@@ -4,11 +4,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.annotation.Nullable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -18,9 +19,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.SystemPropertyUtils;
 
-import javax.annotation.Nullable;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 
 @SpringBootApplication(scanBasePackages = "eu.domibus.connector")
 @EnableTransactionManagement
@@ -75,9 +75,9 @@ public class DomibusConnectorStarter extends SpringBootServletInitializer {
             if (connectorConfigFile.startsWith(FILE_PREFIX)) {
                 connectorConfigFile = connectorConfigFile.substring(FILE_PREFIX.length() - 1);
             }
-            Path connectorConfigFilePath = Paths.get(connectorConfigFile);
+            Path connectorConfigFilePath = Path.of(connectorConfigFile);
             if (!Files.exists(connectorConfigFilePath)) {
-                String errorString = String.format("Cannot start because the via System Property [%s] provided config file [%s] mapped to path [%s] does not exist!", CONNECTOR_CONFIG_FILE_PROPERTY_NAME, connectorConfigFile, connectorConfigFilePath);
+                String errorString = "Cannot start because the via System Property [%s] provided config file [%s] mapped to path [%s] does not exist!".formatted(CONNECTOR_CONFIG_FILE_PROPERTY_NAME, connectorConfigFile, connectorConfigFilePath);
                 LOGGER.error(errorString);
                 throw new RuntimeException(errorString);
             }
@@ -85,7 +85,7 @@ public class DomibusConnectorStarter extends SpringBootServletInitializer {
                 p.load(new FileInputStream(connectorConfigFilePath.toFile()));
                 return p;
             } catch (IOException e) {
-                throw new RuntimeException(String.format("Cannot load properties from file [%s], is it a valid and readable properties file?", connectorConfigFilePath), e);
+                throw new RuntimeException("Cannot load properties from file [%s], is it a valid and readable properties file?".formatted(connectorConfigFilePath), e);
             }
         }
         return p;

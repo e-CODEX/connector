@@ -6,8 +6,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import eu.domibus.connector.ui.forms.FormsUtil;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 //@Profile(GW_LINK_WS_PROFILE) //does not work with vaadin!
 //@Component
@@ -31,7 +29,7 @@ public class GatewayConfiguration extends VerticalLayout {
 	TextField gatewayTruststorePasswordField = FormsUtil.getFormattedTextField();
 	TextField gatewayEncryptAliasField = FormsUtil.getFormattedTextField();
 
-	public GatewayConfiguration(@Autowired ConfigurationUtil util) {
+	public GatewayConfiguration(ConfigurationUtil util) {
 		this.util = util;
 		
 		add(util.createConfigurationItemTextFieldDiv(GatewayConfigurationLabels.gatewaySubmissionLinkLabels, gatewaySubmissionServiceLinkField));

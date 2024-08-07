@@ -23,6 +23,6 @@ public class MessageIdGeneratorConfigurer {
     @Bean
     public DomibusConnectorMessageIdGenerator domibusConnectorMessageIdGenerator() {
         return () -> new DomibusConnectorMessageId(
-            String.format("%s@%s", UUID.randomUUID(), "domibus.connector.eu"));
+                "%s@%s".formatted(UUID.randomUUID(), "domibus.connector.eu"));
     }
 }

@@ -10,7 +10,7 @@
 
 package eu.ecodex.dss.model.token;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 

@@ -42,6 +42,6 @@ public class StartsWithExpression extends MatchExpression {
 
     @Override
     public String toString() {
-        return String.format("%s(%s, '%s')", TokenType.STARTSWITH, as4Attribute, startsWithString);
+        return "%s(%s, '%s')".formatted(TokenType.STARTSWITH, as4Attribute, startsWithString);
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.util.FileSystemUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +22,7 @@ public class LoadStoreTransitionMessageTest {
 
     @BeforeAll
     public static void beforeAll() throws IOException {
-        Path p = Paths.get(TEST_DIR);
+        Path p = Path.of(TEST_DIR);
         FileSystemUtils.deleteRecursively(p);
         Files.createDirectory(p);
     }
@@ -41,7 +40,7 @@ public class LoadStoreTransitionMessageTest {
 
     @Test
     public void testStoreMessage() throws Exception {
-        Path p = Paths.get(TEST_DIR).resolve("testmsg1").normalize();
+        Path p = Path.of(TEST_DIR).resolve("testmsg1").normalize();
 
         FileSystemResource resource = new FileSystemResource(p.toFile());
         DomibusConnectorMessageType testmessage = TransitionCreator.createMessage();
@@ -54,7 +53,7 @@ public class LoadStoreTransitionMessageTest {
     public void testStoreThanLoad() throws Exception {
         DomibusConnectorMessageType testmessage = TransitionCreator.createMessage();
 
-        Path p = Paths.get(TEST_DIR).resolve("testmsg2").normalize();
+        Path p = Path.of(TEST_DIR).resolve("testmsg2").normalize();
         LoadStoreTransitionMessage.storeMessageTo(p, testmessage, true);
 
         DomibusConnectorMessageType testmsg2 = LoadStoreTransitionMessage.loadMessageFrom(p);
@@ -63,7 +62,7 @@ public class LoadStoreTransitionMessageTest {
         assertThat(testmsg2.getMessageContent().getXmlContent()).isNotNull();
 
 
-        Path p2 = Paths.get(TEST_DIR).resolve("testmsg3");
+        Path p2 = Path.of(TEST_DIR).resolve("testmsg3");
         LoadStoreTransitionMessage.storeMessageTo(p2, testmsg2, true);
 
 

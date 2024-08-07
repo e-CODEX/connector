@@ -43,13 +43,13 @@ public class ValidConfig_CertificateVerifier {
 			httpProxyProperties.setHost(props.getProperty("proxy.http.host"));
 			httpProxyProperties.setPort(Integer.valueOf(props.getProperty("proxy.http.port")));
 			httpProxyProperties.setUser(props.getProperty("proxy.http.user"));
-			httpProxyProperties.setPassword(props.getProperty("proxy.http.password"));
+			httpProxyProperties.setPassword(props.getProperty("proxy.http.password").toCharArray());
 
 			ProxyProperties httpsProxyProperties = new ProxyProperties();
 			httpsProxyProperties.setHost(props.getProperty("proxy.https.host"));
 			httpsProxyProperties.setPort(Integer.valueOf(props.getProperty("proxy.https.port")));
 			httpsProxyProperties.setUser(props.getProperty("proxy.https.user"));
-			httpsProxyProperties.setPassword(props.getProperty("proxy.https.password"));
+			httpsProxyProperties.setPassword(props.getProperty("proxy.https.password").toCharArray());
 			
 			ProxyConfig proxyPreferenceManager = new ProxyConfig();
 			proxyPreferenceManager.setHttpProperties(httpProxyProperties);

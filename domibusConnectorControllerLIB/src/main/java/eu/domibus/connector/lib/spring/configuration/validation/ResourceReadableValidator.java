@@ -7,8 +7,8 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import java.io.IOException;
 import java.net.URL;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
@@ -42,9 +42,9 @@ public class ResourceReadableValidator
                 // context.buildConstraintViolationWithTemplate("eu.domibus.connector.lib.spring
                 // .configuration.validation.resource_input_stream_valid")
                 //  .addConstraintViolation();
-                var message = String.format(
-                    "Cannot open provided resource [%s]! Check if the path is correct and exists!",
-                    value
+                var message = 
+                        "Cannot open provided resource [%s]! Check if the path is correct and exists!".formatted(
+                        value
                 );
                 context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
                 return false;
@@ -52,9 +52,9 @@ public class ResourceReadableValidator
             resource.getInputStream().close();
             // inputStream.close();
         } catch (IOException e) {
-            var message = String.format(
-                "Cannot open provided resource [%s]! Check if the path is correct and exists!",
-                value
+            var message = 
+                    "Cannot open provided resource [%s]! Check if the path is correct and exists!".formatted(
+                    value
             );
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
             return false;

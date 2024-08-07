@@ -26,7 +26,6 @@ import eu.domibus.connector.ui.view.areas.users.UserOverview;
 
 @UIScope
 @org.springframework.stereotype.Component
-@Push
 public class DCMainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
 
     private Tabs tabs;

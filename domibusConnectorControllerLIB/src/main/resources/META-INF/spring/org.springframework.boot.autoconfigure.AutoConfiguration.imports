@@ -1,0 +1,3 @@
+eu.domibus.connector.common.configuration.ConnectorConversionServiceAutoConfiguration
+eu.domibus.connector.common.configuration.ConnectorConverterAutoConfiguration
+eu.domibus.connector.domain.model.json.DomainModeJsonObjectMapperFactoryConfiguration

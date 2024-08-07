@@ -49,7 +49,7 @@ public class WsBackendSubmitTo implements SubmitToLinkPartner {
             }
 
         } else {
-            throw new DomibusConnectorSubmitToLinkException(message, java.lang.String.format("No LinkPartner found with name [%s]", linkPartnerName));
+            throw new DomibusConnectorSubmitToLinkException(message, "No LinkPartner found with name [%s]".formatted(linkPartnerName));
         }
     }
 

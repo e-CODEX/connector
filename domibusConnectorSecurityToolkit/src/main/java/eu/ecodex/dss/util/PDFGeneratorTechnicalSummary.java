@@ -89,10 +89,10 @@ public class PDFGeneratorTechnicalSummary extends AbstractPDFGenerator {
             if (systemType == AdvancedSystemType.AUTHENTICATION_BASED) {
             	if(signatureList != null && 
             			!signatureList.isEmpty() &&
-            			signatureList.get(0).getCertificateInformation() != null &&
-            			signatureList.get(0).getSignatureInformation() != null &&
-            			signatureList.get(0).getSigningTime() != null &&
-            			signatureList.get(0).getTechnicalResult() != null) {
+            			signatureList.getFirst().getCertificateInformation() != null &&
+            			signatureList.getFirst().getSignatureInformation() != null &&
+            			signatureList.getFirst().getSigningTime() != null &&
+            			signatureList.getFirst().getTechnicalResult() != null) {
             		
                		for (int sigCounter = 0; sigCounter < signatureList.size(); sigCounter++)
             		{

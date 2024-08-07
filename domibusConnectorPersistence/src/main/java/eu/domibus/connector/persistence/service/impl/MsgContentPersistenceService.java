@@ -12,6 +12,9 @@ import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import eu.domibus.connector.persistence.service.exceptions.LargeFileDeletionException;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
 import eu.domibus.connector.persistence.service.impl.helper.StoreType;
+import jakarta.annotation.Nonnull;
+
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,8 +23,6 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -234,7 +235,7 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
     PDomibusConnectorMsgCont storeObjectIntoMsgCont(
             PDomibusConnectorMessage dbMessage,
             @Nonnull StoreType type,
-            @CheckForNull LargeFileReference ref) throws PersistenceException {
+            @Nullable LargeFileReference ref) throws PersistenceException {
         if (dbMessage == null) {
             throw new IllegalArgumentException("message cannot be null!");
         }
@@ -276,7 +277,7 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
         try (InputStream is = ref.getInputStream(); OutputStream os = newRef.getOutputStream()) {
             StreamUtils.copy(is, os);
         } catch (IOException e) {
-            String error = String.format("Copying from unsupported LargeFileReference [%s] to default LargeFileReference failed due", ref);
+            String error = "Copying from unsupported LargeFileReference [%s] to default LargeFileReference failed due".formatted(ref);
             throw new RuntimeException(error, e);
         }
         //also set storage name and provider for the "old" large file reference
@@ -309,8 +310,8 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
                     } catch (LargeFileDeletionException deletionException) {
                         deletionExceptions.add(deletionException);
                         if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug(String.format("The following largeFile Reference [%s] will be deleted later by timer jobs.\n" +
-                                    "Because I was unable to delete it now due the following exception:", ref), deletionException);
+                            LOGGER.debug(("The following largeFile Reference [%s] will be deleted later by timer jobs.\n" +
+                                    "Because I was unable to delete it now due the following exception:").formatted(ref), deletionException);
                         }
                     }
                 });

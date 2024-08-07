@@ -2,8 +2,7 @@ package eu.domibus.connector.persistence.service.impl.helper;
 
 import eu.domibus.connector.domain.enums.DomibusConnectorEvidenceType;
 import eu.domibus.connector.persistence.model.enums.EvidenceType;
-
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class EvidenceTypeMapper {
 

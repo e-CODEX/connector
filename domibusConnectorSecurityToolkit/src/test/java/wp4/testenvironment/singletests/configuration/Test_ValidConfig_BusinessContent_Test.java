@@ -74,7 +74,7 @@ public class Test_ValidConfig_BusinessContent_Test {
     	Assertions.assertTrue(!attachments.isEmpty());
     	Assertions.assertTrue(attachments.size() == 1);
     	
-    	DSSDocument attachment = attachments.get(0);    	
+    	DSSDocument attachment = attachments.getFirst();    	
     	DSSDocument compareAttachment = getDocument(Path_Attachment, "Attachment_1");
     	
 		byte[] attachmentByte = getByte(attachment);
@@ -107,7 +107,7 @@ public class Test_ValidConfig_BusinessContent_Test {
     	Assertions.assertTrue(!attachments.isEmpty());
     	Assertions.assertTrue(attachments.size() == 1);
     	
-    	DSSDocument attachment = attachments.get(0);    	
+    	DSSDocument attachment = attachments.getFirst();    	
     	DSSDocument compareAttachment = getDocument(Path_Attachment, "Attachment_1");
     	
 		byte[] attachmentByte = getByte(attachment);
@@ -149,7 +149,7 @@ public class Test_ValidConfig_BusinessContent_Test {
     	Assertions.assertTrue(!attachments.isEmpty());
     	Assertions.assertTrue(attachments.size() == 1);
     	
-    	DSSDocument attachment = attachments.get(0);    	
+    	DSSDocument attachment = attachments.getFirst();    	
     	DSSDocument compareAttachment = getDocument(Path_Attachment, "Attachment_1");
     	
 		byte[] attachmentByte = getByte(attachment);
@@ -182,7 +182,7 @@ public class Test_ValidConfig_BusinessContent_Test {
     	Assertions.assertTrue(!attachments.isEmpty());
     	Assertions.assertTrue(attachments.size() == 1);
     	
-    	DSSDocument attachment = attachments.get(0);    	
+    	DSSDocument attachment = attachments.getFirst();    	
     	DSSDocument compareAttachment = getDocument(Path_Attachment, "Attachment_1");
     	
 		byte[] attachmentByte = getByte(attachment);

@@ -11,13 +11,13 @@ import eu.domibus.connector.common.converters.ClassToStringConverter;
 import eu.domibus.connector.common.converters.ClasspathResourceToStringConverter;
 import eu.domibus.connector.common.converters.EvidenceActionConverter;
 import eu.domibus.connector.common.converters.FileResourceToStringConverter;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * A configuration class that provides bean definitions for the connectors converters.
  */
-@Configuration
+@AutoConfiguration
 public class ConnectorConverterAutoConfiguration {
     @Bean
     @ConnectorPropertyConverter

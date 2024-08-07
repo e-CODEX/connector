@@ -1,7 +1,7 @@
 package eu.spocseu.edeliverygw;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPConstants;
+import jakarta.xml.soap.SOAPConstants;
 
 import org.etsi.uri._02640.v2.EventReasonsType;
 
@@ -114,7 +114,7 @@ public enum REMErrorEvent
 	{
 		if(jaxb.getEventReason() == null) return null;
 		
-		String code = jaxb.getEventReason().get(0).getCode();
+		String code = jaxb.getEventReason().getFirst().getCode();
 
 		if (code.equals(SOAP_FAULT.getEventCode()))
 			return SOAP_FAULT;

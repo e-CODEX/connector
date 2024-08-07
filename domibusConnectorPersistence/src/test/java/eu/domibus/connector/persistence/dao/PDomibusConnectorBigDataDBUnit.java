@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;

@@ -123,9 +123,9 @@ public class ListAppender extends AbstractAppender {
     public synchronized void append(final LogEvent event) {
         final Layout<? extends Serializable> layout = getLayout();
         if (layout == null) {
-            if (event instanceof MutableLogEvent) {
+            if (event instanceof MutableLogEvent logEvent) {
                 // must take snapshot or subsequent calls to logger.log() will modify this event
-                events.add(((MutableLogEvent) event).createMemento());
+                events.add(logEvent.createMemento());
             } else {
                 events.add(event);
             }

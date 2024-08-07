@@ -17,7 +17,6 @@ import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationItemChapterDiv;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -98,7 +97,7 @@ public class EnvironmentConfiguration extends DCVerticalLayoutWithTitleAndHelpBu
 //	TextField databaseDriverClassField = FormsUtil.getFormattedTextField();
 //	TextField databaseDialectField = FormsUtil.getFormattedTextField();
 
-	public EnvironmentConfiguration(@Autowired ConfigurationUtil util) {
+	public EnvironmentConfiguration(ConfigurationUtil util) {
 		super(HELP_ID, TITLE);
 		
 		this.util = util;

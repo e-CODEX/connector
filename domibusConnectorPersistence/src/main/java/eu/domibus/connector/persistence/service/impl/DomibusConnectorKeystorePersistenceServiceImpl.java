@@ -4,9 +4,9 @@ import java.sql.Blob;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
@@ -35,7 +35,7 @@ public class DomibusConnectorKeystorePersistenceServiceImpl implements DomibusCo
 		String uuid = pKeystore.getUuid();
 
 		if(StringUtils.isEmpty(uuid)) {
-			uuid = String.format("%s@%s", UUID.randomUUID(), "dc.keystore.eu");
+			uuid = "%s@%s".formatted(UUID.randomUUID(), "dc.keystore.eu");
 		}
 
 		dbKeystore.setUuid(uuid);
@@ -65,7 +65,7 @@ public class DomibusConnectorKeystorePersistenceServiceImpl implements DomibusCo
 			dbKeystore.get().setPassword(newKeystorePassword);
 			keystoreDao.save(dbKeystore.get());
 		}else {
-			throw new NoResultException(String.format("No keystore with UUID [%s] found in database!", pKeystore.getUuid()));
+			throw new NoResultException("No keystore with UUID [%s] found in database!".formatted(pKeystore.getUuid()));
 		}
 		
 	}

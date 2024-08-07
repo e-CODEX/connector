@@ -5,8 +5,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.mockito.ArgumentMatchers.eq;
-
 
 //@TestPropertySource({"classpath:test.properties", "classpath:test-auth.properties"})
 @SpringBootTest(classes = SecurityToolkitTestContext.class)

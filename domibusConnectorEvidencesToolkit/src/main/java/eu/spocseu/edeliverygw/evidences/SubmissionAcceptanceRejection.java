@@ -26,9 +26,9 @@ package eu.spocseu.edeliverygw.evidences;
 import java.io.OutputStream;
 import java.util.UUID;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 import org.etsi.uri._02640.soapbinding.v1_.REMDispatchType;
 import org.etsi.uri._02640.v2.AttributedElectronicAddressType;
@@ -129,11 +129,11 @@ public class SubmissionAcceptanceRejection extends Evidence
 		EntityDetailsType from = dispatch.getMsgMetaData().getOriginators()
 				.getFrom();
 		String senderEAddress = ((AttributedElectronicAddressType) from
-				.getAttributedElectronicAddressOrElectronicAddress().get(0))
+				.getAttributedElectronicAddressOrElectronicAddress().getFirst())
 				.getValue();
 
 		String senderName = ((AttributedElectronicAddressType) from
-				.getAttributedElectronicAddressOrElectronicAddress().get(0))
+				.getAttributedElectronicAddressOrElectronicAddress().getFirst())
 				.getDisplayName();
 		
 		
@@ -142,11 +142,11 @@ public class SubmissionAcceptanceRejection extends Evidence
 				.getNamesPostalAddresses() != null) {
 			senderPostalName = new String[dispatch.getMsgMetaData()
 					.getOriginators().getFrom().getNamesPostalAddresses()
-					.getNamePostalAddress().get(0).getEntityName().getName()
+					.getNamePostalAddress().getFirst().getEntityName().getName()
 					.size()];
 
 			dispatch.getMsgMetaData().getOriginators().getFrom()
-					.getNamesPostalAddresses().getNamePostalAddress().get(0)
+					.getNamesPostalAddresses().getNamePostalAddress().getFirst()
 					.getEntityName().getName().toArray(senderPostalName);
 		}
 		
@@ -174,10 +174,10 @@ public class SubmissionAcceptanceRejection extends Evidence
 				.getNamesPostalAddresses() != null
 				&& dispatch.getMsgMetaData().getDestinations().getRecipient()
 						.getNamesPostalAddresses().getNamePostalAddress()
-						.get(0) != null) {
+						.getFirst() != null) {
 			recipientPostalNames = dispatch.getMsgMetaData().getDestinations()
 					.getRecipient().getNamesPostalAddresses()
-					.getNamePostalAddress().get(0).getEntityName().getName()
+					.getNamePostalAddress().getFirst().getEntityName().getName()
 					.toArray(recipientPostalNames);
 		}
 		EntityDetailsListType detailList = new EntityDetailsListType();

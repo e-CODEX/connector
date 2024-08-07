@@ -3,7 +3,7 @@ package eu.ecodex.signature;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -59,7 +59,7 @@ public class EvidenceUtilsImplTest {
 
     @BeforeAll
     public static void setUpTestEnv() throws IOException {
-        File testDir = Paths.get(PATH_OUTPUT_FILES).toFile();
+        File testDir = Path.of(PATH_OUTPUT_FILES).toFile();
         try {
             FileUtils.forceDelete(testDir);
         } catch (IOException e) {}
@@ -155,10 +155,10 @@ public class EvidenceUtilsImplTest {
 
         if (ks.containsAlias(alias)) {
             key = ks.getKey(alias, keyPass.toCharArray());
-            if (key instanceof PrivateKey) {
+            if (key instanceof PrivateKey privateKey1) {
                 X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
                 publicKey = cert.getPublicKey();
-                privateKey = (PrivateKey) key;
+                privateKey = privateKey1;
                 keyPair = new KeyPair(publicKey, privateKey);
             } else {
                 keyPair = null;

@@ -2,8 +2,8 @@ package eu.domibus.connector.evidences.spring;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 public class EvidencesIssuerInfo {
 

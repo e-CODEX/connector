@@ -115,13 +115,13 @@ public class DCKeyStoreService {
             }
         } catch (KeyStoreException e) {
             throw new DCKeyStoreService.ValidationException(
-                String.format("Key Store exception when retrieving key alias [%s]", alias), e);
+                    "Key Store exception when retrieving key alias [%s]".formatted(alias), e);
         } catch (NoSuchAlgorithmException e) {
             throw new DCKeyStoreService.ValidationException(
-                String.format("No such key exception when retrieving key alias [%s]", alias), e);
+                    "No such key exception when retrieving key alias [%s]".formatted(alias), e);
         } catch (UnrecoverableKeyException e) {
             throw new DCKeyStoreService.ValidationException(
-                String.format("Validation exception when retrieving key alias [%s]", alias), e);
+                    "Validation exception when retrieving key alias [%s]".formatted(alias), e);
         }
     }
 
@@ -141,13 +141,13 @@ public class DCKeyStoreService {
             var certificate = keyStore.getCertificate(alias);
             if (certificate == null) {
                 throw new DCKeyStoreService.ValidationException(
-                    String.format("No certificate found for alias [%s]", alias));
+                        "No certificate found for alias [%s]".formatted(alias));
             }
         } catch (KeyStoreException e) {
-            throw new DCKeyStoreService.ValidationException(String.format(
-                "Key store exception occurred while loading certificate with alias [%s] from "
-                    + "key store",
-                alias
+            throw new DCKeyStoreService.ValidationException((
+                    "Key store exception occurred while loading certificate with alias [%s] from "
+                            + "key store").formatted(
+                    alias
             ), e);
         }
     }

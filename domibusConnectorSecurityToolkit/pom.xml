@@ -12,6 +12,9 @@
         The securityToolkitModule resolves and creates the ASIC-S Container. Its a bridge betweent the connector and
         the securityLib
     </description>
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+  </properties>
     <dependencies>
         <!-- domibus modules and libs-->
         <dependency>
@@ -88,6 +91,10 @@
             <groupId>eu.europa.ec.joinup.sd-dss</groupId>
             <artifactId>dss-pades-pdfbox</artifactId>
         </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.joinup.sd-dss</groupId>
+            <artifactId>dss-xml-utils</artifactId>
+        </dependency>
         <!-- other dependencies -->
         <dependency>
             <groupId>commons-lang</groupId>
@@ -106,12 +113,12 @@
             <artifactId>openpdf</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <!-- tests dependencies -->
         <dependency>
@@ -138,6 +145,12 @@
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -155,11 +168,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorAPI</artifactId>
             <version>${project.version}</version>
@@ -172,6 +180,12 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.3</version>
+      <scope>test</scope>
+    </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>

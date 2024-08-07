@@ -11,13 +11,13 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import eu.domibus.connector.common.annotations.DomainModelJsonObjectMapper;
 import eu.domibus.connector.domain.model.LargeFileReference;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration class for creating an ObjectMapper bean with specific configurations and modules.
  */
-@Configuration
+@AutoConfiguration
 public class DomainModeJsonObjectMapperFactoryConfiguration {
     /**
      * Returns an ObjectMapper bean for domain model to JSON object mapping.

@@ -22,7 +22,6 @@ import eu.domibus.connector.ui.service.WebKeystoreService.CertificateInfo;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -73,7 +72,7 @@ public class DataTables extends DCVerticalLayoutWithTitleAndHelpButton implement
 
 	Grid<DomibusConnectorPModeSet> pModesGrid;
 
-	public DataTables(@Autowired WebPModeService pmodeService, @Autowired ConfigurationUtil util) {
+	public DataTables(WebPModeService pmodeService, ConfigurationUtil util) {
 		super(HELP_ID, TITLE);
 		
 		this.pmodeService = pmodeService;

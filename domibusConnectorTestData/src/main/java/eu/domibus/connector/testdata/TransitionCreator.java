@@ -3,8 +3,8 @@ package eu.domibus.connector.testdata;
 import eu.domibus.connector.domain.transition.*;
 import org.apache.cxf.attachment.ByteDataSource;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  *  This class stores message content metadata for
@@ -89,11 +89,11 @@ public class PDomibusConnectorMsgCont {
     @JoinColumn(name = "DETACHED_SIGNATURE_ID", referencedColumnName = "ID")
     private PDomibusConnectorDetachedSignature detachedSignature;
 
-    @javax.persistence.Temporal(value = TemporalType.TIMESTAMP)
+    @jakarta.persistence.Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "DELETED")
     private Date deleted;
 
-    @javax.persistence.Temporal(value = TemporalType.TIMESTAMP)
+    @jakarta.persistence.Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CREATED", nullable = false)
     private Date created;
 

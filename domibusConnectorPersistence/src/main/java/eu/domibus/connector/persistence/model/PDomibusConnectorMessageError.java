@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = PDomibusConnectorMessageError.TABLE_NAME)

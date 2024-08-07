@@ -9,7 +9,7 @@ import eu.domibus.connector.common.annotations.MapNested;
 import eu.domibus.connector.lib.spring.configuration.validation.CheckResourceIsReadable;
 import eu.domibus.connector.lib.spring.configuration.validation.CheckStoreIsLoadable;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

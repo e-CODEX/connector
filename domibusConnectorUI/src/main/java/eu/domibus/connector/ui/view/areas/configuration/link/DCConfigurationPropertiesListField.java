@@ -28,7 +28,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
     private final BeanToPropertyMapConverter beanToPropertyMapConverter;
     private final PropertyMapToBeanConverter propertyMapToBeanConverter;
     private final FindFieldService findFieldService;
-    private final javax.validation.Validator jsrValidator;
+    private final jakarta.validation.Validator jsrValidator;
 //    private final SpringBeanValidationBinderFactory springBeanValidationBinderFactory;
 
     private VerticalLayout layout = new VerticalLayout();
@@ -43,7 +43,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
     public DCConfigurationPropertiesListField(
             BeanToPropertyMapConverter beanToPropertyMapConverter,
             PropertyMapToBeanConverter propertyMapToBeanConverter,
-            javax.validation.Validator jsrValidator,
+            jakarta.validation.Validator jsrValidator,
             FindFieldService findFieldService) {
 
         this.jsrValidator = jsrValidator;

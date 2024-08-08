@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.largefiles.provider;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
@@ -7,27 +12,23 @@ import eu.domibus.connector.persistence.service.exceptions.LargeFileException;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
 import eu.domibus.connector.persistence.spring.DomibusConnectorFilesystemPersistenceProperties;
 import eu.domibus.connector.persistence.spring.DomibusConnectorPersistenceProperties;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
-import org.springframework.util.StreamUtils;
-
-import javax.annotation.PostConstruct;
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.security.*;
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.Date;
@@ -36,24 +37,45 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.PostConstruct;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.StreamUtils;
 
-@ConditionalOnProperty(prefix = DomibusConnectorPersistenceProperties.PREFIX,
-        value = "provider-" + LargeFilePersistenceServiceFilesystemImpl.PROVIDER_NAME,
-        havingValue = "true", matchIfMissing = true)
+/**
+ * Implementation of the LargeFilePersistenceProvider interface for storing and retrieving large
+ * file references using the filesystem as the storage system.
+ */
+@ConditionalOnProperty(
+    prefix = DomibusConnectorPersistenceProperties.PREFIX,
+    value = "provider-" + LargeFilePersistenceServiceFilesystemImpl.PROVIDER_NAME,
+    havingValue = "true", matchIfMissing = true
+)
+@SuppressWarnings("squid:S1135")
 @Service
+@Setter
+@Getter
 public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersistenceProvider {
-
     public static final String PROVIDER_NAME = "filesystem";
-    private static final Logger LOGGER = LoggerFactory.getLogger(LargeFilePersistenceServiceFilesystemImpl.class);
-
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(LargeFilePersistenceServiceFilesystemImpl.class);
     @Autowired
     DomibusConnectorFilesystemPersistenceProperties filesystemPersistenceProperties;
-
-    //setter
-    public void setFilesystemPersistenceProperties(DomibusConnectorFilesystemPersistenceProperties filesystemPersistenceProperties) {
-        this.filesystemPersistenceProperties = filesystemPersistenceProperties;
-
-    }
 
     @Override
     public String getProviderName() {
@@ -62,66 +84,72 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
 
     @Override
     public LargeFileReference getReadableDataSource(LargeFileReference ref) {
-        if (ref instanceof FileBasedLargeFileReference && ((FileBasedLargeFileReference) ref).inputStream != null) {
+        if (ref instanceof FileBasedLargeFileReference largeFileReference
+            && largeFileReference.inputStream != null) {
             try {
                 ((FileBasedLargeFileReference) ref).inputStream.close();
             } catch (IOException e) {
-                //ignore
+                // ignore
             }
         }
-        FileBasedLargeFileReference fileBasedReference = new FileBasedLargeFileReference(this, ref);
+        var fileBasedReference = new FileBasedLargeFileReference(this, ref);
         fileBasedReference.setReadable(true);
         return fileBasedReference;
     }
 
     private InputStream getInputStream(FileBasedLargeFileReference ref) {
-        String storageIdReference = ref.getStorageIdReference();
-        Path filePath = getStoragePath().resolve(storageIdReference);
+        var storageIdReference = ref.getStorageIdReference();
+        var filePath = getStoragePath().resolve(storageIdReference);
         try {
-            FileInputStream fis = new FileInputStream(filePath.toFile());
+            var fis = new FileInputStream(filePath.toFile());
             if (ref.getEncryptionKey() != null) {
                 return generateDecryptedInputStream(ref, fis);
             } else {
                 return fis;
             }
         } catch (FileNotFoundException e) {
-            throw new PersistenceException(String.format("Could not found the required file [%s]!", filePath), e);
+            throw new PersistenceException(
+                String.format("Could not found the required file [%s]!", filePath), e);
         }
-
-    }
-
-
-    @Override
-    public LargeFileReference createDomibusConnectorBigDataReference(String connectorMessageId, String documentName, String documentContentType) {
-        return createDomibusConnectorBigDataReference(null, connectorMessageId, documentName, documentContentType);
     }
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");
 
+    @Override
+    public LargeFileReference createDomibusConnectorBigDataReference(
+        String connectorMessageId, String documentName, String documentContentType) {
+        return createDomibusConnectorBigDataReference(
+            null, connectorMessageId, documentName, documentContentType);
+    }
 
     @Override
-    public LargeFileReference createDomibusConnectorBigDataReference(InputStream input, String connectorMessageId, String documentName, String documentContentType) {
-        FileBasedLargeFileReference bigDataReference = new FileBasedLargeFileReference(this);
+    public LargeFileReference createDomibusConnectorBigDataReference(
+        InputStream input, String connectorMessageId, String documentName,
+        String documentContentType) {
+        var bigDataReference = new FileBasedLargeFileReference(this);
         bigDataReference.setName(documentName);
         bigDataReference.setMimetype(documentContentType);
         bigDataReference.setStorageProviderName(this.getProviderName());
 
-        String messageFolderName = connectorMessageId;
+        var messageFolderName = connectorMessageId;
         Path messageFolder = getStoragePath().resolve(messageFolderName);
         try {
             LOGGER.debug("Creating message folder [{}]", messageFolder);
             Files.createDirectory(messageFolder);
         } catch (java.nio.file.FileAlreadyExistsException alreadyExists) {
             if (!Files.isDirectory(messageFolder)) {
-                throw new RuntimeException(String.format("Cannot use directory path [%s] because it is a file!"));
+                throw new RuntimeException(
+                    String.format("Cannot use directory path [%s] because it is a file!"));
             }
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Cannot create directory [%s]", messageFolder), e);
+            throw new RuntimeException(
+                String.format("Cannot create directory [%s]", messageFolder), e);
         }
 
-        String storageFileName = simpleDateFormat.format(new Date()) + UUID.randomUUID().toString();
-        String storageFileRelativPathName = createReferenceName(messageFolderName, storageFileName);
-        bigDataReference.setStorageIdReference(storageFileRelativPathName);
+        String storageFileName = simpleDateFormat.format(new Date()) + UUID.randomUUID();
+        String storageFileRelativePathName =
+            createReferenceName(messageFolderName, storageFileName);
+        bigDataReference.setStorageIdReference(storageFileRelativePathName);
 
         Path storageFile = messageFolder.resolve(storageFileName);
         LOGGER.debug("Storage file path is [{}]", storageFile.toAbsolutePath());
@@ -129,42 +157,59 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         try {
             Files.createFile(storageFile);
         } catch (FileAlreadyExistsException alreadyExistsException) {
-            throw new PersistenceException(String.format("Error while creating file [%s], looks like the file has already written! You can only write once to a bigDataReference OutputStream!", storageFile), alreadyExistsException);
+            throw new PersistenceException(String.format(
+                "Error while creating file [%s], looks like the file has already written! "
+                    + "You can only write once to a bigDataReference OutputStream!",
+                storageFile
+            ), alreadyExistsException);
         } catch (IOException e) {
-            throw new PersistenceException(String.format("Error while creating file [%s]", storageFile), e);
+            throw new PersistenceException(
+                String.format("Error while creating file [%s]", storageFile), e);
         }
 
-
         if (input != null) {
-            try (OutputStream os = getOutputStream(bigDataReference)) {
+            try (var os = getOutputStream(bigDataReference)) {
                 StreamUtils.copy(input, os);
                 bigDataReference.setOutputStream(os);
-            } catch(FileNotFoundException e){
-                throw new PersistenceException(String.format("Error while creating FileOutpuStream for file [%s]", storageFile), e);
-            } catch(IOException e){
-                throw new PersistenceException(String.format("Error while writing to file [%s]", storageFile), e);
+            } catch (FileNotFoundException e) {
+                throw new PersistenceException(
+                    String.format(
+                        "Error while creating FileOutputStream for file [%s]",
+                        storageFile
+                    ), e);
+            } catch (IOException e) {
+                throw new PersistenceException(
+                    String.format("Error while writing to file [%s]", storageFile), e);
             }
         } else {
             try {
                 bigDataReference.setOutputStream(getOutputStream(bigDataReference));
             } catch (FileNotFoundException e) {
-                throw new PersistenceException(String.format("Error while creating FileOutpuStream for file [%s]", storageFile), e);
+                throw new PersistenceException(
+                    String.format(
+                        "Error while creating FileOutputStream for file [%s]",
+                        storageFile
+                    ), e);
             }
         }
-
 
         return bigDataReference;
     }
 
-    OutputStream getOutputStream(FileBasedLargeFileReference dataReference) throws FileNotFoundException {
+    OutputStream getOutputStream(FileBasedLargeFileReference dataReference)
+        throws FileNotFoundException {
         Path storageFile = getStoragePath().resolve(dataReference.getStorageIdReference());
         LOGGER.debug("Storage file path is [{}]", storageFile.toAbsolutePath());
 
         if (!Files.exists(storageFile)) {
-            throw new PersistenceException(String.format("The requested file [%s] does not exist yet! Looks like this method is not called correctly!", storageFile));
+            throw new PersistenceException(String.format(
+                "The requested file [%s] does not exist yet! Looks like this method is not called "
+                    + "correctly!",
+                storageFile
+            ));
         }
 
-        FileOutputStream fos = new FileOutputStream(storageFile.toFile());
+        var fos = new FileOutputStream(storageFile.toFile());
         OutputStream outputStream;
         if (filesystemPersistenceProperties.isEncryptionActive()) {
             LOGGER.debug("Encryption is activated creating encrypted output stream");
@@ -172,7 +217,6 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             return outputStream;
         }
         return fos;
-
     }
 
     @Override
@@ -180,8 +224,8 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         FileBasedLargeFileReference reference;
         LOGGER.trace("#deleteDomibusConnectorBigDataReference:: called with reference [{}]", ref);
         Path storageFile = getStoragePath().resolve(ref.getStorageIdReference());
-        if ((ref instanceof FileBasedLargeFileReference)) {
-            reference = (FileBasedLargeFileReference) ref;
+        if ((ref instanceof FileBasedLargeFileReference largeFileReference)) {
+            reference = largeFileReference;
         } else {
             reference = new FileBasedLargeFileReference(this, ref);
         }
@@ -189,69 +233,82 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             try {
                 reference.inputStream.close();
             } catch (IOException e) {
-                //ignore
+                // ignore
             }
         }
         try {
             Files.delete(storageFile);
         } catch (IOException e) {
-            LargeFileDeletionException largeFileDeletionException = new LargeFileDeletionException(String.format("Unable to delete file [%s] due exception:", storageFile), e);
+            var largeFileDeletionException = new LargeFileDeletionException(
+                String.format("Unable to delete file [%s] due exception:", storageFile), e);
             largeFileDeletionException.setReferenceFailedToDelete(reference);
             throw largeFileDeletionException;
         } finally {
             storageFile = null;
         }
-        deleteFolderIfEmpty(reference); //check if this runs on nfs share!
+        deleteFolderIfEmpty(reference); // check if this runs on nfs share!
     }
 
     private void deleteFolderIfEmpty(FileBasedLargeFileReference reference) {
         String folderName = getFolderNameFromReferenceName(reference.getStorageIdReference());
-        Path messagePath = getStoragePath().resolve(folderName);
+        var messagePath = getStoragePath().resolve(folderName);
         try {
             Files.delete(messagePath);
             LOGGER.debug("#deleteFolderIfEmpty:: Directory [{}] deleted", messagePath);
         } catch (DirectoryNotEmptyException notEmpty) {
-            LOGGER.debug("#deleteFolderIfEmpty:: Directory [{}] is not empty - will no be deleted!", messagePath);
+            LOGGER.debug(
+                "#deleteFolderIfEmpty:: Directory [{}] is not empty - will no be deleted!",
+                messagePath
+            );
         } catch (IOException e) {
-            LOGGER.warn("#deleteFolderIfEmpty:: An IOException occured while trying to delete directory [" + messagePath + "]", e);
+            LOGGER.warn(
+                "#deleteFolderIfEmpty:: An IOException occurred while trying to delete directory ["
+                    + messagePath + "]", e);
         }
     }
 
     @Override
     public Map<DomibusConnectorMessageId, List<LargeFileReference>> getAllAvailableReferences() {
-        Path storagePath = getStoragePath();
-        try (Stream<Path> files = Files.list(storagePath)){
-            return files.filter(p -> !p.startsWith(".")) //exclude hidden files on Unix
-                    .collect(Collectors.toMap(
+        var storagePath = getStoragePath();
+        try (Stream<Path> files = Files.list(storagePath)) {
+            return files.filter(p -> !p.startsWith(".")) // exclude hidden files on Unix
+                        .collect(Collectors.toMap(
                             path -> new DomibusConnectorMessageId(path.getFileName().toString()),
                             this::listReferences
-                    ));
+                        ));
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Error while ls files in directory [%s]", storagePath));
+            throw new RuntimeException(
+                String.format("Error while ls files in directory [%s]", storagePath));
         }
     }
 
     private List<LargeFileReference> listReferences(Path messageFolder) {
-        String messageFolderName = messageFolder.getFileName().toString();
-        try (Stream<Path> files =Files.list(messageFolder) ) {
+        var messageFolderName = messageFolder.getFileName().toString();
+        try (Stream<Path> files = Files.list(messageFolder)) {
             return files
-                    .filter( p -> !p.startsWith(".")) //filter hidden unix files
-                    .map(p -> p.getFileName().toString())
-                    .map(s -> mapMessageFolderAndFileNameToReference(messageFolderName, s))
-                    .collect(Collectors.toList());
+                .filter(p -> !p.startsWith(".")) // filter hidden unix files
+                .map(p -> p.getFileName().toString())
+                .map(s -> mapMessageFolderAndFileNameToReference(messageFolderName, s))
+                .toList();
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Error while listing all files in messageFolder [%s]", messageFolder), e);
+            throw new RuntimeException(
+                String.format("Error while listing all files in messageFolder [%s]", messageFolder),
+                e
+            );
         }
     }
 
-    private LargeFileReference mapMessageFolderAndFileNameToReference(String messageFolderName, String fileName) {
+    private LargeFileReference mapMessageFolderAndFileNameToReference(
+        String messageFolderName, String fileName) {
         String storageIdRef = createReferenceName(messageFolderName, fileName);
-        FileBasedLargeFileReference ref = new FileBasedLargeFileReference(this);
-        Path filePath = getStoragePath().resolve(storageIdRef);
+        var ref = new FileBasedLargeFileReference(this);
+        var filePath = getStoragePath().resolve(storageIdRef);
         try {
-            ref.setCreationDate(Files.getLastModifiedTime(filePath).toInstant().atZone(ZoneId.systemDefault()));
+            ref.setCreationDate(
+                Files.getLastModifiedTime(filePath).toInstant().atZone(ZoneId.systemDefault()));
         } catch (IOException e) {
-            throw new LargeFileException(String.format("Unable to read file reference [%s]", storageIdRef), e);
+            throw new LargeFileException(
+                String.format("Unable to read file reference [%s]", storageIdRef), e);
         }
         ref.setStorageIdReference(storageIdRef);
         return ref;
@@ -266,147 +323,141 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         return referenceName.substring(0, separatorPos);
     }
 
-
     private Path getStoragePath() {
         return filesystemPersistenceProperties.getStoragePath();
     }
 
+    /**
+     * Initializes the storage path for the file system persistence provider. It checks if the path
+     * is writable and creates the directory if it does not exist. If the directory creation is
+     * disabled and the path does not exist, it throws an IllegalArgumentException.
+     */
     @PostConstruct
     public void init() {
-        //TODO: check: path writable?
-        Path storagePath = filesystemPersistenceProperties.getStoragePath();
-        File f = storagePath.toFile();
-        if (!f.exists() && filesystemPersistenceProperties.isCreateDir()) {
+        // TODO: check: path writable?
+        var storagePath = filesystemPersistenceProperties.getStoragePath();
+        var file = storagePath.toFile();
+        if (!file.exists() && filesystemPersistenceProperties.isCreateDir()) {
             LOGGER.info("Creating missing directory path [{}]", storagePath);
-            f.mkdirs();
-        } else if (!f.exists()) {
-            throw new IllegalArgumentException(String.format("The by configuration (%s) provided file path [%s] does not exist an file path creation (%s) is false!",
-                    "connector.persistence.filesystem.storage-path", //TODO: call property service for correct property name
-                    storagePath,
-                    "connector.persistence.filesystem.create-dir") ); //TODO: call property service for correct property name
+            file.mkdirs();
+        } else if (!file.exists()) {
+            throw new IllegalArgumentException(String.format(
+                "The by configuration (%s) provided file path [%s] does not exist an file path "
+                    + "creation (%s) is false!",
+                "connector.persistence.filesystem.storage-path",
+                // TODO: call property service for correct property name
+                storagePath,
+                "connector.persistence.filesystem.create-dir"
+            )); // TODO: call property service for correct property name
         }
-
     }
 
-    InputStream generateDecryptedInputStream(FileBasedLargeFileReference bigDataReference, InputStream encryptedInputStream) {
-        IvParameterSpec ivspec = new IvParameterSpec(Base64Utils.decodeFromString(bigDataReference.getInitVector()));
-        SecretKey secretKey = loadFromKeyString(bigDataReference.getEncryptionKey());
+    InputStream generateDecryptedInputStream(
+        FileBasedLargeFileReference bigDataReference, InputStream encryptedInputStream) {
+        var ivspec =
+            new IvParameterSpec(Base64Utils.decodeFromString(bigDataReference.getInitVector()));
+        var secretKey = loadFromKeyString(bigDataReference.getEncryptionKey());
 
-        Cipher ci = null;
+        Cipher cipher;
         try {
-            ci = Cipher.getInstance(bigDataReference.getCipherSuite());
-            ci.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
-            CipherInputStream inputStream = new CipherInputStream(encryptedInputStream, ci);
-            return inputStream;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidAlgorithmParameterException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
+            cipher = Cipher.getInstance(bigDataReference.getCipherSuite());
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
+            return new CipherInputStream(encryptedInputStream, cipher);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException
+                 | InvalidAlgorithmParameterException | InvalidKeyException e) {
             throw new RuntimeException(e);
         }
-
     }
 
-    OutputStream generateEncryptedOutputStream(FileBasedLargeFileReference bigDataReference, OutputStream outputStream) {
-
-        SecureRandom random = new SecureRandom();
-
-        byte[] iv = new byte[128/8];
+    OutputStream generateEncryptedOutputStream(
+        FileBasedLargeFileReference bigDataReference, OutputStream outputStream) {
+        var random = new SecureRandom();
+        var iv = new byte[128 / 8];
         random.nextBytes(iv);
-        IvParameterSpec ivspec = new IvParameterSpec(iv);
+        var ivspec = new IvParameterSpec(iv);
 
-        String initVector = Base64Utils.encodeToString(ivspec.getIV());
+        var initVector = Base64Utils.encodeToString(ivspec.getIV());
         bigDataReference.setInitVector(initVector);
 
-
-        SecretKey sKey;
+        SecretKey secretKey;
         try {
-            KeyGenerator kg = KeyGenerator.getInstance("AES"); //TODO: load from properties
+            var kg = KeyGenerator.getInstance("AES"); // TODO: load from properties
             kg.init(random);
-            sKey = kg.generateKey();
-            bigDataReference.setEncryptionKey(convertSecretKeyToString(sKey)); //TODO: also put configureable part of key there - to avoid having the whole key stored into the database!
+            secretKey = kg.generateKey();
+            // TODO: also put configurable part of key there - to avoid having the whole key stored
+            //  into the database!
+            bigDataReference.setEncryptionKey(
+                convertSecretKeyToString(
+                    secretKey
+                )
+            );
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Cannot initialize Key Generator!");
         }
 
-        Cipher ci = null;
+        Cipher cipher;
         try {
-            String cipherSuite = "AES/CBC/PKCS5Padding"; //TODO: load from properties
-            ci = Cipher.getInstance(cipherSuite);
+            var cipherSuite = "AES/CBC/PKCS5Padding"; // TODO: load from properties
+            cipher = Cipher.getInstance(cipherSuite);
             bigDataReference.setCipherSuite(cipherSuite);
-            ci.init(Cipher.ENCRYPT_MODE, sKey, ivspec);
-            CipherOutputStream cos = new CipherOutputStream(outputStream, ci);
-            return cos;
-
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidAlgorithmParameterException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
+            return new CipherOutputStream(outputStream, cipher);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException
+                 | InvalidAlgorithmParameterException | InvalidKeyException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Convert a SecretKey object to a string representation.
+     *
+     * @param key The SecretKey object to convert.
+     * @return A string representation of the SecretKey, in the format
+     *      "algorithm#@#base64EncodedKey".
+     */
     public String convertSecretKeyToString(SecretKey key) {
         String alg = key.getAlgorithm();
-        String base64KeyString = Base64Utils.encodeToString(key.getEncoded());
+        var base64KeyString = Base64Utils.encodeToString(key.getEncoded());
         return alg + "#@#" + base64KeyString;
     }
 
     SecretKey loadFromKeyString(String str) {
         String[] split = str.split("#@#");
         if (split.length != 2) {
-            throw new IllegalArgumentException(String.format("The provided string [%s] does not match the format! Maybe the data is corrupted!", str));
+            throw new IllegalArgumentException(String.format(
+                "The provided string [%s] does not match the format! Maybe the data is corrupted!",
+                str
+            ));
         }
         String keyAlgorithm = split[0];
         byte[] keyBinary = Base64Utils.decodeFromString(split[1]);
-        SecretKeySpec skey = new SecretKeySpec(keyBinary, keyAlgorithm);
-        return skey;
+        return new SecretKeySpec(keyBinary, keyAlgorithm);
     }
 
-
     /**
-     *
-     *
-     *
-     * BigDataPersistenceServiceFilesystemImpl implementation of BigDataReference
-     *  this class is internal api do not use this class outside the BigDataPersistenceServiceFilesystemImpl
+     * BigDataPersistenceServiceFilesystemImpl implementation of BigDataReference this class is
+     * internal api do not use this class outside the BigDataPersistenceServiceFilesystemImpl.
      */
+    @Getter
+    @Setter
     static final class FileBasedLargeFileReference extends LargeFileReference {
-
         Charset charset = StandardCharsets.UTF_8;
-
-        /**
-         *
-         */
         private static final long serialVersionUID = 1;
-
         transient LargeFilePersistenceServiceFilesystemImpl fsService;
-
         transient InputStream inputStream;
-
         transient OutputStream outputStream;
-
         boolean readable;
-
         boolean writeable;
-
         private String encryptionKey;
-
         private String initVector;
-
         private String cipherSuite;
 
         public FileBasedLargeFileReference(LargeFilePersistenceServiceFilesystemImpl fsService) {
             this.fsService = fsService;
         }
 
-        public FileBasedLargeFileReference(LargeFilePersistenceServiceFilesystemImpl fsService, LargeFileReference ref) {
+        public FileBasedLargeFileReference(
+            LargeFilePersistenceServiceFilesystemImpl fsService, LargeFileReference ref) {
             super(ref);
             this.fsService = fsService;
             if (!StringUtils.isEmpty(ref.getText())) {
@@ -451,57 +502,16 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             return writeable;
         }
 
-        public void setInputStream(InputStream inputStream) {
-            this.inputStream = inputStream;
-        }
-
-        public void setOutputStream(OutputStream outputStream) {
-            this.outputStream = outputStream;
-        }
-
-        public void setReadable(boolean readable) {
-            this.readable = readable;
-        }
-
-        public void setWriteable(boolean writeable) {
-            this.writeable = writeable;
-        }
-
-        public String getEncryptionKey() {
-            return encryptionKey;
-        }
-
-        public void setEncryptionKey(String encryptionKey) {
-            this.encryptionKey = encryptionKey;
-        }
-
-        public void setInitVector(String initVector) {
-            this.initVector = initVector;
-        }
-
-        public String getInitVector() {
-            return initVector;
-        }
-
-        public String getCipherSuite() {
-            return cipherSuite;
-        }
-
-        public void setCipherSuite(String cipherSuite) {
-            this.cipherSuite = cipherSuite;
-        }
-
+        @Override
         public String getText() {
             if (encryptionKey == null) {
                 return "";
             }
             return Base64Utils.encodeToString(encryptionKey.getBytes(charset))
-                    + "__" +
-                    Base64Utils.encodeToString(initVector.getBytes(charset))
-                    + "__" +
-                    Base64Utils.encodeToString(cipherSuite.getBytes(charset));
+                + "__"
+                + Base64Utils.encodeToString(initVector.getBytes(charset))
+                + "__"
+                + Base64Utils.encodeToString(cipherSuite.getBytes(charset));
         }
-
-
     }
 }

@@ -1,5 +1,7 @@
 package eu.domibus.connector.persistence.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.domibus.connector.common.annotations.DomainModelJsonObjectMapper;
 import eu.domibus.connector.controller.service.TransportStateService;
@@ -12,55 +14,57 @@ import eu.domibus.connector.domain.testutil.DomainEntityCreator;
 import eu.domibus.connector.persistence.dao.CommonPersistenceTest;
 import eu.domibus.connector.persistence.model.PDomibusConnectorTransportStep;
 import eu.domibus.connector.persistence.service.TransportStepPersistenceService;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.sql.DataSource;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @CommonPersistenceTest
 class TransportStepPersistenceServiceImplITCase {
-
     @Autowired
-    DataSource ds;
-
+    DataSource dataSource;
     @Autowired
     TransportStepPersistenceService transportStepPersistenceService;
-
     @DomainModelJsonObjectMapper
     ObjectMapper objectMapper;
 
     @Test
     void testMessageProcessingWhenTransportedMsgIsNull() {
-        final PDomibusConnectorTransportStep domibusConnectorTransportStep = new PDomibusConnectorTransportStep();
+        final PDomibusConnectorTransportStep domibusConnectorTransportStep =
+            new PDomibusConnectorTransportStep();
         domibusConnectorTransportStep.setTransportId(new TransportStateService.TransportId("id"));
         domibusConnectorTransportStep.setConnectorMessageId("bar");
         domibusConnectorTransportStep.setTransportedMessage(null);
-        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(domibusConnectorTransportStep));
+        Assertions.assertDoesNotThrow(
+            () -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService)
+                .mapTransportStepToDomain(domibusConnectorTransportStep));
     }
 
     @Test
     void testMessageProcessingWhenTransportedMsgIsEmptyJson() {
-        final PDomibusConnectorTransportStep domibusConnectorTransportStep = new PDomibusConnectorTransportStep();
+        final PDomibusConnectorTransportStep domibusConnectorTransportStep =
+            new PDomibusConnectorTransportStep();
         domibusConnectorTransportStep.setTransportId(new TransportStateService.TransportId("id"));
         domibusConnectorTransportStep.setConnectorMessageId("bar");
         domibusConnectorTransportStep.setTransportedMessage("{}");
-        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(domibusConnectorTransportStep));
+        Assertions.assertDoesNotThrow(
+            () -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService)
+                .mapTransportStepToDomain(domibusConnectorTransportStep));
     }
 
     @Test
     void testMessageProcessingWhenTransportedMsgIsEmptyJsonArray() {
-        final PDomibusConnectorTransportStep domibusConnectorTransportStep = new PDomibusConnectorTransportStep();
+        final PDomibusConnectorTransportStep domibusConnectorTransportStep =
+            new PDomibusConnectorTransportStep();
         domibusConnectorTransportStep.setTransportId(new TransportStateService.TransportId("id"));
         domibusConnectorTransportStep.setConnectorMessageId("bar");
         domibusConnectorTransportStep.setTransportedMessage("[]");
-        Assertions.assertDoesNotThrow(() -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService).mapTransportStepToDomain(domibusConnectorTransportStep));
+        Assertions.assertDoesNotThrow(
+            () -> ((TransportStepPersistenceServiceImpl) transportStepPersistenceService)
+                .mapTransportStepToDomain(domibusConnectorTransportStep));
     }
-
 
     @Test
     void createNewTransportStep() {
@@ -68,7 +72,8 @@ class TransportStepPersistenceServiceImplITCase {
         m.setConnectorMessageId(new DomibusConnectorMessageId("id002"));
 
         DomibusConnectorTransportStep step = new DomibusConnectorTransportStep();
-        DomibusConnectorLinkPartner.LinkPartnerName lp = new DomibusConnectorLinkPartner.LinkPartnerName("link2");
+        DomibusConnectorLinkPartner.LinkPartnerName lp =
+            new DomibusConnectorLinkPartner.LinkPartnerName("link2");
 
         step.setConnectorMessageId(new DomibusConnectorMessageId("id002"));
         step.setTransportedMessage(m);
@@ -85,11 +90,13 @@ class TransportStepPersistenceServiceImplITCase {
         m.setConnectorMessageId(new DomibusConnectorMessageId("id002"));
 
         DomibusConnectorTransportStep step = new DomibusConnectorTransportStep();
-        DomibusConnectorLinkPartner.LinkPartnerName lp = new DomibusConnectorLinkPartner.LinkPartnerName("link4");
 
-        DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate statusUpdate = new DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate();
+        DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate statusUpdate =
+            new DomibusConnectorTransportStep.DomibusConnectorTransportStepStatusUpdate();
         statusUpdate.setTransportState(TransportState.PENDING);
         statusUpdate.setCreated(LocalDateTime.now());
+
+        var lp = new DomibusConnectorLinkPartner.LinkPartnerName("link4");
 
         step.setTransportedMessage(m);
         step.setTransportId(new TransportStateService.TransportId("msg3_link2_1"));
@@ -99,10 +106,8 @@ class TransportStepPersistenceServiceImplITCase {
 
         transportStepPersistenceService.createNewTransportStep(step);
 
-        List<DomibusConnectorTransportStep> pendingStepBy = transportStepPersistenceService.findPendingStepBy(lp);
+        List<DomibusConnectorTransportStep> pendingStepBy =
+            transportStepPersistenceService.findPendingStepBy(lp);
         assertThat(pendingStepBy).hasSize(1);
-
     }
-
-
 }

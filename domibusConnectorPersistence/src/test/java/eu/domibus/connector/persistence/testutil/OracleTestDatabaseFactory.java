@@ -1,13 +1,12 @@
 package eu.domibus.connector.persistence.testutil;
 
-import org.junit.jupiter.api.Assumptions;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-
-import javax.sql.DataSource;
-import java.util.Properties;
-
-public class OracleTestDatabaseFactory extends AbstractTestDatabaseFactory implements TestDatabaseFactory {
-
+/**
+ * OracleTestDatabaseFactory is a class that extends the AbstractTestDatabaseFactory class and
+ * implements the TestDatabaseFactory interface. It provides functionality for creating a new Oracle
+ * database for testing purposes.
+ */
+public class OracleTestDatabaseFactory extends AbstractTestDatabaseFactory
+    implements TestDatabaseFactory {
     @Override
     public String getDatabaseType() {
         return "oracle";
@@ -17,7 +16,6 @@ public class OracleTestDatabaseFactory extends AbstractTestDatabaseFactory imple
     public String getName() {
         return "Native Oracle";
     }
-
 
     @Override
     protected String getDriverClassName() {

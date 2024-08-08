@@ -1,22 +1,27 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service.impl;
 
 import eu.domibus.connector.domain.model.DomibusConnectorService;
 import eu.domibus.connector.persistence.dao.DomibusConnectorServiceDao;
 import eu.domibus.connector.persistence.model.PDomibusConnectorService;
 import eu.domibus.connector.persistence.service.DomibusConnectorServicePersistenceService;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * The DomibusConnectorServicePersistenceImpl class implements the
+ * DomibusConnectorServicePersistenceService interface to provide methods for interacting with the
+ * persistence layer for managing DomibusConnectorService objects.
+ */
 @Service
-public class DomibusConnectorServicePersistenceImpl implements DomibusConnectorServicePersistenceService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DomibusConnectorServicePersistenceImpl.class);
-
+public class DomibusConnectorServicePersistenceImpl
+    implements DomibusConnectorServicePersistenceService {
     DomibusConnectorServiceDao serviceDao;
 
     @Autowired
@@ -40,7 +45,7 @@ public class DomibusConnectorServicePersistenceImpl implements DomibusConnectorS
         }
         return services;
     }
-    
+
     @Override
     public List<String> getServiceListString() {
         List<String> services = new ArrayList<>();
@@ -51,7 +56,8 @@ public class DomibusConnectorServicePersistenceImpl implements DomibusConnectorS
     }
 
     @Override
-    public DomibusConnectorService updateService(DomibusConnectorService oldService, DomibusConnectorService newService) {
+    public DomibusConnectorService updateService(
+        DomibusConnectorService oldService, DomibusConnectorService newService) {
         PDomibusConnectorService dbService = ServiceMapper.mapServiceToPersistence(newService);
         dbService = this.serviceDao.save(dbService);
         return ServiceMapper.mapServiceToDomain(dbService);
@@ -65,8 +71,8 @@ public class DomibusConnectorServicePersistenceImpl implements DomibusConnectorS
 
     @Override
     public eu.domibus.connector.domain.model.DomibusConnectorService getService(String service) {
-//        PDomibusConnectorService srv = serviceDao.findById(service).get();
-//        return ServiceMapper.mapServiceToDomain(srv);
+        // PDomibusConnectorService srv = serviceDao.findById(service).get();
+        // return ServiceMapper.mapServiceToDomain(srv);
         return null;
     }
 }

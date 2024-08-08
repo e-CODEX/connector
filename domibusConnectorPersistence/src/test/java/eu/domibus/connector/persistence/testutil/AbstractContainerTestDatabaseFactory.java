@@ -1,43 +1,50 @@
 package eu.domibus.connector.persistence.testutil;
 
+import java.io.IOException;
+import java.util.Properties;
+import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assumptions;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
-import org.testcontainers.containers.wait.strategy.WaitStrategy;
 
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Properties;
-
+/**
+ * Abstract base class for container-based test database factories.
+ *
+ * <p>This class implements the {@link TestDatabaseFactory} interface and provides default
+ * implementations for some of the methods. Concrete subclasses are expected to provide the
+ * implementation for the {@link #getDatabaseContainer(String)} method.
+ *
+ * <p>The class internally uses a nested class {@link ContainerTestDatabase} to represent the test
+ * database. This class provides an implementation of the {@link TestDatabase} interface and
+ * encapsulates the logic for creating a {@link DataSource}, {@link Properties}, and closing the
+ * database.
+ */
 public abstract class AbstractContainerTestDatabaseFactory implements TestDatabaseFactory {
-
-    private static final Logger LOGGER = LogManager.getLogger(AbstractContainerTestDatabaseFactory.class);
+    private static final Logger LOGGER =
+        LogManager.getLogger(AbstractContainerTestDatabaseFactory.class);
 
     class ContainerTestDatabase implements TestDatabase {
-
         JdbcDatabaseContainer jdbcDatabaseContainer;
         String version = null;
 
         @Override
         public DataSource getDataSource() {
             return DataSourceBuilder
-                    .create()
-                    .driverClassName(jdbcDatabaseContainer.getDriverClassName())
-                    .url(jdbcDatabaseContainer.getJdbcUrl())
-                    .username(jdbcDatabaseContainer.getUsername())
-                    .password(jdbcDatabaseContainer.getPassword())
-                    .build();
+                .create()
+                .driverClassName(jdbcDatabaseContainer.getDriverClassName())
+                .url(jdbcDatabaseContainer.getJdbcUrl())
+                .username(jdbcDatabaseContainer.getUsername())
+                .password(jdbcDatabaseContainer.getPassword())
+                .build();
         }
 
         @Override
         public Properties getProperties() {
             Properties p = new Properties();
             p.setProperty("testdb.name", getName());
-            p.setProperty("spring.datasource.driver-class-name", jdbcDatabaseContainer.getDriverClassName());
+            p.setProperty(
+                "spring.datasource.driver-class-name", jdbcDatabaseContainer.getDriverClassName());
             p.setProperty("spring.datasource.url", jdbcDatabaseContainer.getJdbcUrl());
             p.setProperty("spring.datasource.username", jdbcDatabaseContainer.getUsername());
             p.setProperty("spring.datasource.password", jdbcDatabaseContainer.getPassword());
@@ -46,7 +53,10 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
 
         @Override
         public String getName() {
-            return String.format("%s within docker data: [%s]", getDatabaseType(), version == null ? "empty" : version);
+            return String.format(
+                "%s within docker data: [%s]", getDatabaseType(),
+                version == null ? "empty" : version
+            );
         }
 
         @Override
@@ -57,31 +67,24 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
 
     @Override
     public TestDatabase createNewDatabase(String version) {
-        ContainerTestDatabase testDatabase = new ContainerTestDatabase();
-        JdbcDatabaseContainer dbContainer = getDatabaseContainer(version);
+        var dbContainer = getDatabaseContainer(version);
         try {
             dbContainer.withDatabaseName("test");
         } catch (UnsupportedOperationException e) {
-            //ignore it, if not supported...
+            // ignore it, if not supported...
         }
         dbContainer.withUsername("test");
         dbContainer.withPassword("test");
         dbContainer.start();
 
-
+        var testDatabase = new ContainerTestDatabase();
         testDatabase.jdbcDatabaseContainer = dbContainer;
         testDatabase.version = version;
-
-        String driverClassName = dbContainer.getDriverClassName();
-
-
 
         return testDatabase;
     }
 
     protected abstract JdbcDatabaseContainer getDatabaseContainer(String version);
-
-
 
     @Override
     public boolean isAvailable(String version) {
@@ -92,26 +95,23 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
         }
 
         if (version != null) {
-//            throw new RuntimeException("Cannot provide db with data in version " + version);
-            LOGGER.warn("Cannot provide db with data in version " + version);
-//            Assumptions.assumeTrue(false, "Cannot provide db with data in version " + version);
+            LOGGER.warn("Cannot provide db with data in version {}", version);
             return false;
         }
         return true;
     }
 
     protected boolean isDockerAndDriverAvailable(String version) {
-        boolean docker = true;
         String command = "docker ps";
         try {
             Process child = Runtime.getRuntime().exec(command);
             child.waitFor();
-            if(child.exitValue() != 0) {
-                LOGGER.warn("Docker not available!, calling 'docker ps' failed with exit code != 0");
+            if (child.exitValue() != 0) {
+                LOGGER.warn(
+                    "Docker not available!, calling 'docker ps' failed with exit code != 0");
                 return false;
             }
         } catch (IOException e) {
-//            Assumptions.assumeTrue(false, "Docker not available!, calling 'docker ps' failed");
             LOGGER.warn("Docker not available!, calling 'docker ps' failed", e);
             e.printStackTrace();
             return false;
@@ -119,8 +119,7 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
             throw new RuntimeException(e);
         }
 
-
-        JdbcDatabaseContainer databaseContainer = getDatabaseContainer(version);
+        var databaseContainer = getDatabaseContainer(version);
         String driverClassName = databaseContainer.getDriverClassName();
 
         try {
@@ -132,6 +131,7 @@ public abstract class AbstractContainerTestDatabaseFactory implements TestDataba
         return true;
     }
 
+    @Override
     public String toString() {
         return this.getName();
     }

@@ -1,42 +1,41 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.model;
 
-import eu.domibus.connector.domain.enums.TransportState;
-
 import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
-
+/**
+ * The PDomibusConnectorTransportStepStatusUpdateIdClass represents the ID of a status update for a
+ * transport step in Domibus connector. It is used as the composite primary key for the
+ * PDomibusConnectorTransportStepStatusUpdate entity.
+ */
+@Getter
+@Setter
 public class PDomibusConnectorTransportStepStatusUpdateIdClass implements Serializable {
-
     Long transportStep;
-
     String transportStateString;
-
-    public Long getTransportStep() {
-        return transportStep;
-    }
-
-    public void setTransportStep(Long transportStep) {
-        this.transportStep = transportStep;
-    }
-
-    public String getTransportStateString() {
-        return transportStateString;
-    }
-
-    public void setTransportStateString(String transportStateTransportState) {
-        this.transportStateString = transportStateTransportState;
-    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PDomibusConnectorTransportStepStatusUpdateIdClass)) return false;
-
-        PDomibusConnectorTransportStepStatusUpdateIdClass that = (PDomibusConnectorTransportStepStatusUpdateIdClass) o;
-
-        if (transportStep != null ? !transportStep.equals(that.transportStep) : that.transportStep != null)
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PDomibusConnectorTransportStepStatusUpdateIdClass that)) {
             return false;
-        return transportStateString != null ? transportStateString.equals(that.transportStateString) : that.transportStateString == null;
+        }
+
+        if (transportStep != null ? !transportStep.equals(that.transportStep) :
+            that.transportStep != null) {
+            return false;
+        }
+        return transportStateString != null
+            ? transportStateString.equals(that.transportStateString) :
+            that.transportStateString == null;
     }
 
     @Override

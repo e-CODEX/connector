@@ -1,35 +1,59 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service.impl;
 
-import eu.domibus.connector.domain.model.*;
+import eu.domibus.connector.domain.model.DomibusConnectorAction;
+import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
+import eu.domibus.connector.domain.model.DomibusConnectorMessage;
+import eu.domibus.connector.domain.model.DomibusConnectorMessageDetails;
+import eu.domibus.connector.domain.model.DomibusConnectorParty;
+import eu.domibus.connector.domain.model.DomibusConnectorService;
 import eu.domibus.connector.persistence.dao.DomibusConnectorMessageInfoDao;
-import eu.domibus.connector.persistence.model.*;
+import eu.domibus.connector.persistence.model.PDomibusConnectorAction;
+import eu.domibus.connector.persistence.model.PDomibusConnectorMessage;
+import eu.domibus.connector.persistence.model.PDomibusConnectorMessageInfo;
+import eu.domibus.connector.persistence.model.PDomibusConnectorParty;
+import eu.domibus.connector.persistence.model.PDomibusConnectorService;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
 import eu.domibus.connector.tools.logging.LoggingMarker;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+/**
+ * This class is responsible for persisting and retrieving message info in the database.
+ */
 @Component
 public class InternalMessageInfoPersistenceServiceImpl {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(InternalMessageInfoPersistenceServiceImpl.class);
-
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(InternalMessageInfoPersistenceServiceImpl.class);
     private final DomibusConnectorMessageInfoDao messageInfoDao;
-    private final DomibusConnectorPModePersistenceService pModeService;
+    private final DomibusConnectorPModePersistenceService connectorPModePersistenceService;
 
-
-    public InternalMessageInfoPersistenceServiceImpl(DomibusConnectorMessageInfoDao messageInfoDao,
-                                                     DomibusConnectorPModePersistenceService pModeService) {
+    public InternalMessageInfoPersistenceServiceImpl(
+        DomibusConnectorMessageInfoDao messageInfoDao,
+        DomibusConnectorPModePersistenceService connectorPModePersistenceService) {
         this.messageInfoDao = messageInfoDao;
-        this.pModeService = pModeService;
+        this.connectorPModePersistenceService = connectorPModePersistenceService;
     }
 
-    public void persistMessageInfo(DomibusConnectorMessage message, PDomibusConnectorMessage dbMessage) throws PersistenceException {
+    /**
+     * Persists the message information into the database.
+     *
+     * @param message   The message to persist the information from.
+     * @param dbMessage The database message object to persist the information to.
+     * @throws PersistenceException If an error occurs while persisting the message information.
+     */
+    public void persistMessageInfo(
+        DomibusConnectorMessage message, PDomibusConnectorMessage dbMessage)
+        throws PersistenceException {
         try {
-            PDomibusConnectorMessageInfo dbMessageInfo = new PDomibusConnectorMessageInfo();
+            var dbMessageInfo = new PDomibusConnectorMessageInfo();
             dbMessageInfo.setMessage(dbMessage);
             dbMessageInfo.setCreated(new Date());
             dbMessageInfo.setUpdated(new Date());
@@ -43,7 +67,6 @@ public class InternalMessageInfoPersistenceServiceImpl {
             dbMessage.setMessageInfo(dbMessageInfo);
 
             mapMessageInfoIntoMessageDetails(dbMessage, message.getMessageDetails());
-
         } catch (Exception e) {
             throw new PersistenceException("Could not persist message info into database. ", e);
         }
@@ -54,61 +77,79 @@ public class InternalMessageInfoPersistenceServiceImpl {
      *  and replaces it with the corresponding persistence object
      *
      */
-    private PDomibusConnectorMessageInfo validatePartyServiceActionOfMessageInfo(PDomibusConnectorMessageInfo messageInfo) throws PersistenceException {
-        DomibusConnectorBusinessDomain.BusinessDomainId defaultBusinessDomainId = DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
+    private PDomibusConnectorMessageInfo validatePartyServiceActionOfMessageInfo(
+        PDomibusConnectorMessageInfo messageInfo) throws PersistenceException {
+        var defaultBusinessDomainId =
+            DomibusConnectorBusinessDomain.getDefaultMessageLaneId();
         PDomibusConnectorAction dbAction = messageInfo.getAction();
-        Optional<PDomibusConnectorAction> dbActionFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbAction);
+        Optional<PDomibusConnectorAction> dbActionFound =
+            connectorPModePersistenceService.getConfiguredSingleDB(
+                defaultBusinessDomainId, dbAction);
         checkNull(dbAction, dbActionFound,
-                String.format("No action [%s] is configured at the connector!", dbAction.getId()));
+                  String.format("No action [%s] is configured at the connector!", dbAction.getId())
+        );
         messageInfo.setAction(dbActionFound.get());
 
         PDomibusConnectorService dbService = messageInfo.getService();
-        Optional<PDomibusConnectorService> dbServiceFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbService);
+        Optional<PDomibusConnectorService> dbServiceFound =
+            connectorPModePersistenceService.getConfiguredSingleDB(
+                defaultBusinessDomainId, dbService);
         checkNull(dbService, dbServiceFound,
-                String.format("No service [%s] is configured at the connector!", dbService.getId()));
+                  String.format(
+                      "No service [%s] is configured at the connector!", dbService.getId())
+        );
         messageInfo.setService(dbServiceFound.get());
 
         PDomibusConnectorParty dbFromParty = messageInfo.getFrom();
 
-        Optional<PDomibusConnectorParty> dbFromPartyFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbFromParty);
+        Optional<PDomibusConnectorParty> dbFromPartyFound =
+            connectorPModePersistenceService.getConfiguredSingleDB(
+                defaultBusinessDomainId, dbFromParty);
         checkNull(dbFromParty, dbFromPartyFound,
-                String.format("No party [%s] is configured at the connector!", dbFromParty));
+                  String.format("No party [%s] is configured at the connector!", dbFromParty)
+        );
         messageInfo.setFrom(dbFromPartyFound.get());
 
         PDomibusConnectorParty dbToParty = messageInfo.getTo();
 
-        Optional<PDomibusConnectorParty> dbToPartyFound = pModeService.getConfiguredSingleDB(defaultBusinessDomainId, dbToParty);
+        Optional<PDomibusConnectorParty> dbToPartyFound =
+            connectorPModePersistenceService.getConfiguredSingleDB(
+                defaultBusinessDomainId, dbToParty);
         checkNull(dbToParty, dbToPartyFound,
-                String.format("No party [%s] is configured at the connector!", dbToParty));
+                  String.format("No party [%s] is configured at the connector!", dbToParty)
+        );
         messageInfo.setTo(dbToPartyFound.get());
 
         return messageInfo;
     }
 
-    private void checkNull(Object provided, Optional foundInDb, String errorMessage) throws PersistenceException {
-        if (! foundInDb.isPresent()) {
-            String error = String.format("%s [%s] is not configured in database!", provided.getClass().getSimpleName(), provided);
+    private void checkNull(Object provided, Optional foundInDb, String errorMessage)
+        throws PersistenceException {
+        if (foundInDb.isEmpty()) {
+            var error = String.format(
+                "%s [%s] is not configured in database!",
+                provided.getClass().getSimpleName(),
+                provided
+            );
 
-            LOGGER.error(LoggingMarker.BUSINESS_LOG, "{} Check your p-modes or reimport them into the connector.", errorMessage);
+            LOGGER.error(
+                LoggingMarker.BUSINESS_LOG,
+                "{} Check your p-modes or reimport them into the connector.", errorMessage
+            );
             throw new PersistenceException(error);
         }
     }
 
-
     /**
-     * maps all messageInfos into the message details
-     *  *) action
-     *  *) service
-     *  *) originalSender
-     *  *) finalRecipient
-     *  *) fromParty
-     *  *) toParty
+     * Maps all messageInfos into the message details *) action *) service *) originalSender *)
+     * finalRecipient *) fromParty *) toParty.
      *
      * @param dbMessage the db message
-     * @param details the details, wich are changed
+     * @param details   the details, which are changed
      * @return - the reference of the changed details (same reference as passed via param details)
      */
-    public DomibusConnectorMessageDetails mapMessageInfoIntoMessageDetails(PDomibusConnectorMessage dbMessage, DomibusConnectorMessageDetails details) {
+    public DomibusConnectorMessageDetails mapMessageInfoIntoMessageDetails(
+        PDomibusConnectorMessage dbMessage, DomibusConnectorMessageDetails details) {
         PDomibusConnectorMessageInfo messageInfo = dbMessage.getMessageInfo();
         if (messageInfo != null) {
 
@@ -136,24 +177,51 @@ public class InternalMessageInfoPersistenceServiceImpl {
         return details;
     }
 
-
-    public void mapMessageDetailsToDbMessageInfoPersistence(DomibusConnectorMessageDetails messageDetails, PDomibusConnectorMessageInfo dbMessageInfo) {
-        PDomibusConnectorAction persistenceAction = ActionMapper.mapActionToPersistence(messageDetails.getAction());
+    /**
+     * Maps the message details from {@link DomibusConnectorMessageDetails} to
+     * {@link PDomibusConnectorMessageInfo}.
+     *
+     * @param messageDetails the message details to be mapped
+     * @param dbMessageInfo  the {@link PDomibusConnectorMessageInfo} object where the mapped values
+     *                       will be set
+     */
+    public void mapMessageDetailsToDbMessageInfoPersistence(
+        DomibusConnectorMessageDetails messageDetails, PDomibusConnectorMessageInfo dbMessageInfo) {
+        PDomibusConnectorAction persistenceAction =
+            ActionMapper.mapActionToPersistence(messageDetails.getAction());
         dbMessageInfo.setAction(persistenceAction);
 
-        PDomibusConnectorService persistenceService = ServiceMapper.mapServiceToPersistence(messageDetails.getService());
+        PDomibusConnectorService persistenceService =
+            ServiceMapper.mapServiceToPersistence(messageDetails.getService());
         dbMessageInfo.setService(persistenceService);
 
         dbMessageInfo.setFinalRecipient(messageDetails.getFinalRecipient());
         dbMessageInfo.setOriginalSender(messageDetails.getOriginalSender());
 
-        PDomibusConnectorParty from = PartyMapper.mapPartyToPersistence(messageDetails.getFromParty());
+        PDomibusConnectorParty from =
+            PartyMapper.mapPartyToPersistence(messageDetails.getFromParty());
         dbMessageInfo.setFrom(from);
         PDomibusConnectorParty to = PartyMapper.mapPartyToPersistence(messageDetails.getToParty());
         dbMessageInfo.setTo(to);
     }
 
-    public void mergeMessageInfo(DomibusConnectorMessage message, PDomibusConnectorMessage dbMessage) {
+    /**
+     * Merges the message information of the given DomibusConnectorMessage object into the
+     * PDomibusConnectorMessage object.
+     *
+     * <p>If the messageInfo field in the PDomibusConnectorMessage is null, it creates a new
+     * PDomibusConnectorMessageInfo object and sets it in the PDomibusConnectorMessage.
+     *
+     * <p>If the messageDetails field in the DomibusConnectorMessage is not null, it maps the
+     * values from the messageDetails to the corresponding fields in the
+     * PDomibusConnectorMessageInfo, and saves the PDomibusConnectorMessageInfo object using the
+     * messageInfoDao.
+     *
+     * @param message   the DomibusConnectorMessage object to merge from
+     * @param dbMessage the PDomibusConnectorMessage object to merge to
+     */
+    public void mergeMessageInfo(
+        DomibusConnectorMessage message, PDomibusConnectorMessage dbMessage) {
         PDomibusConnectorMessageInfo messageInfo = dbMessage.getMessageInfo();
         if (messageInfo == null) {
             messageInfo = new PDomibusConnectorMessageInfo();
@@ -163,10 +231,9 @@ public class InternalMessageInfoPersistenceServiceImpl {
         DomibusConnectorMessageDetails messageDetails = message.getMessageDetails();
 
         if (messageDetails != null) {
-//            this.internalMessageInfoPersistenceService.mergeMessageInfo(message, dbMessage);
+            // this.internalMessageInfoPersistenceService.mergeMessageInfo(message, dbMessage);
             mapMessageDetailsToDbMessageInfoPersistence(message.getMessageDetails(), messageInfo);
             messageInfoDao.save(messageInfo);
         }
     }
-
 }

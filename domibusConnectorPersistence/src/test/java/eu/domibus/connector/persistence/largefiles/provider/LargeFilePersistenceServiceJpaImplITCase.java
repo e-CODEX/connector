@@ -1,14 +1,13 @@
 package eu.domibus.connector.persistence.largefiles.provider;
 
 import eu.domibus.connector.persistence.dao.CommonPersistenceTest;
-import org.junit.jupiter.api.BeforeEach;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+/**
+ * Integration test case for the LargeFilePersistenceServiceJpaImpl class.
+ */
 @CommonPersistenceTest
-public class LargeFilePersistenceServiceJpaImplITCase extends CommonLargeFilePersistenceProviderITCase {
-
-
+public class LargeFilePersistenceServiceJpaImplITCase
+    extends CommonLargeFilePersistenceProviderITCase {
     @Override
     protected String getProviderName() {
         return LargeFilePersistenceServiceJpaImpl.PROVIDER_NAME;

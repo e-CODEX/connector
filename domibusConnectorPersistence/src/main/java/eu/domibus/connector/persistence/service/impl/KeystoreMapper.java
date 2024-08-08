@@ -1,38 +1,44 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service.impl;
-
-import javax.annotation.Nullable;
-
-import org.springframework.beans.BeanUtils;
 
 import eu.domibus.connector.domain.model.DomibusConnectorKeystore;
 import eu.domibus.connector.persistence.model.PDomibusConnectorKeystore;
+import javax.annotation.Nullable;
+import lombok.experimental.UtilityClass;
+import org.springframework.beans.BeanUtils;
 
+/**
+ * This class provides mapping methods to convert objects between the persistence and domain models
+ * of the Keystore entity.
+ */
+@UtilityClass
 public class KeystoreMapper {
-
-	static @Nullable DomibusConnectorKeystore mapKeystoreToDomain(@Nullable PDomibusConnectorKeystore persistenceKeystore) {
+    static @Nullable DomibusConnectorKeystore mapKeystoreToDomain(
+        @Nullable PDomibusConnectorKeystore persistenceKeystore) {
         if (persistenceKeystore != null) {
-            eu.domibus.connector.domain.model.DomibusConnectorKeystore keystore
-                    = new eu.domibus.connector.domain.model.DomibusConnectorKeystore(
-                    persistenceKeystore.getUuid(),
-                    persistenceKeystore.getKeystore(),
-                    persistenceKeystore.getPassword(),
-                    persistenceKeystore.getUploaded(),
-                    persistenceKeystore.getDescription(),
-                    persistenceKeystore.getType()
+            return new DomibusConnectorKeystore(
+                persistenceKeystore.getUuid(),
+                persistenceKeystore.getKeystore(),
+                persistenceKeystore.getPassword(),
+                persistenceKeystore.getUploaded(),
+                persistenceKeystore.getDescription(),
+                persistenceKeystore.getType()
             );
-            return keystore;
         }
         return null;
     }
 
-
-    static @Nullable PDomibusConnectorKeystore mapKeystoreToPersistence(@Nullable DomibusConnectorKeystore keystore) {
+    static @Nullable PDomibusConnectorKeystore mapKeystoreToPersistence(
+        @Nullable DomibusConnectorKeystore keystore) {
         if (keystore != null) {
-        	PDomibusConnectorKeystore persistenceKeystore = new PDomibusConnectorKeystore();
+            var persistenceKeystore = new PDomibusConnectorKeystore();
             BeanUtils.copyProperties(keystore, persistenceKeystore);
             return persistenceKeystore;
         }
         return null;
     }
-
 }

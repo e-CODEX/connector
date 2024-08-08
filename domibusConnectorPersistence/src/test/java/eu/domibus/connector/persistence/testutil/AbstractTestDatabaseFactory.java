@@ -1,15 +1,16 @@
 package eu.domibus.connector.persistence.testutil;
 
+import java.util.Properties;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.Assumptions;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 
-import javax.sql.DataSource;
-import java.util.Properties;
-
+/**
+ * Abstract class that implements the TestDatabaseFactory interface. This class provides common
+ * functionality for creating a new database for testing purposes.
+ */
 public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory {
-
     class MyTestDatabase implements TestDatabase {
-
         String driverClassName;
         String jdbcUrl;
         String username;
@@ -19,12 +20,12 @@ public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory
         @Override
         public DataSource getDataSource() {
             return DataSourceBuilder
-                    .create()
-                    .driverClassName(driverClassName)
-                    .url(jdbcUrl)
-                    .username(username)
-                    .password(password)
-                    .build();
+                .create()
+                .driverClassName(driverClassName)
+                .url(jdbcUrl)
+                .username(username)
+                .password(password)
+                .build();
         }
 
         @Override
@@ -39,12 +40,14 @@ public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory
 
         @Override
         public String getName() {
-            return String.format(getDatabaseType() + " %s data: [%s]", version == null ? "empty" : version);
+            return String.format(
+                "%s data: [%s]", getDatabaseType(), version == null ? "empty" : version
+            );
         }
 
         @Override
         public void close() throws Exception {
-            //cannot really shutdown remote db...
+            // cannot really shut down remote db...
         }
     }
 
@@ -54,16 +57,25 @@ public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory
 
         MyTestDatabase mysqlTestDatabase = new MyTestDatabase();
 
-        mysqlTestDatabase.driverClassName = System.getProperty("test.db." + getDatabaseType() + ".driverclassname", getDriverClassName());
+        mysqlTestDatabase.driverClassName =
+            System.getProperty(
+                "test.db." + getDatabaseType() + ".driverclassname",
+                getDriverClassName()
+            );
         mysqlTestDatabase.jdbcUrl = System.getProperty("test.db." + getDatabaseType() + ".url");
-        mysqlTestDatabase.username = System.getProperty("test.db." + getDatabaseType() + ".username");
-        mysqlTestDatabase.password = System.getProperty("test.db." + getDatabaseType() + ".password");
+        mysqlTestDatabase.username =
+            System.getProperty("test.db." + getDatabaseType() + ".username");
+        mysqlTestDatabase.password =
+            System.getProperty("test.db." + getDatabaseType() + ".password");
         mysqlTestDatabase.version = version;
 
         try {
             Class.forName(mysqlTestDatabase.driverClassName);
         } catch (ClassNotFoundException e) {
-            Assumptions.assumeTrue(false, String.format("Cannot load " + getDatabaseType() + " driver %s", mysqlTestDatabase.driverClassName));
+            Assumptions.assumeTrue(
+                false, String.format(
+                    "Cannot load %s driver %s", getDatabaseType(), mysqlTestDatabase.driverClassName
+                ));
         }
 
         return mysqlTestDatabase;
@@ -71,20 +83,21 @@ public abstract class AbstractTestDatabaseFactory implements TestDatabaseFactory
 
     protected abstract String getDriverClassName();
 
-
     @Override
     public boolean isAvailable(String version) {
         if (version != null) {
-//            throw new RuntimeException("Cannot provide db with data in version " + version);
             Assumptions.assumeTrue(true, "Cannot provide db with data in version " + version);
         }
-        Assumptions.assumeTrue("true".equalsIgnoreCase(System.getProperty("test.db.mysql.enabled")),
-                String.format("\nNative Mysql not available! Enable by setting following system properties" +
-                        "\ntest.db.%1$s.enabled=true" +
-                        "\ntest.db.%1$s.driverclassname=<driverClassName>" +
-                        "\ntest.db.%1$s.url=<driver url>" +
-                        "\ntest.db.%1$s.username=<username>" +
-                        "\ntest.db.%1$s.password=<password>", getDatabaseType())
+        Assumptions.assumeTrue(
+            "true".equalsIgnoreCase(System.getProperty("test.db.mysql.enabled")),
+            String.format(
+                """
+                    Native Mysql not available! Enable by setting following system properties
+                    test.db.%1$s.enabled=true
+                    test.db.%1$s.driverclassname=<driverClassName>
+                    test.db.%1$s.url=<driver url>
+                    test.db.%1$s.username=<username>
+                    test.db.%1$s.password=<password>""", getDatabaseType())
         );
         return true;
     }

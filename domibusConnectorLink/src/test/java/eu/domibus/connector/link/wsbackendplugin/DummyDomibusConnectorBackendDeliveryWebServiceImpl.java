@@ -1,4 +1,4 @@
-package test.eu.domibus.connector.link.wsbackendplugin;
+package eu.domibus.connector.link.wsbackendplugin;
 
 import eu.domibus.connector.domain.transition.DomibsConnectorAcknowledgementType;
 import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
@@ -15,7 +15,7 @@ import jakarta.xml.ws.WebServiceContext;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static test.eu.domibus.connector.link.wsbackendplugin.BackendClientPushWebServiceConfiguration.PUSH_DELIVERED_MESSAGES_LIST_BEAN_NAME;
+import static eu.domibus.connector.link.wsbackendplugin.BackendClientPushWebServiceConfiguration.PUSH_DELIVERED_MESSAGES_LIST_BEAN_NAME;
 
 class DummyDomibusConnectorBackendDeliveryWebServiceImpl implements DomibusConnectorBackendDeliveryWebService {
 

@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
 
 
 
-//@ConfigurationProperties(prefix = "")
+@ConfigurationProperties()
 @Validated
 @Data
 public class WsBackendPluginConfigurationProperties {

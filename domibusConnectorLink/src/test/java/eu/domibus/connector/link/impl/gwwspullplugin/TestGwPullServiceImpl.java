@@ -1,4 +1,4 @@
-package test.eu.domibus.connector.link.impl.gwwspullplugin;
+package eu.domibus.connector.link.impl.gwwspullplugin;
 
 import eu.domibus.connector.domain.transition.DomibsConnectorAcknowledgementType;
 import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static test.eu.domibus.connector.link.impl.gwwspullplugin.TestGwWebService.TO_PULL_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME;
+import static eu.domibus.connector.link.impl.gwwspullplugin.TestGwWebService.TO_PULL_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME;
 
 
 public class TestGwPullServiceImpl implements DomibusConnectorGatewayWebService {

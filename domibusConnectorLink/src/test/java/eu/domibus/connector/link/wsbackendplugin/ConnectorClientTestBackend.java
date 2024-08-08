@@ -1,4 +1,4 @@
-package test.eu.domibus.connector.link.wsbackendplugin;
+package eu.domibus.connector.link.wsbackendplugin;
 
 import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
 import eu.domibus.connector.ws.backend.webservice.DomibusConnectorBackendWebService;
@@ -15,7 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.util.TestSocketUtils;
-import test.eu.domibus.connector.link.util.GetServerAddress;
+import eu.domibus.connector.link.util.GetServerAddress;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static test.eu.domibus.connector.link.wsbackendplugin.BackendClientPushWebServiceConfiguration.PUSH_DELIVERED_MESSAGES_LIST_BEAN_NAME;
+import static eu.domibus.connector.link.wsbackendplugin.BackendClientPushWebServiceConfiguration.PUSH_DELIVERED_MESSAGES_LIST_BEAN_NAME;
 
 
 /**
@@ -37,7 +37,7 @@ import static test.eu.domibus.connector.link.wsbackendplugin.BackendClientPushWe
                 ActiveMQAutoConfiguration.class,
                 QuartzAutoConfiguration.class})
 @Profile(ConnectorClientTestBackend.TEST_BACKEND_PROFILE_NAME)
-@ImportResource("classpath:/test/eu/domibus/connector/link/wsbackendplugin/testclient.xml")
+@ImportResource("classpath:/eu/domibus/connector/link/wsbackendplugin/testclient.xml")
 public class ConnectorClientTestBackend {
 
     public static final String TEST_BACKEND_PROFILE_NAME = "wsbackendprofile";

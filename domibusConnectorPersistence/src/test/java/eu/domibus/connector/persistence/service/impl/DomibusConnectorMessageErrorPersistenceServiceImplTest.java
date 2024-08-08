@@ -133,7 +133,7 @@ public class DomibusConnectorMessageErrorPersistenceServiceImplTest {
         Mockito.when(messageDao.findOneByConnectorMessageId(eq("msgid"))).thenReturn(Optional.of(dbMessage));
 
 
-        Mockito.when(this.errorDao.findByMessage(eq(47L))).thenReturn(errorList);
+        Mockito.when(this.errorDao.findByMessageId(eq(47L))).thenReturn(errorList);
 
         List<eu.domibus.connector.domain.model.DomibusConnectorMessageError> messageErrors = messageErrorPersistenceService.getMessageErrors(message);
 

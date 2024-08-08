@@ -1,4 +1,4 @@
-package test.eu.domibus.connector.link.wsgatewayplugin;
+package eu.domibus.connector.link.wsgatewayplugin;
 
 
 import eu.domibus.connector.domain.transition.DomibsConnectorAcknowledgementType;
@@ -26,7 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * FOR TESTING PURPOSE
  */
 @SpringBootApplication(scanBasePackageClasses = {TestGW.class}, exclude = {DataSourceAutoConfiguration.class})
-@ImportResource("classpath:/test/eu/domibus/connector/link/wsgatewayplugin/TestGatewayContext.xml")
+@ImportResource("classpath:/eu/domibus/connector/link/wsgatewayplugin/TestGatewayContext.xml")
 @Profile("testgw")
 public class TestGW {
 

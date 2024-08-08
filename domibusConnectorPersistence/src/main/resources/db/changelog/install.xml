@@ -5,9 +5,6 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
-    <include file="db/changelog/properties.xml" />
-    <include file="db/changelog/v4_0/create_dc_db_version_table.xml" />
-
     <include file="db/changelog/install-4.4.xml"/>
 
 </databaseChangeLog>

@@ -1,4 +1,4 @@
-package test.eu.domibus.connector.link.impl.gwwspullplugin;
+package eu.domibus.connector.link.impl.gwwspullplugin;
 
 
 import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
@@ -19,7 +19,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
-import test.eu.domibus.connector.link.util.GetServerAddress;
+import eu.domibus.connector.link.util.GetServerAddress;
 
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -29,7 +29,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * FOR TESTING PURPOSE
  */
 @SpringBootApplication(scanBasePackageClasses = {TestGwWebService.class}, exclude = {DataSourceAutoConfiguration.class})
-@ImportResource("classpath:/test/eu/domibus/connector/link/gwwspullplugin/TestPullGatewayContext.xml")
+@ImportResource("classpath:/eu/domibus/connector/link/gwwspullplugin/TestPullGatewayContext.xml")
 @Profile("testgwpull")
 public class TestGwWebService {
 

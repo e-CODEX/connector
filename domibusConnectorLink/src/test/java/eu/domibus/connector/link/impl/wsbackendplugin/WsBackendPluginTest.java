@@ -28,13 +28,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.PlatformTransactionManager;
-import test.eu.domibus.connector.link.LinkTestContext;
-import test.eu.domibus.connector.link.wsbackendplugin.ConnectorClientTestBackend;
+import eu.domibus.connector.link.LinkTestContext;
+import eu.domibus.connector.link.wsbackendplugin.ConnectorClientTestBackend;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -42,7 +39,7 @@ import java.util.stream.Stream;
 
 import static eu.domibus.connector.link.service.DCLinkPluginConfiguration.LINK_PLUGIN_PROFILE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static test.eu.domibus.connector.link.LinkTestContext.SUBMIT_TO_CONNECTOR_QUEUE;
+import static eu.domibus.connector.link.LinkTestContext.SUBMIT_TO_CONNECTOR_QUEUE;
 
 @SpringBootTest(classes = {LinkTestContext.class },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT

@@ -64,7 +64,7 @@ public class DomibusConnectorMessageErrorPersistenceServiceImpl implements Domib
             //no message reference
             return new ArrayList<>();
         }
-        List<PDomibusConnectorMessageError> dbErrorsForMessage = this.messageErrorDao.findByMessage(dbMessage.get().getId());
+        List<PDomibusConnectorMessageError> dbErrorsForMessage = this.messageErrorDao.findByMessageId(dbMessage.get().getId());
         if (!CollectionUtils.isEmpty(dbErrorsForMessage)) {
             List<DomibusConnectorMessageError> messageErrors = new ArrayList<>(dbErrorsForMessage.size());
             for (PDomibusConnectorMessageError dbMsgError : dbErrorsForMessage) {

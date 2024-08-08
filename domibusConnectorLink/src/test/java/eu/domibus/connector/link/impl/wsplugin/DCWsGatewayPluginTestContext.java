@@ -1,6 +1,5 @@
-package test.eu.domibus.connector.link.impl.wsplugin;
+package eu.domibus.connector.link.impl.wsplugin;
 
-import eu.domibus.connector.domain.enums.LinkMode;
 import eu.domibus.connector.domain.enums.LinkType;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 

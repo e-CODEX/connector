@@ -1,7 +1,11 @@
 package eu.domibus.connector.persistence.testutil;
 
-public class MysqlTestDatabaseFactory extends AbstractTestDatabaseFactory implements TestDatabaseFactory {
-
+/**
+ * The MysqlTestDatabaseFactory class is a concrete implementation of the TestDatabaseFactory
+ * interface. It provides functionality for creating a new MySQL database for testing purposes.
+ */
+public class MysqlTestDatabaseFactory extends AbstractTestDatabaseFactory
+    implements TestDatabaseFactory {
     @Override
     public String getDatabaseType() {
         return "mysql";

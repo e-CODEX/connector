@@ -1,26 +1,31 @@
 package eu.domibus.connector.persistence.service.impl;
 
-import eu.domibus.connector.domain.model.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import eu.domibus.connector.domain.model.DomibusConnectorAction;
+import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
+import eu.domibus.connector.domain.model.DomibusConnectorKeystore;
+import eu.domibus.connector.domain.model.DomibusConnectorPModeSet;
+import eu.domibus.connector.domain.model.DomibusConnectorParty;
+import eu.domibus.connector.domain.model.DomibusConnectorService;
 import eu.domibus.connector.domain.testutil.DomainEntityCreator;
 import eu.domibus.connector.persistence.dao.CommonPersistenceTest;
 import eu.domibus.connector.persistence.dao.DomibusConnectorKeystoreDao;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @CommonPersistenceTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class DomibusConnectorPModePersistenceServiceTest {
-
     @Autowired
-    DomibusConnectorPModePersistenceService pModePersistenceService;
-
+    DomibusConnectorPModePersistenceService connectorPModePersistenceService;
     @Autowired
     DomibusConnectorKeystoreDao keyStoreDao;
-
 
     @Test
     @Order(1)
@@ -29,7 +34,9 @@ class DomibusConnectorPModePersistenceServiceTest {
         searchParty.setPartyId("domibus-blue");
         searchParty.setRoleType(DomibusConnectorParty.PartyRoleType.RESPONDER);
 
-        Optional<DomibusConnectorParty> configuredSingle = pModePersistenceService.getConfiguredSingle(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchParty);
+        Optional<DomibusConnectorParty> configuredSingle =
+            connectorPModePersistenceService.getConfiguredSingle(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchParty);
 
         assertThat(configuredSingle).isPresent();
     }
@@ -40,7 +47,9 @@ class DomibusConnectorPModePersistenceServiceTest {
         DomibusConnectorAction searchAction = new DomibusConnectorAction();
         searchAction.setAction("Form_A");
 
-        Optional<DomibusConnectorAction> configuredSingle = pModePersistenceService.getConfiguredSingle(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchAction);
+        Optional<DomibusConnectorAction> configuredSingle =
+            connectorPModePersistenceService.getConfiguredSingle(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchAction);
         assertThat(configuredSingle).isPresent();
     }
 
@@ -51,78 +60,91 @@ class DomibusConnectorPModePersistenceServiceTest {
         searchService.setService("service1");
         searchService.setServiceType(null);
 
-        Optional<DomibusConnectorService> configuredSingle = pModePersistenceService.getConfiguredSingle(DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchService);
+        Optional<DomibusConnectorService> configuredSingle =
+            connectorPModePersistenceService.getConfiguredSingle(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId(), searchService);
         assertThat(configuredSingle).isPresent();
     }
 
     @Test
     @Order(198)
     void updatePModeConfigurationSet_shouldThrow_DueUnsetConnectorStoreUUID() {
-        DomibusConnectorPModeSet pModeSet = new DomibusConnectorPModeSet();
-        pModeSet.setMessageLaneId(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
-        pModeSet.setDescription("Example");
+        DomibusConnectorPModeSet connectorPModeSet = new DomibusConnectorPModeSet();
+        connectorPModeSet.setMessageLaneId(
+            DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
+        connectorPModeSet.setDescription("Example");
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            pModePersistenceService.updatePModeConfigurationSet(pModeSet);
-        });
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> connectorPModePersistenceService.updatePModeConfigurationSet(connectorPModeSet)
+        );
     }
 
     @Test
     @Order(199)
     void updatePModeConfigurationSet_shouldThrow_DueNotFoundConnectorStore() {
-        DomibusConnectorPModeSet pModeSet = new DomibusConnectorPModeSet();
-        pModeSet.setMessageLaneId(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
-        pModeSet.setDescription("Example");
+        DomibusConnectorPModeSet connectorPModeSet = new DomibusConnectorPModeSet();
+        connectorPModeSet.setMessageLaneId(
+            DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
+        connectorPModeSet.setDescription("Example");
 
         DomibusConnectorKeystore keystore = new DomibusConnectorKeystore();
         keystore.setUuid("store1123");
 
-        pModeSet.setConnectorstore(keystore);
+        connectorPModeSet.setConnectorstore(keystore);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            pModePersistenceService.updatePModeConfigurationSet(pModeSet);
-        });
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> connectorPModePersistenceService.updatePModeConfigurationSet(
+                connectorPModeSet)
+        );
     }
 
+    // should run last, because it changes db
     @Test
-    @Order(200) //should run last, because it changes db
+    @Order(200)
     void updatePModeConfigurationSet() {
-
-        DomibusConnectorPModeSet pModeSet = new DomibusConnectorPModeSet();
-        pModeSet.setMessageLaneId(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
-        pModeSet.setDescription("Example");
+        DomibusConnectorPModeSet connectorPModeSet = new DomibusConnectorPModeSet();
+        connectorPModeSet.setMessageLaneId(
+            DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
+        connectorPModeSet.setDescription("Example");
 
         DomibusConnectorKeystore keystore = new DomibusConnectorKeystore();
         keystore.setUuid("store1");
-        pModeSet.setConnectorstore(keystore);
+        connectorPModeSet.setConnectorstore(keystore);
 
-        pModeSet.getServices().add(DomainEntityCreator.createServiceEPO());
-        pModeSet.getActions().add(DomainEntityCreator.createActionForm_A());
+        connectorPModeSet.getServices().add(DomainEntityCreator.createServiceEPO());
+        connectorPModeSet.getActions().add(DomainEntityCreator.createActionForm_A());
 
-        DomibusConnectorParty partyDomibusRedResponder = DomainEntityCreator.createPartyDomibusRed();
+        DomibusConnectorParty partyDomibusRedResponder =
+            DomainEntityCreator.createPartyDomibusRed();
         partyDomibusRedResponder.setRoleType(DomibusConnectorParty.PartyRoleType.RESPONDER);
-        pModeSet.getParties().add(partyDomibusRedResponder);
+        connectorPModeSet.getParties().add(partyDomibusRedResponder);
 
-        DomibusConnectorParty partyDomibusRedInitiator = DomainEntityCreator.createPartyDomibusRed();
+        DomibusConnectorParty partyDomibusRedInitiator =
+            DomainEntityCreator.createPartyDomibusRed();
         partyDomibusRedInitiator.setRoleType(DomibusConnectorParty.PartyRoleType.INITIATOR);
-        pModeSet.getParties().add(partyDomibusRedInitiator);
+        connectorPModeSet.getParties().add(partyDomibusRedInitiator);
 
-        DomibusConnectorParty partyDomibusBlueResponder = DomainEntityCreator.createPartyDomibusBlue();
+        DomibusConnectorParty partyDomibusBlueResponder =
+            DomainEntityCreator.createPartyDomibusBlue();
         partyDomibusBlueResponder.setRoleType(DomibusConnectorParty.PartyRoleType.RESPONDER);
-        pModeSet.getParties().add(partyDomibusBlueResponder);
+        connectorPModeSet.getParties().add(partyDomibusBlueResponder);
 
-        DomibusConnectorParty partyDomibusBluInitiator = DomainEntityCreator.createPartyDomibusBlue();
+        DomibusConnectorParty partyDomibusBluInitiator =
+            DomainEntityCreator.createPartyDomibusBlue();
         partyDomibusBluInitiator.setRoleType(DomibusConnectorParty.PartyRoleType.INITIATOR);
-        pModeSet.getParties().add(partyDomibusBluInitiator);
+        connectorPModeSet.getParties().add(partyDomibusBluInitiator);
 
-        pModePersistenceService.updatePModeConfigurationSet(pModeSet);
-
+        connectorPModePersistenceService.updatePModeConfigurationSet(connectorPModeSet);
     }
 
     @Test
     @Order(20)
     void getCurrentPModeSet() {
-        Optional<DomibusConnectorPModeSet> currentPModeSet = pModePersistenceService.getCurrentPModeSet(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
+        Optional<DomibusConnectorPModeSet> currentPModeSet =
+            connectorPModePersistenceService.getCurrentPModeSet(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
         assertThat(currentPModeSet).isPresent();
     }
 }

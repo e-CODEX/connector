@@ -1,20 +1,28 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.service.impl;
 
 import eu.domibus.connector.domain.model.DomibusConnectorParty;
 import eu.domibus.connector.persistence.model.PDomibusConnectorParty;
-
 import javax.annotation.Nullable;
+import lombok.experimental.UtilityClass;
 
+/**
+ * The PartyMapper class provides static methods for mapping between the
+ * {@link PDomibusConnectorParty} and {@link DomibusConnectorParty} classes.
+ */
+@UtilityClass
 public class PartyMapper {
-
     static @Nullable
     DomibusConnectorParty mapPartyToDomain(@Nullable PDomibusConnectorParty persistenceParty) {
         if (persistenceParty != null) {
-            eu.domibus.connector.domain.model.DomibusConnectorParty p
-                    = new eu.domibus.connector.domain.model.DomibusConnectorParty(
-                    persistenceParty.getPartyId(),
-                    persistenceParty.getPartyIdType(),
-                    persistenceParty.getRole()
+            var p = new eu.domibus.connector.domain.model.DomibusConnectorParty(
+                persistenceParty.getPartyId(),
+                persistenceParty.getPartyIdType(),
+                persistenceParty.getRole()
             );
             p.setPartyName(persistenceParty.getPmodePartyIdentifier());
             p.setRoleType(persistenceParty.getRoleType());
@@ -27,7 +35,7 @@ public class PartyMapper {
     static @Nullable
     PDomibusConnectorParty mapPartyToPersistence(@Nullable DomibusConnectorParty party) {
         if (party != null) {
-            PDomibusConnectorParty persistenceParty = new PDomibusConnectorParty();
+            var persistenceParty = new PDomibusConnectorParty();
             persistenceParty.setPartyId(party.getPartyId());
             persistenceParty.setPartyIdType(party.getPartyIdType());
             persistenceParty.setRole(party.getRole());
@@ -38,5 +46,4 @@ public class PartyMapper {
         }
         return null;
     }
-
 }

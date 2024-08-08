@@ -1,21 +1,21 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.dao;
 
 import eu.domibus.connector.persistence.model.PDomibusConnectorParty;
-//import eu.domibus.connector.persistence.model.PDomibusConnectorPartyPK;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Dictionary;
-import java.util.List;
-
 /**
+ * This interface represents the data access object (DAO) for the DomibusConnectorParty entity. It
+ * extends the CrudRepository interface, providing basic CRUD operations for the
+ * DomibusConnectorParty entity.
  *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
 @Repository
 public interface DomibusConnectorPartyDao extends CrudRepository<PDomibusConnectorParty, Long> {
-
-
 }

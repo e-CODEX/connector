@@ -1,15 +1,21 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.domain.enums.MessageTargetSource;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.lang.annotation.Annotation;
 
+/**
+ * Converts the MessageTargetSource enum value to a String for database storage and vice versa.
+ * This converter is applied automatically by JPA.
+ */
 @Converter(autoApply = true)
-public class MessageTargetSourceJpaConverter implements AttributeConverter<MessageTargetSource, String> {
-
-
+public class MessageTargetSourceJpaConverter
+    implements AttributeConverter<MessageTargetSource, String> {
     @Override
     public String convertToDatabaseColumn(MessageTargetSource attribute) {
         if (attribute == null) {

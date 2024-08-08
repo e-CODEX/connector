@@ -1,17 +1,33 @@
 package eu.domibus.connector.persistence.testutil;
 
-import liquibase.configuration.LiquibaseConfiguration;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
-import javax.sql.DataSource;
-
+/**
+ * The RecreateDbByLiquibaseTestExecutionListener class is a test execution listener that is
+ * responsible for recreating the database using Liquibase before and after each test class . This
+ * listener extends the AbstractTestExecutionListener class and overrides the prepareTestInstance
+ * and afterTestClass methods.
+ *
+ * <p>The listener maintains a boolean flag (alreadyCleared) to track whether the database has
+ * already been cleared during the test execution.
+ *
+ * <p>In the prepareTestInstance method, if the alreadyCleared flag is false, it calls the
+ * cleanupDatabase method to recreate the database using Liquibase. It then sets the alreadyCleared
+ * flag to true to indicate that the database has been cleared.
+ *
+ * <p>In the afterTestClass method, it always calls the cleanupDatabase method to recreate the
+ * database using Liquibase.
+ *
+ * <p>The cleanupDatabase method retrieves the SpringLiquibase bean from the ApplicationContext and
+ * sets the 'dropFirst' property to true. It then calls the 'afterPropertiesSet' method to recreate
+ * the database using Liquibase.
+ */
 public class RecreateDbByLiquibaseTestExecutionListener extends AbstractTestExecutionListener {
-
+    @Override
     public final int getOrder() {
         return 2001;
     }
@@ -37,7 +53,6 @@ public class RecreateDbByLiquibaseTestExecutionListener extends AbstractTestExec
         ApplicationContext app = testContext.getApplicationContext();
         SpringLiquibase springLiquibase = app.getBean(SpringLiquibase.class);
         springLiquibase.setDropFirst(true);
-        springLiquibase.afterPropertiesSet(); //The database get recreated here
+        springLiquibase.afterPropertiesSet(); // The database get recreated here
     }
-
 }

@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -10,15 +15,15 @@
 
 package eu.ecodex.dss.model.token;
 
-import org.apache.commons.lang.StringUtils;
-
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
+import lombok.Getter;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This class holds the type of the trust level.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
@@ -26,27 +31,33 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "TechnicalTrustLevelEnum")
 @XmlEnum
+@Getter
 public enum TechnicalTrustLevel {
-
-    /** aka RED */
+    /**
+     * Aka RED.
+     */
     @XmlEnumValue("FAIL")
     FAIL("FAIL", "Failed"),
 
-    /** aka YELLOW */
+    /**
+     * Aka YELLOW.
+     */
     @XmlEnumValue("SUFFICIENT")
     SUFFICIENT("SUFFICIENT", "Sufficient"),
-    
-    /** aka GREEN */
-     @XmlEnumValue("SUCCESSFUL")
+
+    /**
+     * Aka GREEN.
+     */
+    @XmlEnumValue("SUCCESSFUL")
     SUCCESSFUL("SUCCESSFUL", "Successful");
-    
     private final String value;
     private final String text;
 
     /**
-     * constructor
+     * Constructor.
+     *
      * @param value the value "FAIL" or "SUFFICIENT" or "SUCCESSFUL"
-     * @param text the textual representation "Fail" or "Sufficient" or "Successfull"
+     * @param text  the textual representation "Fail" or "Sufficient" or "Successful"
      */
     TechnicalTrustLevel(final String value, final String text) {
         this.value = value;
@@ -54,7 +65,8 @@ public enum TechnicalTrustLevel {
     }
 
     /**
-     * the underlying string value
+     * The underlying string value.
+     *
      * @return "SUCCESSFUL" or "NOT_SUCCESSFUL"
      */
     public String value() {
@@ -62,23 +74,7 @@ public enum TechnicalTrustLevel {
     }
 
     /**
-     * the underlying string value
-     * @return "FAIL" or "SUFFICIENT" or "SUCCESSFUL"
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * the underlying string value
-     * @return "Fail" or "Sufficient" or "Successfull"
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * checks whether the parameter is {@link #FAIL}
+     * Checks whether the parameter is {@link #FAIL}.
      *
      * @param level the optional value
      * @return true, if {@link #FAIL}
@@ -88,7 +84,7 @@ public enum TechnicalTrustLevel {
     }
 
     /**
-     * checks whether the parameter is {@link #SUFFICIENT}
+     * Checks whether the parameter is {@link #SUFFICIENT}.
      *
      * @param level the optional value
      * @return true, if {@link #SUFFICIENT}
@@ -98,7 +94,7 @@ public enum TechnicalTrustLevel {
     }
 
     /**
-     * checks whether the parameter is {@link #SUCCESSFUL}
+     * Checks whether the parameter is {@link #SUCCESSFUL}.
      *
      * @param level the optional value
      * @return true, if {@link #SUCCESSFUL}
@@ -108,42 +104,42 @@ public enum TechnicalTrustLevel {
     }
 
     /**
-     * detects the worst level in the provided array of levels:
-     * the precedence order is: {@link #FAIL}, {@link #SUFFICIENT}, {@link #SUCCESSFUL}
+     * Detects the worst level in the provided array of levels: the precedence order is.
+     * {@link #FAIL}, {@link #SUFFICIENT}, {@link #SUCCESSFUL}
      *
      * @param levels the values (with null supported)
      * @return null, if levels are null or empty; otherwise the detected worst level
      */
     public static TechnicalTrustLevel worst(final TechnicalTrustLevel... levels) {
-        if ( levels == null || levels.length == 0) {
+        if (levels == null || levels.length == 0) {
             return null;
         }
 
         TechnicalTrustLevel result = null;
 
-        for ( final TechnicalTrustLevel level : levels ) {
-            if ( level == null ) {
+        for (final TechnicalTrustLevel level : levels) {
+            if (level == null) {
                 // ignore null values
                 continue;
             }
-            if ( result == null ) {
+            if (result == null) {
                 // initialise the result
                 result = level;
-            } else if ( isFail(level) ) {
+            } else if (isFail(level)) {
                 // the worst case
                 result = level;
-            } else if ( isSufficient(level) ) {
+            } else if (isSufficient(level)) {
                 // check if can apply the level (that is not overwrite a worse value)
-                if ( !isFail(result) ) {
+                if (!isFail(result)) {
                     result = level;
                 }
-            } else if ( isSuccessful(level) ) {
+            } else if (isSuccessful(level)) {
                 // check if can apply the level (that is not overwrite a worse value)
-                if ( !isFail(result) && !isSufficient(result) ) {
+                if (!isFail(result) && !isSufficient(result)) {
                     result = level;
                 }
             }
-            if ( isFail(result) ) {
+            if (isFail(result)) {
                 return result; // this is the worst case, so we can ignore all others
             }
         }
@@ -152,7 +148,8 @@ public enum TechnicalTrustLevel {
     }
 
     /**
-     * factory retrieval method; if the instance is not found, then an IllegalArgumentException is thrown.
+     * factory retrieval method; if the instance is not found, then an IllegalArgumentException is
+     * thrown.
      *
      * @param v either "SUCCESSFUL" or "SUFFICIENT" or "FAIL"
      * @return the enum instance
@@ -161,12 +158,11 @@ public enum TechnicalTrustLevel {
         if (StringUtils.isEmpty(v)) {
             throw new IllegalArgumentException("value must not be empty");
         }
-        for (TechnicalTrustLevel c: TechnicalTrustLevel.values()) {
+        for (TechnicalTrustLevel c : TechnicalTrustLevel.values()) {
             if (c.value.equals(v)) {
                 return c;
             }
         }
         throw new IllegalArgumentException(v);
     }
-
 }

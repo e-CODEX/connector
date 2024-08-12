@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -10,35 +15,34 @@
 
 package eu.ecodex.dss.model;
 
-/**
- * This class holds the configuration about the environment - e.g. proxy settings.
- * 
- * <p>
- * DISCLAIMER: Project owner e-CODEX
- * </p>
- * 
- * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
- * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
- */
-@Deprecated //use spring beans instead!
-public class EnvironmentConfiguration {
+import lombok.Getter;
 
+/**
+ * This class holds the configuration about the environment - e.g. proxy settings. * * <p> *
+ * DISCLAIMER: Project owner e-CODEX * </p> * * @author <a
+ * href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a> * @version
+ * $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
+ *
+ * @deprecated Use spring beans instead!
+ */
+@Getter
+@Deprecated // use spring beans instead!
+public class EnvironmentConfiguration {
     /**
-     * holds information how to obtain the certificates of (all) the e-CODEX connectors
+     * Holds information how to obtain the certificates of (all) the e-CODEX connectors.
      */
     private CertificateStoreInfo connectorCertificates;
-
     /**
-     * the proxy data for http connections
+     * The proxy data for http connections.
      */
     private ProxyData proxyHTTP;
     /**
-     * the proxy data for https connections
+     * The proxy data for https connections.
      */
     private ProxyData proxyHTTPS;
 
     /**
-     * checks if the store information for the e-CODEX connectors certificates is valid
+     * Checks if the store information for the e-CODEX connectors certificates is valid.
      *
      * @return the validity
      */
@@ -47,16 +51,7 @@ public class EnvironmentConfiguration {
     }
 
     /**
-     * information how to obtain the certificates of (all) the e-CODEX connectors
-     *
-     * @return the value
-     */
-    public CertificateStoreInfo getConnectorCertificates() {
-        return this.connectorCertificates;
-    }
-
-    /**
-     * information how to obtain the certificates of (all) the e-CODEX connectors
+     * Information how to obtain the certificates of (all) the e-CODEX connectors.
      *
      * @param v the data instance
      * @return this class' instance for chaining
@@ -67,7 +62,7 @@ public class EnvironmentConfiguration {
     }
 
     /**
-     * checks if the proxy data is set and valid
+     * Checks if the proxy data is set and valid.
      *
      * @return the validity
      */
@@ -76,17 +71,8 @@ public class EnvironmentConfiguration {
     }
 
     /**
-     * the proxy data for http connections
-     * 
-     * @return the data instance
-     */
-    public ProxyData getProxyHTTP() {
-        return proxyHTTP;
-    }
-
-    /**
-     * the proxy data for http connections
-     * 
+     * The proxy data for http connections.
+     *
      * @param v the data instance
      * @return this class' instance for chaining
      */
@@ -96,8 +82,8 @@ public class EnvironmentConfiguration {
     }
 
     /**
-     * checks if the proxy data is set and valid
-     * 
+     * Checks if the proxy data is set and valid.
+     *
      * @return the validity
      */
     public boolean isProxyHTTPSValid() {
@@ -105,17 +91,8 @@ public class EnvironmentConfiguration {
     }
 
     /**
-     * the proxy data for https connections
-     * 
-     * @return the data instance
-     */
-    public ProxyData getProxyHTTPS() {
-        return proxyHTTPS;
-    }
-
-    /**
-     * the proxy data for https connections
-     * 
+     * The proxy data for https connections.
+     *
      * @param v the data instance
      * @return this class' instance for chaining
      */

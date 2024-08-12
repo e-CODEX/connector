@@ -1,41 +1,50 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.ecodex.dss.service.impl.dss;
 
 import eu.ecodex.dss.model.ECodexContainer;
 import eu.ecodex.dss.model.checks.CheckResult;
-import eu.europa.esig.dss.diagnostic.DiagnosticData;
-import eu.europa.esig.dss.enumerations.DigestAlgorithm;
-import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
 import eu.europa.esig.dss.enumerations.Indication;
 import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
+import eu.europa.esig.dss.jaxb.object.Message;
 import eu.europa.esig.dss.model.DSSDocument;
-import eu.europa.esig.dss.model.x509.CertificateToken;
-import eu.europa.esig.dss.simplereport.SimpleReport;
 import eu.europa.esig.dss.spi.x509.CertificateSource;
 import eu.europa.esig.dss.validation.AdvancedSignature;
 import eu.europa.esig.dss.validation.CertificateVerifier;
 import eu.europa.esig.dss.validation.SignedDocumentValidator;
 import eu.europa.esig.dss.validation.executor.DocumentProcessExecutor;
 import eu.europa.esig.dss.validation.reports.Reports;
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.Resource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.cert.X509Certificate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+/**
+ * The DSSSignatureChecker class is responsible for checking the validity of signatures in a
+ * document.
+ *
+ * <p>This class uses a builder pattern for instantiation. It requires a CertificateVerifier, a
+ * DocumentProcessExecutor, a CertificateSource, and optionally a validationConstraints Resource.
+ * The signatureCheckerName is an optional parameter for identifying the signature checker
+ * instance.
+ */
 public class DSSSignatureChecker<T extends ECodexContainer.ECodexDSSDocumentType> {
-
     private final T retriever;
 
     public static DSSSignatureCheckerBuilder builder() {
         return new DSSSignatureCheckerBuilder();
     }
 
+    /**
+     * A builder class for creating instances of DSSSignatureChecker. This class provides methods
+     * for setting various parameters and building the DSSSignatureChecker object.
+     */
     public static class DSSSignatureCheckerBuilder {
         private CertificateVerifier certificateVerifier;
         private DocumentProcessExecutor processExecutor;
@@ -43,34 +52,48 @@ public class DSSSignatureChecker<T extends ECodexContainer.ECodexDSSDocumentType
         private Resource validationConstraints;
         private String signatureCheckerName;
 
-        public <C extends ECodexContainer.ECodexDSSDocumentType> DSSSignatureChecker<C> build(C ecxDocType) {
-            Objects.requireNonNull(certificateVerifier, "CertificateVerifier is not allowed to be null!");
+        /**
+         * Builds a new instance of the DSSSignatureChecker class with the provided parameters.
+         *
+         * @param ecxDocType The document type for the DSSSignatureChecker.
+         * @return A new instance of the DSSSignatureChecker class.
+         * @throws NullPointerException If the certificateVerifier parameter is null.
+         */
+        public <C extends ECodexContainer.ECodexDSSDocumentType> DSSSignatureChecker<C> build(
+            C ecxDocType) {
+            Objects.requireNonNull(
+                certificateVerifier, "CertificateVerifier is not allowed to be null!");
 
-            return new DSSSignatureChecker<C>(
-                    ecxDocType,
-                    certificateVerifier,
-                    processExecutor,
-                    connectorCertificateSource,
-                    signatureCheckerName,
-                    Optional.ofNullable(validationConstraints));
+            return new DSSSignatureChecker<>(
+                ecxDocType,
+                certificateVerifier,
+                processExecutor,
+                connectorCertificateSource,
+                signatureCheckerName,
+                Optional.ofNullable(validationConstraints)
+            );
         }
 
-        public DSSSignatureCheckerBuilder withCertificateVerifier(CertificateVerifier certificateVerifier) {
+        public DSSSignatureCheckerBuilder withCertificateVerifier(
+            CertificateVerifier certificateVerifier) {
             this.certificateVerifier = certificateVerifier;
             return this;
         }
 
-        public DSSSignatureCheckerBuilder withProcessExecutor(DocumentProcessExecutor processExecutor) {
+        public DSSSignatureCheckerBuilder withProcessExecutor(
+            DocumentProcessExecutor processExecutor) {
             this.processExecutor = processExecutor;
             return this;
         }
 
-        public DSSSignatureCheckerBuilder withConnectorCertificateSource(CertificateSource connectorCertificateSource) {
+        public DSSSignatureCheckerBuilder withConnectorCertificateSource(
+            CertificateSource connectorCertificateSource) {
             this.connectorCertificateSource = connectorCertificateSource;
             return this;
         }
 
-        public DSSSignatureCheckerBuilder withValidationConstraints(Resource validationConstraints) {
+        public DSSSignatureCheckerBuilder withValidationConstraints(
+            Resource validationConstraints) {
             this.validationConstraints = validationConstraints;
             return this;
         }
@@ -81,42 +104,41 @@ public class DSSSignatureChecker<T extends ECodexContainer.ECodexDSSDocumentType
         }
     }
 
+    @SuppressWarnings("checkstyle:MemberName")
     private final Logger LOGGER;
-
     private final CertificateVerifier certificateVerifier;
     private final DocumentProcessExecutor processExecutor;
     private final CertificateSource connectorCertificateSource;
     private final Optional<Resource> validationConstraints;
 
     private DSSSignatureChecker(
-            T retriever,
-            CertificateVerifier certificateVerifier,
-            DocumentProcessExecutor documentValidator,
-            CertificateSource certificateSource,
-            String signatureCheckerName,
-            Optional<Resource> validationConstraints) {
+        T retriever,
+        CertificateVerifier certificateVerifier,
+        DocumentProcessExecutor documentValidator,
+        CertificateSource certificateSource,
+        String signatureCheckerName,
+        Optional<Resource> validationConstraints) {
         this.retriever = retriever;
-        LOGGER = LogManager.getLogger(DSSSignatureChecker.class.getName() + "." + signatureCheckerName);
+        LOGGER =
+            LogManager.getLogger(DSSSignatureChecker.class.getName() + "." + signatureCheckerName);
         this.certificateVerifier = certificateVerifier;
         this.processExecutor = documentValidator;
         this.connectorCertificateSource = certificateSource;
         this.validationConstraints = validationConstraints;
     }
 
-
     /**
-     * checks the validity of the signatures of a document
+     * Checks the validity of the signatures of a document.
      *
-     * @param eCodexContainer this holds the document with the signature
+     * @param container this holds the document with the signature
      * @return the result
      */
-    public CheckResult checkSignature(ECodexContainer eCodexContainer) {
-        return checkSignature(retriever.getDSSDocument(eCodexContainer));
+    public CheckResult checkSignature(ECodexContainer container) {
+        return checkSignature(retriever.getDSSDocument(container));
     }
 
-
     /**
-     * checks the validity of the signatures of a document
+     * Checks the validity of the signatures of a document.
      *
      * @param dssDocument this holds the signatures
      * @return the result
@@ -124,19 +146,23 @@ public class DSSSignatureChecker<T extends ECodexContainer.ECodexDSSDocumentType
     private CheckResult checkSignature(final DSSDocument dssDocument) {
         Objects.requireNonNull(certificateVerifier, "the certificate verifier has not been set");
 
-        final CheckResult checkResult = new CheckResult();
+        final var checkResult = new CheckResult();
 
-        final SignedDocumentValidator validator = SignedDocumentValidator.fromDocument(dssDocument);
+        final var validator = SignedDocumentValidator.fromDocument(dssDocument);
         validator.setProcessExecutor(processExecutor);
 
         validator.setCertificateVerifier(certificateVerifier);
 
-
         Reports reports;
         if (validationConstraints.isPresent()) {
             try {
-                final InputStream resourceAsStream = validationConstraints.get().getInputStream(); //DSSECodexContainerService.class.getResourceAsStream("/validation/102853/container_constraint.xml");
-                LOGGER.debug("Validating document with validation constraints [{}]", validationConstraints.get());
+                final var resourceAsStream = validationConstraints
+                    .get()
+                    .getInputStream();
+                LOGGER.debug(
+                    "Validating document with validation constraints [{}]",
+                    validationConstraints.get()
+                );
                 reports = validator.validateDocument(resourceAsStream);
             } catch (IOException e) {
                 throw new RuntimeException("Cannot open validation constraint", e);
@@ -145,62 +171,79 @@ public class DSSSignatureChecker<T extends ECodexContainer.ECodexDSSDocumentType
             reports = validator.validateDocument();
         }
 
-
-        final SimpleReport simpleReport = reports.getSimpleReport();
-//		LOG.lInfo("Simple Report:\n{}", simpleReport);
-        LOGGER.debug("Detailed Report of [{}]:\n{}", dssDocument.getName(), reports.getXmlDetailedReport());
-        // final DetailedReport detailedReport = validator.getDetailedReport();
-        final DiagnosticData diagnosticData = reports.getDiagnosticData();
+        final var simpleReport = reports.getSimpleReport();
+        LOGGER.debug(
+            "Detailed Report of [{}]:\n{}", dssDocument.getName(), reports.getXmlDetailedReport());
+        final var diagnosticData = reports.getDiagnosticData();
         final List<AdvancedSignature> signatures = validator.getSignatures();
         if (signatures.isEmpty()) {
-
-            checkResult.addProblem(true, "The validation report [" + dssDocument.getName() + "] does not contain any signature information");
+            checkResult.addProblem(
+                true, "The validation report [" + dssDocument.getName()
+                    + "] does not contain any signature information");
             return checkResult;
         }
 
         for (final AdvancedSignature signature : signatures) {
 
             if (connectorCertificateSource != null) {
-                // check that the signing signature is contained in the keystore holding (all) the certificates of the connectors
-                final CertificateToken signingCertificateToken = TechnicalValidationUtil.getSigningCertificateToken(signature);
-                final X509Certificate sigCert = TechnicalValidationUtil.getCertificate(signingCertificateToken);
+                // check that the signing signature is contained in the keystore holding (all)
+                // the certificates of the connectors
+                final var signingCertificateToken =
+                    TechnicalValidationUtil.getSigningCertificateToken(signature);
+                TechnicalValidationUtil.getCertificate(signingCertificateToken);
 
-                if (connectorCertificateSource.getCertificates().stream().anyMatch(c -> c.getDSSId().equals(signingCertificateToken.getDSSId()))) {
-                    LOGGER.trace("The Certificate with id [{}] has been found in the (configured) certificates", signingCertificateToken.getDSSId());
+                if (connectorCertificateSource.getCertificates().stream().anyMatch(
+                    c -> c.getDSSId().equals(signingCertificateToken.getDSSId()))) {
+                    LOGGER.trace(
+                        "The Certificate with id [{}] has been found in the (configured)"
+                            + " certificates",
+                        signingCertificateToken.getDSSId()
+                    );
                 } else {
-                    checkResult.addProblem(true, "The signature is not contained in the (configured) certificates");
+                    checkResult.addProblem(
+                        true, "The signature is not contained in the (configured)"
+                            + " certificates");
                 }
-//                if (!connectorCertificatesStore.isValid(sigCert)) {
-//                    checkResult.addProblem(true, "The signature is not contained in the (configured) certificates for the e-CODEX connectors.");
-//                }
             } else {
-                LOGGER.debug("No certificate source has been provided. No check if certificate is in source will be performed");
+                LOGGER.debug(
+                    "No certificate source has been provided. No check if certificate is in source"
+                        + " will be performed");
             }
             final String signatureId = signature.getId();
-            final Indication indication = simpleReport.getIndication(signatureId);
-            if (Indication.PASSED.equals(indication) || Indication.TOTAL_PASSED.equals(indication)) {
+            final var indication = simpleReport.getIndication(signatureId);
+            if (Indication.PASSED.equals(indication) || Indication.TOTAL_PASSED.equals(
+                indication)) {
                 continue;
             }
-            final List<String> errors = simpleReport.getQualificationErrors(signatureId).stream().map(m -> m.getValue()).collect(Collectors.toList());
+            final List<String> errors =
+                simpleReport.getQualificationErrors(signatureId)
+                            .stream()
+                            .map(Message::getValue)
+                            .toList();
             final String message;
             if (errors.isEmpty()) {
-
-                final DigestAlgorithm signatureDigestAlgorithm = diagnosticData.getSignatureDigestAlgorithm(signatureId);
-                final EncryptionAlgorithm signatureEncryptionAlgorithm = diagnosticData.getSignatureEncryptionAlgorithm(signatureId);
-                final SignatureAlgorithm algorithm = SignatureAlgorithm.getAlgorithm(signatureEncryptionAlgorithm, signatureDigestAlgorithm);
-                message = "The validation report [" + dssDocument.getName() + "] contains an invalid verification result for the signature algorithm: " + algorithm;
+                final var signatureDigestAlgorithm =
+                    diagnosticData.getSignatureDigestAlgorithm(signatureId);
+                final var signatureEncryptionAlgorithm =
+                    diagnosticData.getSignatureEncryptionAlgorithm(signatureId);
+                final var algorithm = SignatureAlgorithm.getAlgorithm(
+                    signatureEncryptionAlgorithm,
+                    signatureDigestAlgorithm
+                );
+                message = "The validation report [" + dssDocument.getName()
+                    + "] contains an invalid verification result for the signature algorithm: "
+                    + algorithm;
             } else {
-                String newErrorMessage = "";
+                var newErrorMessage = new StringBuilder();
                 for (String error : errors) {
-
-                    newErrorMessage += (newErrorMessage.isEmpty() ? "" : "/") + error;
-
+                    newErrorMessage
+                        .append((newErrorMessage.isEmpty()) ? "" : "/")
+                        .append(error);
                 }
-                message = newErrorMessage;
+                message = newErrorMessage.toString();
             }
             checkResult.addProblem(true, message);
         }
         return checkResult;
     }
-
 }

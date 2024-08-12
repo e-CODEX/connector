@@ -1,15 +1,21 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 /**
- * This package provides the Checker domain model and business contract.
- * These implementations help to check the validity of:
+ * This package provides the Checker domain model and business contract. These implementations help
+ * to check the validity of:
  *
  * <p><ul>
- *         <li>a business document.
- *         <li>an ASIC-C container.
- *         <li>a Token.
- *     </ul>
+ * <li>a business document.
+ * <li>an ASIC-C container.
+ * <li>a Token.
+ * </ul>
  *
- * @since 4.4.12
  * @author komi
  * @version 1.0
+ * @since 4.4.12
  */
+
 package eu.ecodex.dss.model.checks;

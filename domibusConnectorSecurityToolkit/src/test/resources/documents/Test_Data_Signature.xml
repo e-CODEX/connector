@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/><Reference URI="file:///c:/Adrian/e-CODEX_Testdata/Test_Data.xml"><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>9qS6kVRAXI24g23OPmopWGJVlx4=</DigestValue></Reference></SignedInfo><SignatureValue>GkMrRn+F4ghDEx6/P0R2zHgfXcFyTQPWPYJg34Wn2BgH9qVL8DX/+Q==</SignatureValue><KeyInfo><KeyValue><DSAKeyValue><P>/KaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII864WF64B81uRpH5t9jQTxeEu0ImbzRMqzVDZkVG9
-xD7nN1kuFw==</P><Q>li7dzDacuo67Jg7mtqEm2TRuOMU=</Q><G>Z4Rxsnqc9E7pGknFFH2xqaryRPBaQ01khpMdLRQnG541Awtx/XPaF5Bpsy4pNWMOHCBiNU0Nogps
-QW5QvnlMpA==</G><Y>vAcMdHcZbADCF+w9/NXG6w9CDriga8z8wjMg0eoqLnBYLc83EUNQ2384GG1Ayjb3ffVDhXdf9OeS
-UxPNFU2Dfg==</Y></DSAKeyValue></KeyValue></KeyInfo></Signature>
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+        <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+        <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+        <Reference URI="file:///c:/Adrian/e-CODEX_Testdata/Test_Data.xml">
+            <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+            <DigestValue>9qS6kVRAXI24g23OPmopWGJVlx4=</DigestValue>
+        </Reference>
+    </SignedInfo>
+    <SignatureValue>GkMrRn+F4ghDEx6/P0R2zHgfXcFyTQPWPYJg34Wn2BgH9qVL8DX/+Q==</SignatureValue>
+    <KeyInfo>
+        <KeyValue>
+            <DSAKeyValue>
+                <P>/KaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII864WF64B81uRpH5t9jQTxeEu0ImbzRMqzVDZkVG9
+                    xD7nN1kuFw==
+                </P>
+                <Q>li7dzDacuo67Jg7mtqEm2TRuOMU=</Q>
+                <G>Z4Rxsnqc9E7pGknFFH2xqaryRPBaQ01khpMdLRQnG541Awtx/XPaF5Bpsy4pNWMOHCBiNU0Nogps
+                    QW5QvnlMpA==
+                </G>
+                <Y>vAcMdHcZbADCF+w9/NXG6w9CDriga8z8wjMg0eoqLnBYLc83EUNQ2384GG1Ayjb3ffVDhXdf9OeS
+                    UxPNFU2Dfg==
+                </Y>
+            </DSAKeyValue>
+        </KeyValue>
+    </KeyInfo>
+</Signature>

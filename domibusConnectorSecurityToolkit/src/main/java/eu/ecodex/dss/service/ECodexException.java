@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -7,27 +12,25 @@
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
+
 package eu.ecodex.dss.service;
 
+import lombok.NoArgsConstructor;
+
 /**
- * this is the only type of exceptions that the service methods should expose.
- * so, they should catch all exceptions deemed as "library-scoped" and wrap them accordingly.
+ * this is the only type of exceptions that the service methods should expose. so, they should catch
+ * all exceptions deemed as "library-scoped" and wrap them accordingly.
  *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
+@NoArgsConstructor
 public class ECodexException extends Exception {
-
     /**
-     * see {@link RuntimeException#RuntimeException()}
-     */
-    public ECodexException() {
-    }
-
-    /**
-     * see {@link RuntimeException#RuntimeException(String)}
+     * See {@link RuntimeException#RuntimeException(String)}.
+     *
      * @param message textual information
      */
     public ECodexException(final String message) {
@@ -35,7 +38,8 @@ public class ECodexException extends Exception {
     }
 
     /**
-     * see {@link RuntimeException#RuntimeException(Throwable)}
+     * See {@link RuntimeException#RuntimeException(Throwable)}.
+     *
      * @param cause the parent cause
      */
     public ECodexException(final Throwable cause) {
@@ -43,22 +47,24 @@ public class ECodexException extends Exception {
     }
 
     /**
-     * see {@link RuntimeException#RuntimeException(String, Throwable)}
+     * See {@link RuntimeException#RuntimeException(String, Throwable)}.
+     *
      * @param message textual information
-     * @param cause the parent cause
+     * @param cause   the parent cause
      */
     public ECodexException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * wraps a non-ecodexexception
-     * @param e the catched exception
+     * Wraps a non-ecodexexception.
+     *
+     * @param e the caught exception
      * @return the wrapped (or not-wrapped) exception
      */
     public static ECodexException wrap(final Exception e) {
-        if (e instanceof ECodexException) {
-            return (ECodexException)e;
+        if (e instanceof ECodexException exception) {
+            return exception;
         } else {
             return new ECodexException(e);
         }

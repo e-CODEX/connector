@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -7,12 +12,15 @@
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
+
 package eu.ecodex.dss.service.impl.dss;
 
 import eu.ecodex.dss.model.SignatureParameters;
 import eu.europa.esig.dss.asic.xades.ASiCWithXAdESSignatureParameters;
 import eu.europa.esig.dss.asic.xades.signature.ASiCWithXAdESService;
-import eu.europa.esig.dss.enumerations.*;
+import eu.europa.esig.dss.enumerations.ASiCContainerType;
+import eu.europa.esig.dss.enumerations.SignatureLevel;
+import eu.europa.esig.dss.enumerations.SignaturePackaging;
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.SignatureValue;
 import eu.europa.esig.dss.model.ToBeSigned;
@@ -20,20 +28,17 @@ import eu.europa.esig.dss.pades.PAdESSignatureParameters;
 import eu.europa.esig.dss.pades.PAdESTimestampParameters;
 import eu.europa.esig.dss.pades.signature.PAdESService;
 import eu.europa.esig.dss.signature.DocumentSignatureService;
-import eu.europa.esig.dss.token.SignatureTokenConnection;
 import eu.europa.esig.dss.validation.CertificateVerifier;
 import eu.europa.esig.dss.validation.CommonCertificateVerifier;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.XAdESTimestampParameters;
 import eu.europa.esig.dss.xades.signature.XAdESService;
-
-import java.security.Signature;
 import java.util.Date;
-
+import lombok.experimental.UtilityClass;
 
 /**
- * a utility class used for signing documents in specific flavours
- * 
+ * A utility class used for signing documents in specific flavours.
+ *
  * <p>
  * DISCLAIMER: Project owner e-CODEX
  * </p>
@@ -41,141 +46,117 @@ import java.util.Date;
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
+@SuppressWarnings("squid:S1135")
+@UtilityClass
 class SigningUtil {
-	/**
-	 * utility constructor
-	 */
-	private SigningUtil() {
-	}
+    /**
+     * Signs a document with an ASiC_S_BES/DETACHED signature.
+     *
+     * @param signingParameters the signing parameters (algorithms, certificates and private key)
+     * @param document          the to be signed document
+     * @return a new document based on the input and signed
+     */
+    static DSSDocument signASiC(
+        final SignatureParameters signingParameters, final DSSDocument document) {
+        // TODO: replace with FACTORY!!
+        final CertificateVerifier certificateVerifier = new CommonCertificateVerifier(true);
+        final var params = new ASiCWithXAdESSignatureParameters();
+        params.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
+        params.setSignaturePackaging(SignaturePackaging.DETACHED);
+        params.aSiC().setContainerType(ASiCContainerType.ASiC_S);
+        params.bLevel().setSigningDate(new Date());
+        params.setCertificateChain(signingParameters.getPrivateKey().getCertificateChain());
+        params.setSigningCertificate(signingParameters.getPrivateKey().getCertificate());
 
-	/**
-	 * signs a document with an ASiC_S_BES/DETACHED signature
-	 *
-	 * @param signingParameters the signing parameters (algorithms, certificates and private key)
-	 * @param document          the to be signed document
-	 * @return a new document based on the input and signed
-	 * @throws java.security.NoSuchAlgorithmException from the underlying classes
-	 */
-	static DSSDocument signASiC(final SignatureParameters signingParameters, final DSSDocument document) throws Exception {
-		final CertificateVerifier certificateVerifier = new CommonCertificateVerifier(true); //TODO: replace with FACTORY!!
-		final ASiCWithXAdESSignatureParameters params = new ASiCWithXAdESSignatureParameters();
-		params.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
-		params.setSignaturePackaging(SignaturePackaging.DETACHED);
-		params.aSiC().setContainerType(ASiCContainerType.ASiC_S);
-		params.bLevel().setSigningDate(new Date());
-		params.setCertificateChain(signingParameters.getPrivateKey().getCertificateChain());
-		params.setSigningCertificate(signingParameters.getPrivateKey().getCertificate());
+        final DocumentSignatureService<ASiCWithXAdESSignatureParameters, XAdESTimestampParameters>
+            signatureService = new ASiCWithXAdESService(certificateVerifier);
 
-		final DocumentSignatureService<ASiCWithXAdESSignatureParameters, XAdESTimestampParameters> signatureService = new ASiCWithXAdESService(certificateVerifier);
-		
-		ToBeSigned bytesToSign = signatureService.getDataToSign(document, params);
+        ToBeSigned bytesToSign = signatureService.getDataToSign(document, params);
 
-		SignatureValue signatureValue = signingParameters.getSignatureTokenConnection().sign(bytesToSign, signingParameters.getDigestAlgorithm(), signingParameters.getPrivateKey());
+        var signatureValue = signingParameters
+            .getSignatureTokenConnection()
+            .sign(
+                bytesToSign,
+                signingParameters.getDigestAlgorithm(),
+                signingParameters.getPrivateKey()
+            );
 
-//		 SignatureValue signatureValue = TestUtils.sign(params.getSignatureAlgorithm(), privateKeyEntry, dataToSign);
-//		final SignatureAlgorithm sigAlgorithm = params.getSignatureAlgorithm();
-//		final String jceSignatureAlgorithm = sigAlgorithm.getJCEId();
-//		final Signature signature = Signature.getInstance(jceSignatureAlgorithm);
-//		signature.initSign(signingParameters.getPrivateKey());
-//		signature.update(bytesToSign.getBytes());
-//		final byte[] signatureValue = signature.sign();
-//		final SignatureValue signedData = new SignatureValue(signingParameters.getSignatureAlgorithm(), signatureValue);
-		
-		final DSSDocument signedDocument = signatureService.signDocument(document, params, signatureValue);
-		
-		return signedDocument;
-	}
+        return signatureService.signDocument(document, params, signatureValue);
+    }
 
-	/**
-	 * signs a document with an PAdES_BES/ENVELOPED signature
-	 *
-	 * @param signingParameters the signing parameters (algorithms, certificates and private key)
-	 * @param document          the to be signed document
-	 * @return a new document based on the input and signed
-	 * @throws java.security.NoSuchAlgorithmException from the underlying classes
-	 */
-	static DSSDocument signPAdES(final SignatureParameters signingParameters, final DSSDocument document) throws Exception {
+    /**
+     * Signs a document with an PAdES_BES/ENVELOPED signature.
+     *
+     * @param signingParameters the signing parameters (algorithms, certificates and private key)
+     * @param document          the to be signed document
+     * @return a new document based on the input and signed
+     */
+    static DSSDocument signPAdES(
+        final SignatureParameters signingParameters, final DSSDocument document) {
+        // TODO: replace with FACTORY!!
+        final CertificateVerifier certificateVerifier = new CommonCertificateVerifier(true);
+        final DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters>
+            signatureService = new PAdESService(certificateVerifier);
 
-		final CertificateVerifier certificateVerifier = new CommonCertificateVerifier(true); //TODO: replace with FACTORY!!
-		final DocumentSignatureService<PAdESSignatureParameters, PAdESTimestampParameters> signatureService = new PAdESService(certificateVerifier);
+        final var encryptionAlgorithm = signingParameters.getEncryptionAlgorithm();
+        final var digestAlgorithm = signingParameters.getDigestAlgorithm();
 
-		final EncryptionAlgorithm encryptionAlgorithm = signingParameters.getEncryptionAlgorithm();
-		final DigestAlgorithm digestAlgorithm = signingParameters.getDigestAlgorithm();
+        final var params = new PAdESSignatureParameters();
 
-		final PAdESSignatureParameters params = new PAdESSignatureParameters();
+        params.setSignatureLevel(SignatureLevel.PAdES_BASELINE_B);
+        params.setSignaturePackaging(SignaturePackaging.ENVELOPED);
+        params.setEncryptionAlgorithm(encryptionAlgorithm);
+        params.setDigestAlgorithm(digestAlgorithm);
+        params.setCertificateChain(signingParameters.getCertificateChain());
+        params.setSigningCertificate(signingParameters.getCertificate());
 
-		params.setSignatureLevel(SignatureLevel.PAdES_BASELINE_B);
-		params.setSignaturePackaging(SignaturePackaging.ENVELOPED);
-		params.setEncryptionAlgorithm(encryptionAlgorithm);
-		params.setDigestAlgorithm(digestAlgorithm);
-		params.setCertificateChain(signingParameters.getCertificateChain());
-		params.setSigningCertificate(signingParameters.getCertificate());
-		
-		ToBeSigned bytesToSign = signatureService.getDataToSign(document, params);
+        ToBeSigned bytesToSign = signatureService.getDataToSign(document, params);
 
-		SignatureValue signedData = signingParameters.getSignatureTokenConnection().sign(bytesToSign, signingParameters.getDigestAlgorithm(), signingParameters.getPrivateKey());
+        SignatureValue signedData = signingParameters
+            .getSignatureTokenConnection()
+            .sign(
+                bytesToSign,
+                signingParameters.getDigestAlgorithm(),
+                signingParameters.getPrivateKey()
+            );
 
-//		final SignatureAlgorithm sigAlgorithm = params.getSignatureAlgorithm();
-//		final String jceSignatureAlgorithm = sigAlgorithm.getJCEId();
+        return signatureService.signDocument(document, params, signedData);
+    }
 
-		// final SignatureValue signatureValue = DSSUtils.encrypt(jceSignatureAlgorithm, privateKey, bytesToSign);
-//		final Signature signature = Signature.getInstance(jceSignatureAlgorithm);
-//		signature.initSign(signingParameters.getPrivateKey());
-//		signature.update(bytesToSign.getBytes());
-//		final byte[] signatureValue = signature.sign();
-//		final SignatureValue signedData = new SignatureValue(sigAlgorithm, signatureValue);
+    /**
+     * Signs a document with an XAdES_BES signature with the packaging in parameter.
+     *
+     * @param signingParameters  the signing parameters (algorithms, certificates and private key)
+     * @param document           the to be signed document
+     * @param signaturePackaging the packaging (ENVELOPED or DETACHED)
+     * @return a new document based on the input and signed
+     */
+    static DSSDocument signXAdES(
+        final SignatureParameters signingParameters, final DSSDocument document,
+        final SignaturePackaging signaturePackaging) {
 
-		final DSSDocument signedDocument = signatureService.signDocument(document, params, signedData); 
+        // TODO: replace with FACTORY!!
+        final var certificateVerifier = new CommonCertificateVerifier(true);
+        final var signatureService = new XAdESService(certificateVerifier);
 
-		return signedDocument;
-	}
+        final var params = new XAdESSignatureParameters();
+        params.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
+        params.setSignaturePackaging(signaturePackaging);
+        params.setEncryptionAlgorithm(signingParameters.getEncryptionAlgorithm());
+        params.setDigestAlgorithm(signingParameters.getDigestAlgorithm());
+        params.setCertificateChain(signingParameters.getCertificateChain());
+        params.setSigningCertificate(signingParameters.getCertificate());
+        params.bLevel().setSigningDate(new Date());
 
-	/**
-	 * signs a document with an XAdES_BES signature with the packaging in parameter
-	 *
-	 * @param signingParameters  the signing parameters (algorithms, certificates and private key)
-	 * @param document           the to be signed document
-	 * @param signaturePackaging the packaging (ENVELOPED or DETACHED)
-	 * @return a new document based on the input and signed
-	 * @throws java.security.NoSuchAlgorithmException from the underlying classes
-	 */
-	static DSSDocument signXAdES(final SignatureParameters signingParameters, final DSSDocument document, final SignaturePackaging signaturePackaging) throws Exception {
+        var bytesToSign = signatureService.getDataToSign(document, params);
+        var signatureTokenConnection = signingParameters.getSignatureTokenConnection();
 
-		final CertificateVerifier certificateVerifier = new CommonCertificateVerifier(true); //TODO: replace with FACTORY!!
-		final XAdESService signatureService = new XAdESService(certificateVerifier);
+        SignatureValue signedData = signatureTokenConnection.sign(
+            bytesToSign,
+            signingParameters.getDigestAlgorithm(),
+            signingParameters.getPrivateKey()
+        );
 
-//		final String encryptionAlgorithm_ = signingParameters.getEncryptionAlgorithm();
-//		final EncryptionAlgorithm encryptionAlgorithm = EncryptionAlgorithm.forName(encryptionAlgorithm_);
-//		final DigestAlgorithm digestAlgorithm = DigestAlgorithm.forName(signingParameters.getDigestAlgorithm());
-
-		final XAdESSignatureParameters params = new XAdESSignatureParameters();
-		params.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
-		params.setSignaturePackaging(signaturePackaging); 
-		params.setEncryptionAlgorithm(signingParameters.getEncryptionAlgorithm());
-		params.setDigestAlgorithm(signingParameters.getDigestAlgorithm());
-		params.setCertificateChain(signingParameters.getCertificateChain());
-		params.setSigningCertificate(signingParameters.getCertificate());
-		params.bLevel().setSigningDate(new Date());
-		//params.setEmbedXML(true);
-		
-		ToBeSigned bytesToSign = signatureService.getDataToSign(document, params);
-
-		SignatureTokenConnection signatureTokenConnection = signingParameters.getSignatureTokenConnection();
-
-		SignatureValue signedData = signatureTokenConnection.sign(bytesToSign, signingParameters.getDigestAlgorithm(), signingParameters.getPrivateKey());
-
-//		final SignatureAlgorithm sigAlgorithm = params.getSignatureAlgorithm();
-//		final String jceSignatureAlgorithm = sigAlgorithm.getJCEId();
-//
-//		// final SignatureValue signatureValue = DSSUtils.encrypt(jceSignatureAlgorithm, privateKey, bytesToSign);
-//		final Signature signature = Signature.getInstance(jceSignatureAlgorithm);
-//		signature.initSign(signingParameters.getPrivateKey());
-//		signature.update(bytesToSign.getBytes());
-//		final byte[] signatureValue = signature.sign();
-//		final SignatureValue signedData = new SignatureValue(sigAlgorithm, signatureValue);
-
-		final DSSDocument signedDocument = signatureService.signDocument(document, params, signedData); 
-
-		return signedDocument;
-	}
+        return signatureService.signDocument(document, params, signedData);
+    }
 }

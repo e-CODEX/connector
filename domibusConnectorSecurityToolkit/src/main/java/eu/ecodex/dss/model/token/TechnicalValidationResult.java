@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -10,37 +15,29 @@
 
 package eu.ecodex.dss.model.token;
 
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
+import lombok.Data;
 
 /**
  * This class holds the data about the ValidationResult.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TechnicalResultType", propOrder = {"trustLevel", "comment" })
+@XmlType(name = "TechnicalResultType", propOrder = {"trustLevel", "comment"})
+@Data
 public class TechnicalValidationResult implements Serializable {
-
     @XmlElement(name = "TrustLevel", required = true)
     protected TechnicalTrustLevel trustLevel;
     @XmlElement(name = "Comments")
     protected String comment;
-
-    /**
-     * Gets the value of the trustLevel property.
-     *
-     * @return possible object is {@link TechnicalTrustLevel }
-     */
-    public TechnicalTrustLevel getTrustLevel() {
-        return trustLevel;
-    }
 
     /**
      * Sets the value of the trustLevel property.
@@ -54,15 +51,6 @@ public class TechnicalValidationResult implements Serializable {
     }
 
     /**
-     * Gets the value of the comment property.
-     *
-     * @return possible object is {@link String }
-     */
-    public String getComment() {
-        return comment;
-    }
-
-    /**
      * Sets the value of the comment property.
      *
      * @param value allowed object is {@link String }
@@ -72,5 +60,4 @@ public class TechnicalValidationResult implements Serializable {
         this.comment = value;
         return this;
     }
-
 }

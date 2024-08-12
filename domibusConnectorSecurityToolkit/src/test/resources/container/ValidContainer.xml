@@ -95,7 +95,7 @@
                 <ds:DigestValue>sNp0VAPggCRjiBRM8AihKP5kmGc=</ds:DigestValue>
             </ds:Reference>
             <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties"
-                          URI="#xades-id-23ac915e15a6846725732c886a16279c">
+                    URI="#xades-id-23ac915e15a6846725732c886a16279c">
                 <ds:Transforms>
                     <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
                 </ds:Transforms>
@@ -115,7 +115,7 @@
         </ds:KeyInfo>
         <ds:Object>
             <xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
-                                        Target="#id-23ac915e15a6846725732c886a16279c">
+                    Target="#id-23ac915e15a6846725732c886a16279c">
                 <xades:SignedProperties Id="xades-id-23ac915e15a6846725732c886a16279c">
                     <xades:SignedSignatureProperties>
                         <xades:SigningTime>2017-11-15T12:31:49Z</xades:SigningTime>

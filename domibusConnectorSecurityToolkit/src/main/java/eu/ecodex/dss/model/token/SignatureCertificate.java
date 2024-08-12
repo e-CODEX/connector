@@ -10,24 +10,28 @@
 
 package eu.ecodex.dss.model.token;
 
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
+import lombok.Data;
 
 /**
  * This class holds the configuration about the CertificateInformation.
- * 
+ *
  * <p>DISCLAIMER: Project owner e-CODEX</p>
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CertificateInformationType", propOrder = {"subject", "issuer", "certificateValid", "validityAtSigningTime"})
+@XmlType(
+    name = "CertificateInformationType",
+    propOrder = {"subject", "issuer", "certificateValid", "validityAtSigningTime"}
+)
+@Data
 public class SignatureCertificate implements Serializable {
-
     @XmlElement(name = "Subject", required = false)
     protected String subject;
     @XmlElement(name = "Issuer", required = true)
@@ -38,16 +42,6 @@ public class SignatureCertificate implements Serializable {
     protected boolean validityAtSigningTime;
 
     /**
-     * Gets the value of the issuer property.
-     *
-     * @return possible object is
-     *         {@link String }
-     */
-    public String getSubject() {
-        return subject;
-    }
-
-    /**
      * Sets the value of the issuer property.
      *
      * @param value allowed object is {@link String }
@@ -56,16 +50,6 @@ public class SignatureCertificate implements Serializable {
     public SignatureCertificate setSubject(final String value) {
         this.subject = value;
         return this;
-    }    
-    
-    /**
-     * Gets the value of the issuer property.
-     *
-     * @return possible object is
-     *         {@link String }
-     */
-    public String getIssuer() {
-        return issuer;
     }
 
     /**
@@ -80,17 +64,8 @@ public class SignatureCertificate implements Serializable {
     }
 
     /**
-     * Gets the value of the certificateValid property.
-     * 
-     * @return the value
-     */
-    public boolean isCertificateValid() {
-        return certificateValid;
-    }
-
-    /**
      * Sets the value of the certificateValid property.
-     * 
+     *
      * @param value the value
      * @return this class' instance for chaining
      */
@@ -100,17 +75,8 @@ public class SignatureCertificate implements Serializable {
     }
 
     /**
-     * Gets the value of the validityAtSigningTime property.
-     * 
-     * @return the value
-     */
-    public boolean isValidityAtSigningTime() {
-        return validityAtSigningTime;
-    }
-
-    /**
      * Sets the value of the validityAtSigningTime property.
-     * 
+     *
      * @param value the value
      * @return this class' instance for chaining
      */
@@ -118,5 +84,4 @@ public class SignatureCertificate implements Serializable {
         this.validityAtSigningTime = value;
         return this;
     }
-
 }

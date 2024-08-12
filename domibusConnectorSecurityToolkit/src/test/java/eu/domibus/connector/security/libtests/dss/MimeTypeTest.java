@@ -1,27 +1,22 @@
 
 package eu.domibus.connector.security.libtests.dss;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import eu.europa.esig.dss.enumerations.MimeType;
 import eu.europa.esig.dss.enumerations.MimeTypeEnum;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
- *
- * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
+ * This class represents a unit test for the MimeType class. It contains a single test method that
+ * verifies the correctness of the MimeType.fromMimeTypeString() method.
  */
-public class MimeTypeTest {
-
-    
+class MimeTypeTest {
     @Test
-    public void testFromMimeTypeString() {        
-        String pdfMimeTypeString = "application/pdf";
-        
-        MimeType mimeType = MimeType.fromMimeTypeString(pdfMimeTypeString);
-        assertThat(mimeType).isEqualTo(MimeTypeEnum.PDF);
-        
-    }
+    void testFromMimeTypeString() {
+        var pdfMimeTypeString = "application/pdf";
 
-    
+        var mimeType = MimeType.fromMimeTypeString(pdfMimeTypeString);
+        assertThat(mimeType).isEqualTo(MimeTypeEnum.PDF);
+    }
 }

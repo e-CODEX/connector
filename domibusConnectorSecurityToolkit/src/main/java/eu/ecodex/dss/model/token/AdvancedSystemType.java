@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -10,40 +15,36 @@
 
 package eu.ecodex.dss.model.token;
 
-import org.apache.commons.lang.StringUtils;
-
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
+import lombok.Getter;
+import org.apache.commons.lang.StringUtils;
 
 /**
- * This class holds the type of the Advanced Electronic System using the e-CODEX DSS
- * 
- * <p>
- * DISCLAIMER: Project owner e-CODEX
- * </p>
- * 
+ * This class holds the type of the Advanced Electronic System using the e-CODEX DSS.
+ *
+ * <p>DISCLAIMER: Project owner e-CODEX
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 @XmlType(name = "AdvancedSystemEnum")
 @XmlEnum
+@Getter
 public enum AdvancedSystemType {
-
     @XmlEnumValue("Signature-based")
     SIGNATURE_BASED("Signature-based", "Signature-based"),
-
     @XmlEnumValue("Authentication-based")
     AUTHENTICATION_BASED("Authentication-based", "Authentication-based");
-
     private final String value;
     private final String text;
 
     /**
-     * constructor
-     * 
+     * Constructor.
+     *
      * @param value the value "Signature-based" or "Authentication-based"
-     * @param text the textual representation "Signature-based" or "Authentication-based"
+     * @param text  the textual representation "Signature-based" or "Authentication-based"
      */
     AdvancedSystemType(final String value, final String text) {
         this.value = value;
@@ -51,24 +52,9 @@ public enum AdvancedSystemType {
     }
 
     /**
-     * the underlying string value
-     * @return "Signature-based" or "Authentication-based"
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * the underlying string value
-     * @return "Signature-based" or "Authentication-based"
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * factory retrieval method; if the instance is not found, then an IllegalArgumentException is thrown.
-     * 
+     * Factory retrieval method; if the instance is not found, then an IllegalArgumentException is
+     * thrown.
+     *
      * @param v either "Authentication-based" or "Authentication-based"
      * @return the enum instance
      */
@@ -83,5 +69,4 @@ public enum AdvancedSystemType {
         }
         throw new IllegalArgumentException(v);
     }
-
 }

@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -7,28 +12,32 @@
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
+
 package eu.ecodex.dss.model;
 
-import org.apache.commons.lang.StringUtils;
+import lombok.Data;
 import org.springframework.core.io.Resource;
 
 /**
- * holds information how to access the store holding the e-CODEX connector certificates used for ASiC-S validation
- * 
- * <p>
- * DISCLAIMER: Project owner e-CODEX
- * </p>
+ * Holds information how to access the store holding the e-CODEX connector certificates used for
+ * ASiC-S validation.
+ *
+ * <p>DISCLAIMER: Project owner e-CODEX
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
+ * @deprecated Use certificate source instead.
  */
-@Deprecated //TODO replace with certificate source...
+@SuppressWarnings("squid:S1135")
+@Deprecated // TODO replace with certificate source...
+@Data
 public class CertificateStoreInfo {
     private Resource location;
     private String password;
 
     /**
-     * the info is valid, if a non-empty location is provided
+     * The info is valid, if a non-empty location is provided.
+     *
      * @return the result
      */
     public boolean isValid() {
@@ -36,15 +45,8 @@ public class CertificateStoreInfo {
     }
 
     /**
-     * the location (in url format) for loading the keystore
-     * @return the value
-     */
-    public Resource getLocation() {
-        return this.location;
-    }
-
-    /**
-     * the location (in url format) for loading the keystore
+     * The location (in url format) for loading the keystore.
+     *
      * @param v the value
      * @return this class' instance for chaining
      */
@@ -54,20 +56,13 @@ public class CertificateStoreInfo {
     }
 
     /**
-     * gives the password for loading the keystore
-     * @return the value
-     */
-    public String getPassword() {
-        return this.password;
-    }
-
-    /**
-     * sets the password for loading the keystore
-     * @param v the value
+     * Sets the password for loading the keystore.
+     *
+     * @param password the value
      * @return this class' instance for chaining
      */
-    public CertificateStoreInfo setPassword(final String v) {
-        this.password = v;
+    public CertificateStoreInfo setPassword(final String password) {
+        this.password = password;
         return this;
     }
 
@@ -76,10 +71,9 @@ public class CertificateStoreInfo {
      */
     @Override
     public String toString() {
-        return "CertificateStoreInfo{" +
-            "location=" + (location == null ? null : ('\'' + location.toString() + '\'')) +
-            ", password=" + (password == null ? null : "[set]") +
-            '}';
+        return "CertificateStoreInfo{"
+            + "location=" + (location == null ? null : ('\'' + location.toString() + '\''))
+            + ", password=" + (password == null ? null : "[set]")
+            + '}';
     }
-
 }

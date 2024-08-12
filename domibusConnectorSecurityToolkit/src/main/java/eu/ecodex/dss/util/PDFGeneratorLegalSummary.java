@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -7,17 +12,11 @@
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
+
 package eu.ecodex.dss.util;
-
-import java.awt.*;
-import java.io.ByteArrayOutputStream;
-
-import eu.europa.esig.dss.enumerations.MimeTypeEnum;
-import org.apache.commons.io.IOUtils;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
-import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
@@ -25,217 +24,220 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import eu.ecodex.dss.model.token.LegalTrustLevel;
 import eu.ecodex.dss.model.token.Token;
+import eu.europa.esig.dss.enumerations.MimeTypeEnum;
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
+import java.awt.Color;
+import java.io.ByteArrayOutputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
- * This creates the legal summary page of the trustoktoken
- * <p>
- * DISCLAIMER: Project owner e-CODEX
- * </p>
+ * This creates the legal summary page of the trustoktoken.
+ *
+ * <p>DISCLAIMER: Project owner e-CODEX
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class PDFGeneratorLegalSummary extends AbstractPDFGenerator {
+    /**
+     * The default constructor for PDFReportGenerator.
+     */
+    public PDFGeneratorLegalSummary() {
+        super();
+    }
 
-	/**
-	 * The default constructor for PDFReportGenerator.
-	 */
-	public PDFGeneratorLegalSummary() {
-		super();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DSSDocument generate(final Token token) throws DocumentException {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public DSSDocument generate(final Token token) throws DocumentException {
+        // Result
 
-		// Result
+        final var output = new ByteArrayOutputStream();
 
-		final ByteArrayOutputStream output = new ByteArrayOutputStream();
-		final com.lowagie.text.Document document = new com.lowagie.text.Document();
+        try (final var document = new com.lowagie.text.Document()) {
+            final var writer = PdfWriter.getInstance(document, output);
+            writer.setPdfVersion(PdfWriter.PDF_VERSION_1_4);
 
-		try {
+            document.open();
 
-			final PdfWriter writer = PdfWriter.getInstance(document, output);
-			writer.setPdfVersion(PdfWriter.PDF_VERSION_1_4);
+            addPageHeader(document, token);
+            addTitle(document, token);
+            addGeneral(document, token);
+            addResult(document, token);
+            addStamp(document, token);
+        } finally {
+            IOUtils.closeQuietly(output);
+        }
 
-			document.open();
+        return new InMemoryDocument(
+            output.toByteArray(), "token-summary-legal.pdf", MimeTypeEnum.PDF
+        );
+    }
 
-			addPageHeader(document, token);
-			addTitle(document, token);
-			addGeneral(document, token);
-			addResult(document, token);
-			addStamp(document, token);
+    private void addTitle(final com.lowagie.text.Document document, final Token token)
+        throws DocumentException {
+        var paragraph = new Paragraph("e-CODEX", FONT_H1);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        paragraph.setSpacingAfter(30);
+        document.add(paragraph);
 
-		} finally {
-			if (document.isOpen()) {
-				document.close();
-			}
-			IOUtils.closeQuietly(output);
-		}
+        paragraph = new Paragraph("e-Justice Communication via Online Data Exchange", FONT_H2);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        paragraph.setSpacingAfter(80);
+        document.add(paragraph);
 
-		return new InMemoryDocument(output.toByteArray(), "token-summary-legal.pdf", MimeTypeEnum.PDF);
+        paragraph = new Paragraph("Trust OK-Token", FONT_H3);
 
-	}
+        var titleCell = new PdfPCell();
+        titleCell.setPadding(5);
+        titleCell.setPaddingBottom(10);
+        titleCell.setPhrase(paragraph);
+        titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        titleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        titleCell.setBorderColor(Color.YELLOW);
+        titleCell.setBorderWidth(2);
+        titleCell.setBackgroundColor(TABLE_BACKGROUND);
 
-	private void addTitle(final com.lowagie.text.Document document, final Token token) throws DocumentException {
-		Paragraph paragraph = new Paragraph("e-CODEX", FONT_H1);
-		paragraph.setAlignment(Element.ALIGN_CENTER);
-		paragraph.setSpacingAfter(30);
-		document.add(paragraph);
+        final var table = new PdfPTable(1);
+        table.addCell(titleCell);
+        table.setSpacingAfter(30);
 
-		paragraph = new Paragraph("e-Justice Communication via Online Data Exchange", FONT_H2);
-		paragraph.setAlignment(Element.ALIGN_CENTER);
-		paragraph.setSpacingAfter(80);
-		document.add(paragraph);
+        document.add(table);
+    }
 
-		paragraph = new Paragraph("Trust OK-Token", FONT_H3);
+    private void addGeneral(final com.lowagie.text.Document document, final Token token)
+        throws DocumentException {
 
-		PdfPCell titleCell = new PdfPCell();
-		titleCell.setPadding(5);
-		titleCell.setPaddingBottom(10);
-		titleCell.setPhrase(paragraph);
-		titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		titleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		titleCell.setBorderColor(Color.YELLOW);
-		titleCell.setBorderWidth(2);
-		titleCell.setBackgroundColor(TABLE_BACKGROUND);
+        // get data from structure
+        final var country = PDFUtil.format(token.getIssuerCountry());
+        final String advancedElectronicSystem =
+            PDFUtil.format(token.getAdvancedElectronicSystemText());
 
-		final PdfPTable table = new PdfPTable(1);
-		table.addCell(titleCell);
-		table.setSpacingAfter(30);
+        final var verificationTime = PDFUtil.format(token.getValidationVerificationTime());
 
-		document.add(table);
-	}
+        final var documentType = PDFUtil.format(token.getDocumentType());
+        final var documentName = PDFUtil.format(token.getDocumentName());
 
-	private void addGeneral(final com.lowagie.text.Document document, final Token token) throws DocumentException {
+        // create the pdf
+        final var table = new PdfPTable(2);
+        table.setSpacingAfter(20);
 
-		// get data from structure
-		final String country = PDFUtil.format(token.getIssuerCountry());
-		final String advancedElectronicSystem = PDFUtil.format(token.getAdvancedElectronicSystemText());
+        final var captionCell = new PdfPCell();
+        captionCell.setPhrase(new Paragraph("General Information", FONT_TEXT));
+        captionCell.setColspan(2);
+        captionCell.setBorder(Rectangle.NO_BORDER);
 
-		final String verificationTime = PDFUtil.format(token.getValidationVerificationTime());
+        final var leftCell = new PdfPCell();
+        leftCell.setBorder(Rectangle.NO_BORDER);
+        leftCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-		final String documentType = PDFUtil.format(token.getDocumentType());
-		final String documentName = PDFUtil.format(token.getDocumentName());
+        final var rightCell = new PdfPCell();
+        rightCell.setBorder(Rectangle.NO_BORDER);
+        rightCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-		// create the pdf
-		final PdfPTable table = new PdfPTable(2);
-		table.setSpacingAfter(20);
+        table.addCell(captionCell);
 
-		final PdfPCell captionCell = new PdfPCell();
-		captionCell.setPhrase(new Paragraph("General Information", FONT_TEXT));
-		captionCell.setColspan(2);
-		captionCell.setBorder(Rectangle.NO_BORDER);
+        leftCell.setPhrase(new Paragraph("Issuing Country", FONT_TEXT));
+        rightCell.setPhrase(new Paragraph(country, FONT_TEXT));
+        table.addCell(leftCell);
+        table.addCell(rightCell);
 
-		final PdfPCell leftCell = new PdfPCell();
-		leftCell.setBorder(Rectangle.NO_BORDER);
-		leftCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        leftCell.setPhrase(new Paragraph("Advanced Electronic System", FONT_TEXT));
+        rightCell.setPhrase(new Paragraph(advancedElectronicSystem, FONT_TEXT));
+        table.addCell(leftCell);
+        table.addCell(rightCell);
 
-		final PdfPCell rightCell = new PdfPCell();
-		rightCell.setBorder(Rectangle.NO_BORDER);
-		rightCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        leftCell.setPhrase(new Paragraph("Document Information", FONT_TEXT));
+        rightCell.setPhrase(new Paragraph(documentType + ", \"" + documentName + "\"", FONT_TEXT));
+        table.addCell(leftCell);
+        table.addCell(rightCell);
 
-		table.addCell(captionCell);
+        leftCell.setPhrase(new Paragraph("Time of Issuance", FONT_TEXT));
+        rightCell.setPhrase(new Paragraph(verificationTime, FONT_TEXT));
+        table.addCell(leftCell);
+        table.addCell(rightCell);
 
-		leftCell.setPhrase(new Paragraph("Issuing Country", FONT_TEXT));
-		rightCell.setPhrase(new Paragraph(country, FONT_TEXT));
-		table.addCell(leftCell);
-		table.addCell(rightCell);
+        document.add(table);
+    }
 
-		leftCell.setPhrase(new Paragraph("Advanced Electronic System", FONT_TEXT));
-		rightCell.setPhrase(new Paragraph(advancedElectronicSystem, FONT_TEXT));
-		table.addCell(leftCell);
-		table.addCell(rightCell);
+    private void addResult(final com.lowagie.text.Document document, final Token token)
+        throws DocumentException {
 
-		leftCell.setPhrase(new Paragraph("Document Information", FONT_TEXT));
-		rightCell.setPhrase(new Paragraph(documentType + ", \"" + documentName + "\"", FONT_TEXT));
-		table.addCell(leftCell);
-		table.addCell(rightCell);
+        // get data from structure
+        final LegalTrustLevel trustLevel = token.getLegalValidationResultTrustLevel();
+        final String validationResult =
+            PDFUtil.format(trustLevel == null ? null : trustLevel.getText());
 
-		leftCell.setPhrase(new Paragraph("Time of Issuance", FONT_TEXT));
-		rightCell.setPhrase(new Paragraph(verificationTime, FONT_TEXT));
-		table.addCell(leftCell);
-		table.addCell(rightCell);
+        // create the pdf
+        final var table = new PdfPTable(2);
+        table.setSpacingAfter(20);
+        final var captionCell = new PdfPCell();
+        captionCell.setPhrase(new Paragraph("Legal Result", FONT_TEXT));
+        captionCell.setColspan(2);
+        captionCell.setBorder(Rectangle.NO_BORDER);
 
-		document.add(table);
-	}
+        table.addCell(captionCell);
 
-	private void addResult(final com.lowagie.text.Document document, final Token token) throws DocumentException {
+        final var leftCell = new PdfPCell();
+        leftCell.setBorder(Rectangle.NO_BORDER);
+        leftCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-		// get data from structure
-		final LegalTrustLevel trustLevel = token.getLegalValidationResultTrustLevel();
-		final String validationResult = PDFUtil.format(trustLevel == null ? null : trustLevel.getText());
+        final var rightCell = new PdfPCell();
+        rightCell.setBorder(Rectangle.NO_BORDER);
+        rightCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-		// create the pdf
-		final PdfPTable table = new PdfPTable(2);
-		table.setSpacingAfter(20);
-		final PdfPCell captionCell = new PdfPCell();
-		captionCell.setPhrase(new Paragraph("Legal Result", FONT_TEXT));
-		captionCell.setColspan(2);
-		captionCell.setBorder(Rectangle.NO_BORDER);
+        leftCell.setPhrase(new Paragraph("Evaluation of the Document", FONT_TEXT));
+        rightCell.setPhrase(new Paragraph(validationResult, FONT_TEXT));
+        table.addCell(leftCell);
+        table.addCell(rightCell);
 
-		table.addCell(captionCell);
+        document.add(table);
+    }
 
-		final PdfPCell leftCell = new PdfPCell();
-		leftCell.setBorder(Rectangle.NO_BORDER);
-		leftCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+    private void addStamp(final com.lowagie.text.Document document, final Token token)
+        throws DocumentException {
+        // get data from structure
+        final LegalTrustLevel trustlevel = token.getLegalValidationResultTrustLevel();
+        final var trustImage = switch (trustlevel) {
+            case SUCCESSFUL -> IMG_LEGAL_SUCCESSFUL;
+            default -> IMG_LEGAL_NOT_SUCCESSFUL;
+        };
+        final String disclaimer = PDFUtil.format(token.getLegalValidationResultDisclaimer());
 
-		final PdfPCell rightCell = new PdfPCell();
-		rightCell.setBorder(Rectangle.NO_BORDER);
-		rightCell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        // create the pdf
+        final var table = new PdfPTable(2);
+        table.setWidths(new int[] {70, 30});
+        table.setSpacingBefore(10);
 
-		leftCell.setPhrase(new Paragraph("Evaluation of the Document", FONT_TEXT));
-		rightCell.setPhrase(new Paragraph(validationResult, FONT_TEXT));
-		table.addCell(leftCell);
-		table.addCell(rightCell);
+        final var leftCell = new PdfPCell();
+        leftCell.addElement(new Paragraph(disclaimer, FONT_FOOTER));
+        leftCell.addElement(new Paragraph(" "));
+        leftCell.addElement(new Paragraph(
+            "Further details can be found in the attached validation report and its "
+                + "technical assessment.",
+            FONT_FOOTER
+        ));
+        leftCell.setBorderColor(Color.YELLOW);
+        leftCell.setBorderWidth(2);
+        leftCell.setBorderWidthRight(0);
+        leftCell.setPadding(5);
+        leftCell.setBackgroundColor(TABLE_BACKGROUND);
+        table.addCell(leftCell);
 
-		document.add(table);
-	}
+        final var rightCell = new PdfPCell();
+        rightCell.addElement(trustImage);
+        rightCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        rightCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        rightCell.setBorderColor(Color.YELLOW);
+        rightCell.setBorderWidth(2);
+        rightCell.setBorderWidthLeft(0);
+        rightCell.setPadding(5);
+        rightCell.setBackgroundColor(TABLE_BACKGROUND);
+        table.addCell(rightCell);
 
-	private void addStamp(final com.lowagie.text.Document document, final Token token) throws DocumentException {
-		// get data from structure
-		final LegalTrustLevel trustlevel = token.getLegalValidationResultTrustLevel();
-		final Image trustImage;
-		switch (trustlevel) { 
-			case SUCCESSFUL: trustImage = IMG_LEGAL_SUCCESSFULL;
-			break;
-			default: trustImage = IMG_LEGAL_NOTSUCCESSFULL;
-			break;
-		}
-		final String disclaimer = PDFUtil.format(token.getLegalValidationResultDisclaimer());
-
-		// create the pdf
-		final PdfPTable table = new PdfPTable(2);
-		table.setWidths(new int[]{70, 30});
-		table.setSpacingBefore(10);
-
-		final PdfPCell leftCell = new PdfPCell();
-		leftCell.addElement(new Paragraph(disclaimer, FONT_FOOTER));
-		leftCell.addElement(new Paragraph(" "));
-		leftCell.addElement(new Paragraph("Further details can be found in the attached validation report and its technical assessment.", FONT_FOOTER));
-		leftCell.setBorderColor(Color.YELLOW);
-		leftCell.setBorderWidth(2);
-		leftCell.setBorderWidthRight(0);
-		leftCell.setPadding(5);
-		leftCell.setBackgroundColor(TABLE_BACKGROUND);
-		table.addCell(leftCell);
-
-		final PdfPCell rightCell = new PdfPCell();
-		rightCell.addElement(trustImage);
-		rightCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		rightCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		rightCell.setBorderColor(Color.YELLOW);
-		rightCell.setBorderWidth(2);
-		rightCell.setBorderWidthLeft(0);
-		rightCell.setPadding(5);
-		rightCell.setBackgroundColor(TABLE_BACKGROUND);
-		table.addCell(rightCell);
-
-		document.add(table);
-	}
-
+        document.add(table);
+    }
 }

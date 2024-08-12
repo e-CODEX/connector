@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -7,6 +12,7 @@
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
+
 package eu.ecodex.dss.model.checks;
 
 import java.util.Collections;
@@ -14,29 +20,28 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * holds the result of a check.
- * note that this class is somewhat immutable: if a problem has been added, it cannot be removed anymore.
+ * holds the result of a check. note that this class is somewhat immutable: if a problem has been
+ * added, it cannot be removed anymore.
  *
- * 
- * <p>DISCLAIMER: Project owner e-CODEX</p>
+ * <p>DISCLAIMER: Project owner e-CODEX
  *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class CheckResult {
-    private List<CheckProblem> problems = new LinkedList<CheckProblem>();
+    private final List<CheckProblem> problems = new LinkedList<>();
 
     /**
-     * is the overall result successful?
+     * Checks if the overall result of the check is successful.
      *
-     * @return the value
+     * @return {@code true} if the overall result is successful, {@code false} otherwise
      */
     public boolean isSuccessful() {
         return !isProblematic();
     }
 
     /**
-     * is the overall result not successful?
+     * Checks if the overall result not successful.
      *
      * @return the value
      */
@@ -45,9 +50,9 @@ public class CheckResult {
     }
 
     /**
-     * is the overall result not successful because of a fatal problem?
+     * Checks if the overall result not successful because of a fatal problem.
      *
-     * @return the value
+     * @return {@code true} if at least one fatal problem is present, {@code false} otherwise
      */
     public boolean isFatal() {
         if (isSuccessful()) {
@@ -62,7 +67,7 @@ public class CheckResult {
     }
 
     /**
-     * gives access to an (unmodifiable) copy of the list of problems
+     * Gives access to an (unmodifiable) copy of the list of problems.
      *
      * @return the value
      */
@@ -71,10 +76,11 @@ public class CheckResult {
     }
 
     /**
-     * adds a problem
+     * Adds a problem to the list of problems in the CheckResult object.
      *
-     * @param fatal   see {@link CheckProblem#isFatal()}
-     * @param message see {@link CheckProblem#getMessage()}
+     * @param fatal   indicator if not only a problem, but a serious failure also preventing further
+     *                processing
+     * @param message a message indicating the problem (should be in English)
      * @return this class' instance for chaining
      */
     public CheckResult addProblem(final boolean fatal, final String message) {
@@ -82,7 +88,7 @@ public class CheckResult {
     }
 
     /**
-     * adds a problem
+     * Adds a problem.
      *
      * @param problem the value (may be null)
      * @return this class' instance for chaining
@@ -96,7 +102,7 @@ public class CheckResult {
     }
 
     /**
-     * adds a list of problems
+     * Adds a list of problems.
      *
      * @param problems the value (may be null)
      * @return this class' instance for chaining
@@ -112,7 +118,7 @@ public class CheckResult {
     }
 
     /**
-     * adds the problems of another check
+     * Adds the problems of another check.
      *
      * @param result the value (may be null)
      * @return this class' instance for chaining
@@ -127,8 +133,7 @@ public class CheckResult {
 
     @Override
     public String toString() {
-
-        final StringBuilder stringBuilder = new StringBuilder();
+        final var stringBuilder = new StringBuilder();
         stringBuilder.append("CheckResult:").append('\n');
         for (final CheckProblem problem : problems) {
 

@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
+/*
  * Project: e-CODEX Connector - Container Services/DSS
  * Contractor: ARHS-Developments
  *
@@ -7,81 +12,81 @@
  * $Date: 2013-03-07 22:46:35 +0100 (Thu, 07 Mar 2013) $
  * $Author: meyerfr $
  */
+
 package eu.ecodex.dss.util;
 
+import eu.europa.esig.dss.model.DSSDocument;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-
+import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
 
-import eu.europa.esig.dss.model.DSSDocument;
-
 /**
- * Utility class to validate a token xml file
- * <p>
- * DISCLAIMER: Project owner e-CODEX
- * </p>
- * 
+ * Utility class to validate a token xml file.
+ *
+ * <p>DISCLAIMER: Project owner e-CODEX
+ *
  * @author <a href="mailto:eCodex.Project-DSS@arhs-developments.com">ARHS Developments</a>
  * @version $Revision: 1730 $ - $Date: 2013-03-07 22:46:35 +0100 (Thu, 07 Mar 2013) $
  */
+@UtilityClass
 public final class TokenXMLValidatorUtil {
-
     private static final LogDelegate LOG = new LogDelegate(TokenXMLValidatorUtil.class);
-
     private static final String XMLDSIG_SYSTEM_ID = "http://www.w3.org/2000/09/xmldsig#Object";
-    private static final String XMLDSIG_CORE_SCHEMA = "/eu/ecodex/dss/schemas/xmldsig-core-schema.xsd";
+    private static final String XMLDSIG_CORE_SCHEMA =
+        "/eu/ecodex/dss/schemas/xmldsig-core-schema.xsd";
     private static final String TRUST_OK_TOKEN_SCHEMA = "/eu/ecodex/dss/schemas/TrustOkToken.xsd";
-
     private static final Schema TOKEN_SCHEMA;
 
     static {
         try {
             // load the XSDs from the resources
-            final InputStream xsdToken = TokenXMLValidatorUtil.class.getResourceAsStream(TRUST_OK_TOKEN_SCHEMA);
-            if ( xsdToken == null ) {
-                throw new FileNotFoundException("the xsd file could not be found: " + TRUST_OK_TOKEN_SCHEMA);
+            final InputStream xsdToken =
+                TokenXMLValidatorUtil.class.getResourceAsStream(TRUST_OK_TOKEN_SCHEMA);
+            if (xsdToken == null) {
+                throw new FileNotFoundException(
+                    "the xsd file could not be found: " + TRUST_OK_TOKEN_SCHEMA);
             }
-            final InputStream xsdXmldsig = TokenXMLValidatorUtil.class.getResourceAsStream(XMLDSIG_CORE_SCHEMA);
-            if ( xsdXmldsig == null ) {
-                throw new FileNotFoundException("the xsd file could not be found: " + XMLDSIG_CORE_SCHEMA);
+            final InputStream xsdXmldsig =
+                TokenXMLValidatorUtil.class.getResourceAsStream(XMLDSIG_CORE_SCHEMA);
+            if (xsdXmldsig == null) {
+                throw new FileNotFoundException(
+                    "the xsd file could not be found: " + XMLDSIG_CORE_SCHEMA);
             }
 
             // create a datacontainer for the resolver
-            final ExternalLSInput extDsig = new ExternalLSInput();
-            extDsig.setSystemId(XMLDSIG_SYSTEM_ID);
-            extDsig.setStringData(IOUtils.toString(xsdXmldsig));
+            final var externalLSInput = new ExternalLSInput();
+            externalLSInput.setSystemId(XMLDSIG_SYSTEM_ID);
+            externalLSInput.setStringData(IOUtils.toString(xsdXmldsig));
 
-            // setup the schemafactory and the resolve
-            final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // setup the schema factory and the resolve
+            final var factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             // cache the existing resolver
             final LSResourceResolver resourceResolver = factory.getResourceResolver();
-            factory.setResourceResolver(new LSResourceResolver() {
-                @Override
-                public LSInput resolveResource(final String type, final String namespaceURI, final String publicId, final String systemId, final String baseURI) {
-                    // check for the dsig and return if requested
-                    if (extDsig.getSystemId().equals(systemId)) {
-                        return extDsig;
-                    }
-                    // delegate to the old resolver if present
-                    return (resourceResolver == null) ? null : resourceResolver.resolveResource(type, namespaceURI, publicId, systemId, baseURI);
+            factory.setResourceResolver((type, namespaceURI, publicId, systemId, baseURI) -> {
+                // check for the dsig and return if requested
+                if (externalLSInput.getSystemId().equals(systemId)) {
+                    return externalLSInput;
                 }
+                // delegate to the old resolver if present
+                return (resourceResolver == null) ? null :
+                    resourceResolver.resolveResource(type, namespaceURI, publicId, systemId,
+                                                     baseURI
+                    );
             });
 
             // create the schema
-            TOKEN_SCHEMA = factory.newSchema(new Source[] { new StreamSource(xsdToken)});
+            TOKEN_SCHEMA = factory.newSchema(new Source[] {new StreamSource(xsdToken)});
         } catch (Exception e) {
             LOG.lError("creation of the TOKEN_SCHEMA failed", e);
             throw new ExceptionInInitializerError(e);
@@ -89,28 +94,32 @@ public final class TokenXMLValidatorUtil {
     }
 
     /**
-     * The utility constructor
+     * Checks if the provided token document is valid according to the token schema.
+     *
+     * @param document the token document to validate
+     * @return true if the document is valid, false otherwise
      */
-    private TokenXMLValidatorUtil() {
-    }
-
     public static boolean isTokenSchemaValid(final DSSDocument document) {
         try {
             // check pre-condition
             if (document == null) {
-                throw new IllegalArgumentException("The token document provided in parameter must not be null");
+                throw new IllegalArgumentException(
+                    "The token document provided in parameter must not be null");
             }
 
             // get the source of the document
             final Source xmlFile = new StreamSource(document.openStream());
             // instantiate a new validator
-            final Validator validator = TOKEN_SCHEMA.newValidator();
+            final var validator = TOKEN_SCHEMA.newValidator();
             // and validate
             validator.validate(xmlFile);
             return true;
         } catch (SAXException e) {
             // if the file is not compliant, we end up here
-            LOG.lInfo("the TOKEN_SCHEMA validated with a negative result on the document in parameter", e);
+            LOG.lInfo(
+                "the TOKEN_SCHEMA validated with a negative result on the document in parameter",
+                e
+            );
         } catch (IOException e) {
             // in case the document could not be read
             LOG.lError("the TOKEN_SCHEMA encountered a read error on the document in parameter", e);
@@ -138,7 +147,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getCharacterStream()
          */
         @Override
@@ -148,7 +157,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setCharacterStream(java.io.Reader)
          */
         @Override
@@ -158,7 +167,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getByteStream()
          */
         @Override
@@ -168,7 +177,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setByteStream(java.io.InputStream)
          */
         @Override
@@ -178,7 +187,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getStringData()
          */
         @Override
@@ -188,7 +197,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setStringData(java.lang.String)
          */
         @Override
@@ -198,7 +207,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getSystemId()
          */
         @Override
@@ -208,7 +217,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setSystemId(java.lang.String)
          */
         @Override
@@ -218,7 +227,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getPublicId()
          */
         @Override
@@ -228,7 +237,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setPublicId(java.lang.String)
          */
         @Override
@@ -238,7 +247,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getBaseURI()
          */
         @Override
@@ -248,7 +257,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setBaseURI(java.lang.String)
          */
         @Override
@@ -258,7 +267,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getEncoding()
          */
         @Override
@@ -268,7 +277,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setEncoding(java.lang.String)
          */
         @Override
@@ -278,7 +287,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#getCertifiedText()
          */
         @Override
@@ -288,7 +297,7 @@ public final class TokenXMLValidatorUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.w3c.dom.ls.LSInput#setCertifiedText(boolean)
          */
         @Override

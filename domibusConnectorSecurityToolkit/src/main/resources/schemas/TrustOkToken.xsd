@@ -4,7 +4,7 @@
         xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
         elementFormDefault="qualified"
         attributeFormDefault="unqualified"
-        >
+>
     <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/2000/09/xmldsig#"/>
 
     <xsd:element name="TrustOkToken" type="TokenType"/>

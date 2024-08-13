@@ -1,27 +1,15 @@
-package eu.domibus.connector.testutil.logger;
-
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements. See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache license, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the license for the specific language governing permissions and
- * limitations under the license.
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
  */
+
+package eu.domibus.connector.testutil.logger;
 
 /*
  * copied from log4j2 sources, to avoid including log4j2-tests.jar which is not managed by spring
  * will also include some additional methods for tests
  *
-*/
+ */
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Core;
 import org.apache.logging.log4j.core.Filter;
@@ -45,32 +32,25 @@ import org.apache.logging.log4j.core.config.plugins.validation.constraints.Requi
 import org.apache.logging.log4j.core.impl.MutableLogEvent;
 
 /**
- * This appender is primarily used for testing. Use in a real environment is discouraged as the List could eventually
- * grow to cause an OutOfMemoryError.
+ * This appender is primarily used for testing. Use in a real environment is discouraged as the List
+ * could eventually grow to cause an OutOfMemoryError.
  *
- * This appender is not thread-safe.
+ * <p>This appender is not thread-safe.
  *
- * This appender will use {@link Layout#toByteArray(LogEvent)}.
- *
- *
+ * <p>This appender will use {@link Layout#toByteArray(LogEvent)}.
  */
-@Plugin(name = "List", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
+@Plugin(
+    name = "List", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE,
+    printObject = true
+)
 public class ListAppender extends AbstractAppender {
-
     // Use CopyOnWriteArrayList?
-
     final List<LogEvent> events = new ArrayList<>();
-
     private final List<String> messages = new ArrayList<>();
-
     final List<byte[]> data = new ArrayList<>();
-
     private final boolean newLine;
-
     private final boolean raw;
-
     private static final String WINDOWS_LINE_SEP = "\r\n";
-
     /**
      * CountDownLatch for asynchronous logging tests. Example usage:
      *
@@ -98,16 +78,39 @@ public class ListAppender extends AbstractAppender {
      * }
      * </pre>
      */
-    public CountDownLatch countDownLatch = null;
+    public static final CountDownLatch countDownLatch = null;
 
+    /**
+     * The ListAppender class represents an appender that stores log events in a list.
+     *
+     * <p>This class extends the AbstractAppender class and provides functionality to append log
+     * events to the list. It supports options to control the formatting and behavior of the log
+     * events.
+     *
+     * @param name The name of the ListAppender.
+     */
     public ListAppender(final String name) {
         super(name, null, null);
         newLine = false;
         raw = false;
     }
 
-    public ListAppender(final String name, final Filter filter, final Layout<? extends Serializable> layout,
-                        final boolean newline, final boolean raw) {
+    /**
+     * The ListAppender class represents an appender that stores log events in a list.
+     *
+     * <p>This class extends the AbstractAppender class and provides functionality to append log
+     * events to the list. It supports options to control the formatting and behavior of the log
+     * events.
+     *
+     * @param name The name of the ListAppender.
+     * @param filter The filter to determine if a log event should be appended.
+     * @param layout The layout to format the log event.
+     * @param newline Whether to insert newline characters between log events.
+     * @param raw Whether to store log events as raw byte arrays.
+     */
+    public ListAppender(
+        final String name, final Filter filter, final Layout<? extends Serializable> layout,
+        final boolean newline, final boolean raw) {
         super(name, filter, layout);
         this.newLine = newline;
         this.raw = raw;
@@ -123,9 +126,9 @@ public class ListAppender extends AbstractAppender {
     public synchronized void append(final LogEvent event) {
         final Layout<? extends Serializable> layout = getLayout();
         if (layout == null) {
-            if (event instanceof MutableLogEvent) {
+            if (event instanceof MutableLogEvent mutableLogEvent) {
                 // must take snapshot or subsequent calls to logger.log() will modify this event
-                events.add(((MutableLogEvent) event).createMemento());
+                events.add(mutableLogEvent.createMemento());
             } else {
                 events.add(event);
             }
@@ -142,13 +145,13 @@ public class ListAppender extends AbstractAppender {
             data.add(bytes);
             return;
         }
-        final String str = new String(bytes);
+        final var str = new String(bytes);
         if (newLine) {
-            int index = 0;
+            var index = 0;
             while (index < str.length()) {
                 int end;
-                final int wend = str.indexOf(WINDOWS_LINE_SEP, index);
-                final int lend = str.indexOf('\n', index);
+                final var wend = str.indexOf(WINDOWS_LINE_SEP, index);
+                final var lend = str.indexOf('\n', index);
                 int length;
                 if (wend >= 0 && wend < lend) {
                     end = wend;
@@ -189,6 +192,11 @@ public class ListAppender extends AbstractAppender {
         return true;
     }
 
+    /**
+     * Clears the events, messages, and data lists of the ListAppender.
+     *
+     * @return the ListAppender instance after clearing the lists
+     */
     public synchronized ListAppender clear() {
         events.clear();
         messages.clear();
@@ -205,11 +213,11 @@ public class ListAppender extends AbstractAppender {
     }
 
     /**
-     * Polls the messages list for it to grow to a given minimum size at most timeout timeUnits and return a copy of
-     * what we have so far.
+     * Polls the messages list for it to grow to a given minimum size at most timeout timeUnits and
+     * return a copy of what we have so far.
      */
     public List<String> getMessages(final int minSize, final long timeout, final TimeUnit timeUnit)
-            throws InterruptedException {
+        throws InterruptedException {
         final long endMillis = System.currentTimeMillis() + timeUnit.toMillis(timeout);
         while (messages.size() < minSize && System.currentTimeMillis() < endMillis) {
             Thread.sleep(100);
@@ -221,8 +229,9 @@ public class ListAppender extends AbstractAppender {
         return Collections.unmodifiableList(data);
     }
 
-    public static ListAppender createAppender(final String name, final boolean newLine, final boolean raw,
-                                              final Layout<? extends Serializable> layout, final Filter filter) {
+    public static ListAppender createAppender(
+        final String name, final boolean newLine, final boolean raw,
+        final Layout<? extends Serializable> layout, final Filter filter) {
         return new ListAppender(name, filter, layout, newLine, raw);
     }
 
@@ -231,21 +240,31 @@ public class ListAppender extends AbstractAppender {
         return new Builder();
     }
 
-    public static class Builder implements org.apache.logging.log4j.core.util.Builder<ListAppender> {
-
+    /**
+     * The Builder class represents a builder for creating an instance of ListAppender.
+     *
+     * <p>It implements the org.apache.logging.log4j.core.util.Builder interface and provides
+     * methods to set the configuration properties of the ListAppender. Once all the properties
+     * are set, the build() method can be called to create the ListAppender instance.
+     *
+     * <p>The following properties can be configured using the builder:
+     * - name: The name of the ListAppender.
+     * - entryPerNewLine: Whether to insert newline characters between log events.
+     * - raw: Whether to store log events as raw byte arrays.
+     * - layout: The layout to format the log event.
+     * - filter: The filter to determine if a log event should be appended.
+     */
+    public static class Builder
+        implements org.apache.logging.log4j.core.util.Builder<ListAppender> {
         @PluginBuilderAttribute
         @Required
         private String name;
-
         @PluginBuilderAttribute
         private boolean entryPerNewLine;
-
         @PluginBuilderAttribute
         private boolean raw;
-
         @PluginElement("Layout")
         private Layout<? extends Serializable> layout;
-
         @PluginElement("Filter")
         private Filter filter;
 
@@ -283,20 +302,22 @@ public class ListAppender extends AbstractAppender {
     /**
      * Gets the named ListAppender if it has been registered.
      *
-     * @param name
-     *            the name of the ListAppender
+     * @param name the name of the ListAppender
      * @return the named ListAppender or {@code null} if it does not exist
-     *
      */
     public static ListAppender getListAppender(final String name) {
-        return ((ListAppender) (LoggerContext.getContext(false)).getConfiguration().getAppender(name));
+        return (LoggerContext.getContext(false)).getConfiguration()
+                                                .getAppender(name);
     }
 
     @Override
     public String toString() {
-        return "ListAppender [events=" + events + ", messages=" + messages + ", data=" + data + ", newLine=" + newLine
-                + ", raw=" + raw + ", countDownLatch=" + countDownLatch + ", getHandler()=" + getHandler()
-                + ", getLayout()=" + getLayout() + ", getName()=" + getName() + ", ignoreExceptions()="
-                + ignoreExceptions() + ", getFilter()=" + getFilter() + ", getState()=" + getState() + "]";
+        return "ListAppender [events=" + events + ", messages=" + messages + ", data=" + data
+            + ", newLine=" + newLine
+            + ", raw=" + raw + ", countDownLatch=" + countDownLatch + ", getHandler()="
+            + getHandler()
+            + ", getLayout()=" + getLayout() + ", getName()=" + getName() + ", ignoreExceptions()="
+            + ignoreExceptions() + ", getFilter()=" + getFilter() + ", getState()=" + getState()
+            + "]";
     }
 }

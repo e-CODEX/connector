@@ -114,7 +114,7 @@ class DomibusConnectorPModePersistenceServiceTest {
         connectorPModeSet.setConnectorstore(keystore);
 
         connectorPModeSet.getServices().add(DomainEntityCreator.createServiceEPO());
-        connectorPModeSet.getActions().add(DomainEntityCreator.createActionForm_A());
+        connectorPModeSet.getActions().add(DomainEntityCreator.createActionFormA());
 
         DomibusConnectorParty partyDomibusRedResponder =
             DomainEntityCreator.createPartyDomibusRed();

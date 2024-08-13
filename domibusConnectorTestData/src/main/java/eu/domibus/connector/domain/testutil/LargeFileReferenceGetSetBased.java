@@ -1,24 +1,29 @@
-package eu.domibus.connector.domain.testutil;
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
+package eu.domibus.connector.domain.testutil;
 
 import eu.domibus.connector.domain.model.LargeFileReference;
 import eu.domibus.connector.persistence.testutils.LargeFileProviderMemoryImpl;
-import org.springframework.util.StringUtils;
-
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Base64;
 import java.util.UUID;
-
+import lombok.Data;
+import org.springframework.util.StringUtils;
 
 /**
- * A memory based impl for handling files
- *  this impl is intended to be used only within tests!
+ * A memory based impl for handling files this impl is intended to be used only within tests.
+ *
  * @author {@literal Stephan Spindler <stephan.spindler@extern.brz.gv.at> }
  */
+@Data
 public class LargeFileReferenceGetSetBased extends LargeFileReference {
-
     byte[] bytes;
     boolean readable;
     boolean writeable;
@@ -28,6 +33,13 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
         this.setStorageIdReference(UUID.randomUUID().toString());
     }
 
+    /**
+     * Creates a new instance of the {@code LargeFileReferenceGetSetBased} class, initializing it
+     * with the given {@code LargeFileReference} object.
+     *
+     * @param ref The reference to copy fields from. Must not be {@code null}.
+     * @throws IllegalArgumentException if the {@code ref} parameter is {@code null}.
+     */
     public LargeFileReferenceGetSetBased(LargeFileReference ref) {
         super(ref);
         this.setStorageProviderName(LargeFileProviderMemoryImpl.PROVIDER_NAME);
@@ -44,8 +56,7 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
 
     @Override
     public OutputStream getOutputStream() throws IOException {
-        ByteArrayOutputStream b = new OnClassCallbackByteArrayOutputStream(this);
-        return b;
+        return new OnClassCallbackByteArrayOutputStream(this);
     }
 
     @Override
@@ -58,18 +69,12 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
         return writeable;
     }
 
-    public void setReadable(boolean readable) {
-        this.readable = readable;
-    }
-
-    public void setWriteable(boolean writeable) {
-        this.writeable = writeable;
-    }
-
-    public byte[] getBytes() {
-        return bytes;
-    }
-
+    /**
+     * Sets the byte array of the LargeFileReference. This method updates the bytes, text, and size
+     * properties of the object.
+     *
+     * @param bytes The byte array to set as the new value for the bytes' property.
+     */
     public void setBytes(byte[] bytes) {
         this.bytes = bytes;
         this.setText(Base64.getEncoder().encodeToString(bytes));
@@ -77,11 +82,10 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
     }
 
     private static class OnClassCallbackByteArrayOutputStream extends ByteArrayOutputStream {
-
-        private LargeFileReferenceGetSetBased ref;
+        private final LargeFileReferenceGetSetBased largeFileReferenceGetSetBased;
 
         public OnClassCallbackByteArrayOutputStream(LargeFileReferenceGetSetBased ref) {
-            this.ref = ref;
+            this.largeFileReferenceGetSetBased = ref;
         }
 
         @Override
@@ -91,11 +95,9 @@ public class LargeFileReferenceGetSetBased extends LargeFileReference {
 
         @Override
         public void flush() {
-            ref.setBytes(this.toByteArray());
+            largeFileReferenceGetSetBased.setBytes(this.toByteArray());
         }
-
     }
-
 }
 
 

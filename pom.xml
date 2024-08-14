@@ -135,7 +135,7 @@
         <asciidoctor.maven-plugin.version>3.0.0</asciidoctor.maven-plugin.version>
         <asciidoctor.pdf.version>2.3.15</asciidoctor.pdf.version>
         <!-- always update with cxf -->
-        <com.fasterxml.woodstox.woodstox-core.version>6.6.2</com.fasterxml.woodstox.woodstox-core.version>
+        <com.fasterxml.woodstox.woodstox-core.version>7.0.0</com.fasterxml.woodstox.woodstox-core.version>
         <org.apache.santuario.xmlsec.version>2.2.4</org.apache.santuario.xmlsec.version>
         <!-- vaadin -->
         <vaadin.version>14.10.5</vaadin.version>

@@ -123,6 +123,10 @@
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.basedir}/../coverage/target/site/jacoco-aggregate/jacoco.xml,
+            ${project.basedir}/coverage/target/site/jacoco-aggregate/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
         <!-- documentation -->
         <asciidoclet.version>1.5.6</asciidoclet.version>
         <asciidoctor.version>2.5.12</asciidoctor.version>

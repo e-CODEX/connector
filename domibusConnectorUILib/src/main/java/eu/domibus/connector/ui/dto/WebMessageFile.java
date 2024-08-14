@@ -1,54 +1,37 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * The WebMessageFile class represents a file attached to a web message.
+ */
+@Data
+@NoArgsConstructor
+@SuppressWarnings("squid:S1135")
 public class WebMessageFile {
+    private String fileName;
+    private WebMessageFileType fileType;
+    private byte[] fileContent;
 
-	private String fileName;
-	
-	private WebMessageFileType fileType;
-	
-
-	private byte[] fileContent;
-	
-	public WebMessageFile() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param fileName
-	 * @param fileType
-	 * @param fileContent
-	 */
-	public WebMessageFile(String fileName, WebMessageFileType fileType, byte[] fileContent) {
-		super();
-		this.fileName = fileName;
-		this.fileType = fileType;
-		this.fileContent = fileContent;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public WebMessageFileType getFileType() {
-		return fileType;
-	}
-
-	public void setFileType(WebMessageFileType fileType) {
-		this.fileType = fileType;
-	}
-
-	public byte[] getFileContent() {
-		return fileContent;
-	}
-
-	public void setFileContent(byte[] fileContent) {
-		this.fileContent = fileContent;
-	}
-
-	
-	
+    /**
+     * Constructs a new WebMessageFile object with the given file name, file type, and file
+     * content.
+     *
+     * @param fileName    the name of the file
+     * @param fileType    the type of the file, chosen from the available WebMessageFileType
+     *                    options
+     * @param fileContent the content of the file as a byte array
+     */
+    public WebMessageFile(String fileName, WebMessageFileType fileType, byte[] fileContent) {
+        super();
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.fileContent = fileContent;
+    }
 }

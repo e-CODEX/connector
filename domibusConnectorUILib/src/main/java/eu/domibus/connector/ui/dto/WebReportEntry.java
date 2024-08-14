@@ -1,60 +1,22 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.dto;
 
+import lombok.Data;
+
+/**
+ * The WebReportEntry class represents a single entry in a web-based report. It contains information
+ * about the year, month, party, service, and message counts for both sent and received messages.
+ */
+@Data
 public class WebReportEntry {
-
-	private String year;
-	private String month;
-	private String party;
-	private String service;
-	private Integer received;
-	private Integer sent;
-
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
-	}
-
-	public String getMonth() {
-		return month;
-	}
-
-	public void setMonth(String month) {
-		this.month = month;
-	}
-
-	public String getParty() {
-		return party;
-	}
-
-	public void setParty(String party) {
-		this.party = party;
-	}
-
-	public String getService() {
-		return service;
-	}
-
-	public void setService(String service) {
-		this.service = service;
-	}
-
-	public Integer getReceived() {
-		return received;
-	}
-
-	public void setReceived(Integer received) {
-		this.received = received;
-	}
-
-	public Integer getSent() {
-		return sent;
-	}
-
-	public void setSent(Integer sent) {
-		this.sent = sent;
-	}
-
+    private String year;
+    private String month;
+    private String party;
+    private String service;
+    private Integer received;
+    private Integer sent;
 }

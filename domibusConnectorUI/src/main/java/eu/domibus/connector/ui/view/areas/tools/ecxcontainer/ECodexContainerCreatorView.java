@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.view.areas.tools.ecxcontainer;
 
 import com.vaadin.flow.component.html.Anchor;
@@ -11,125 +16,140 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.domibus.connector.common.service.CurrentBusinessDomain;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
-import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.builder.DomibusConnectorMessageBuilder;
 import eu.domibus.connector.domain.model.builder.DomibusConnectorMessageDetailsBuilder;
 import eu.domibus.connector.security.container.service.ECodexContainerFactoryService;
 import eu.domibus.connector.tools.logging.LoggingMarker;
 import eu.domibus.connector.ui.utils.RoleRequired;
+import eu.domibus.connector.ui.utils.UiStyle;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import eu.domibus.connector.ui.view.areas.tools.ToolsLayout;
 import eu.ecodex.dss.model.BusinessContent;
 import eu.ecodex.dss.model.ECodexContainer;
-import eu.ecodex.dss.service.ECodexContainerService;
 import eu.ecodex.dss.service.ECodexException;
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StreamUtils;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.UUID;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 
-
+/**
+ * The ECodexContainerCreatorView class represents a view in the Domibus Connector Administration UI
+ * for creating an ECodex container.
+ *
+ * @see VerticalLayout
+ * @see Component
+ * @see UIScope
+ * @see Route
+ * @see RoleRequired
+ * @see TabMetadata
+ */
 @Component
 @UIScope
 @Route(value = ECodexContainerCreatorView.ROUTE, layout = ToolsLayout.class)
-@RoleRequired(role = "ADMIN" )
+@RoleRequired(role = "ADMIN")
 @TabMetadata(title = "Create ECodex Container", tabGroup = ToolsLayout.TAB_GROUP_NAME)
+@SuppressWarnings("squid:S1135")
 public class ECodexContainerCreatorView extends VerticalLayout {
-
     private static final Logger LOGGER = LogManager.getLogger(ECodexContainerCreatorView.class);
-
     public static final String ROUTE = "createEcodexContainer";
+    private final ECodexContainerFactoryService containerFactoryService;
+    private final HorizontalLayout resultArea = new HorizontalLayout();
 
-    private final ECodexContainerFactoryService eCodexContainerFactoryService;
-
-    private HorizontalLayout resultArea = new HorizontalLayout();
-
-    public ECodexContainerCreatorView(ECodexContainerFactoryService eCodexContainerFactoryService) {
-        this.eCodexContainerFactoryService = eCodexContainerFactoryService;
+    /**
+     * Constructor.
+     *
+     * @param containerFactoryService the eCodexContainerFactoryService used for creating ECodex
+     *                                containers
+     */
+    public ECodexContainerCreatorView(ECodexContainerFactoryService containerFactoryService) {
+        this.containerFactoryService = containerFactoryService;
         this.initUI();
     }
 
     private void initUI() {
+        var documentValidationLabel = new Label(
+            "Upload any signed document and see the certificate validation result"
+        );
+        this.add(documentValidationLabel);
 
-        Label l = new Label("Upload any signed document and see the certificate validation result");
-        this.add(l);
-
-        MemoryBuffer buffer = new MemoryBuffer ();
-        Upload upload = new Upload(buffer);
+        var buffer = new MemoryBuffer();
+        var upload = new Upload(buffer);
         upload.setMaxFiles(1);
         upload.setId("uploadBusinessDocTest");
 
-        Label uploadResultLabel = new Label("");
+        var uploadResultLabel = new Label("");
 
-        upload.addStartedListener(event -> {
-            resultArea.removeAll();
-        });
-        upload.addSucceededListener(event -> {
-            processUploadedFile(buffer, uploadResultLabel);
-        });
+        upload.addStartedListener(event -> resultArea.removeAll());
+        upload.addSucceededListener(event -> processUploadedFile(buffer, uploadResultLabel));
         upload.addFailedListener(e -> {
             uploadResultLabel.setText("File upload failed!");
-            uploadResultLabel.getStyle().set("color", "red");
+            uploadResultLabel.getStyle().set(UiStyle.TAG_COLOR, UiStyle.COLOR_RED);
         });
 
         this.add(upload);
         this.add(uploadResultLabel);
         this.add(resultArea);
-
     }
 
     private void processUploadedFile(MemoryBuffer buffer, Label uploadResultLabel) {
         try {
-            CurrentBusinessDomain.setCurrentBusinessDomain(DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
+            CurrentBusinessDomain.setCurrentBusinessDomain(
+                DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
             String fileName = buffer.getFileName();
 
-            byte[] bytes = StreamUtils.copyToByteArray(buffer.getInputStream());
+            var bytes = StreamUtils.copyToByteArray(buffer.getInputStream());
             DSSDocument document = new InMemoryDocument(bytes, fileName);
 
+            var theMessage = DomibusConnectorMessageBuilder
+                .createBuilder()
+                .setMessageDetails(
+                    DomibusConnectorMessageDetailsBuilder
+                        .create()
+                        .withOriginalSender("TheOriginalSender")
+                        .build())
+                .build();
 
-            DomibusConnectorMessage theMessage = DomibusConnectorMessageBuilder.createBuilder()
-                    .setMessageDetails(DomibusConnectorMessageDetailsBuilder.create()
-                            .withOriginalSender("TheOriginalSender")
-                            .build())
-                    .build();
-
-            ECodexContainerService eCodexContainerService = eCodexContainerFactoryService.createECodexContainerService(theMessage);
-            BusinessContent businessContent = new BusinessContent();
+            var containerService =
+                containerFactoryService.createECodexContainerService(theMessage);
+            var businessContent = new BusinessContent();
             businessContent.setDocument(document);
-            ECodexContainer eCodexContainer = eCodexContainerService.create(businessContent);
 
-            writeFilesToTemp(eCodexContainer);
+            var container = containerService.create(businessContent);
+            writeFilesToTemp(container);
 
-            uploadResultLabel.setText("File " + fileName + " uploaded\n" +
-                    "Legal Disclaimer " + eCodexContainer.getToken().getLegalValidationResultDisclaimer() +"\n" +
-                    "Legal Trust Level " + eCodexContainer.getToken().getLegalValidationResult().getTrustLevel().getText()
+            uploadResultLabel.setText(
+                "File " + fileName + " uploaded\n"
+                    + "Legal Disclaimer " + container
+                    .getToken()
+                    .getLegalValidationResultDisclaimer()
+                    + "\n"
+                    + "Legal Trust Level "
+                    + container.getToken()
+                               .getLegalValidationResult()
+                               .getTrustLevel()
+                               .getText()
             );
 
-            uploadResultLabel.getStyle().set("color", "green");
+            uploadResultLabel.getStyle().set(UiStyle.TAG_COLOR, UiStyle.COLOR_GREEN);
 
-
-//            Button download = new Button("Download Container");
-//            download.addClickListener(event -> {
-//                StreamResource r = new StreamResource();
-//            })
-            //TODO: make ecodex container downloadable
-
-
+            // TODO: make ecodex container downloadable
+            //  Button download = new Button("Download Container");
+            //  download.addClickListener(event -> {
+            //      StreamResource r = new StreamResource();
+            //  })
 
         } catch (IOException ioe) {
             uploadResultLabel.setText("File upload failed!");
             uploadResultLabel.getStyle().set("color", "red");
         } catch (ECodexException e) {
-            LOGGER.warn("Ecodex Exception occured while testing in UI", e);
+            LOGGER.warn("Ecodex Exception occurred while testing in UI", e);
             e.printStackTrace();
             uploadResultLabel.setText("eCodex processing failed!");
             uploadResultLabel.getStyle().set("color", "red");
@@ -138,24 +158,36 @@ public class ECodexContainerCreatorView extends VerticalLayout {
         }
     }
 
-    private void writeFilesToTemp(ECodexContainer eCodexContainer) {
+    private void writeFilesToTemp(ECodexContainer container) {
         try {
-            Path asicsContainer = Files.createTempFile("asicsContainer_", null);
-            Files.write(asicsContainer, StreamUtils.copyToByteArray(eCodexContainer.getAsicDocument().openStream()), StandardOpenOption.WRITE);
+            var asicsContainer = Files.createTempFile("asicsContainer_", null);
+            Files.write(
+                asicsContainer,
+                StreamUtils.copyToByteArray(container.getAsicDocument().openStream()),
+                StandardOpenOption.WRITE
+            );
 
-            Path xmlToken = Files.createTempFile("xmlToken_", null);
-            Files.write(xmlToken, StreamUtils.copyToByteArray(eCodexContainer.getTokenXML().openStream()), StandardOpenOption.WRITE);
+            var xmlToken = Files.createTempFile("xmlToken_", null);
+            Files.write(
+                xmlToken, StreamUtils.copyToByteArray(container.getTokenXML().openStream()),
+                StandardOpenOption.WRITE
+            );
 
-            Anchor downloadAsicsContainer = new Anchor(getStreamResource("ecodex.asics", asicsContainer), "Download created ASIC-S container");
-            downloadAsicsContainer.getElement().setAttribute("download",true);
+            var downloadAsicsContainer = new Anchor(
+                getStreamResource("ecodex.asics", asicsContainer),
+                "Download created ASIC-S container"
+            );
+            downloadAsicsContainer.getElement().setAttribute("download", true);
 
-            Anchor downloadXmlToken = new Anchor(getStreamResource("tokenXml.xml", xmlToken), "Download created XML Token");
-            downloadXmlToken.getElement().setAttribute("download",true);
+            var downloadXmlToken = new Anchor(
+                getStreamResource("tokenXml.xml", xmlToken),
+                "Download created XML Token"
+            );
+            downloadXmlToken.getElement().setAttribute("download", true);
 
             resultArea.add(downloadAsicsContainer, downloadXmlToken);
-
         } catch (IOException e) {
-            LOGGER.warn("IOException occured while writing temp files", e);
+            LOGGER.warn("IOException occurred while writing temp files", e);
         }
     }
 
@@ -163,12 +195,14 @@ public class ECodexContainerCreatorView extends VerticalLayout {
         return new StreamResource(s, () -> {
             try {
                 return new ByteArrayInputStream(Files.readAllBytes(file));
-            } catch (IOException e) {
-                LOGGER.warn(LoggingMarker.Log4jMarker.UI_LOG,  "IOException occured while reading temp file", e);
-                throw new RuntimeException("Download failed", e);
+            } catch (IOException exception) {
+                LOGGER.warn(
+                    LoggingMarker.Log4jMarker.UI_LOG, "IOException occurred while reading "
+                        + "temp file",
+                    exception
+                );
+                throw new RuntimeException("Download failed", exception);
             }
         });
     }
-
-
 }

@@ -1,27 +1,37 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.dialogs;
 
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.Command;
-import org.springframework.util.StringUtils;
 
+/**
+ * EditBeanDialogBuilder is a utility class that provides a convenient way to create and display a
+ * dialog for editing a bean object.
+ *
+ * @param <T> the type of the bean object being edited
+ */
 public class EditBeanDialogBuilder<T> {
-
     private Command onConfirmCallback;
     private Command onCancelCallback;
     private ValueCallback<T> onValueCallback;
-
     private T value;
     private CustomField<T> field;
     private boolean closeOnEscape;
 
-
+    /**
+     * The ValueCallback interface defines a callback method that can be used to handle a value of
+     * type T.
+     *
+     * @param <T> the type of value to be handled by the callback
+     */
     public interface ValueCallback<T> {
         boolean onValue(T o);
     }
@@ -33,9 +43,8 @@ public class EditBeanDialogBuilder<T> {
         return new EditBeanDialogBuilder<>();
     }
 
-
     public EditBeanDialogBuilder<T> setCloseOnEscape(boolean b) {
-        this.closeOnEscape =  b;
+        this.closeOnEscape = b;
         return this;
     }
 
@@ -59,34 +68,32 @@ public class EditBeanDialogBuilder<T> {
         return this;
     }
 
+    /**
+     * Displays a dialog with save and cancel buttons, along with a custom field. The dialog is used
+     * for editing a bean object.
+     *
+     * <p>Note: The method does not return anything and does not take any parameters.
+     */
     public void show() {
-//        if (StringUtils.isEmpty(messageText)) {
-//            throw new IllegalArgumentException("Message Text is not allowed to be null!");
-//        }
-
-        Dialog dialog = new Dialog();
-//        dialog.add(new Text("The Form contains errors"));
+        var dialog = new Dialog();
         dialog.setCloseOnEsc(closeOnEscape);
         dialog.setCloseOnOutsideClick(false);
-        VerticalLayout layout = new VerticalLayout();
+        var layout = new VerticalLayout();
 
-        Button saveButton = new Button("Save", event -> {
-            boolean close = true;
+        var saveButton = new Button("Save", event -> {
+            var close = true;
             if (onValueCallback != null) {
                 close = onValueCallback.onValue(field.getValue());
             }
-//            if (onConfirmCallback != null) {
-//                onConfirmCallback.execute();
-//            }
             dialog.close();
         });
-        Button cancelButton = new Button("Cancel", event -> {
+        var cancelButton = new Button("Cancel", event -> {
             dialog.close();
             if (onCancelCallback != null) {
                 onCancelCallback.execute();
             }
         });
-        dialog.addDialogCloseActionListener((event) -> {
+        dialog.addDialogCloseActionListener(event -> {
             if (onCancelCallback != null) {
                 onCancelCallback.execute();
             }
@@ -97,5 +104,4 @@ public class EditBeanDialogBuilder<T> {
         dialog.add(layout);
         dialog.open();
     }
-
 }

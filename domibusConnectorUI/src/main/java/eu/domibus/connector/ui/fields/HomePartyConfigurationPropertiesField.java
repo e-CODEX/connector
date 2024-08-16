@@ -1,4 +1,11 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.fields;
+
+import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -10,30 +17,41 @@ import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
 import org.springframework.context.annotation.Scope;
 
-import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
-
+/**
+ * The {@code HomePartyConfigurationPropertiesField} class is a custom field used for configuring a
+ * home party in a home party configuration file.
+ */
 @SpringComponent
 @Scope(SCOPE_PROTOTYPE)
-public class HomePartyConfigurationPropertiesField extends CustomField<HomePartyConfigurationProperties> {
-
+public class HomePartyConfigurationPropertiesField
+    extends CustomField<HomePartyConfigurationProperties> {
     private final SpringBeanValidationBinderFactory validationBinderFactory;
-
     private final TextField name = new TextField();
     private final TextField endpointAddress = new TextField();
-
     private final Label statusLabel = new Label();
     private final FormLayout formLayout = new FormLayout();
-
     private final SpringBeanValidationBinder<HomePartyConfigurationProperties> binder;
     private HomePartyConfigurationProperties value;
 
-    public HomePartyConfigurationPropertiesField(SpringBeanValidationBinderFactory validationBinderFactory) {
+    /**
+     * Constructor.
+     *
+     * @param validationBinderFactory the SpringBeanValidationBinderFactory used to create the
+     *                                validation binder
+     */
+    public HomePartyConfigurationPropertiesField(
+        SpringBeanValidationBinderFactory validationBinderFactory) {
         this.validationBinderFactory = validationBinderFactory;
 
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(
+            new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+            ));
         formLayout.addFormItem(name, "Party Name");
         formLayout.addFormItem(endpointAddress, "Party Endpoint Address");
 
@@ -50,7 +68,7 @@ public class HomePartyConfigurationPropertiesField extends CustomField<HomeParty
     }
 
     private void valueChanged(ValueChangeEvent<?> valueChangeEvent) {
-        HomePartyConfigurationProperties changedValue = new HomePartyConfigurationProperties();
+        var changedValue = new HomePartyConfigurationProperties();
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
@@ -70,5 +88,4 @@ public class HomePartyConfigurationPropertiesField extends CustomField<HomeParty
             formLayout.setVisible(true);
         }
     }
-
 }

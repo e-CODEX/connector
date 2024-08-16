@@ -1,14 +1,24 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.view.areas.configuration.link;
 
 import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.api.LinkPlugin;
-
 import java.util.Optional;
+import lombok.Data;
+import lombok.Setter;
 
+/**
+ * The abstract class WebLinkItem represents an item used in web links. It provides common
+ * functionality and properties for both link partners and link configurations.
+ */
+@Setter
 public abstract class WebLinkItem {
-
     private LinkPlugin linkPlugin;
 
     public DomibusConnectorLinkPartner getLinkPartner() {
@@ -31,13 +41,18 @@ public abstract class WebLinkItem {
         return Optional.ofNullable(this.linkPlugin);
     }
 
-    public void setLinkPlugin(LinkPlugin linkPlugin) {
-        this.linkPlugin = linkPlugin;
-    }
-
+    /**
+     * The WebLinkConfigurationItem class represents a configuration item for a web link. It extends
+     * the WebLinkItem class. It contains a link configuration object and provides methods to access
+     * and modify the link configuration.
+     *
+     * @see WebLinkItem
+     */
+    @Setter
     public static class WebLinkConfigurationItem extends WebLinkItem {
         private DomibusConnectorLinkConfiguration linkConfiguration;
 
+        @Override
         public DomibusConnectorLinkConfiguration getLinkConfiguration() {
             return linkConfiguration;
         }
@@ -58,12 +73,16 @@ public abstract class WebLinkItem {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof WebLinkConfigurationItem)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof WebLinkConfigurationItem that)) {
+                return false;
+            }
 
-            WebLinkConfigurationItem that = (WebLinkConfigurationItem) o;
-
-            return linkConfiguration != null ? linkConfiguration.equals(that.linkConfiguration) : that.linkConfiguration == null;
+            return linkConfiguration != null
+                ? linkConfiguration.equals(that.linkConfiguration)
+                : that.linkConfiguration == null;
         }
 
         @Override
@@ -72,12 +91,15 @@ public abstract class WebLinkItem {
         }
     }
 
+    /**
+     * The {@code WebLinkPartnerItem} class extends the {@link WebLinkItem} class and represents a
+     * link partner item used in web links.
+     *
+     * @see WebLinkItem
+     */
+    @Data
     public static class WebLinkPartnerItem extends WebLinkItem {
         private DomibusConnectorLinkPartner linkPartner;
-
-        public DomibusConnectorLinkPartner getLinkPartner() {
-            return linkPartner;
-        }
 
         @Override
         public String getName() {
@@ -94,18 +116,18 @@ public abstract class WebLinkItem {
             return linkPartner.isEnabled();
         }
 
-        public void setLinkPartner(DomibusConnectorLinkPartner linkPartner) {
-            this.linkPartner = linkPartner;
-        }
-
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof WebLinkPartnerItem)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof WebLinkPartnerItem that)) {
+                return false;
+            }
 
-            WebLinkPartnerItem that = (WebLinkPartnerItem) o;
-
-            return linkPartner != null ? linkPartner.equals(that.linkPartner) : that.linkPartner == null;
+            return linkPartner != null
+                ? linkPartner.equals(that.linkPartner)
+                : that.linkPartner == null;
         }
 
         @Override
@@ -113,5 +135,4 @@ public abstract class WebLinkItem {
             return linkPartner != null ? linkPartner.hashCode() : 0;
         }
     }
-
 }

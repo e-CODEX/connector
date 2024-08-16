@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.dialogs;
 
 import com.vaadin.flow.component.Text;
@@ -6,17 +11,21 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.server.Command;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
+/**
+ * The ConfirmDialogBuilder class is used to build and display a confirm dialog box. It allows
+ * setting the message text and callback functions for the confirmation and cancel actions. Once the
+ * dialog is built, the show() method is called to display the dialog.
+ *
+ * @see Command
+ */
+@NoArgsConstructor
 public class ConfirmDialogBuilder {
-
     private String messageText;
     private Command onConfirmCallback;
     private Command onCancelCallback;
-
-    private ConfirmDialogBuilder() {
-
-    }
 
     public static ConfirmDialogBuilder getBuilder() {
         return new ConfirmDialogBuilder();
@@ -37,33 +46,37 @@ public class ConfirmDialogBuilder {
         return this;
     }
 
+    /**
+     * Displays a dialog box with a given message.
+     *
+     * @throws IllegalArgumentException If the message text is empty
+     */
     public void show() {
-        if (StringUtils.isEmpty(messageText)) {
+        if (!StringUtils.hasLength(messageText)) {
             throw new IllegalArgumentException("Message Text is not allowed to be null!");
         }
 
-
-        Dialog dialog = new Dialog();
+        var dialog = new Dialog();
         dialog.add(new Text("The Form contains errors"));
         dialog.setCloseOnEsc(false);
         dialog.setCloseOnOutsideClick(false);
-        Span message = new Span();
+        var message = new Span();
         message.setText(messageText);
         dialog.add(message);
 
-        Button confirmButton = new Button("Confirm", event -> {
+        var confirmButton = new Button("Confirm", event -> {
             dialog.close();
             if (onConfirmCallback != null) {
                 onConfirmCallback.execute();
             }
         });
-        Button cancelButton = new Button("Cancel", event -> {
+        var cancelButton = new Button("Cancel", event -> {
             dialog.close();
             if (onCancelCallback != null) {
                 onCancelCallback.execute();
             }
         });
-        dialog.addDialogCloseActionListener((event) -> {
+        dialog.addDialogCloseActionListener(event -> {
             if (onCancelCallback != null) {
                 onCancelCallback.execute();
             }
@@ -72,6 +85,5 @@ public class ConfirmDialogBuilder {
 
         dialog.open();
     }
-
 }
 

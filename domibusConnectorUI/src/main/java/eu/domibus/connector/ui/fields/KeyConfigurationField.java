@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
@@ -8,27 +13,39 @@ import com.vaadin.flow.component.textfield.TextField;
 import eu.domibus.connector.lib.spring.configuration.KeyConfigurationProperties;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
-
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * The {@code KeyConfigurationField} class is a custom field component that represents a key
+ * configuration.
+ *
+ * @see CustomField
+ * @see KeyConfigurationProperties
+ * @see SpringBeanValidationBinder
+ * @see SpringBeanValidationBinderFactory
+ */
+@SuppressWarnings("squid:S1135")
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class KeyConfigurationField extends CustomField<KeyConfigurationProperties> {
-
     private final SpringBeanValidationBinderFactory validationBinderFactory;
-
     private final TextField alias = new TextField();
     private final PasswordField password = new PasswordField();
-
     private final Label statusLabel = new Label();
     private final FormLayout formLayout = new FormLayout();
-
     private final SpringBeanValidationBinder<KeyConfigurationProperties> binder;
-
     KeyConfigurationProperties value;
 
+    /**
+     * Constructor.
+     *
+     * @see CustomField
+     * @see KeyConfigurationProperties
+     * @see SpringBeanValidationBinder
+     * @see SpringBeanValidationBinderFactory
+     */
     public KeyConfigurationField(SpringBeanValidationBinderFactory validationBinderFactory) {
         this.validationBinderFactory = validationBinderFactory;
 
@@ -37,7 +54,7 @@ public class KeyConfigurationField extends CustomField<KeyConfigurationPropertie
 
         formLayout.addFormItem(alias, "Key Alias");
         formLayout.addFormItem(password, "Key Password");
-        //TODO: add alternative view, when associated with keystore...some kind of select box...
+        // TODO: add alternative view, when associated with keystore...some kind of select box...
 
         binder = validationBinderFactory.create(KeyConfigurationProperties.class);
         binder.bindInstanceFields(this);
@@ -53,11 +70,10 @@ public class KeyConfigurationField extends CustomField<KeyConfigurationPropertie
     }
 
     private void valueChanged(ValueChangeEvent<?> valueChangeEvent) {
-        KeyConfigurationProperties changedValue = new KeyConfigurationProperties();
+        var changedValue = new KeyConfigurationProperties();
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
-
     }
 
     @Override
@@ -74,5 +90,4 @@ public class KeyConfigurationField extends CustomField<KeyConfigurationPropertie
             formLayout.setVisible(true);
         }
     }
-
 }

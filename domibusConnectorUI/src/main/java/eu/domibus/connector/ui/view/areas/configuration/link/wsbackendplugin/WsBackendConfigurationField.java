@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.view.areas.configuration.link.wsbackendplugin;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -16,25 +21,46 @@ import eu.domibus.connectorplugins.link.wsbackendplugin.childctx.WsBackendPlugin
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
+/**
+ * The {@code WsBackendConfigurationField} class represents a custom field component used for
+ * configuring the WS backend plugin.
+ *
+ * @see CustomField
+ * @see AfterNavigationObserver
+ * @see SpringComponent
+ * @see ConfigurableBeanFactory
+ * @see SpringBeanValidationBinder
+ * @see KeyAndKeyStoreAndTrustStoreConfigurationField
+ * @see SpringResourceField
+ * @see WsBackendPluginConfigurationProperties
+ */
+@SuppressWarnings("squid:S1135")
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class WsBackendConfigurationField extends CustomField<WsBackendPluginConfigurationProperties> implements AfterNavigationObserver {
-
+public class WsBackendConfigurationField extends CustomField<WsBackendPluginConfigurationProperties>
+    implements AfterNavigationObserver {
     private final SpringBeanValidationBinder<WsBackendPluginConfigurationProperties> binder;
-
     private final Label statusLabel = new Label();
     private final FormLayout formLayout = new FormLayout();
-
     private final TextField backendPublishAddress = new TextField();
     private final Checkbox cxfLoggingEnabled = new Checkbox();
     private final KeyAndKeyStoreAndTrustStoreConfigurationField soap;
     private final SpringResourceField wsPolicy;
+    private WsBackendPluginConfigurationProperties value =
+        new WsBackendPluginConfigurationProperties();
 
-    private WsBackendPluginConfigurationProperties value = new WsBackendPluginConfigurationProperties();
-
-    public WsBackendConfigurationField(SpringBeanValidationBinderFactory validationBinderFactory,
-                                       KeyAndKeyStoreAndTrustStoreConfigurationField soap,
-                                       SpringResourceField wsPolicyField) {
+    /**
+     * Constructor.
+     *
+     * @param validationBinderFactory The validation binder factory used to create instances of
+     *                                SpringBeanValidationBinder.
+     * @param soap                    The configuration field for SOAP.
+     * @param wsPolicyField           The configuration field for the WS policy.
+     */
+    public WsBackendConfigurationField(
+        SpringBeanValidationBinderFactory validationBinderFactory,
+        KeyAndKeyStoreAndTrustStoreConfigurationField soap,
+        SpringResourceField wsPolicyField) {
         binder = validationBinderFactory.create(WsBackendPluginConfigurationProperties.class);
         this.soap = soap;
         this.wsPolicy = wsPolicyField;
@@ -46,7 +72,12 @@ public class WsBackendConfigurationField extends CustomField<WsBackendPluginConf
         this.add(statusLabel);
         this.add(formLayout);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("5cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(
+            new FormLayout.ResponsiveStep(
+                "5cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+            ));
         formLayout.addFormItem(backendPublishAddress, "backendPublishAddress");
         formLayout.addFormItem(soap, "Soap");
         formLayout.addFormItem(cxfLoggingEnabled, "cxfLoggingEnabled");
@@ -57,7 +88,7 @@ public class WsBackendConfigurationField extends CustomField<WsBackendPluginConf
     }
 
     private void valueChanged(ValueChangeEvent<?> valueChangeEvent) {
-        WsBackendPluginConfigurationProperties changedValue = new WsBackendPluginConfigurationProperties();
+        var changedValue = new WsBackendPluginConfigurationProperties();
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
@@ -80,7 +111,6 @@ public class WsBackendConfigurationField extends CustomField<WsBackendPluginConf
 
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
-
+        // TODO see why this method body is empty
     }
-
 }

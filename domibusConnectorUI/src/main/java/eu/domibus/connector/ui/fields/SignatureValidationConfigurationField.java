@@ -1,5 +1,9 @@
-package eu.domibus.connector.ui.fields;
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
 
+package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.customfield.CustomField;
@@ -13,43 +17,53 @@ import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import eu.domibus.connector.dss.configuration.SignatureValidationConfigurationProperties;
 import eu.domibus.connector.dss.service.DSSTrustedListsManager;
+import eu.domibus.connector.ui.utils.UiStyle;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
-
+import java.util.stream.Stream;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Stream;
-
-
+/**
+ * The SignatureValidationConfigurationField class is a custom form field component used for
+ * configuring signature validation properties.
+ */
+@SuppressWarnings("squid:S1135")
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SignatureValidationConfigurationField extends CustomField<SignatureValidationConfigurationProperties>
-implements AfterNavigationObserver {
-
+public class SignatureValidationConfigurationField
+    extends CustomField<SignatureValidationConfigurationProperties>
+    implements AfterNavigationObserver {
     private final DSSTrustedListsManager trustedListsManager;
     private final SpringBeanValidationBinderFactory validationBinderFactory;
-
     private SpringBeanValidationBinder<SignatureValidationConfigurationProperties> binder;
-
-    private TextField validationConstraintsXml = new TextField();
-    private Checkbox trustStoreEnabled = new Checkbox();
+    private final TextField validationConstraintsXml = new TextField();
+    private final Checkbox trustStoreEnabled = new Checkbox();
     private Select<String> trustedListSource;
-    private Checkbox ocspEnabled = new Checkbox();
-    private Checkbox crlEnabled = new Checkbox();
-    private Checkbox aiaEnabled = new Checkbox();
-    private StoreConfigurationField trustStore;
-    private StoreConfigurationField ignoreStore;
-    private Checkbox ignoreStoreEnabled = new Checkbox();
+    private final Checkbox ocspEnabled = new Checkbox();
+    private final Checkbox crlEnabled = new Checkbox();
+    private final Checkbox aiaEnabled = new Checkbox();
+    private final StoreConfigurationField trustStore;
+    private final StoreConfigurationField ignoreStore;
+    private final Checkbox ignoreStoreEnabled = new Checkbox();
+    private final FormLayout formLayout = new FormLayout();
+    private SignatureValidationConfigurationProperties value =
+        new SignatureValidationConfigurationProperties();
 
-    private FormLayout formLayout = new FormLayout();
-    private SignatureValidationConfigurationProperties value = new SignatureValidationConfigurationProperties();
-
-    public SignatureValidationConfigurationField(DSSTrustedListsManager trustedListsManager,
-                                                 StoreConfigurationField trustStore,
-                                                 StoreConfigurationField ignoreStore,
-                                                 SpringBeanValidationBinderFactory validationBinderFactory) {
+    /**
+     * Constructor.
+     *
+     * @param trustedListsManager     The trusted lists manager used for signature validation.
+     * @param trustStore              The trust store used for signature validation.
+     * @param ignoreStore             The ignore store used for signature validation.
+     * @param validationBinderFactory The validation binder factory used for signature validation.
+     */
+    public SignatureValidationConfigurationField(
+        DSSTrustedListsManager trustedListsManager,
+        StoreConfigurationField trustStore,
+        StoreConfigurationField ignoreStore,
+        SpringBeanValidationBinderFactory validationBinderFactory) {
         this.trustedListsManager = trustedListsManager;
         this.validationBinderFactory = validationBinderFactory;
         this.trustStore = trustStore;
@@ -58,27 +72,36 @@ implements AfterNavigationObserver {
     }
 
     private void initUI() {
-        Label statusLabel = new Label();
-        statusLabel.getStyle().set("color", "red");
+        var statusLabel = new Label();
+        statusLabel.getStyle().set(UiStyle.TAG_COLOR, UiStyle.COLOR_RED);
 
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("15cm", 1, FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+        formLayout.setResponsiveSteps(
+            new FormLayout.ResponsiveStep(
+                "15cm",
+                1,
+                FormLayout.ResponsiveStep.LabelsPosition.ASIDE
+            ));
 
         formLayout.addFormItem(validationConstraintsXml, "Location of EtsiValidationPolicyXml");
 
-        //TODO: do not show store, if not enabled
-        //trust store
+        // TODO: do not show store, if not enabled
+        // trust store
         formLayout.addFormItem(trustStoreEnabled, "Use TrustStore");
         formLayout.addFormItem(trustStore, "Trust Store Configuration");
 
-        //TODO: do not show store, if not enabled
-        //ignore Store
+        // TODO: do not show store, if not enabled
+        // ignore Store
         formLayout.addFormItem(ignoreStoreEnabled, "Use Ignore Store");
         formLayout.addFormItem(ignoreStore, "Ignore Store Configuration");
 
-        //Trusted Lists Source
-        trustedListSource = new Select<String>();
+        // Trusted Lists Source
+        trustedListSource = new Select<>();
         trustedListSource.setEmptySelectionAllowed(true);
-        trustedListSource.setDataProvider(new CallbackDataProvider<String, String>(this::fetchTrustedLists, this::countTrustedLists));
+        trustedListSource.setDataProvider(
+            new CallbackDataProvider<>(
+                this::fetchTrustedLists,
+                this::countTrustedLists
+            ));
         formLayout.addFormItem(trustedListSource, "Set the trusted list source");
 
         formLayout.addFormItem(ocspEnabled, "Should OCSP be used on certificate verification");
@@ -99,10 +122,10 @@ implements AfterNavigationObserver {
     public void setReadOnly(boolean readOnly) {
         binder.setReadOnly(readOnly);
     }
-    
+
     public void setTruststoreReadOnly(boolean readOnly) {
-    	this.trustStore.setReadOnly(readOnly);
-    	this.trustStoreEnabled.setReadOnly(readOnly);
+        this.trustStore.setReadOnly(readOnly);
+        this.trustStoreEnabled.setReadOnly(readOnly);
     }
 
     private int countTrustedLists(Query<String, String> query) {
@@ -113,16 +136,16 @@ implements AfterNavigationObserver {
         return trustedListsManager.getAllSourceNames().stream();
     }
 
-
     private void valueChanged(ValueChangeEvent<?> valueChangeEvent) {
-        SignatureValidationConfigurationProperties changedValue = new SignatureValidationConfigurationProperties();
+        var changedValue = new SignatureValidationConfigurationProperties();
         binder.writeBeanAsDraft(changedValue, true);
         setModelValue(changedValue, valueChangeEvent.isFromClient());
         value = changedValue;
     }
 
     @Override
-    protected void setPresentationValue(SignatureValidationConfigurationProperties newPresentationValue) {
+    protected void setPresentationValue(
+        SignatureValidationConfigurationProperties newPresentationValue) {
         binder.readBean(newPresentationValue);
         if (newPresentationValue == null) {
             formLayout.setVisible(false);
@@ -131,7 +154,6 @@ implements AfterNavigationObserver {
         }
     }
 
-
     @Override
     protected SignatureValidationConfigurationProperties generateModelValue() {
         return value;
@@ -139,9 +161,9 @@ implements AfterNavigationObserver {
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        //init trusted list source items on enter event
-//        this.trustedListSource.setItems(trustedListsManager.getAllSourceNames());
+        // init trusted list source items on enter event
+        // this.trustedListSource.setItems(trustedListsManager.getAllSourceNames());
+        // TODO see why this method body is empty
     }
-
 }
 

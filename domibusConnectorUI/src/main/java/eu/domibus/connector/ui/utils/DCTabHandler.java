@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.utils;
 
 import com.vaadin.flow.component.Component;
@@ -11,32 +16,26 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
-
 import eu.domibus.connector.ui.configuration.SecurityUtils;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
-
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Helper class for creating a tab menu
- * with support to navigate between this tabs
- * and also only show tabs which the corresponding view
- * can be accessed as enabled
+ * Helper class for creating a tab menu with support to navigate between these tabs and also only
+ * show tabs which the corresponding view can be accessed as enabled.
  */
+@Data
 public class DCTabHandler implements BeforeEnterObserver {
-
     private static final Logger LOGGER = LogManager.getLogger(DCTabHandler.class);
-
-    Tabs tabMenu = new Tabs();
-    Map<Tab, Class> tabsToPages = new HashMap<>();
-    Map<Class, Tab> pagesToTab = new HashMap<>();
-
+    private Tabs tabMenu = new Tabs();
+    private Map<Tab, Class> tabsToPages = new HashMap<>();
+    private Map<Class, Tab> pagesToTab = new HashMap<>();
     private String tabFontSize = "normal";
 
     public DCTabHandler() {
@@ -47,38 +46,26 @@ public class DCTabHandler implements BeforeEnterObserver {
         return this.tabMenu;
     }
 
-    public String getTabFontSize() {
-        return tabFontSize;
-    }
-
-    public void setTabFontSize(String tabFontSize) {
-        this.tabFontSize = tabFontSize;
-    }
-
     public TabBuilder createTab() {
         return new TabBuilder();
     }
 
-
     private void tabSelectionChanged(Tabs.SelectedChangeEvent selectedChangeEvent) {
         if (selectedChangeEvent.isFromClient()) {
-            Tab selectedTab = selectedChangeEvent.getSelectedTab();
-            Class componentClazz = tabsToPages.get(selectedTab);
+            var selectedTab = selectedChangeEvent.getSelectedTab();
+            var componentClazz = tabsToPages.get(selectedTab);
             LOGGER.debug("Navigate to [{}]", componentClazz);
             UI.getCurrent().navigate(componentClazz);
-
         }
     }
 
-
     /**
-     * sets the current selected tab dependent
-     * on the current view
+     * Sets the current selected tab dependent on the current view.
      */
     private void setSelectedTab(BeforeEnterEvent event) {
         Class<?> navigationTarget = event.getNavigationTarget();
         if (navigationTarget != null) {
-            Tab tab = pagesToTab.get(navigationTarget);
+            var tab = pagesToTab.get(navigationTarget);
             tabMenu.setSelectedTab(tab);
         } else {
             tabMenu.setSelectedTab(null);
@@ -86,14 +73,15 @@ public class DCTabHandler implements BeforeEnterObserver {
     }
 
     /**
-     * set tab enabled if the view is accessable
-     * by the current user
+     * Set tab enabled if the view is accessible by the current user.
      */
     private void setTabEnabledOnUserRole() {
-        pagesToTab.entrySet().stream()
-                .forEach(entry -> {
-                    entry.getValue().setEnabled(SecurityUtils.isUserAllowedToView(entry.getKey()));
-                });
+        pagesToTab.entrySet()
+                  .forEach(entry -> entry.getValue()
+                                         .setEnabled(
+                                             SecurityUtils.isUserAllowedToView(entry.getKey())
+                                         )
+                  );
     }
 
     @Override
@@ -102,14 +90,18 @@ public class DCTabHandler implements BeforeEnterObserver {
         setTabEnabledOnUserRole();
     }
 
+    /**
+     * TabBuilder is a utility class that helps in building tabs for a tab menu. It provides methods
+     * to set the icon, label, and component of the tab. Tabs can be added to the tab menu using the
+     * `addForComponent` method.
+     */
     public class TabBuilder {
-
         private Icon tabIcon;
         private String tabLabel = "";
-        private Component component;
         private Class<? extends Component> clz;
 
-        private TabBuilder() {}
+        private TabBuilder() {
+        }
 
         public TabBuilder withIcon(Icon icon) {
             this.tabIcon = icon;
@@ -131,18 +123,25 @@ public class DCTabHandler implements BeforeEnterObserver {
             return addForComponent(clz);
         }
 
+        /**
+         * Adds a new tab to the tab menu for a specified component class.
+         *
+         * @param clz the class of the component to be associated with the tab
+         * @return the created tab
+         * @throws IllegalArgumentException if the component class is null
+         */
         public Tab addForComponent(Class clz) {
             if (clz == null) {
                 throw new IllegalArgumentException("component is not allowed to be null!");
             }
 
-            Span tabText = new Span(tabLabel);
+            var tabText = new Span(tabLabel);
             tabText.getStyle().set("font-size", tabFontSize);
 
-            Tab tab = new Tab(tabText);
+            var tab = new Tab(tabText);
             if (tabIcon != null) {
                 tabIcon.setSize(tabFontSize);
-                HorizontalLayout tabLayout = new HorizontalLayout(tabIcon, tabText);
+                var tabLayout = new HorizontalLayout(tabIcon, tabText);
                 tabLayout.setAlignItems(FlexComponent.Alignment.CENTER);
                 tab = new Tab(tabLayout);
             }
@@ -152,24 +151,35 @@ public class DCTabHandler implements BeforeEnterObserver {
             tabMenu.add(tab);
             return tab;
         }
-
-
     }
 
+    /**
+     * Creates tabs based on the specified group from the ApplicationContext.
+     *
+     * @param applicationContext the ApplicationContext containing the beans with TabMetadata
+     *                           annotations
+     * @param group              the group to filter the tabs
+     */
     public void createTabs(ApplicationContext applicationContext, String group) {
-        //this breaks lazy loading...
+        // this breaks lazy loading...
         applicationContext.getBeansWithAnnotation(TabMetadata.class)
-                .values().stream()
-                .map(o -> (Component) o)
-                .filter(c -> c.getClass().getAnnotation(TabMetadata.class).tabGroup().equals(group))
-                .sorted(AnnotationAwareOrderComparator.INSTANCE)
-                .forEach(c -> {
-                    TabMetadata annotation = c.getClass().getAnnotation(TabMetadata.class);
+                          .values().stream()
+                          .map(o -> (Component) o)
+                          .filter(c -> c.getClass().getAnnotation(TabMetadata.class).tabGroup()
+                                        .equals(group)
+                          )
+                          .sorted(AnnotationAwareOrderComparator.INSTANCE)
+                          .forEach(c -> {
+                              TabMetadata annotation =
+                                  c.getClass().getAnnotation(TabMetadata.class);
 
-                    LOGGER.debug("Adding tab [{}] with title [{}] to group [{}]", c, annotation.title(), group);
-                    this.createTab()
-                            .withLabel(annotation.title())
-                            .addForComponent(c.getClass());
-                });
+                              LOGGER.debug(
+                                  "Adding tab [{}] with title [{}] to group [{}]", c,
+                                  annotation.title(), group
+                              );
+                              this.createTab()
+                                  .withLabel(annotation.title())
+                                  .addForComponent(c.getClass());
+                          });
     }
 }

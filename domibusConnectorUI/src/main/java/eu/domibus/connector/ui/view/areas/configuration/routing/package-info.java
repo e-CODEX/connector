@@ -1,9 +1,15 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 /**
- * This package provides configuration interfaces to configure routing rules that define how messages are routed
- * to the backend(s).
+ * This package provides configuration interfaces to configure routing rules that define how
+ * messages are routed to the backend(s).
  *
- * @since 4.4.12
  * @author komi
  * @version 1.0
+ * @since 4.4.12
  */
+
 package eu.domibus.connector.ui.view.areas.configuration.routing;

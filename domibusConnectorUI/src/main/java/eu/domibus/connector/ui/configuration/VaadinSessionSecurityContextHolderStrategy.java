@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.configuration;
 
 import com.vaadin.flow.server.VaadinSession;
@@ -6,16 +11,13 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.context.SecurityContextImpl;
 
-//import com.vaadin.server.VaadinSession;
-
 /**
- * A custom {@link SecurityContextHolderStrategy} that stores the {@link SecurityContext} in the Vaadin Session.
+ * A custom {@link SecurityContextHolderStrategy} that stores the {@link SecurityContext} in the
+ * Vaadin Session.
  */
 public class VaadinSessionSecurityContextHolderStrategy implements SecurityContextHolderStrategy {
-
     @Override
     public void clearContext() {
-
         getSession().setAttribute(SecurityContext.class, null);
     }
 
@@ -41,7 +43,7 @@ public class VaadinSessionSecurityContextHolderStrategy implements SecurityConte
     }
 
     private static VaadinSession getSession() {
-        VaadinSession session = SpringVaadinSession.getCurrent();
+        var session = SpringVaadinSession.getCurrent();
         if (session == null) {
             throw new IllegalStateException("No VaadinSession bound to current thread");
         }

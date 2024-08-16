@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.view.areas.monitoring;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,37 +18,60 @@ import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class represents the Jms Monitoring view in the application.
+ * It is responsible for displaying and managing Jms queues.
+ *
+ * @see Component
+ * @see UIScope
+ * @see Route
+ * @see Order
+ * @see TabMetadata
+ * @see DCVerticalLayoutWithTitleAndHelpButton
+ * @see AfterNavigationObserver
+ *
+ * @since 1.0
+ */
 @Component
 @UIScope
 @Route(value = JmsMonitoringView.ROUTE, layout = MonitoringLayout.class)
 @Order(1)
 @TabMetadata(title = "Jms Queues", tabGroup = MonitoringLayout.TAB_GROUP_NAME)
-public class JmsMonitoringView extends DCVerticalLayoutWithTitleAndHelpButton implements AfterNavigationObserver {
+public class JmsMonitoringView extends DCVerticalLayoutWithTitleAndHelpButton
+    implements AfterNavigationObserver {
     public static final String ROUTE = "queues";
-
     public static final String HELP_ID = "ui/monitoring/jms_monitoring.html";
     public static final String TITLE = "Jms Queues";
-    
     private final QueueController queueController;
-    private QueueGrid queueGrid;
+    private final QueueGrid queueGrid;
 
+    /**
+     * Constructor.
+     *
+     * @param queueController the QueueController used to manage queues and messages
+     * @see QueueController
+     */
     public JmsMonitoringView(QueueController queueController) {
-    	super(HELP_ID, TITLE);
+        super(HELP_ID, TITLE);
         this.queueController = queueController;
         queueGrid = new QueueGrid();
         queueGrid.setItemDetailsRenderer(createDetailsRenderer());
-        final VerticalLayout gridLayoutCotainer = new VerticalLayout(queueGrid);
-        add(gridLayoutCotainer);
+        final var gridLayoutContainer = new VerticalLayout(queueGrid);
+        add(gridLayoutContainer);
     }
 
     private ComponentRenderer<DetailsLayout, WebQueue> createDetailsRenderer() {
-        return new ComponentRenderer<>(() -> new DetailsLayout(queueController, this),
-                DetailsLayout::setData);
+        return new ComponentRenderer<>(
+            () -> new DetailsLayout(queueController, this),
+            DetailsLayout::setData
+        );
     }
 
     void updateData(WebQueue select) {
         queueGrid.setItems(queueController.getQueues());
-        if (select != null) queueGrid.select(select);
+        if (select != null) {
+            queueGrid.select(select);
+        }
     }
 
     @Override

@@ -1,129 +1,136 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.view.areas.configuration.routing;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Pre;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
-import eu.domibus.connector.controller.routing.*;
+import eu.domibus.connector.controller.routing.BinaryOperatorExpression;
+import eu.domibus.connector.controller.routing.Expression;
+import eu.domibus.connector.controller.routing.ExpressionParser;
+import eu.domibus.connector.controller.routing.MatchExpression;
+import eu.domibus.connector.controller.routing.RoutingRulePattern;
+import eu.domibus.connector.controller.routing.TokenType;
+import eu.domibus.connector.domain.model.DomibusConnectorAction;
+import eu.domibus.connector.domain.model.DomibusConnectorParty;
+import eu.domibus.connector.domain.model.DomibusConnectorService;
 import eu.domibus.connector.ui.service.WebPModeService;
-
+import eu.domibus.connector.ui.utils.UiStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+/**
+ * The RoutingExpressionField class represents a custom field used for inputting and displaying
+ * routing rule patterns.
+ */
+@SuppressWarnings("squid:S1135")
 public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
-
     public static final String ERROR_COLOR = "#ff0000";
-    public static final String OPERATOR_COLOR = "#0000ff"; //blue ?
+    public static final String OPERATOR_COLOR = "#0000ff"; // blue ?
     public static final String AS4ATTRIBUTE_COLOR = "#000000"; //
-    public static final String AS4VALUE_EXISTANT_COLOR = "#00ff00"; //green
-    public static final String AS4VALUE_NONEXISTANT_COLOR = "#ffff00"; //yellow
-
+    public static final String AS4VALUE_EXISTANT_COLOR = "#00ff00"; // green
+    public static final String AS4VALUE_NONEXISTANT_COLOR = "#ffff00"; // yellow
     public static final List<TokenType> OPERATORS = Stream
-            .of(TokenType.OR, TokenType.AND)
-            .collect(Collectors.toList());
-
+        .of(TokenType.OR, TokenType.AND)
+        .toList();
     public static final List<TokenType> MATCH_OPERATORS = Stream
-            .of(TokenType.STARTSWITH, TokenType.EQUALS)
-            .collect(Collectors.toList());
-
+        .of(TokenType.STARTSWITH, TokenType.EQUALS)
+        .toList();
     public static final List<TokenType> MATCH_ATTRIBUTES = Stream
-            .of(TokenType.AS4_FINAL_RECIPIENT, TokenType.AS4_ACTION,
-                    TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ROLE,
-                    TokenType.AS4_FROM_PARTY_ID_TYPE,
-                    TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE, TokenType.AS4_ACTION)
-            .collect(Collectors.toList());
-
-    private VerticalLayout layout = new VerticalLayout();
-    private TextField tf = new TextField();
+        .of(TokenType.AS4_FINAL_RECIPIENT, TokenType.AS4_ACTION,
+            TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ROLE,
+            TokenType.AS4_FROM_PARTY_ID_TYPE,
+            TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE, TokenType.AS4_ACTION
+        )
+        .toList();
+    private final VerticalLayout layout = new VerticalLayout();
+    private final TextField textField = new TextField();
     private RoutingRulePattern value;
-
-    private Div routingExpressionField = new Div();
-    private VerticalLayout errorList = new VerticalLayout();
-
-
+    private final Div routingExpressionField = new Div();
+    private final VerticalLayout errorList = new VerticalLayout();
     private final WebPModeService webPModeService;
 
+    /**
+     * Constructor.
+     *
+     * @param webPModeService The service used to retrieve webPMode information.
+     */
     public RoutingExpressionField(WebPModeService webPModeService) {
         this.webPModeService = webPModeService;
-//        this.eff = eff;
         this.add(layout);
         layout.setPadding(false);
         layout.setMargin(false);
 
-        tf.setWidth("15cm");
-        tf.setWidthFull();
-        tf.addValueChangeListener(this::tfValueChanged);
+        textField.setWidth("15cm");
+        textField.setWidthFull();
+        textField.addValueChangeListener(this::tfValueChanged);
 
-        layout.add(tf);
+        layout.add(textField);
         layout.add(errorList);
-        errorList.getStyle().set("color", ERROR_COLOR);
+        errorList.getStyle().set(UiStyle.TAG_COLOR, ERROR_COLOR);
         layout.add(routingExpressionField);
     }
 
     @Override
     protected RoutingRulePattern generateModelValue() {
-
-        //TODO: read value convert to RoutingRulePattern..
-
+        // TODO: read value convert to RoutingRulePattern..
         return value;
     }
 
     @Override
     protected void setPresentationValue(RoutingRulePattern routingRulePattern) {
-        //value.getMatchClause().getExpression();
-       Expression exp = routingRulePattern.getExpression();
-
-        tf.setValue(exp.toString());
-
-
+        var exp = routingRulePattern.getExpression();
+        textField.setValue(exp.toString());
     }
 
-    private void tfValueChanged(ComponentValueChangeEvent<TextField, String> textFieldStringComponentValueChangeEvent) {
-        String value = textFieldStringComponentValueChangeEvent.getValue();
+    private void tfValueChanged(
+        ComponentValueChangeEvent<TextField, String> textFieldStringComponentValueChangeEvent) {
+        var eventValue = textFieldStringComponentValueChangeEvent.getValue();
 
-        ExpressionParser expressionParser = new ExpressionParser(value);
+        var expressionParser = new ExpressionParser(eventValue);
         errorList.removeAll();
         if (expressionParser.getParsedExpression().isPresent()) {
-            tf.setInvalid(false);
-            RoutingRulePattern rr = new RoutingRulePattern(value);
-            this.value = rr;
-            this.setModelValue(rr, true);
+            textField.setInvalid(false);
+            var routingRulePattern = new RoutingRulePattern(eventValue);
+            this.value = routingRulePattern;
+            this.setModelValue(routingRulePattern, true);
         } else {
-            tf.setInvalid(true);
-            expressionParser.getParsingExceptions().stream().forEach(e -> {
-                Div listItem = new Div();
-//                listItem.add(e.getMessage());
-                listItem.add(getErrorLocation(value, e));
+            textField.setInvalid(true);
+            expressionParser.getParsingExceptions().forEach(e -> {
+                var listItem = new Div();
+                listItem.add(getErrorLocation(eventValue, e));
                 errorList.add(listItem);
             });
         }
-
     }
 
     private Component getErrorLocation(String value, ExpressionParser.ParsingException e) {
-        VerticalLayout d = new VerticalLayout();
+        var validValuePart = value.substring(0, e.getCol());
+        var invalidValuePart = value.substring(e.getCol());
 
-        String validValuePart = value.substring(0, e.getCol());
-        String invalidValuePart = value.substring(e.getCol());
-
-        Pre block = new Pre();
-        Span preformat = new Span(invalidValuePart);
-        preformat.getStyle().set("color", ERROR_COLOR);
+        var block = new Pre();
+        var preformat = new Span(invalidValuePart);
+        preformat.getStyle().set(UiStyle.TAG_COLOR, ERROR_COLOR);
 
         block.add(new Span(validValuePart));
         block.add(preformat);
 
+        var d = new VerticalLayout();
         d.add(block);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < e.getCol(); i++) { //add spaces to error location
+        var stringBuilder = new StringBuilder();
+        for (var i = 0; i < e.getCol(); i++) { // add spaces to error location
             stringBuilder.append(" ");
         }
         stringBuilder.append("^---- ");
@@ -132,7 +139,7 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
         stringBuilder.append(" ");
         stringBuilder.append(e.getMessage());
         d.add(new Pre(stringBuilder.toString()));
-        //set font family to monospace so locating the parsing error does work
+        // set font family to monospace so locating the parsing error does work
         d.getStyle().set("font-family", "monospace");
         d.setPadding(false);
         d.setMargin(false);
@@ -140,102 +147,88 @@ public class RoutingExpressionField extends CustomField<RoutingRulePattern> {
     }
 
     private HtmlContainer convertToHtml(HtmlContainer htmlContainer, Expression exp) {
-        if (exp instanceof BinaryOperatorExpression) {
-            BinaryOperatorExpression binaryExp = ((BinaryOperatorExpression) exp);
-
+        if (exp instanceof BinaryOperatorExpression binaryOperatorExpression) {
             Select<TokenType> selectOperator = new Select<>();
             selectOperator.setItems(OPERATORS);
-            selectOperator.setValue(binaryExp.getOperand());
+            selectOperator.setValue(binaryOperatorExpression.getOperand());
             selectOperator.setReadOnly(true);
-            selectOperator.getStyle().set("color", OPERATOR_COLOR);
+            selectOperator.getStyle().set(UiStyle.TAG_COLOR, OPERATOR_COLOR);
 
             htmlContainer.add(selectOperator, new Text("("));
-            htmlContainer.add(convertToHtml(new Span(), binaryExp.getExp1()));
+            htmlContainer.add(convertToHtml(new Span(), binaryOperatorExpression.getExp1()));
             htmlContainer.add(new Text(","));
-            htmlContainer.add(convertToHtml(new Span(), binaryExp.getExp2()));
+            htmlContainer.add(convertToHtml(new Span(), binaryOperatorExpression.getExp2()));
             htmlContainer.add(new Text(")"));
-
-        } else if (exp instanceof MatchExpression) {
-            MatchExpression matchExpression = (MatchExpression) exp;
-
-            //build colored html with: <operator>(<as4Attribute>, '<as4valueString>')
-//            Span as4MatchOperator = new Span(matchExpression.getMatchOperator().toString());
-//            as4MatchOperator.getStyle().set("color", OPERATOR_COLOR);
-//            htmlContainer.add(as4MatchOperator);
-
+        } else if (exp instanceof MatchExpression matchExpression) {
             Select<TokenType> matchOperator = new Select<>();
             matchOperator.setItems(MATCH_OPERATORS);
             matchOperator.setValue(matchExpression.getMatchOperator());
             matchOperator.setReadOnly(true);
-            matchOperator.getStyle().set("color", OPERATOR_COLOR);
+            matchOperator.getStyle().set(UiStyle.TAG_COLOR, OPERATOR_COLOR);
 
             htmlContainer.add(matchOperator);
 
             htmlContainer.add(new Text("("));
-
-//            Span matchExp = new Span(matchExpression.getAs4Attribute().toString());
-//            matchExp.getStyle().set("color", AS4ATTRIBUTE_COLOR);
-//            htmlContainer.add(matchExp);
             Select<TokenType> matchAttribute = new Select<>();
             matchAttribute.setItems(MATCH_ATTRIBUTES);
             matchAttribute.setValue(matchExpression.getAs4Attribute());
             matchAttribute.setReadOnly(true);
-            matchAttribute.getStyle().set("color", AS4ATTRIBUTE_COLOR);
+            matchAttribute.getStyle().set(UiStyle.TAG_COLOR, AS4ATTRIBUTE_COLOR);
 
             htmlContainer.add(matchAttribute);
 
             htmlContainer.add(new Text(", '"));
 
-//            Span as4MatchValue = new Span(matchExpression.getValueString());
-            //TODO: color switch!
+            // TODO: color switch!
 
-            if (matchExpression.getMatchOperator() == TokenType.EQUALS && USE_SELECT_FIELD.contains(matchExpression.getAs4Attribute())) {
+            if (matchExpression.getMatchOperator() == TokenType.EQUALS && USE_SELECT_FIELD.contains(
+                matchExpression.getAs4Attribute())) {
                 Select<String> as4ValueSelectField = new Select<>();
                 as4ValueSelectField.setItems(loadValidItems(matchExpression.getAs4Attribute()));
                 as4ValueSelectField.setValue(matchExpression.getValueString());
-                as4ValueSelectField.getStyle().set("color", AS4VALUE_EXISTANT_COLOR);
+                as4ValueSelectField.getStyle().set(UiStyle.TAG_COLOR, AS4VALUE_EXISTANT_COLOR);
                 as4ValueSelectField.setReadOnly(false);
                 htmlContainer.add(as4ValueSelectField);
             } else {
-                TextField as4ValueSelectField = new TextField();
+                var as4ValueSelectField = new TextField();
                 as4ValueSelectField.setValue(matchExpression.getValueString());
-                as4ValueSelectField.getStyle().set("color", AS4VALUE_EXISTANT_COLOR);
+                as4ValueSelectField.getStyle().set(UiStyle.TAG_COLOR, AS4VALUE_EXISTANT_COLOR);
                 as4ValueSelectField.setReadOnly(false);
                 htmlContainer.add(as4ValueSelectField);
             }
 
             htmlContainer.add(new Text("')"));
-
         }
         return htmlContainer;
     }
 
     private static final List<TokenType> USE_SELECT_FIELD = Stream.of(
-            TokenType.AS4_ACTION, TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE,
-            TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ID_TYPE, TokenType.AS4_FROM_PARTY_ROLE
-    ).collect(Collectors.toList());
+        TokenType.AS4_ACTION, TokenType.AS4_SERVICE_NAME, TokenType.AS4_SERVICE_TYPE,
+        TokenType.AS4_FROM_PARTY_ID, TokenType.AS4_FROM_PARTY_ID_TYPE, TokenType.AS4_FROM_PARTY_ROLE
+    ).toList();
 
     private List<String> loadValidItems(TokenType as4Attribute) {
         if (as4Attribute == TokenType.AS4_ACTION) {
             return webPModeService.getActionList()
-                    .stream().map(a -> a.getAction()).collect(Collectors.toList());
+                                  .stream().map(DomibusConnectorAction::getAction).toList();
         } else if (as4Attribute == TokenType.AS4_SERVICE_NAME) {
             return webPModeService.getServiceList()
-                    .stream().map(s -> s.getService()).collect(Collectors.toList());
+                                  .stream().map(DomibusConnectorService::getService).toList();
         } else if (as4Attribute == TokenType.AS4_SERVICE_TYPE) {
             return webPModeService.getServiceList()
-                    .stream().map(s -> s.getServiceType()).collect(Collectors.toList());
+                                  .stream().map(DomibusConnectorService::getServiceType)
+                                  .toList();
         } else if (as4Attribute == TokenType.AS4_FROM_PARTY_ID) {
             return webPModeService.getPartyList()
-                    .stream().map(p -> p.getPartyId()).collect(Collectors.toList());
+                                  .stream().map(DomibusConnectorParty::getPartyId).toList();
         } else if (as4Attribute == TokenType.AS4_FROM_PARTY_ID_TYPE) {
             return webPModeService.getPartyList()
-                    .stream().map(p -> p.getPartyIdType()).collect(Collectors.toList());
+                                  .stream().map(DomibusConnectorParty::getPartyIdType)
+                                  .toList();
         } else if (as4Attribute == TokenType.AS4_FROM_PARTY_ROLE) {
             return webPModeService.getPartyList()
-                    .stream().map(p -> p.getRole()).collect(Collectors.toList());
+                                  .stream().map(DomibusConnectorParty::getRole).toList();
         }
         return new ArrayList<>();
     }
-
 }

@@ -1,83 +1,99 @@
+/*
+ * Copyright 2024 European Union. All rights reserved.
+ * European Union EUPL version 1.1.
+ */
+
 package eu.domibus.connector.ui.service;
 
+import eu.domibus.connector.ui.dto.WebReport;
+import eu.domibus.connector.ui.dto.WebReportEntry;
+import eu.domibus.connector.ui.persistence.service.DomibusConnectorWebReportPersistenceService;
+import eu.domibus.connector.ui.utils.UiStyle;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.domibus.connector.ui.dto.WebReport;
-import eu.domibus.connector.ui.dto.WebReportEntry;
-import eu.domibus.connector.ui.persistence.service.DomibusConnectorWebReportPersistenceService;
-
+/**
+ * The WebReportsService class is responsible for generating web-based reports and Excel files. It
+ * utilizes the DomibusConnectorWebReportPersistenceService to load report data from the database.
+ */
+@NoArgsConstructor
 @Service("webReportsService")
 public class WebReportsService {
-
     private DomibusConnectorWebReportPersistenceService reportPersistenceService;
-
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     @Autowired
-    public void setReportPersistenceService(DomibusConnectorWebReportPersistenceService reportPersistenceService) {
+    public void setReportPersistenceService(
+        DomibusConnectorWebReportPersistenceService reportPersistenceService) {
         this.reportPersistenceService = reportPersistenceService;
     }
 
-    public WebReportsService() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public List<WebReportEntry> generateReport(Date fromDate, Date toDate, boolean includeEvidences){
-        List<WebReportEntry> report = null;
-        if(includeEvidences) {
+    /**
+     * Generates a web-based report based on the specified date range and inclusion of evidences.
+     *
+     * @param fromDate         The starting date of the report range.
+     * @param toDate           The ending date of the report range.
+     * @param includeEvidences Specifies whether to include evidences in the report.
+     * @return The generated report as a list of WebReportEntry objects. Returns null if the report
+     *      cannot be generated.
+     */
+    public List<WebReportEntry> generateReport(
+        Date fromDate, Date toDate, boolean includeEvidences) {
+        List<WebReportEntry> report;
+        if (includeEvidences) {
             report = reportPersistenceService.loadReportWithEvidences(fromDate, toDate);
-        }else {
+        } else {
             report = reportPersistenceService.loadReport(fromDate, toDate);
         }
         return report;
     }
 
+    /**
+     * Generates an Excel file based on the specified date range and a list of web reports.
+     *
+     * @param fromDate The starting date of the report range.
+     * @param toDate   The ending date of the report range.
+     * @param report   The list of web reports containing the data for the Excel file.
+     * @return An InputStream representing the generated Excel file.
+     */
     public InputStream generateExcel(Date fromDate, Date toDate, List<WebReport> report) {
-
-        String sheetName = sdf.format(fromDate) + " - " + sdf.format(toDate);
-        HSSFWorkbook wb = WebServiceUtil.createNewExcel(sheetName);
+        var sheetName = sdf.format(fromDate) + " - " + sdf.format(toDate);
+        var wb = WebServiceUtil.createNewExcel(sheetName);
 
         Map<String, CellStyle> styles = WebServiceUtil.createStyles(wb);
 
-        HSSFSheet sheet = wb.getSheet(sheetName);
+        var sheet = wb.getSheet(sheetName);
 
-
-
-        HSSFRow headerRow = sheet.createRow(0);
-        HSSFCell cell0 = headerRow.createCell(0);
+        var headerRow = sheet.createRow(0);
+        var cell0 = headerRow.createCell(0);
         cell0.setCellValue("Party");
-        cell0.setCellStyle(styles.get("header"));
-        HSSFCell cell1 = headerRow.createCell(1);
+        cell0.setCellStyle(styles.get(UiStyle.TAG_HEADER));
+        var cell1 = headerRow.createCell(1);
         cell1.setCellValue("Service");
-        cell1.setCellStyle(styles.get("header"));
-        HSSFCell cell2 = headerRow.createCell(2);
+        cell1.setCellStyle(styles.get(UiStyle.TAG_HEADER));
+        var cell2 = headerRow.createCell(2);
         cell2.setCellValue("Messages received from");
-        cell2.setCellStyle(styles.get("header"));
-        HSSFCell cell3 = headerRow.createCell(3);
+        cell2.setCellStyle(styles.get(UiStyle.TAG_HEADER));
+        var cell3 = headerRow.createCell(3);
         cell3.setCellValue("Messages sent to");
-        cell3.setCellStyle(styles.get("header"));
+        cell3.setCellStyle(styles.get(UiStyle.TAG_HEADER));
 
-        int rowIndex = 1;
+        var rowIndex = 1;
         long overallReceived = 0;
         long overallSent = 0;
 
         for (WebReport period : report) {
 
-            HSSFRow periodHeaderRow = sheet.createRow(rowIndex);
-            HSSFCell periodHeaderCell = periodHeaderRow.createCell(0);
+            var periodHeaderRow = sheet.createRow(rowIndex);
+            var periodHeaderCell = periodHeaderRow.createCell(0);
             periodHeaderCell.setCellValue(period.getPeriod());
             periodHeaderCell.setCellStyle(styles.get("cell_bb_center"));
 
@@ -85,62 +101,62 @@ public class WebReportsService {
             sheet.addMergedRegion(CellRangeAddress.valueOf("$A$" + rowIndex + ":$D$" + rowIndex));
 
             for (WebReportEntry entry : period.getEntries()) {
-                HSSFRow entryRow = sheet.createRow(rowIndex);
-                HSSFCell entryCell0 = entryRow.createCell(0);
+                var entryRow = sheet.createRow(rowIndex);
+                var entryCell0 = entryRow.createCell(0);
                 entryCell0.setCellValue(entry.getParty());
-                entryCell0.setCellStyle(styles.get("cell_b"));
-                HSSFCell entryCell1 = entryRow.createCell(1);
+                entryCell0.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
+                var entryCell1 = entryRow.createCell(1);
                 entryCell1.setCellValue(entry.getService());
-                entryCell1.setCellStyle(styles.get("cell_b"));
-                HSSFCell entryCell2 = entryRow.createCell(2);
+                entryCell1.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
+                var entryCell2 = entryRow.createCell(2);
                 entryCell2.setCellValue(entry.getReceived());
-                entryCell2.setCellStyle(styles.get("cell_b"));
-                HSSFCell entryCell3 = entryRow.createCell(3);
+                entryCell2.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
+                var entryCell3 = entryRow.createCell(3);
                 entryCell3.setCellValue(entry.getSent());
-                entryCell3.setCellStyle(styles.get("cell_b"));
+                entryCell3.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
 
                 rowIndex++;
             }
 
-            HSSFRow summaryRow = sheet.createRow(rowIndex);
-            HSSFCell summaryCell0 = summaryRow.createCell(0);
+            var summaryRow = sheet.createRow(rowIndex);
+            var summaryCell0 = summaryRow.createCell(0);
             summaryCell0.setCellValue("Totals");
             summaryCell0.setCellStyle(styles.get("cell_b_right"));
 
-            HSSFCell summaryCell1 = summaryRow.createCell(1);
-            summaryCell1.setCellStyle(styles.get("cell_b"));
+            var summaryCell1 = summaryRow.createCell(1);
+            summaryCell1.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
 
             rowIndex++;
             sheet.addMergedRegion(CellRangeAddress.valueOf("$A$" + rowIndex + ":$B$" + rowIndex));
 
-            HSSFCell summaryCell2 = summaryRow.createCell(2);
+            var summaryCell2 = summaryRow.createCell(2);
             summaryCell2.setCellValue(period.getSumReceived());
-            summaryCell2.setCellStyle(styles.get("cell_b"));
+            summaryCell2.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
 
-            HSSFCell summaryCell3 = summaryRow.createCell(3);
+            var summaryCell3 = summaryRow.createCell(3);
             summaryCell3.setCellValue(period.getSumSent());
-            summaryCell3.setCellStyle(styles.get("cell_b"));
+            summaryCell3.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
 
             overallReceived += period.getSumReceived();
             overallSent += period.getSumSent();
         }
 
-        HSSFRow summaryRow = sheet.createRow(rowIndex);
-        HSSFCell summaryCell0 = summaryRow.createCell(0);
+        var summaryRow = sheet.createRow(rowIndex);
+        var summaryCell0 = summaryRow.createCell(0);
         summaryCell0.setCellValue("Overall Totals");
         summaryCell0.setCellStyle(styles.get("cell_bb_right"));
 
-        HSSFCell summaryCell1 = summaryRow.createCell(1);
-        summaryCell1.setCellStyle(styles.get("cell_b"));
+        var summaryCell1 = summaryRow.createCell(1);
+        summaryCell1.setCellStyle(styles.get(UiStyle.TAG_CELL_B));
 
         rowIndex++;
         sheet.addMergedRegion(CellRangeAddress.valueOf("$A$" + rowIndex + ":$B$" + rowIndex));
 
-        HSSFCell summaryCell2 = summaryRow.createCell(2);
+        var summaryCell2 = summaryRow.createCell(2);
         summaryCell2.setCellValue(overallReceived);
         summaryCell2.setCellStyle(styles.get("cell_bb"));
 
-        HSSFCell summaryCell3 = summaryRow.createCell(3);
+        var summaryCell3 = summaryRow.createCell(3);
         summaryCell3.setCellValue(overallSent);
         summaryCell3.setCellStyle(styles.get("cell_bb"));
 
@@ -149,9 +165,6 @@ public class WebReportsService {
         sheet.setColumnWidth(2, 256 * 30);
         sheet.setColumnWidth(3, 256 * 30);
 
-
         return WebServiceUtil.getInputStreamWithWorkbook(wb);
     }
-
-
 }

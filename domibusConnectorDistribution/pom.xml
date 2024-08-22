@@ -93,7 +93,7 @@
                                 <artifactItem>
                                     <groupId>com.h2database</groupId>
                                     <artifactId>h2</artifactId>
-                                    <version>${com.h2database.h2.version}</version>
+                                    <version>${h2database.h2.version}</version>
                                     <type>jar</type>
                                     <outputDirectory>${project.build.directory}/lib</outputDirectory>
                                 </artifactItem>

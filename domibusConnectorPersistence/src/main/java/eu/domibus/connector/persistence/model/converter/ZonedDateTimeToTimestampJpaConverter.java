@@ -10,10 +10,10 @@
 
 package eu.domibus.connector.persistence.model.converter;
 
+import jakarta.persistence.AttributeConverter;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import javax.persistence.AttributeConverter;
 
 /**
  * A converter class that converts ZonedDateTime objects to Timestamp objects for JPA persistence.

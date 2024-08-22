@@ -9,6 +9,7 @@
     <artifactId>domibusConnectorBuilderDeployable</artifactId>
     <packaging>war</packaging>
     <dependencies>
+        <!--ecodex modules-->
         <dependency>
             <groupId>eu.domibus.connector</groupId>
             <artifactId>domibusConnectorUI</artifactId>
@@ -19,6 +20,7 @@
             <artifactId>domibusConnectorStarter</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--databases dependencies-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -39,10 +41,10 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!--other dependencies-->
         <dependency>
             <groupId>org.fusesource.jansi</groupId>
             <artifactId>jansi</artifactId>
-            <version>1.17.1</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

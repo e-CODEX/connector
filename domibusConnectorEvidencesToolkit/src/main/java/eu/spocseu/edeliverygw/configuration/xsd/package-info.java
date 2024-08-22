@@ -16,8 +16,8 @@
 // Generated on: 2012.09.18 at 01:31:03 PM MESZ 
 //
 
-@javax.xml.bind.annotation.XmlSchema(
+@jakarta.xml.bind.annotation.XmlSchema(
     namespace = "http://uri.eu-spocs.eu/configuration/eDelivery",
-    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED
+    elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED
 )
 package eu.spocseu.edeliverygw.configuration.xsd;

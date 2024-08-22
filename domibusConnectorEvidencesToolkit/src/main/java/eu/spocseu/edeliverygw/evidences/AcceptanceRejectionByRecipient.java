@@ -38,9 +38,9 @@ import eu.spocseu.common.SpocsConstants.Evidences;
 import eu.spocseu.edeliverygw.JaxbContextHolder;
 import eu.spocseu.edeliverygw.SpocsWrongInputDataException;
 import eu.spocseu.edeliverygw.configuration.EDeliveryDetails;
+import jakarta.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.xml.bind.JAXBException;
 import org.etsi.uri._02640.v2.EventReasonType;
 import org.etsi.uri._02640.v2.ObjectFactory;
 import org.etsi.uri._02640.v2.REMEvidenceType;
@@ -117,7 +117,7 @@ public class AcceptanceRejectionByRecipient extends Evidence {
      * to create a JAXB evidence object.
      *
      * @param details           Configuration object to set some properties
-     * @param evidenceStream     The xml input stream with the evidence xml data.
+     * @param evidenceStream    The xml input stream with the evidence xml data.
      * @param typeOfInputStream The type of the given InputStream. Possible values
      *                          DeliveryNonDeliveryToRecipient or RelayREMMDAcceptanceRejection.
      * @throws SpocsWrongInputDataException In the case of parsing errors

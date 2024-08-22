@@ -10,8 +10,8 @@
 
 package eu.domibus.connector.persistence.service.impl.helper;
 
+import jakarta.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
-import javax.annotation.Nullable;
 import lombok.experimental.UtilityClass;
 
 /**

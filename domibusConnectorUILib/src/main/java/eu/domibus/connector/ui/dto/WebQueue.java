@@ -10,9 +10,9 @@
 
 package eu.domibus.connector.ui.dto;
 
+import jakarta.jms.Message;
 import java.util.ArrayList;
 import java.util.List;
-import javax.jms.Message;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;

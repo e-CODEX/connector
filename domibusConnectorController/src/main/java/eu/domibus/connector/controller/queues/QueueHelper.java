@@ -12,13 +12,13 @@ package eu.domibus.connector.controller.queues;
 
 import eu.domibus.connector.controller.service.HasManageableDlq;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.Queue;
+import jakarta.jms.TextMessage;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.TextMessage;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,19 +26,17 @@ import org.springframework.jms.core.JmsTemplate;
 
 /**
  * The QueueHelper class is a utility class that provides methods for managing queues and dead
- * letter queues.
- * It implements the HasManageableDlq interface.
+ * letter queues. It implements the HasManageableDlq interface.
  *
  * <p>The QueueHelper class provides a constructor that accepts the following parameters:
- * - destination: the queue where messages will be sent
- * - dlq: the dead letter queue where failed messages will be moved
- * - jmsTemplate: the JmsTemplate used for interacting with the queues
+ * - destination: the queue where messages will be sent - dlq: the dead letter queue where failed
+ * messages will be moved - jmsTemplate: the JmsTemplate used for interacting with the queues
  *
  * <p>The QueueHelper class implements the methods defined in the HasManageableDlq interface.
- * These methods allow users to put messages on the queue, list all messages in the queue and
- * dead letter queue, move messages from the dead letter queue to the original queue,
- * delete messages from the original queue, retrieve the name and text of a message, and get
- * the name of the dead letter queue.
+ * These methods allow users to put messages on the queue, list all messages in the queue and dead
+ * letter queue, move messages from the dead letter queue to the original queue, delete messages
+ * from the original queue, retrieve the name and text of a message, and get the name of the dead
+ * letter queue.
  *
  * <p>The QueueHelper class also defines some private helper methods for browsing and operating
  * on the queues.
@@ -66,9 +64,8 @@ public class QueueHelper implements HasManageableDlq {
     private final JmsTemplate jmsTemplate;
 
     /**
-     * The QueueHelper class provides helper methods for interacting with a queue and a
-     * dead letter queue (DLQ).
-     * It encapsulates the details of interacting with the queue and the JmsTemplate.
+     * The QueueHelper class provides helper methods for interacting with a queue and a dead letter
+     * queue (DLQ). It encapsulates the details of interacting with the queue and the JmsTemplate.
      *
      * <p>Example usage can be seen in the ToConnectorQueue, ToCleanupQueue, and ToLinkQueue
      * classes, where objects of QueueHelper are used to perform various queue operations.

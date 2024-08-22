@@ -22,6 +22,7 @@ import eu.domibus.connector.domain.model.builder.DomibusConnectorPartyBuilder;
 import eu.domibus.connector.domain.model.builder.DomibusConnectorServiceBuilder;
 import eu.domibus.connector.domain.testutil.LargeFileReferenceGetSetBased;
 import eu.domibus.connector.testdata.LoadStoreTransitionMessage;
+import jakarta.annotation.Nullable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -213,8 +213,9 @@ public class LoadStoreMessageFromPath {
         }
     }
 
-    private void writeBigDataReferenceToResource(Resource res,
-                                                 LargeFileReference bigDataReference) {
+    private void writeBigDataReferenceToResource(
+        Resource res,
+        LargeFileReference bigDataReference) {
         try {
             File attachmentOutputFile = res.getFile();
             InputStream inputStream = null;
@@ -311,12 +312,13 @@ public class LoadStoreMessageFromPath {
 
     private List<DomibusConnectorMessageConfirmation> loadConfirmations() {
         return messageProperties.stringPropertyNames()
-            .stream()
-            .sorted()
-            .filter(k -> k.startsWith(LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX))
-            .map(k -> k.split("\\.")[2])
-            .distinct()
-            .map(k -> {
+                                .stream()
+                                .sorted()
+                                .filter(k -> k.startsWith(
+                                    LoadStoreTransitionMessage.MESSAGE_CONFIRMATIONS_PREFIX))
+                                .map(k -> k.split("\\.")[2])
+                                .distinct()
+                                .map(k -> {
 
                 String evidenceFilePropertyName =
                     String.format("%s.%s.%s",
@@ -329,21 +331,21 @@ public class LoadStoreMessageFromPath {
                                   k, "type"
                     );
 
-                Resource resEvidenceFile =
-                    createRelativeResource(messageProperties.getProperty(evidenceFilePropertyName));
-                DomibusConnectorEvidenceType domibusConnectorEvidenceType =
+                var resEvidenceFile = createRelativeResource(
+                    messageProperties.getProperty(evidenceFilePropertyName)
+                );
+                var domibusConnectorEvidenceType =
                     DomibusConnectorEvidenceType.valueOf(
-                        messageProperties.getProperty(evidenceTypePropertyName));
+                        messageProperties.getProperty(evidenceTypePropertyName)
+                    );
+                var builder = DomibusConnectorMessageConfirmationBuilder
+                    .createBuilder()
+                    .setEvidence(loadResourceAsByteArray(resEvidenceFile))
+                    .setEvidenceType(domibusConnectorEvidenceType);
 
-                DomibusConnectorMessageConfirmationBuilder builder =
-                    DomibusConnectorMessageConfirmationBuilder
-                        .createBuilder()
-                        .setEvidence(loadResourceAsByteArray(resEvidenceFile))
-                        .setEvidenceType(domibusConnectorEvidenceType);
-
-                return builder.build();
-            })
-            .collect(Collectors.toList());
+                                    return builder.build();
+                                })
+                                .collect(Collectors.toList());
     }
 
     private List<DomibusConnectorMessageAttachment> loadAttachments() {

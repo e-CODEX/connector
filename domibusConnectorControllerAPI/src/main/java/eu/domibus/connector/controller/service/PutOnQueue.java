@@ -19,5 +19,5 @@ import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 public interface PutOnQueue {
     void putOnQueue(DomibusConnectorMessage message);
 
-    javax.jms.Queue getQueue();
+    jakarta.jms.Queue getQueue();
 }

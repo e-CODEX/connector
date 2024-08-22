@@ -14,7 +14,7 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import eu.domibus.connector.evidences.spring.PostalAdressConfigurationProperties;
@@ -35,7 +35,7 @@ public class PostalAdressConfigurationPropertiesField
     private final TextField locality = new TextField();
     private final TextField zipCode = new TextField();
     private final TextField country = new TextField();
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     private final SpringBeanValidationBinder<PostalAdressConfigurationProperties> binder;
     private PostalAdressConfigurationProperties value;

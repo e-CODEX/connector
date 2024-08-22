@@ -10,9 +10,8 @@
 
 package eu.domibus.connector.domain.model;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.core.style.ToStringCreator;
 
 /**

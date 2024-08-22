@@ -10,8 +10,8 @@
 
 package eu.domibus.connector.evidences.spring;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;

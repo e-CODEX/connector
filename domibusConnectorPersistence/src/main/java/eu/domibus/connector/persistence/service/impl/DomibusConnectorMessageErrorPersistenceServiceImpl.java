@@ -78,7 +78,7 @@ public class DomibusConnectorMessageErrorPersistenceServiceImpl
             return new ArrayList<>();
         }
         List<PDomibusConnectorMessageError> dbErrorsForMessage =
-            this.messageErrorDao.findByMessage(dbMessage.get().getId());
+            this.messageErrorDao.findByMessageId(dbMessage.get().getId());
         if (!CollectionUtils.isEmpty(dbErrorsForMessage)) {
             List<DomibusConnectorMessageError> messageErrors =
                 new ArrayList<>(dbErrorsForMessage.size());

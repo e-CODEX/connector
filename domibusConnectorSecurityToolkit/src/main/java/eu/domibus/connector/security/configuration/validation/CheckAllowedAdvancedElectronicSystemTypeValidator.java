@@ -12,9 +12,9 @@ package eu.domibus.connector.security.configuration.validation;
 
 import eu.domibus.connector.domain.enums.AdvancedElectronicSystemType;
 import eu.domibus.connector.security.configuration.DCBusinessDocumentValidationConfigurationProperties;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Set;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 /**
  * The CheckAllowedAdvancedElectronicSystemTypeValidator class is a validator implementation for the

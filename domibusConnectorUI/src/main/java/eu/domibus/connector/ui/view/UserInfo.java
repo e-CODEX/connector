@@ -13,7 +13,7 @@ package eu.domibus.connector.ui.view;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -54,7 +54,7 @@ public class UserInfo extends HorizontalLayout implements AfterNavigationObserve
         var logoutButton = new Button("Logout");
         logoutButton.addClickListener(e -> {
             var logout2Div = new Div();
-            var logoutText = new Label("Logout call success!");
+            var logoutText = new NativeLabel("Logout call success!");
             logoutText.getStyle().set("font-weight", "bold");
             logoutText.getStyle().set("color", "red");
             logout2Div.add(logoutText);

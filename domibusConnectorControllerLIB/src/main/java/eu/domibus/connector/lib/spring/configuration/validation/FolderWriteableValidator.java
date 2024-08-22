@@ -10,10 +10,10 @@
 
 package eu.domibus.connector.lib.spring.configuration.validation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 /**
  * The FolderWriteableValidator class is a validator for the CheckFolderWriteable annotation. It

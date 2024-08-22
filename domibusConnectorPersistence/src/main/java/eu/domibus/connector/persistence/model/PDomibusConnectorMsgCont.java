@@ -11,21 +11,21 @@
 package eu.domibus.connector.persistence.model;
 
 import eu.domibus.connector.persistence.service.impl.helper.StoreType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
+import jakarta.persistence.TemporalType;
 import java.util.Date;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -97,10 +97,10 @@ public class PDomibusConnectorMsgCont {
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "DETACHED_SIGNATURE_ID", referencedColumnName = "ID")
     private PDomibusConnectorDetachedSignature detachedSignature;
-    @javax.persistence.Temporal(value = TemporalType.TIMESTAMP)
+    @jakarta.persistence.Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "DELETED")
     private Date deleted;
-    @javax.persistence.Temporal(value = TemporalType.TIMESTAMP)
+    @jakarta.persistence.Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CREATED", nullable = false)
     private Date created;
 

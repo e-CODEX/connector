@@ -10,7 +10,7 @@
 
 package eu.domibus.connector.ui.view.areas.tools;
 
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -34,6 +34,6 @@ public class ToolsView extends VerticalLayout {
      * Constructor.
      */
     public ToolsView() {
-        add(new Label("This tab section contains a list of tools"));
+        add(new NativeLabel("This tab section contains a list of tools"));
     }
 }

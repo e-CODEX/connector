@@ -14,9 +14,9 @@ import eu.domibus.connector.common.annotations.MapNested;
 import eu.domibus.connector.lib.spring.configuration.StoreConfigurationProperties;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationDescription;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
-import javax.annotation.CheckForNull;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -80,11 +80,11 @@ public class CertificateVerifierConfigurationProperties {
      */
     private boolean aiaEnabled = true;
 
-    public @CheckForNull String getCertificateVerifierName() {
+    public @Nullable String getCertificateVerifierName() {
         return certificateVerifierName;
     }
 
-    public @CheckForNull StoreConfigurationProperties getTrustStore() {
+    public @Nullable StoreConfigurationProperties getTrustStore() {
         return trustStore;
     }
 }

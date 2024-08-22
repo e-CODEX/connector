@@ -10,7 +10,7 @@
 
 package eu.domibus.connector.ui.view.areas.configuration;
 
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -32,7 +32,7 @@ public class ConfigurationOverview extends VerticalLayout implements BeforeEnter
     public static final String ROUTE = "";
 
     public ConfigurationOverview() {
-        var configurationLabel = new Label("Configuration");
+        var configurationLabel = new NativeLabel("Configuration");
         this.add(configurationLabel);
     }
 

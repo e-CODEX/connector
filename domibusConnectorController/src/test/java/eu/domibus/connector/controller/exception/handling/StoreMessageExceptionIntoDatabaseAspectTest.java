@@ -10,7 +10,7 @@ import eu.domibus.connector.controller.test.util.ConnectorControllerTestDomainCr
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageError;
 import eu.domibus.connector.persistence.service.DomibusConnectorMessageErrorPersistenceService;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -11,10 +11,10 @@
 package eu.domibus.connector.domain.model;
 
 import eu.domibus.connector.domain.enums.ConfigurationSource;
+import jakarta.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.core.style.ToStringCreator;

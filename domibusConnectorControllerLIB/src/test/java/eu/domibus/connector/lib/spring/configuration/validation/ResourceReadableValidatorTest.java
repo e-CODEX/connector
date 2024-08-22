@@ -2,9 +2,9 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import lombok.Getter;
 import lombok.Setter;
 import org.junit.jupiter.api.Test;

@@ -10,16 +10,17 @@
 
 package eu.domibus.connector.ui.component;
 
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import lombok.NoArgsConstructor;
 
 /**
- * The LumoLabel class extends the Label component and represents a customized label with specific
- * styling. It sets the font family to "-apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI',
- * Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'".
+ * The LumoLabel class extends the NativeLabel component and represents a customized label with
+ * specific styling. It sets the font family to "-apple-system, BlinkMacSystemFont, 'Roboto',
+ * 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+ * 'Segoe UI Symbol'".
  */
 @NoArgsConstructor
-public class LumoLabel extends Label {
+public class LumoLabel extends NativeLabel {
     {
         super.getStyle().set(
             "font-family",

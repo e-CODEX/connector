@@ -13,18 +13,27 @@ package eu.domibus.connector.ui.view.areas.monitoring;
 import com.vaadin.flow.component.grid.Grid;
 import eu.domibus.connector.ui.dto.WebQueue;
 
+/**
+ * The QueueGrid class represents a grid that displays information about web queues.
+ *
+ * @see Grid
+ * @see WebQueue
+ * @see WebQueue#getName()
+ * @see WebQueue#getMsgsOnQueue()
+ * @see WebQueue#getMsgsOnDlq()
+ */
 public class QueueGrid extends Grid<WebQueue> {
-
+    /**
+     * Constructor.
+     */
     public QueueGrid() {
         super();
 
         this.setWidth("100%");
-        this.setHeightByRows(true);
+        this.setAllRowsVisible(true);
 
         addColumn(WebQueue::getName).setHeader("Queue").setWidth("40%");
         addColumn(WebQueue::getMsgsOnQueue).setHeader("Messages on Queue").setWidth("30%");
         addColumn(WebQueue::getMsgsOnDlq).setHeader("Messages on Error Queue").setWidth("30%");
     }
-
-
 }

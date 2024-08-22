@@ -14,9 +14,9 @@ import eu.domibus.connector.domain.enums.DomibusConnectorMessageDirection;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
+import jakarta.annotation.Nonnull;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 
 /**
  * DCMessagePersistenceService interface provides methods for persisting and retrieving connector
@@ -171,8 +171,9 @@ public interface DCMessagePersistenceService {
      * @deprecated the method persistBusinessMessageIntoDatabase should be used instead
      */
     @Deprecated
-    DomibusConnectorMessage persistMessageIntoDatabase(@Nonnull DomibusConnectorMessage message,
-                                                       DomibusConnectorMessageDirection direction)
+    DomibusConnectorMessage persistMessageIntoDatabase(
+        @Nonnull DomibusConnectorMessage message,
+        DomibusConnectorMessageDirection direction)
         throws PersistenceException;
 
     /**

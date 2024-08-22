@@ -10,19 +10,19 @@
 
 package eu.domibus.connector.persistence.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -89,13 +89,12 @@ public class PDomibusConnectorMessageError {
      * persisted into the database. It performs the necessary operations before the entity is
      * saved.
      *
-     * <p>First, it checks if the {@code created} field is null. If it is null, it sets the field to
-     * the
-     * current date and time by creating a new {@code Date} object.
+     * <p>First, it checks if the {@code created} field is null. If it is null, it sets the field
+     * to
+     * the current date and time by creating a new {@code Date} object.
      *
      * <p>Next, it calls the {@code truncateErrorMessage} method to truncate the
-     * {@code errorMessage}
-     * field if its length is greater than 2047 characters.
+     * {@code errorMessage} field if its length is greater than 2047 characters.
      */
     @PrePersist
     public void prePersist() {

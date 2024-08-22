@@ -13,40 +13,38 @@ package eu.domibus.connector.controller.queues.producer;
 import eu.domibus.connector.controller.queues.QueueHelper;
 import eu.domibus.connector.controller.service.HasManageableDlq;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
+import jakarta.jms.Message;
+import jakarta.jms.Queue;
 import java.util.List;
-import javax.jms.Message;
-import javax.jms.Queue;
 
 /**
- * The ManageableQueue class is an abstract class that implements the HasManageableDlq interface.
- * It provides common functionality for managing queues and dead letter queues (DLQs).
+ * The ManageableQueue class is an abstract class that implements the HasManageableDlq interface. It
+ * provides common functionality for managing queues and dead letter queues (DLQs).
  *
  * <p>The ManageableQueue class uses a QueueHelper object to perform queue operations.
- * The QueueHelper object encapsulates the details of interacting with the queues
- * and the JmsTemplate.
+ * The QueueHelper object encapsulates the details of interacting with the queues and the
+ * JmsTemplate.
  *
- * <p>This class provides implementations for the methods defined in the HasManageableDlq interface.
+ * <p>This class provides implementations for the methods defined in the HasManageableDlq
+ * interface.
  * These methods allow for putting messages on the queue, getting the queue, getting the queue name,
- * getting the message as text,
- * getting the DLQ, listing all messages in the queue, listing all messages in the DLQ,
- * moving a message from the DLQ to the queue, and deleting a message.
+ * getting the message as text, getting the DLQ, listing all messages in the queue, listing all
+ * messages in the DLQ, moving a message from the DLQ to the queue, and deleting a message.
  *
  * <p>To create a specific queue implementation, extend the ManageableQueue class and provide
- * the necessary dependencies for the QueueHelper object.
- * An example usage of the ManageableQueue class can be seen in the following classes:
- * ToConnectorQueue, ToCleanupQueue, ToLinkQueue.
- * These classes extend the ManageableQueue class and provide the necessary dependencies for
- * the QueueHelper object in their constructors.
+ * the necessary dependencies for the QueueHelper object. An example usage of the ManageableQueue
+ * class can be seen in the following classes: ToConnectorQueue, ToCleanupQueue, ToLinkQueue. These
+ * classes extend the ManageableQueue class and provide the necessary dependencies for the
+ * QueueHelper object in their constructors.
  *
  * <p>The ManageableQueue class itself is an abstract class and cannot be instantiated directly.
- * It provides a default constructor that accepts a QueueHelper object, which must be provided
- * by the subclass.
+ * It provides a default constructor that accepts a QueueHelper object, which must be provided by
+ * the subclass.
  *
  * <p>The ManageableQueue class does not provide any specific example code. However, the usage
- * examples provided above demonstrate how the ManageableQueue class can be extended and used
- * .
- * These examples show the creation of specific queue implementations and the usage of
- * the ManageableQueue methods.
+ * examples provided above demonstrate how the ManageableQueue class can be extended and used .
+ * These examples show the creation of specific queue implementations and the usage of the
+ * ManageableQueue methods.
  */
 public abstract class ManageableQueue implements HasManageableDlq {
     private final QueueHelper queueHelper;

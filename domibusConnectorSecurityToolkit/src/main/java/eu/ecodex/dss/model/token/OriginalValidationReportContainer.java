@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 /*
@@ -16,16 +21,16 @@
 package eu.ecodex.dss.model.token;
 
 import eu.europa.esig.dss.validation.reports.Reports;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAnyElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -74,10 +79,9 @@ public class OriginalValidationReportContainer implements Serializable {
      * Sets the value of the reports property.
      *
      * <p>This method sets the value of the reports property in the
-     * OriginalValidationReportContainer object.
-     * It assigns the provided Reports object to the reports property and adds the xmlDiagnosticData
-     * and xmlSimpleReport from the Reports object to the any property of the
-     * OriginalValidationReportContainer object.</p>
+     * OriginalValidationReportContainer object. It assigns the provided Reports object to the
+     * reports property and adds the xmlDiagnosticData and xmlSimpleReport from the Reports object
+     * to the any property of the OriginalValidationReportContainer object.</p>
      *
      * @param reports The Reports object containing the xmlDiagnosticData and xmlSimpleReport to be
      *                added.

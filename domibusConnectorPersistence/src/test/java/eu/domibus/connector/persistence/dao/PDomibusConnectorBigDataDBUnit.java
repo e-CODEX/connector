@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import eu.domibus.connector.persistence.model.PDomibusConnectorBigData;
+import jakarta.persistence.EntityManager;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import javax.persistence.EntityManager;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.dataset.ITable;
 import org.hibernate.Session;

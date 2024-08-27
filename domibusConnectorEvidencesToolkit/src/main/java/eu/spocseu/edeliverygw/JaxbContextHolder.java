@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 /* ---------------------------------------------------------------------------
@@ -29,8 +34,8 @@ See SPOCS_WP3_LICENSE_URL for license information
 
 package eu.spocseu.edeliverygw;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -40,10 +45,10 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class JaxbContextHolder {
-    private static javax.xml.bind.JAXBContext spocsContext = null;
-    private static javax.xml.bind.JAXBContext soapContext = null;
-    private static javax.xml.bind.JAXBContext addressingContext = null;
-    private static javax.xml.bind.JAXBContext etsi_vi = null;
+    private static jakarta.xml.bind.JAXBContext spocsContext = null;
+    private static jakarta.xml.bind.JAXBContext soapContext = null;
+    private static jakarta.xml.bind.JAXBContext addressingContext = null;
+    private static jakarta.xml.bind.JAXBContext etsi_vi = null;
 
     /**
      * Internal method to get the JAXB context to marshal and unmarshal spocs objects.
@@ -51,7 +56,7 @@ public class JaxbContextHolder {
      * @return The created JAXB context.
      * @throws JAXBException In case of errors creating the JAXB context.
      */
-    public static javax.xml.bind.JAXBContext getSpocsJaxBContext()
+    public static jakarta.xml.bind.JAXBContext getSpocsJaxBContext()
         throws JAXBException {
         if (spocsContext == null) {
             spocsContext = JAXBContext
@@ -69,7 +74,7 @@ public class JaxbContextHolder {
      * @return The JAXB context for soapbinding objects.
      * @throws JAXBException In case of errors creating the JAXB context.
      */
-    public static javax.xml.bind.JAXBContext getSoapBindingJaxBContext()
+    public static jakarta.xml.bind.JAXBContext getSoapBindingJaxBContext()
         throws JAXBException {
         if (soapContext == null) {
             soapContext = JAXBContext
@@ -101,7 +106,7 @@ public class JaxbContextHolder {
      * @return The created JAXB context.
      * @throws JAXBException In case of errors creating the JAXB context.
      */
-    public static javax.xml.bind.JAXBContext getETSIV2JaxBContext()
+    public static jakarta.xml.bind.JAXBContext getETSIV2JaxBContext()
         throws JAXBException {
         if (etsi_vi == null) {
             etsi_vi = JAXBContext

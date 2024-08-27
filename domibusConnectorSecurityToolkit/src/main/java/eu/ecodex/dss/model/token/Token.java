@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 /*
@@ -16,12 +21,12 @@
 package eu.ecodex.dss.model.token;
 
 import eu.europa.esig.xmldsig.jaxb.DigestMethodType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
@@ -149,8 +154,7 @@ public class Token implements Serializable {
     /**
      * Get the value of the token document digest value.
      *
-     * @return The digest value of the document as a byte array,
-     *         or null if the document is null.
+     * @return The digest value of the document as a byte array, or null if the document is null.
      */
     public byte[] getDocumentDigestValue() {
         return (document == null) ? null : document.getDigestValue();
@@ -298,8 +302,8 @@ public class Token implements Serializable {
      *
      * @return possible object is {@link String} or null.
      * @deprecated This method is deprecated and will be removed in a future release. Use
-     *      {@link #getValidationVerificationSignatureCertificateInformation()} and access the
-     *      issuer field directly instead.
+     *      {@link #getValidationVerificationSignatureCertificateInformation()} and access
+     *      the issuer field directly instead.
      */
     @Deprecated
     public String getValidationVerificationSignatureCertificateIssuer() {
@@ -422,8 +426,8 @@ public class Token implements Serializable {
      * @return possible object is {@link javax.xml.datatype.XMLGregorianCalendar}
      * @see XMLGregorianCalendar
      * @deprecated This method has been deprecated and may be removed in a future version. Use the
-     *      {@link #getValidationVerificationSignatureData()} method instead to obtain the signature
-     *      data and get the signing time from there.
+     *      {@link #getValidationVerificationSignatureData()} method instead to obtain the
+     *      signature data and get the signing time from there.
      */
     @Deprecated
     public XMLGregorianCalendar getValidationVerificationSignatureSigningTime() {

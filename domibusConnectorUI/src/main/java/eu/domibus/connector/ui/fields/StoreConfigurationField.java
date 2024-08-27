@@ -1,13 +1,18 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -26,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Component
 public class StoreConfigurationField extends CustomField<StoreConfigurationProperties> {
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     private final TextField path = new TextField();
     private final PasswordField password = new PasswordField();

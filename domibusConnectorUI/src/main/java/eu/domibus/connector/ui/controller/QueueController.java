@@ -1,22 +1,27 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.controller;
 
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.notification.Notification;
 import eu.domibus.connector.controller.queues.producer.ManageableQueue;
 import eu.domibus.connector.ui.dto.WebQueue;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.jms.JMSException;
-import javax.jms.Message;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -96,7 +101,7 @@ public class QueueController {
     public void moveMsgFromDlqToQueue(Message msg) {
         String jmsDestination = null;
         try {
-            if (msg.getJMSDestination() instanceof javax.jms.Queue queue) {
+            if (msg.getJMSDestination() instanceof jakarta.jms.Queue queue) {
                 jmsDestination = queue.getQueueName();
             } else {
                 String error = "Illegal destination: [" + msg.getJMSDestination()
@@ -130,9 +135,8 @@ public class QueueController {
      * Retrieves a list of WebQueue objects representing the queues in the system.
      *
      * <p>This method retrieves all the queues from the `queueMap`, maps each ManageableQueue
-     * object
-     * to a WebQueue object, and filter out any null values. The resulting WebQueue objects are
-     * collected into a List and returned.
+     * object to a WebQueue object, and filter out any null values. The resulting WebQueue objects
+     * are collected into a List and returned.
      *
      * @return a list of WebQueue objects representing the queues in the system
      */
@@ -181,7 +185,7 @@ public class QueueController {
     public void showMessage(Message message) {
         String messageText = this.getMsgText(message);
         var d = new Dialog();
-        d.add(new Label(messageText));
+        d.add(new NativeLabel(messageText));
         d.open();
         d.setSizeFull();
     }

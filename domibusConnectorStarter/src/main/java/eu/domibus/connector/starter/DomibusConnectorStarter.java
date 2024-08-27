@@ -1,18 +1,23 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.starter;
 
+import jakarta.annotation.Nullable;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
-import javax.annotation.Nullable;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,16 +30,14 @@ import org.springframework.util.SystemPropertyUtils;
 
 /**
  * The DomibusConnectorStarter class is the entry point for starting the Domibus Connector
+ * application. It is responsible for configuring the Spring application context and starting the
  * application.
- * It is responsible for configuring the Spring application context and starting the application.
  *
- *<p>The following properties can be configured:
- * - spring cloud bootstrap name: spring.cloud.bootstrap.name
- * - spring cloud bootstrap location: spring.cloud.bootstrap.location
- * - spring config location: spring.config.location
- * - spring config name: spring.config.name
- * - connector config file: connector.config.file
- * - connector config location: connector.config.location
+ * <p>The following properties can be configured:
+ * - spring cloud bootstrap name: spring.cloud.bootstrap.name - spring cloud bootstrap location:
+ * spring.cloud.bootstrap.location - spring config location: spring.config.location - spring config
+ * name: spring.config.name - connector config file: connector.config.file - connector config
+ * location: connector.config.location
  */
 @SpringBootApplication(scanBasePackages = "eu.domibus.connector")
 @EnableTransactionManagement

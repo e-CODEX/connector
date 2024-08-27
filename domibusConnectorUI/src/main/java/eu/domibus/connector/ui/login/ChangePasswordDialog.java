@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.login;
@@ -10,7 +15,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.textfield.PasswordField;
 import eu.domibus.connector.ui.exception.UserLoginException;
 import eu.domibus.connector.ui.service.WebUserService;
@@ -41,7 +46,7 @@ public class ChangePasswordDialog extends Dialog {
         this.username = username;
 
         var changePasswordDiv = new Div();
-        var changePassword = new Label("Change Password for User " + username);
+        var changePassword = new NativeLabel("Change Password for User " + username);
         changePassword.getStyle().set("font-weight", "bold");
         changePasswordDiv.add(changePassword);
         changePasswordDiv.getStyle().set(UiStyle.ALIGNMENT_STYLE, UiStyle.ALIGNMENT_CENTER);
@@ -49,7 +54,7 @@ public class ChangePasswordDialog extends Dialog {
         add(changePasswordDiv);
 
         var changePassword2Div = new Div();
-        var changePassword2 = new Label("Your password must be changed.");
+        var changePassword2 = new NativeLabel("Your password must be changed.");
         changePassword2Div.add(changePassword2);
         changePassword2Div.getStyle().set(UiStyle.ALIGNMENT_STYLE, UiStyle.ALIGNMENT_CENTER);
         changePassword2Div.setVisible(true);

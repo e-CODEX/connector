@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.utils.binder;
@@ -9,14 +14,14 @@ import com.vaadin.flow.data.binder.BeanPropertySet;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.PropertyDefinition;
 import com.vaadin.flow.data.binder.RequiredFieldConfigurator;
-import javax.validation.Validator;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.validation.Validator;
+import jakarta.validation.metadata.ConstraintDescriptor;
 import lombok.Data;
 
 /**
  * The {@code SpringBeanValidationBinder} class is a subclass of {@code Binder} that provides
- * functionality to bind and validate form fields in a Spring framework application using
- * Bean Validation (JSR-303).
+ * functionality to bind and validate form fields in a Spring framework application using Bean
+ * Validation (JSR-303).
  *
  * <p>This class configures a {@link SpringBeanValidator} for each binding defined using a
  * property name. The binder uses reflection based on the provided bean type to resolve bean
@@ -45,7 +50,7 @@ public class SpringBeanValidationBinder<BEAN> extends Binder<BEAN> {
      * @param scanNestedDefinitions if {@code true}, scan for nested property definitions as well
      */
     public SpringBeanValidationBinder(
-        javax.validation.Validator javaxValidator, Class<BEAN> beanType,
+        jakarta.validation.Validator javaxValidator, Class<BEAN> beanType,
         boolean scanNestedDefinitions) {
         super(beanType, scanNestedDefinitions);
         this.javaxValidator = javaxValidator;

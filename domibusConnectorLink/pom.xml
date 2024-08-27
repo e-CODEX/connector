@@ -19,6 +19,10 @@
         <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
@@ -68,7 +72,7 @@
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
         </dependency>
-        <!-- domibus modules and libs-->
+        <!-- ecodex modules and libs-->
         <!-- moving spring-property-configuration-manager-api dependency, make the build fails  -->
         <dependency>
             <groupId>eu.ecodex.utils</groupId>
@@ -85,6 +89,11 @@
             <artifactId>domibusConnectorPersistence</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- domibus dependencies -->
+        <dependency>
+            <groupId>eu.domibus</groupId>
+            <artifactId>domibus-ws-stubs</artifactId>
+        </dependency>
         <!-- other dependencies -->
         <dependency>
             <groupId>com.github.database-rider</groupId>
@@ -95,13 +104,8 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.jms</groupId>
-            <artifactId>javax.jms-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>eu.domibus</groupId>
-            <artifactId>domibus-ws-stubs</artifactId>
-            <version>4.1.3</version>
+            <groupId>jakarta.jms</groupId>
+            <artifactId>jakarta.jms-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -154,9 +158,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <scope>test</scope>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
         </dependency>
     </dependencies>
     <build>

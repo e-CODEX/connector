@@ -2,8 +2,8 @@ package eu.domibus.connector.lib.spring.configuration.validation;
 
 import eu.domibus.connector.lib.spring.configuration.KeyConfigurationProperties;
 import eu.domibus.connector.lib.spring.configuration.StoreConfigurationProperties;
+import jakarta.validation.ConstraintViolation;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
 import lombok.experimental.UtilityClass;
 
 /**

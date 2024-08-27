@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.login;
@@ -8,7 +13,7 @@ package eu.domibus.connector.ui.login;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import eu.domibus.connector.ui.utils.UiStyle;
 
 /**
@@ -23,7 +28,7 @@ public class LoginErrorDialog extends Dialog {
      */
     public LoginErrorDialog(String errorMessage) {
         var loginExceptionDiv = new Div();
-        var loginException = new Label(errorMessage);
+        var loginException = new NativeLabel(errorMessage);
         loginException.getStyle().set("font-weight", "bold");
         loginException.getStyle().set("color", "red");
         loginExceptionDiv.add(loginException);

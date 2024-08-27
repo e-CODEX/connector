@@ -6,7 +6,7 @@
 package eu.domibus.connector.domain.transformer.testutil;
 
 import eu.domibus.connector.domain.transformer.util.InputStreamDataSource;
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 
 /**
  * A utility class that provides a method to create a DataHandler object from a string input.

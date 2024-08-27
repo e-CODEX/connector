@@ -1,11 +1,16 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.view.areas.monitoring;
 
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import eu.domibus.connector.ui.controller.QueueController;
 import eu.domibus.connector.ui.dto.WebQueue;
@@ -38,8 +43,8 @@ public class DetailsLayout extends VerticalLayout {
         this.queueController = queueController;
         this.parentView = view;
         this.setWidth("100%");
-        final var messageLabel = new Label("Messages on Queue");
-        final var dlqMessageLabel = new Label("Messages on DLQ");
+        final var messageLabel = new NativeLabel("Messages on Queue");
+        final var dlqMessageLabel = new NativeLabel("Messages on DLQ");
         messageGrid = new MessageGrid(this.queueController, view);
         dlqMessagesGrid = new MessageGrid(this.queueController, view);
         add(messageLabel, messageGrid, dlqMessageLabel, dlqMessagesGrid);

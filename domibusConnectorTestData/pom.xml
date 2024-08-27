@@ -10,7 +10,7 @@
     <name>${project.artifactId}</name>
     <description>This module contains testData for Tests. To make the TestData reusable through the different modules of the project.</description>
     <dependencies>
-        <!-- domibus modules and libs-->
+        <!-- ecodex modules and libs-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
@@ -28,13 +28,14 @@
         </dependency>
         <!-- spring dependencies -->
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-        </dependency>
+        <!-- other dependencies -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-core</artifactId>

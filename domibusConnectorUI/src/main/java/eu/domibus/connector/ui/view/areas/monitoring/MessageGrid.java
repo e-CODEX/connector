@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.view.areas.monitoring;
@@ -11,9 +16,9 @@ import com.vaadin.flow.component.grid.Grid;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.ui.controller.QueueController;
 import eu.domibus.connector.ui.dto.WebQueue;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 import java.util.List;
-import javax.jms.JMSException;
-import javax.jms.Message;
 
 /**
  * The MessageGrid class is a custom grid component for displaying messages in a tabular format.
@@ -36,7 +41,7 @@ public class MessageGrid extends Grid<Message> {
         this.parentView = parentView;
 
         this.setWidth("90%");
-        this.setHeightByRows(true);
+        this.setAllRowsVisible(true);
 
         addColumn(this::getJMSMessageID).setHeader("Message ID (JMS ID)").setWidth("35%");
         addColumn(this::getConnectorId).setHeader("Connector ID").setWidth("35%");

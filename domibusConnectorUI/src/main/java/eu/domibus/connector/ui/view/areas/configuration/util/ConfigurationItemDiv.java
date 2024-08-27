@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.view.areas.configuration.util;
@@ -9,7 +14,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import eu.domibus.connector.ui.utils.UiStyle;
@@ -47,7 +52,7 @@ public class ConfigurationItemDiv extends Div {
 
     private Button createInfoButton(ConfigurationLabel labels) {
         var headerContent = new Div();
-        var header = new Label(labels.CONFIGURATION_ELEMENT_LABEL);
+        var header = new NativeLabel(labels.CONFIGURATION_ELEMENT_LABEL);
         header.getStyle().set("font-weight", "bold");
         header.getStyle().set("font-style", "italic");
         headerContent.getStyle().set(UiStyle.ALIGNMENT_STYLE, UiStyle.ALIGNMENT_CENTER);
@@ -60,17 +65,17 @@ public class ConfigurationItemDiv extends Div {
         var infoContent = new Div();
         for (var info : labels.INFO_LABEL) {
             var infoLine = new Div();
-            infoLine.add(new Label(info));
+            infoLine.add(new NativeLabel(info));
             infoContent.add(infoLine);
         }
         infoContent.getStyle().set(UiStyle.TAG_PADDING, "10px");
         dialog.add(infoContent);
 
         var propertyContent = new Div();
-        var correspondingProperty = new Label("\n Corresponding property: ");
+        var correspondingProperty = new NativeLabel("\n Corresponding property: ");
         correspondingProperty.getStyle().set("font-weight", "bold");
         propertyContent.add(correspondingProperty);
-        propertyContent.add(new Label(labels.PROPERTY_NAME_LABEL));
+        propertyContent.add(new NativeLabel(labels.PROPERTY_NAME_LABEL));
         propertyContent.getStyle().set(UiStyle.TAG_PADDING, "10px");
         dialog.add(propertyContent);
 

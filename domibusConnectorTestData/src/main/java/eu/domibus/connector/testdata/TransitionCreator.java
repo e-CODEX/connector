@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.testdata;
@@ -20,12 +25,12 @@ import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
 import eu.domibus.connector.domain.transition.DomibusConnectorMessagesType;
 import eu.domibus.connector.domain.transition.DomibusConnectorPartyType;
 import eu.domibus.connector.domain.transition.DomibusConnectorServiceType;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.xml.transform.stream.StreamSource;
 import lombok.experimental.UtilityClass;
 import org.apache.cxf.attachment.ByteDataSource;
@@ -136,8 +141,7 @@ public class TransitionCreator {
 
     /**
      * Creates a new instance of DomibusConnectorMessageConfirmationType with the confirmation set
-     * to "DELIVERY" and the confirmation type set to
-     * DomibusConnectorConfirmationType.DELIVERY.
+     * to "DELIVERY" and the confirmation type set to DomibusConnectorConfirmationType.DELIVERY.
      *
      * @return the created DomibusConnectorMessageConfirmationType object
      */
@@ -297,8 +301,7 @@ public class TransitionCreator {
      * Creates a new instance of {@link DomibusConnectorPartyType} with the following properties.
      *
      * <p>- partyId: "AT"
-     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1"
-     * - role: "GW"
+     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1" - role: "GW"
      *
      * @return the created DomibusConnectorPartyType object
      */
@@ -314,8 +317,7 @@ public class TransitionCreator {
      * Creates a new instance of {@link DomibusConnectorPartyType} with the following properties.
      *
      * <p>- partyId: "DE"
-     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1"
-     * - role: "GW"
+     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1" - role: "GW"
      *
      * @return the created DomibusConnectorPartyType object
      */

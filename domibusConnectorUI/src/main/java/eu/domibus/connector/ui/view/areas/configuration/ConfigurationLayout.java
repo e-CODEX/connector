@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.view.areas.configuration;
@@ -9,7 +14,7 @@ import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -25,8 +30,8 @@ import eu.domibus.connector.ui.layout.DCMainLayout;
 import eu.domibus.connector.ui.utils.DCTabHandler;
 import eu.domibus.connector.ui.utils.UiStyle;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
+import jakarta.annotation.PostConstruct;
 import java.util.Objects;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -204,7 +209,7 @@ public class ConfigurationLayout extends VerticalLayout
         String headerString, Button confirmButton, String... infoStrings) {
 
         var headerContent = new Div();
-        var header = new Label(headerString);
+        var header = new NativeLabel(headerString);
         header.getStyle().set("font-weight", "bold");
         header.getStyle().set("font-style", "italic");
         header.getStyle().set("margin-bottom", "10px");
@@ -218,7 +223,7 @@ public class ConfigurationLayout extends VerticalLayout
 
         var contentLayout = new VerticalLayout();
         for (var infoString : infoStrings) {
-            var infoLabel = new Label(infoString);
+            var infoLabel = new NativeLabel(infoString);
             infoLabel.getStyle().set("margin-top", "0px");
             contentLayout.add(infoLabel);
         }

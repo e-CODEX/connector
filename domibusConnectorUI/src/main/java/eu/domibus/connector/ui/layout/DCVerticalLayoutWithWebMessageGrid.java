@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.layout;
@@ -9,7 +14,7 @@ import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -21,6 +26,7 @@ import eu.domibus.connector.ui.component.WebMessagesGrid;
  * This class extends the VerticalLayout class and represents a custom layout that includes a
  * WebMessagesGrid and controls for managing the display of messages in the grid.
  */
+@SuppressWarnings("squid:S1135")
 public class DCVerticalLayoutWithWebMessageGrid extends VerticalLayout {
     public static final int INITIAL_PAGE_SIZE = 15;
     WebMessagesGrid grid;
@@ -35,7 +41,7 @@ public class DCVerticalLayoutWithWebMessageGrid extends VerticalLayout {
     public DCVerticalLayoutWithWebMessageGrid(WebMessagesGrid grid) {
         this.grid = grid;
         grid.setPageSize(pageSize);
-        grid.setPaginatorSize(5);
+        grid.setPageSize(5); // TODO check if replacement is OK
 
         VerticalLayout gridControl = createGridControlLayout();
 
@@ -60,7 +66,7 @@ public class DCVerticalLayoutWithWebMessageGrid extends VerticalLayout {
         hideColsBtn.setText("Show/Hide Columns");
         hideColsBtn.addClickListener(e -> {
             var headerContent = new Div();
-            var header = new Label("Select columns you want to see in the list");
+            var header = new NativeLabel("Select columns you want to see in the list");
             header.getStyle().set("font-weight", "bold");
             header.getStyle().set("font-style", "italic");
             headerContent.getStyle().set("text-align", "center");

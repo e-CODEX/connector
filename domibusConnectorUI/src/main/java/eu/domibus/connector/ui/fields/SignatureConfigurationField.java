@@ -1,13 +1,18 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.select.Select;
 import eu.domibus.connector.dss.configuration.SignatureConfigurationProperties;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
@@ -32,7 +37,7 @@ public class SignatureConfigurationField extends CustomField<SignatureConfigurat
     private final Select<DigestAlgorithm> digestAlgorithm;
     private final StoreConfigurationField keyStore;
     private final SpringBeanValidationBinder<SignatureConfigurationProperties> binder;
-    private final Label statusLabel = new Label("");
+    private final NativeLabel statusLabel = new NativeLabel("");
     private final FormLayout formLayout = new FormLayout();
     private SignatureConfigurationProperties value;
 
@@ -56,8 +61,10 @@ public class SignatureConfigurationField extends CustomField<SignatureConfigurat
         add(statusLabel);
         add(formLayout);
 
-        encryptionAlgorithm = new Select<>(EncryptionAlgorithm.values());
-        digestAlgorithm = new Select<>(DigestAlgorithm.values());
+        encryptionAlgorithm = new Select<>();
+        encryptionAlgorithm.setItems(EncryptionAlgorithm.values());
+        digestAlgorithm = new Select<>();
+        digestAlgorithm.setItems(DigestAlgorithm.values());
 
         formLayout.setResponsiveSteps(
             new FormLayout.ResponsiveStep(

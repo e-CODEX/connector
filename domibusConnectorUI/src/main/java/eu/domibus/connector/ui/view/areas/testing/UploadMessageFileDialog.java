@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.view.areas.testing;
@@ -8,7 +13,7 @@ package eu.domibus.connector.ui.view.areas.testing;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import eu.domibus.connector.ui.dto.WebMessageFileType;
@@ -28,7 +33,7 @@ public class UploadMessageFileDialog extends Dialog {
     ComboBox<WebMessageFileType> fileType;
     byte[] fileContents = null;
     String fileName;
-    Label resultLabel;
+    NativeLabel resultLabel;
     Div areaResult;
 
     /**
@@ -36,7 +41,7 @@ public class UploadMessageFileDialog extends Dialog {
      */
     public UploadMessageFileDialog() {
         var headerContent = new Div();
-        var header = new Label("Upload file to message");
+        var header = new NativeLabel("Upload file to message");
         header.getStyle().set("font-weight", "bold");
         header.getStyle().set("font-style", "italic");
         headerContent.getStyle().set(UiStyle.ALIGNMENT_STYLE, UiStyle.ALIGNMENT_CENTER);
@@ -80,7 +85,7 @@ public class UploadMessageFileDialog extends Dialog {
 
         areaResult = new Div();
 
-        resultLabel = new Label();
+        resultLabel = new NativeLabel();
 
         upload.addSucceededListener(event -> {
             fileContents = ((ByteArrayOutputStream) buffer.getFileData().getOutputBuffer())

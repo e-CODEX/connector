@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.utils.binder;
@@ -9,14 +14,14 @@ import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.Validator;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.internal.BeanUtil;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.MessageInterpolator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.metadata.ConstraintDescriptor;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.MessageInterpolator;
-import javax.validation.ValidatorFactory;
-import javax.validation.metadata.ConstraintDescriptor;
 
 /**
  * The SpringBeanValidator class is an implementation of the Validator interface in the Spring
@@ -24,7 +29,7 @@ import javax.validation.metadata.ConstraintDescriptor;
  * validation framework.
  */
 public class SpringBeanValidator implements Validator<Object> {
-    private final javax.validation.Validator javaxValidator;
+    private final jakarta.validation.Validator javaxValidator;
     private final String propertyName;
     private final Class<?> beanType;
 
@@ -38,7 +43,7 @@ public class SpringBeanValidator implements Validator<Object> {
      *                               false
      */
     public SpringBeanValidator(
-        javax.validation.Validator javaxValidator, Class<?> beanType, String propertyName) {
+        jakarta.validation.Validator javaxValidator, Class<?> beanType, String propertyName) {
         Objects.requireNonNull(beanType, "bean class cannot be null");
         Objects.requireNonNull(propertyName, "property name cannot be null");
 
@@ -47,7 +52,7 @@ public class SpringBeanValidator implements Validator<Object> {
         this.javaxValidator = javaxValidator;
     }
 
-    public javax.validation.Validator getJavaxBeanValidator() {
+    public jakarta.validation.Validator getJavaxBeanValidator() {
         return this.javaxValidator;
     }
 

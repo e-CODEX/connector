@@ -1,13 +1,18 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.view.areas.configuration.link;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.Setter;
@@ -35,7 +40,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
     private final BeanToPropertyMapConverter beanToPropertyMapConverter;
     private final PropertyMapToBeanConverter propertyMapToBeanConverter;
     private final FindFieldService findFieldService;
-    private final javax.validation.Validator jsrValidator;
+    private final jakarta.validation.Validator jsrValidator;
     private final VerticalLayout layout = new VerticalLayout();
     private List<Class<?>> configurationClasses = new ArrayList<>();
     private Binder<Map<String, String>> binder = new Binder<>();
@@ -57,7 +62,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
     public DCConfigurationPropertiesListField(
         BeanToPropertyMapConverter beanToPropertyMapConverter,
         PropertyMapToBeanConverter propertyMapToBeanConverter,
-        javax.validation.Validator jsrValidator,
+        jakarta.validation.Validator jsrValidator,
         FindFieldService findFieldService) {
 
         this.jsrValidator = jsrValidator;
@@ -125,7 +130,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
 
     private <T> void processConfigCls(Class<T> cls) {
         CustomField<T> field = findFieldService.findField(cls);
-        var statusLabel = new Label();
+        var statusLabel = new NativeLabel();
         fields.put(cls, field);
         layout.add(statusLabel);
         layout.add(field);

@@ -17,7 +17,10 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(classes = DCBusinessDocumentValidationConfigurationPropertiesTest.TestContext.class)
 @ActiveProfiles({"test", "seclib-test"})
 class DCBusinessDocumentValidationConfigurationPropertiesTest {
-    @SpringBootApplication(scanBasePackages = "eu.domibus.connector.utils")
+    @SpringBootApplication(
+        scanBasePackages =
+            {"eu.domibus.connector.utils", "eu.domibus.connector.common.configuration"}
+    )
     @EnableConfigurationProperties(ConnectorConfigurationProperties.class)
     public static class TestContext {
     }

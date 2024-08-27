@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.ui.view.areas.monitoring.lnktransport;
@@ -45,7 +50,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.vaadin.klaudeta.PaginatedGrid;
+import org.vaadin.firitin.components.grid.PagingGrid;
 
 /**
  * This class represents the view for monitoring the state of message transport within the
@@ -69,7 +74,7 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
     private final TransportStepPersistenceService transportStepPersistenceService;
     private final DCLinkFacade dcLinkFacade;
     private int pageSize = INITIAL_PAGE_SIZE;
-    private PaginatedGrid<DomibusConnectorTransportStep> paginatedGrid;
+    private PagingGrid<DomibusConnectorTransportStep> paginatedGrid;
     private CallbackDataProvider<DomibusConnectorTransportStep, DomibusConnectorTransportStep>
         callbackDataProvider;
     private Set<TransportState> filterForState = Stream.of(TransportState.values())
@@ -140,7 +145,7 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
 
         this.add(buttonBar);
 
-        paginatedGrid = new PaginatedGrid<>(DomibusConnectorTransportStep.class);
+        paginatedGrid = new PagingGrid<>(DomibusConnectorTransportStep.class);
         paginatedGrid.setDataProvider(callbackDataProvider);
         paginatedGrid.setPageSize(this.pageSize);
 

@@ -2,3 +2,9 @@
 /*.json
 /*.js
 
+# The following files are generated/updated by vaadin-maven-plugin or vaadin-gradle-plugin
+src/main/frontend/generated/
+pnpmfile.js
+.npmrc
+webpack.generated.js
+vite.generated.ts

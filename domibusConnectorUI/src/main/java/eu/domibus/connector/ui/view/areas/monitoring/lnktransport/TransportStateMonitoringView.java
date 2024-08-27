@@ -50,7 +50,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.vaadin.klaudeta.PaginatedGrid;
+import org.vaadin.firitin.components.grid.PagingGrid;
 
 /**
  * This class represents the view for monitoring the state of message transport within the
@@ -74,7 +74,7 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
     private final TransportStepPersistenceService transportStepPersistenceService;
     private final DCLinkFacade dcLinkFacade;
     private int pageSize = INITIAL_PAGE_SIZE;
-    private PaginatedGrid<DomibusConnectorTransportStep> paginatedGrid;
+    private PagingGrid<DomibusConnectorTransportStep> paginatedGrid;
     private CallbackDataProvider<DomibusConnectorTransportStep, DomibusConnectorTransportStep>
         callbackDataProvider;
     private Set<TransportState> filterForState = Stream.of(TransportState.values())
@@ -145,7 +145,7 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
 
         this.add(buttonBar);
 
-        paginatedGrid = new PaginatedGrid<>(DomibusConnectorTransportStep.class);
+        paginatedGrid = new PagingGrid<>(DomibusConnectorTransportStep.class);
         paginatedGrid.setDataProvider(callbackDataProvider);
         paginatedGrid.setPageSize(this.pageSize);
 

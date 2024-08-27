@@ -31,6 +31,8 @@ import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import eu.domibus.connector.persistence.service.exceptions.LargeFileDeletionException;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
 import eu.domibus.connector.persistence.service.impl.helper.StoreType;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -40,8 +42,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -311,7 +311,7 @@ public class MsgContentPersistenceService implements DCMessageContentManager {
     PDomibusConnectorMsgCont storeObjectIntoMsgCont(
         PDomibusConnectorMessage dbMessage,
         @Nonnull StoreType type,
-        @CheckForNull LargeFileReference ref) throws PersistenceException {
+        @Nullable LargeFileReference ref) throws PersistenceException {
         if (dbMessage == null) {
             throw new IllegalArgumentException("message cannot be null!");
         }

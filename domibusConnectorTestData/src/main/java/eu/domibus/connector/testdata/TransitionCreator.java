@@ -25,12 +25,12 @@ import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
 import eu.domibus.connector.domain.transition.DomibusConnectorMessagesType;
 import eu.domibus.connector.domain.transition.DomibusConnectorPartyType;
 import eu.domibus.connector.domain.transition.DomibusConnectorServiceType;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.xml.transform.stream.StreamSource;
 import lombok.experimental.UtilityClass;
 import org.apache.cxf.attachment.ByteDataSource;
@@ -141,8 +141,7 @@ public class TransitionCreator {
 
     /**
      * Creates a new instance of DomibusConnectorMessageConfirmationType with the confirmation set
-     * to "DELIVERY" and the confirmation type set to
-     * DomibusConnectorConfirmationType.DELIVERY.
+     * to "DELIVERY" and the confirmation type set to DomibusConnectorConfirmationType.DELIVERY.
      *
      * @return the created DomibusConnectorMessageConfirmationType object
      */
@@ -302,8 +301,7 @@ public class TransitionCreator {
      * Creates a new instance of {@link DomibusConnectorPartyType} with the following properties.
      *
      * <p>- partyId: "AT"
-     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1"
-     * - role: "GW"
+     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1" - role: "GW"
      *
      * @return the created DomibusConnectorPartyType object
      */
@@ -319,8 +317,7 @@ public class TransitionCreator {
      * Creates a new instance of {@link DomibusConnectorPartyType} with the following properties.
      *
      * <p>- partyId: "DE"
-     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1"
-     * - role: "GW"
+     * - partyIdType: "urn:oasis:names:tc:ebcore:partyid-type:iso3166-1" - role: "GW"
      *
      * @return the created DomibusConnectorPartyType object
      */

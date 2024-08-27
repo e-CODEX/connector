@@ -11,8 +11,8 @@
 package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.domain.model.DomibusConnectorParty.PartyRoleType;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * The PartyRoleTypeJpaConverter class is a JPA converter that converts between PartyRoleType

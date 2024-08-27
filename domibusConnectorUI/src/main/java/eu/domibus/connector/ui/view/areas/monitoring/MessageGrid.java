@@ -16,9 +16,9 @@ import com.vaadin.flow.component.grid.Grid;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.ui.controller.QueueController;
 import eu.domibus.connector.ui.dto.WebQueue;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
 import java.util.List;
-import javax.jms.JMSException;
-import javax.jms.Message;
 
 /**
  * The MessageGrid class is a custom grid component for displaying messages in a tabular format.
@@ -41,7 +41,7 @@ public class MessageGrid extends Grid<Message> {
         this.parentView = parentView;
 
         this.setWidth("90%");
-        this.setHeightByRows(true);
+        this.setAllRowsVisible(true);
 
         addColumn(this::getJMSMessageID).setHeader("Message ID (JMS ID)").setWidth("35%");
         addColumn(this::getConnectorId).setHeader("Connector ID").setWidth("35%");

@@ -12,12 +12,12 @@ package eu.domibus.connector.common.configuration;
 
 import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -53,7 +53,7 @@ public class ConnectorConfigurationProperties {
     /**
      * Should the business domains be loaded from Database.
      *
-     *  <p>{@link eu.domibus.connector.common.service.DCBusinessDomainManager}
+     * <p>{@link eu.domibus.connector.common.service.DCBusinessDomainManager}
      */
     boolean loadBusinessDomainsFromDb = true;
     @NotNull
@@ -66,9 +66,9 @@ public class ConnectorConfigurationProperties {
      * <p>A business domain is a logical grouping of messaging configurations and properties.
      *
      * <p>The BusinessDomainConfig class has the following properties:
-     * - enabled: A flag indicating whether the business domain is enabled or not.
-     * - description: A description of the business domain.
-     * - properties: A map of additional properties for the business domain.
+     * - enabled: A flag indicating whether the business domain is enabled or not. - description: A
+     * description of the business domain. - properties: A map of additional properties for the
+     * business domain.
      */
     @Validated
     @Data

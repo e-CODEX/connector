@@ -14,8 +14,8 @@ import eu.domibus.connector.common.annotations.MapNested;
 import eu.domibus.connector.dss.configuration.validation.ValidEtsiValidationPolicyXml;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationDescription;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Setter;
 
 /**

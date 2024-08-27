@@ -13,7 +13,7 @@ package eu.domibus.connector.ui.view.areas.configuration.link.wsbackendplugin;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
@@ -45,7 +45,7 @@ import org.springframework.context.annotation.Scope;
 public class WsBackendConfigurationField extends CustomField<WsBackendPluginConfigurationProperties>
     implements AfterNavigationObserver {
     private final SpringBeanValidationBinder<WsBackendPluginConfigurationProperties> binder;
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     private final TextField backendPublishAddress = new TextField();
     private final Checkbox cxfLoggingEnabled = new Checkbox();

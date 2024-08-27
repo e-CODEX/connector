@@ -11,8 +11,8 @@
 package eu.domibus.connector.c2ctests.config;
 
 import eu.domibus.connector.domain.configuration.EvidenceActionServiceConfigurationProperties;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

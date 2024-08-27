@@ -12,13 +12,13 @@ package eu.domibus.connector.domain.model;
 
 import eu.domibus.connector.controller.service.TransportStateService;
 import eu.domibus.connector.domain.enums.TransportState;
+import jakarta.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
-import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -158,7 +158,7 @@ public class DomibusConnectorTransportStep {
         if (this.transportedMessage != null
             && this.transportedMessage.getConnectorMessageId() != null
             && !this.transportedMessage.getConnectorMessageId()
-            .equals(transportedMessageConnectorMessageId)) {
+                                       .equals(transportedMessageConnectorMessageId)) {
             throw new IllegalArgumentException("Cannot set a different connector message id here!");
         }
     }
@@ -172,8 +172,9 @@ public class DomibusConnectorTransportStep {
     private static class TransportStepComparator
         implements Comparator<DomibusConnectorTransportStepStatusUpdate> {
         @Override
-        public int compare(DomibusConnectorTransportStepStatusUpdate o1,
-                           DomibusConnectorTransportStepStatusUpdate o2) {
+        public int compare(
+            DomibusConnectorTransportStepStatusUpdate o1,
+            DomibusConnectorTransportStepStatusUpdate o2) {
             LocalDateTime time1 = LocalDateTime.MIN;
             if (o1.getCreated() != null) {
                 time1 = o1.getCreated();

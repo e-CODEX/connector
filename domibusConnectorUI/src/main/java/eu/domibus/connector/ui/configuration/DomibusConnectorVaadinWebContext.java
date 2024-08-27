@@ -11,7 +11,7 @@
 package eu.domibus.connector.ui.configuration;
 
 import com.vaadin.flow.spring.annotation.EnableVaadin;
-import javax.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.MultipartConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

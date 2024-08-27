@@ -12,7 +12,7 @@ package eu.domibus.connector.ui.view.areas.configuration.link;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.Setter;
@@ -40,7 +40,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
     private final BeanToPropertyMapConverter beanToPropertyMapConverter;
     private final PropertyMapToBeanConverter propertyMapToBeanConverter;
     private final FindFieldService findFieldService;
-    private final javax.validation.Validator jsrValidator;
+    private final jakarta.validation.Validator jsrValidator;
     private final VerticalLayout layout = new VerticalLayout();
     private List<Class<?>> configurationClasses = new ArrayList<>();
     private Binder<Map<String, String>> binder = new Binder<>();
@@ -62,7 +62,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
     public DCConfigurationPropertiesListField(
         BeanToPropertyMapConverter beanToPropertyMapConverter,
         PropertyMapToBeanConverter propertyMapToBeanConverter,
-        javax.validation.Validator jsrValidator,
+        jakarta.validation.Validator jsrValidator,
         FindFieldService findFieldService) {
 
         this.jsrValidator = jsrValidator;
@@ -130,7 +130,7 @@ public class DCConfigurationPropertiesListField extends CustomField<Map<String, 
 
     private <T> void processConfigCls(Class<T> cls) {
         CustomField<T> field = findFieldService.findField(cls);
-        var statusLabel = new Label();
+        var statusLabel = new NativeLabel();
         fields.put(cls, field);
         layout.add(statusLabel);
         layout.add(field);

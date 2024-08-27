@@ -35,11 +35,11 @@ import eu.domibus.connector.link.api.PluginFeature;
 import eu.domibus.connector.link.api.exception.LinkPluginException;
 import eu.domibus.connector.link.service.DCLinkFacade;
 import eu.domibus.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
+import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 
 /**
  * The abstract class {@code LinkConfiguration} represents a configuration UI for managing web

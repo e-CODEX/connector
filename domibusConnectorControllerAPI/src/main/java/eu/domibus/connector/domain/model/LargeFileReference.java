@@ -10,14 +10,14 @@
 
 package eu.domibus.connector.domain.model;
 
+import jakarta.activation.DataSource;
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
-import javax.activation.DataSource;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.core.style.ToStringCreator;

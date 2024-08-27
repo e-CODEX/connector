@@ -11,7 +11,12 @@
         This module provides services which can be used for certificate verification and signing.
     </description>
     <dependencies>
-        <!-- domibus modules and libs-->
+        <!-- spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
+        <!-- ecodex modules and libs-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerLIB</artifactId>

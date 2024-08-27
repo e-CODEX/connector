@@ -19,7 +19,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.grid.editor.EditorSaveEvent;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -73,7 +73,7 @@ public class DbTableView extends VerticalLayout implements AfterNavigationObserv
         if (dbTableServiceOptional.isPresent()) {
             initUI();
         } else {
-            add(new Label("Hidden DB table view is not activated!"));
+            add(new NativeLabel("Hidden DB table view is not activated!"));
         }
     }
 

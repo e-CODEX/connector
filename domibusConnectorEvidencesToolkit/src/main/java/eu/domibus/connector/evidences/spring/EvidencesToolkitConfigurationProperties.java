@@ -12,7 +12,7 @@ package eu.domibus.connector.evidences.spring;
 
 import eu.domibus.connector.common.annotations.BusinessDomainScoped;
 import eu.domibus.connector.dss.configuration.SignatureConfigurationProperties;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

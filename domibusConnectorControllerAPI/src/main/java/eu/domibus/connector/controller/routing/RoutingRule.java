@@ -12,10 +12,10 @@ package eu.domibus.connector.controller.routing;
 
 import eu.domibus.connector.common.annotations.MapNested;
 import eu.domibus.connector.domain.enums.ConfigurationSource;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.UUID;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.core.style.ToStringCreator;

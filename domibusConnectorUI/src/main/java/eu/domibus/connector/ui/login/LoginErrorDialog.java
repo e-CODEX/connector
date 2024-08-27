@@ -13,7 +13,7 @@ package eu.domibus.connector.ui.login;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import eu.domibus.connector.ui.utils.UiStyle;
 
 /**
@@ -28,7 +28,7 @@ public class LoginErrorDialog extends Dialog {
      */
     public LoginErrorDialog(String errorMessage) {
         var loginExceptionDiv = new Div();
-        var loginException = new Label(errorMessage);
+        var loginException = new NativeLabel(errorMessage);
         loginException.getStyle().set("font-weight", "bold");
         loginException.getStyle().set("color", "red");
         loginExceptionDiv.add(loginException);

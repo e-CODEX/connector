@@ -31,11 +31,11 @@ import eu.domibus.connector.ws.backend.webservice.EmptyRequestType;
 import eu.domibus.connector.ws.backend.webservice.GetMessageByIdRequest;
 import eu.domibus.connector.ws.backend.webservice.ListPendingMessageIdsResponse;
 import eu.domibus.connectorplugins.link.wsbackendplugin.WsBackendPluginActiveLinkPartner;
+import jakarta.annotation.Resource;
+import jakarta.xml.ws.WebServiceContext;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.annotation.Resource;
-import javax.xml.ws.WebServiceContext;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxws.context.WrappedMessageContext;
 import org.apache.cxf.message.Message;
@@ -257,7 +257,7 @@ public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebS
 
     @Override
     public EmptyRequestType acknowledgeMessage(DomibusConnectorMessageResponseType ack) {
-                var transportState = new TransportStateService.DomibusConnectorTransportState();
+        var transportState = new TransportStateService.DomibusConnectorTransportState();
         if (ack.isResult()) {
             transportState.setStatus(TransportState.ACCEPTED);
         } else {

@@ -139,7 +139,7 @@
         <maven.site-plugin.version>4.0.0-M16</maven.site-plugin.version>
         <maven.surefire-plugin.version>3.4.0</maven.surefire-plugin.version>
         <maven.war-plugin.version>3.4.0</maven.war-plugin.version>
-        <openshift-plugin.version>1.7.0</openshift-plugin.version>
+        <openshift-plugin.version>1.17.0</openshift-plugin.version>
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>

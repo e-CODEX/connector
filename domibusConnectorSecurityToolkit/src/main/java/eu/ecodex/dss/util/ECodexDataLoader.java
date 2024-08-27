@@ -61,7 +61,7 @@ public class ECodexDataLoader extends CommonsDataLoader {
     }
 
     @Override
-    protected byte[] fileGet(String urlString) {
+    public byte[] fileGet(String urlString) {
         try {
             return DSSUtils.toByteArray(new URL(urlString).openStream());
         } catch (IOException e) {

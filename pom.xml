@@ -180,7 +180,7 @@
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
         <jakarta.xml.ws-api.version>4.0.2</jakarta.xml.ws-api.version>
         <!-- database -->
-        <h2database.h2.version>1.4.200</h2database.h2.version>
+        <h2database.h2.version>2.2.220</h2database.h2.version>
         <github.database-rider-spring.version>1.44.0</github.database-rider-spring.version>
         <liquibase-core.version>4.29.1</liquibase-core.version>
         <mariadb-java-client.version>3.4.1</mariadb-java-client.version>

@@ -27,7 +27,6 @@
     <property name="timestamp.type" value="java.sql.types.TIMESTAMP(6)" dbms="mysql,mariadb"/>
     <property name="timestamp.type" value="java.sql.types.TIMESTAMP" dbms="h2,oracle,postgresql"/>
     <property name="connector_message_id.type" value="java.sql.types.VARCHAR(255)"/>
-    <property name="boolean.type" value="java.sql.types.BOOLEAN" dbms="oracle,postgresql,mysql,mariadb"/>
-    <property name="boolean.type" value="TINYINT" dbms="h2"/>
+    <property name="boolean.type" value="java.sql.types.BOOLEAN" dbms="oracle,postgresql,mysql,mariadb,h2"/>
 
 </databaseChangeLog>

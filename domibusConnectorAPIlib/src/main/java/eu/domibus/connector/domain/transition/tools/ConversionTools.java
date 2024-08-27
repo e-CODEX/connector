@@ -10,6 +10,9 @@
 
 package eu.domibus.connector.domain.transition.tools;
 
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.validation.constraints.NotNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,9 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -33,9 +33,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is intended to hold methods to convert all kind of content needed to process messages.
- * Since some of the methods are required for the tools around the domibusConnector
- * as well (domibusConnectorClient, domibus-connector-plugin), this class should help prevent
- * multiple code snippets that are the same.
+ * Since some of the methods are required for the tools around the domibusConnector as well
+ * (domibusConnectorClient, domibus-connector-plugin), this class should help prevent multiple code
+ * snippets that are the same.
  *
  * @author riederb
  */
@@ -45,8 +45,8 @@ public class ConversionTools {
     private static final TransformerFactory transformerFactory = getTransformerFactory();
 
     /**
-     * takes a source element and converts with
-     * Transformer to a byte[] backed by ByteArrayOutputStream.
+     * takes a source element and converts with Transformer to a byte[] backed by
+     * ByteArrayOutputStream.
      *
      * @param xmlInput - the Source
      * @return the byte[]
@@ -75,7 +75,6 @@ public class ConversionTools {
             transformerFactory = TransformerFactory.newInstance();
             transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Error setting TransformerFactory attribute", e);
         }
@@ -113,12 +112,12 @@ public class ConversionTools {
     }
 
     /**
-     * Converts a {@link javax.activation.DataHandler} object to a byte[].
+     * Converts a {@link jakarta.activation.DataHandler} object to a byte[].
      *
      * @param dataHandler The DataHandler object to be converted.
      * @return The byte array representation of the DataHandler.
-     * @throws RuntimeException If an IO Exception occurs while reading the InputStream
-     *                          provided over the network.
+     * @throws RuntimeException If an IO Exception occurs while reading the InputStream provided
+     *                          over the network.
      */
     @NotNull
     public static byte[] convertDataHandlerToByteArray(@NotNull DataHandler dataHandler) {

@@ -12,7 +12,7 @@ package eu.domibus.connector.persistence.service.impl;
 
 import eu.domibus.connector.domain.model.DomibusConnectorService;
 import eu.domibus.connector.persistence.model.PDomibusConnectorService;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import lombok.experimental.UtilityClass;
 
 /**

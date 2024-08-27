@@ -11,8 +11,8 @@
 package eu.domibus.connector.lib.spring.configuration;
 
 import eu.domibus.connector.lib.spring.configuration.validation.CheckKeyIsLoadableFromKeyStore;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

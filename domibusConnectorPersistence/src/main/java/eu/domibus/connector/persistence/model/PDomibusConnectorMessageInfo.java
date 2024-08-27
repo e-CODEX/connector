@@ -10,20 +10,20 @@
 
 package eu.domibus.connector.persistence.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -32,10 +32,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Represents additional information about a message stored in the DOMIBUS_CONNECTOR_MESSAGE_INFO
  * table.
  *
- * <p>The PDomibusConnectorMessageInfo class is used to store additional information about a message
- * in the
- * DOMIBUS_CONNECTOR_MESSAGE_INFO table. It contains properties such as the identifier, message,
- * sender, recipient, original sender, final recipient, service, action, and timestamps.
+ * <p>The PDomibusConnectorMessageInfo class is used to store additional information about a
+ * message
+ * in the DOMIBUS_CONNECTOR_MESSAGE_INFO table. It contains properties such as the identifier,
+ * message, sender, recipient, original sender, final recipient, service, action, and timestamps.
  *
  * <p>The class provides getters and setters for each property, allowing access to and modification
  * of the information.
@@ -84,9 +84,9 @@ public class PDomibusConnectorMessageInfo {
     private Date updated;
 
     /**
-     * Executes before the entity is persisted to the database.
-     * This method sets the 'updated' and 'created' fields to the current date.
-     * If the 'created' field is already set, it will not be updated.
+     * Executes before the entity is persisted to the database. This method sets the 'updated' and
+     * 'created' fields to the current date. If the 'created' field is already set, it will not be
+     * updated.
      *
      * @see PDomibusConnectorMessage
      */
@@ -97,8 +97,8 @@ public class PDomibusConnectorMessageInfo {
     }
 
     /**
-     * Executes before the entity is updated in the database.
-     * This method sets the 'updated' field to the current date.
+     * Executes before the entity is updated in the database. This method sets the 'updated' field
+     * to the current date.
      *
      * @see PDomibusConnectorMessage
      */

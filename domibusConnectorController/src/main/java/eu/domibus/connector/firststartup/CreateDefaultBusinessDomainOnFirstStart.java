@@ -14,9 +14,9 @@ import eu.domibus.connector.common.persistence.dao.DomibusConnectorBusinessDomai
 import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
 import eu.domibus.connector.persistence.model.PDomibusConnectorMessageLane;
 import eu.domibus.connector.tools.logging.LoggingMarker;
+import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
@@ -37,10 +37,9 @@ public class CreateDefaultBusinessDomainOnFirstStart {
     }
 
     /**
-     * Creates the default business domain if it doesn't already exist.
-     * If the default business domain does not exist in the database,
-     * a new instance of `PDomibusConnectorMessageLane` is created and
-     * saved to the database.
+     * Creates the default business domain if it doesn't already exist. If the default business
+     * domain does not exist in the database, a new instance of `PDomibusConnectorMessageLane` is
+     * created and saved to the database.
      *
      * <p>This method is executed after the bean initialization is complete
      * and within a transaction.

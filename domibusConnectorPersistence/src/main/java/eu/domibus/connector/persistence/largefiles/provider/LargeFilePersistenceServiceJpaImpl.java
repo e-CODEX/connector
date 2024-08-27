@@ -15,6 +15,8 @@ import eu.domibus.connector.domain.model.LargeFileReference;
 import eu.domibus.connector.persistence.dao.DomibusConnectorBigDataDao;
 import eu.domibus.connector.persistence.model.PDomibusConnectorBigData;
 import eu.domibus.connector.persistence.spring.DomibusConnectorPersistenceProperties;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,8 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,8 +104,9 @@ public class LargeFilePersistenceServiceJpaImpl implements LargeFilePersistenceP
                 jpaBasedDomibusConnectorBigDataReference.setInputStream(byteArrayInputStream);
             } else {
                 String error =
-                    String.format("Blob Content of bigDataStorage with reference [%d] is null!",
-                                  storageRef
+                    String.format(
+                        "Blob Content of bigDataStorage with reference [%d] is null!",
+                        storageRef
                     );
                 throw new IllegalStateException(error);
             }
@@ -257,7 +258,6 @@ public class LargeFilePersistenceServiceJpaImpl implements LargeFilePersistenceP
             if (!map.containsKey(connectorMessageId)) {
                 map.put(connectorMessageId, new ArrayList<>());
             }
-
 
             var reference = new JpaBasedLargeFileReference(this);
             reference.setStorageProviderName(this.getProviderName());

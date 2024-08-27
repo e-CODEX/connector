@@ -26,9 +26,9 @@ import eu.domibus.connector.ui.enums.UserRole;
 import eu.domibus.connector.ui.service.WebUserService;
 import eu.domibus.connector.ui.utils.UiStyle;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.PostConstruct;
 import java.util.EnumSet;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 

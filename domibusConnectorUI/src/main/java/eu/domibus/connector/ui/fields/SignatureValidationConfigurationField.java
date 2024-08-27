@@ -13,7 +13,7 @@ package eu.domibus.connector.ui.fields;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
@@ -77,7 +77,7 @@ public class SignatureValidationConfigurationField
     }
 
     private void initUI() {
-        var statusLabel = new Label();
+        var statusLabel = new NativeLabel();
         statusLabel.getStyle().set(UiStyle.TAG_COLOR, UiStyle.COLOR_RED);
 
         formLayout.setResponsiveSteps(

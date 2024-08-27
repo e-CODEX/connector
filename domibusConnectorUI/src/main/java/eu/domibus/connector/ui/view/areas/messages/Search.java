@@ -24,8 +24,8 @@ import eu.domibus.connector.ui.persistence.service.DomibusConnectorWebMessagePer
 import eu.domibus.connector.ui.service.WebMessageService;
 import eu.domibus.connector.ui.utils.UiStyle;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.PostConstruct;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 

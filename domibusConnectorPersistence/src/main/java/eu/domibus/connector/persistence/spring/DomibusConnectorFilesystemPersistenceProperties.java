@@ -11,9 +11,9 @@
 package eu.domibus.connector.persistence.spring;
 
 import eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceServiceFilesystemImpl;
+import jakarta.validation.constraints.NotNull;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -15,11 +15,11 @@ import eu.domibus.connector.controller.service.SubmitToLinkService;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.domain.testutil.DomainEntityCreator;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.Queue;
 import java.util.List;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
 import org.apache.activemq.artemis.jms.client.ActiveMQQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -119,17 +119,18 @@ class ListMessagesInQueueTest {
 
     /**
      * The MyTestContext class is responsible for defining the configuration for the test context.
-     * It is annotated with @SpringBootApplication to indicate that it is a Spring Boot application.
+     * It is annotated with @SpringBootApplication to indicate that it is a Spring Boot
+     * application.
      *
      * <p>The class provides two methods that define beans:
      *
      * <p>1. createTestQueue1():
-     * - Returns a Queue bean named "TestQueue1".
-     * - The implementation creates a new instance of ActiveMQQueue with the name "q1".
+     * - Returns a Queue bean named "TestQueue1". - The implementation creates a new instance of
+     * ActiveMQQueue with the name "q1".
      *
      * <p>2. createTestDlq1():
-     * - Returns a Queue bean named "TestDlq1".
-     * - The implementation creates a new instance of ActiveMQQueue with the name "dlq1".
+     * - Returns a Queue bean named "TestDlq1". - The implementation creates a new instance of
+     * ActiveMQQueue with the name "dlq1".
      */
     @SpringBootApplication
     public static class MyTestContext {

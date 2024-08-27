@@ -12,8 +12,8 @@ package eu.domibus.connector.link.api;
 
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
 import eu.domibus.connector.link.service.SubmitToLinkPartner;
+import jakarta.annotation.Nullable;
 import java.util.Optional;
-import javax.annotation.CheckForNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -28,9 +28,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class ActiveLinkPartner {
     private DomibusConnectorLinkPartner linkPartner;
     private ActiveLink parentLink;
-    @CheckForNull
+    @Nullable
     private ConfigurableApplicationContext childContext;
-    @CheckForNull
+    @Nullable
     private SubmitToLinkPartner submitToLink;
 
     public Optional<ConfigurableApplicationContext> getChildContext() {

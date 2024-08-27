@@ -11,8 +11,8 @@
 package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.domain.model.DomibusConnectorLinkPartner;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * The LinkPartnerNameConverter class is a JPA attribute converter that converts between the

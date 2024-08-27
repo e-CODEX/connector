@@ -19,6 +19,7 @@ import eu.domibus.connector.persistence.dao.DomibusConnectorLinkConfigurationDao
 import eu.domibus.connector.persistence.dao.DomibusConnectorLinkPartnerDao;
 import eu.domibus.connector.persistence.model.PDomibusConnectorLinkConfiguration;
 import eu.domibus.connector.persistence.model.PDomibusConnectorLinkPartner;
+import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
@@ -277,10 +277,8 @@ public class DCLinkPersistenceService {
 
     /**
      * Deletes the given link partner from the Domibus Connector. This method performs the following
-     * steps:
-     * 1. Retrieves the link partner with the given link name using the findOneByLinkName()
-     * method of linkPartnerDao.
-     * 2. If the link partner is found, it is deleted using the delete()
+     * steps: 1. Retrieves the link partner with the given link name using the findOneByLinkName()
+     * method of linkPartnerDao. 2. If the link partner is found, it is deleted using the delete()
      * method of linkPartnerDao.
      *
      * @param linkPartner The link partner to be deleted.
@@ -328,13 +326,11 @@ public class DCLinkPersistenceService {
 
     /**
      * Deletes the given link configuration from the Domibus Connector. This method performs the
-     * following steps:
-     * 1. Find all link partners that have the same link configuration as the given link
-     * configuration.
-     * 2. For each link partner found, delete it using the deleteLinkPartner method.
-     * 3. Map the given link configuration to a database link configuration using the
-     * mapToDbLinkConfiguration method.
-     * 4. Delete the database link configuration using the linkConfigurationDao's delete method.
+     * following steps: 1. Find all link partners that have the same link configuration as the given
+     * link configuration. 2. For each link partner found, delete it using the deleteLinkPartner
+     * method. 3. Map the given link configuration to a database link configuration using the
+     * mapToDbLinkConfiguration method. 4. Delete the database link configuration using the
+     * linkConfigurationDao's delete method.
      *
      * @param linkConfiguration The link configuration to be deleted.
      */

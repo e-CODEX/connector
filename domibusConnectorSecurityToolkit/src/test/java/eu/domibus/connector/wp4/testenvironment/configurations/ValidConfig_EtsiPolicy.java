@@ -7,8 +7,8 @@ package eu.domibus.connector.wp4.testenvironment.configurations;
 
 import eu.europa.esig.dss.policy.EtsiValidationPolicy;
 import eu.europa.esig.dss.policy.ValidationPolicyFacade;
+import jakarta.xml.bind.JAXBException;
 import java.io.IOException;
-import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import org.springframework.core.io.ClassPathResource;
 import org.xml.sax.SAXException;

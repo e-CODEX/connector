@@ -11,7 +11,7 @@
 package eu.domibus.connector.controller.spring;
 
 import eu.domibus.connector.lib.spring.DomibusConnectorDuration;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

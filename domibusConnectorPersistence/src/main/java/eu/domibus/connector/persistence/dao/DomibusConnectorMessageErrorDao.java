@@ -26,5 +26,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DomibusConnectorMessageErrorDao
     extends CrudRepository<PDomibusConnectorMessageError, Long> {
-    List<PDomibusConnectorMessageError> findByMessage(Long messageId);
+    List<PDomibusConnectorMessageError> findByMessageId(Long messageId);
 }

@@ -36,8 +36,8 @@ package eu.spocseu.edeliverygw.evidences;
 
 import eu.spocseu.edeliverygw.JaxbContextHolder;
 import eu.spocseu.edeliverygw.configuration.EDeliveryDetails;
+import jakarta.xml.bind.JAXBException;
 import java.io.OutputStream;
-import javax.xml.bind.JAXBException;
 import org.etsi.uri._02640.v2.ObjectFactory;
 import org.etsi.uri._02640.v2.REMEvidenceType;
 

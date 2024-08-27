@@ -13,10 +13,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+        <!-- spring dependencies -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
         </dependency>
+        <!--jakarta-->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.jws</groupId>
+            <artifactId>jakarta.jws-api</artifactId>
+        </dependency>
+        <!--xml bind-->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
@@ -25,14 +40,7 @@
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.xml.ws</groupId>
-            <artifactId>jaxws-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.jws</groupId>
-            <artifactId>jakarta.jws-api</artifactId>
-        </dependency>
+        <!--apache cxf-->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-core</artifactId>
@@ -57,13 +65,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.sf.saxon</groupId>
-                        <artifactId>saxon</artifactId>
-                        <version>8.7</version>
-                    </dependency>
-                </dependencies>
                 <configuration>
                     <transformationSets>
                         <transformationSet>

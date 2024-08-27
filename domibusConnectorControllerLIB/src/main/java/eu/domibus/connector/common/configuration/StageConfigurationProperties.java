@@ -10,7 +10,7 @@
 
 package eu.domibus.connector.common.configuration;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**

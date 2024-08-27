@@ -21,12 +21,12 @@
 package eu.ecodex.dss.model.token;
 
 import eu.europa.esig.xmldsig.jaxb.DigestMethodType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
@@ -154,8 +154,7 @@ public class Token implements Serializable {
     /**
      * Get the value of the token document digest value.
      *
-     * @return The digest value of the document as a byte array,
-     *         or null if the document is null.
+     * @return The digest value of the document as a byte array, or null if the document is null.
      */
     public byte[] getDocumentDigestValue() {
         return (document == null) ? null : document.getDigestValue();
@@ -303,8 +302,8 @@ public class Token implements Serializable {
      *
      * @return possible object is {@link String} or null.
      * @deprecated This method is deprecated and will be removed in a future release. Use
-     *      {@link #getValidationVerificationSignatureCertificateInformation()} and access the
-     *      issuer field directly instead.
+     *      {@link #getValidationVerificationSignatureCertificateInformation()} and access
+     *      the issuer field directly instead.
      */
     @Deprecated
     public String getValidationVerificationSignatureCertificateIssuer() {
@@ -427,8 +426,8 @@ public class Token implements Serializable {
      * @return possible object is {@link javax.xml.datatype.XMLGregorianCalendar}
      * @see XMLGregorianCalendar
      * @deprecated This method has been deprecated and may be removed in a future version. Use the
-     *      {@link #getValidationVerificationSignatureData()} method instead to obtain the signature
-     *      data and get the signing time from there.
+     *      {@link #getValidationVerificationSignatureData()} method instead to obtain the
+     *      signature data and get the signing time from there.
      */
     @Deprecated
     public XMLGregorianCalendar getValidationVerificationSignatureSigningTime() {

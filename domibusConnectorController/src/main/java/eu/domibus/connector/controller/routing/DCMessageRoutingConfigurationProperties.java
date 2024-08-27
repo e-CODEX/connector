@@ -12,16 +12,16 @@ package eu.domibus.connector.controller.routing;
 
 import eu.domibus.connector.common.DomibusConnectorDefaults;
 import eu.domibus.connector.common.annotations.BusinessDomainScoped;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * This class represents the configuration properties for DCMessageRouting.
- * It contains properties related to message routing configuration.
+ * This class represents the configuration properties for DCMessageRouting. It contains properties
+ * related to message routing configuration.
  */
 @Data
 @BusinessDomainScoped
@@ -36,23 +36,22 @@ public class DCMessageRoutingConfigurationProperties {
     @NotBlank
     private String defaultGatewayName = DomibusConnectorDefaults.DEFAULT_GATEWAY_NAME;
     /**
-     * Backend name of the connector itself is used for connector2connector tests,
-     * when the connector itself acts as a backend.
+     * Backend name of the connector itself is used for connector2connector tests, when the
+     * connector itself acts as a backend.
      */
     @NotBlank
     private String connectorBackendName = "connectorBackend";
     /**
-     * Gateway name of the connector itself, is used for backend2backend tests,
-     * when the connector itself acts as a gateway.
-     * NOT IMPLEMENTED YET!
+     * Gateway name of the connector itself, is used for backend2backend tests, when the connector
+     * itself acts as a gateway. NOT IMPLEMENTED YET!
      */
     @NotBlank
     private String connectorGatewayName = "connectorGateway";
 
     /**
-     * This method is called after all the bean properties have been set by Spring.
-     * It aligns the routing rule id to the key for both backendRules and gatewayRules.
-     * The routing rule id is set to the key value.
+     * This method is called after all the bean properties have been set by Spring. It aligns the
+     * routing rule id to the key for both backendRules and gatewayRules. The routing rule id is set
+     * to the key value.
      */
     @PostConstruct
     public void afterPropertiesSet() {

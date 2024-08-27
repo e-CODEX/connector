@@ -16,6 +16,7 @@ import eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistence
 import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
 import eu.domibus.connector.persistence.service.exceptions.LargeFileDeletionException;
 import eu.domibus.connector.persistence.spring.DomibusConnectorPersistenceProperties;
+import jakarta.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +45,8 @@ public class LargeFilePersistenceServiceImpl implements LargeFilePersistenceServ
     List<LargeFilePersistenceProvider> availableLargeFilePersistenceProvider = new ArrayList<>();
 
     /**
-     * Initializes the LargeFilePersistenceService by setting the default large file provider.
-     * If no provider is found matching the default provider class or name, an exception is thrown.
+     * Initializes the LargeFilePersistenceService by setting the default large file provider. If no
+     * provider is found matching the default provider class or name, an exception is thrown.
      */
     @PostConstruct
     public void init() {

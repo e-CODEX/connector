@@ -11,8 +11,8 @@
 package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.domain.model.DomibusConnectorKeystore.KeystoreType;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * Converts the KeystoreType enum to a database column and vice versa.

@@ -11,13 +11,13 @@
 package eu.domibus.connector.controller.queues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.Session;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageType;
@@ -25,8 +25,8 @@ import org.springframework.jms.support.converter.SmartMessageConverter;
 import org.springframework.lang.Nullable;
 
 /**
- * This class is a MessageConverter implementation that performs bean validation
- * before serializing or deserializing the object using Jackson.
+ * This class is a MessageConverter implementation that performs bean validation before serializing
+ * or deserializing the object using Jackson.
  */
 public class ValidationMappingJackson2MessageConverter implements SmartMessageConverter {
     private final ObjectMapper objectMapper;
@@ -37,10 +37,11 @@ public class ValidationMappingJackson2MessageConverter implements SmartMessageCo
      * Creates a ValidationMappingJackson2MessageConverter object.
      *
      * @param objectMapper The ObjectMapper used for serialization and deserialization.
-     * @param validator The Validator used for bean validation.
+     * @param validator    The Validator used for bean validation.
      */
-    public ValidationMappingJackson2MessageConverter(ObjectMapper objectMapper,
-                                                     Validator validator) {
+    public ValidationMappingJackson2MessageConverter(
+        ObjectMapper objectMapper,
+        Validator validator) {
 
         this.validator = validator;
         this.objectMapper = objectMapper;
@@ -55,10 +56,12 @@ public class ValidationMappingJackson2MessageConverter implements SmartMessageCo
         Set<ConstraintViolation<Object>> result = validator.validate(object);
         if (!result.isEmpty()) {
             String errorText = result.stream()
-                .map(v -> "property with path " + v.getPropertyPath().toString() + ": "
-                    + v.getMessage()
-                )
-                .collect(Collectors.joining("\n\t"));
+                                     .map(
+                                         v -> "property with path " + v.getPropertyPath().toString()
+                                             + ": "
+                                             + v.getMessage()
+                                     )
+                                     .collect(Collectors.joining("\n\t"));
             throw new IllegalArgumentException("The provided object is not Valid!\n" + errorText);
         }
     }

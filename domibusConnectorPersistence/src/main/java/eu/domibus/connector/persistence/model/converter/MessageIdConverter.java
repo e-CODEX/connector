@@ -11,8 +11,8 @@
 package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * The MessageIdConverter class is an implementation of the AttributeConverter interface, providing

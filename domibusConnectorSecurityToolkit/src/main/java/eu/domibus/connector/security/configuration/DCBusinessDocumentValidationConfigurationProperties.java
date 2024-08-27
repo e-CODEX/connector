@@ -18,13 +18,13 @@ import eu.domibus.connector.dss.configuration.SignatureValidationConfigurationPr
 import eu.domibus.connector.security.aes.DCAuthenticationBasedTechnicalValidationServiceFactory;
 import eu.domibus.connector.security.aes.OriginalSenderBasedAESAuthenticationServiceFactory;
 import eu.domibus.connector.security.configuration.validation.CheckAllowedAdvancedElectronicSystemType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.collections4.set.ListOrderedSet;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

@@ -15,7 +15,7 @@
         <pmode.xsd.resources.path>src/main/resources/pmode/domibus_3_2_4</pmode.xsd.resources.path>
     </properties>
     <dependencies>
-        <!-- domibus modules and libs-->
+        <!-- ecodex modules and libs-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
@@ -30,6 +30,10 @@
         </dependency>
         <!-- spring dependencies -->
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
@@ -37,23 +41,24 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- other dependencies -->
+        <!-- jakarta dependencies -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
+            <groupId>jakarta.jms</groupId>
+            <artifactId>jakarta.jms-api</artifactId>
         </dependency>
+        <!-- other dependencies -->
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -63,8 +68,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
+                <groupId>org.jvnet.jaxb</groupId>
+                <artifactId>jaxb-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>PModes</id>

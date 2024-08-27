@@ -10,10 +10,10 @@
 
 package eu.domibus.connector.lib.spring.configuration.validation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.io.IOException;
 import java.net.URL;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 

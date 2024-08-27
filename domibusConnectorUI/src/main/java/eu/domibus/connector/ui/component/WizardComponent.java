@@ -15,7 +15,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
@@ -42,7 +42,7 @@ public class WizardComponent extends VerticalLayout {
     private final Button backButton = new Button("Back");
     private final Button cancelButton = new Button("Cancel");
     private final Button finishButton = new Button("Finish");
-    private final Label stepTitle = new Label("");
+    private final NativeLabel stepTitle = new NativeLabel("");
     private final Text header = new Text("Create Link");
     private final Div content = new Div();
     private final ExecutorService executorService = Executors.newCachedThreadPool();

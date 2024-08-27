@@ -12,7 +12,7 @@ package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import eu.domibus.connector.lib.spring.configuration.KeyConfigurationProperties;
@@ -38,7 +38,7 @@ public class KeyConfigurationField extends CustomField<KeyConfigurationPropertie
     private final SpringBeanValidationBinderFactory validationBinderFactory;
     private final TextField alias = new TextField();
     private final PasswordField password = new PasswordField();
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     private final SpringBeanValidationBinder<KeyConfigurationProperties> binder;
     KeyConfigurationProperties value;

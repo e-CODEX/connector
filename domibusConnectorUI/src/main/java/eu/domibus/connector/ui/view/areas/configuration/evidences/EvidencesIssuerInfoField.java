@@ -14,7 +14,7 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import eu.domibus.connector.evidences.spring.EvidencesIssuerInfo;
 import eu.domibus.connector.ui.fields.HomePartyConfigurationPropertiesField;
@@ -39,7 +39,7 @@ public class EvidencesIssuerInfoField extends CustomField<EvidencesIssuerInfo> {
     private final SpringBeanValidationBinderFactory validationBinderFactory;
     private final PostalAdressConfigurationPropertiesField postalAddress;
     private final HomePartyConfigurationPropertiesField as4party;
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     private final SpringBeanValidationBinder<EvidencesIssuerInfo> binder;
     EvidencesIssuerInfo value;

@@ -11,8 +11,8 @@
 package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.controller.service.TransportStateService.TransportId;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * The TransportStepIdJpaConverter class is a JPA converter used to convert TransportId objects to

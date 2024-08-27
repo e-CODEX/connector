@@ -45,7 +45,7 @@ rem -D"spring.config.location=%CONFIG_FOLDER%" -D"spring.config.name=connector" 
 
 
 @echo on
-"%JAVA_HOME%\bin\java" -D"loader.path=./lib" -Dspring.config.name=connector -cp "%CLASSPATH%" "org.springframework.boot.loader.PropertiesLauncher"
+"%JAVA_HOME%\bin\java" -D"loader.path=./lib" -Dspring.config.name=connector -cp "%CLASSPATH%" "org.springframework.boot.loader.launch.PropertiesLauncher"
 
 :end
 

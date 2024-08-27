@@ -14,7 +14,7 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import eu.domibus.connector.domain.enums.LinkType;
@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 public class RoutingRuleForm extends FormLayout {
     private final DCLinkFacade dcLinkFacade;
     private final WebPModeService webPModeService;
-    private Label configurationSource;
+    private NativeLabel configurationSource;
     private ComboBox<String> linkName;
     private TextField description;
     private RoutingExpressionField matchClause;
@@ -59,7 +59,7 @@ public class RoutingRuleForm extends FormLayout {
     private void initUi() {
         this.setResponsiveSteps(new ResponsiveStep("100%", 1));
 
-        configurationSource = new Label("Configuration Source");
+        configurationSource = new NativeLabel("Configuration Source");
         this.add(configurationSource);
 
         linkName = getBackendNameEditorComponent();

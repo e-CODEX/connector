@@ -11,10 +11,10 @@
 package eu.domibus.connector.domain.transformer.util;
 
 import eu.domibus.connector.domain.model.LargeFileReference;
+import jakarta.activation.DataHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.activation.DataHandler;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

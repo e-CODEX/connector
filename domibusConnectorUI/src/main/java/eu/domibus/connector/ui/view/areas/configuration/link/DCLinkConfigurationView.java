@@ -12,7 +12,7 @@ package eu.domibus.connector.ui.view.areas.configuration.link;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
@@ -47,7 +47,7 @@ public class DCLinkConfigurationView extends VerticalLayout implements HasUrlPar
     public static final String TITLE_LABEL_TEXT = "Edit LinkConfiguration";
     private final DCLinkFacade dcLinkFacade;
     private final DCLinkConfigurationField linkConfigurationField;
-    private final Label titleLabel = new Label();
+    private final NativeLabel titleLabel = new NativeLabel();
     private final Button discardButton = new Button("Back");
     private final Button saveButton = new Button("Save");
     private LinkType linkType;

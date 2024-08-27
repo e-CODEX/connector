@@ -13,7 +13,7 @@
         the securityLib
     </description>
     <dependencies>
-        <!-- domibus modules and libs-->
+        <!-- ecodex modules and libs-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerLIB</artifactId>
@@ -30,6 +30,10 @@
             <version>${project.version}</version>
         </dependency>
         <!-- spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -110,12 +114,8 @@
             <artifactId>openpdf</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <!-- tests dependencies -->
         <dependency>
@@ -142,6 +142,12 @@
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -247,7 +253,7 @@
                                     <groupId>eu.ecodex.utils</groupId>
                                     <artifactId>logging-tester</artifactId>
                                     <classifier>log4j2-test</classifier>
-                                    <version>${eu.ecodex.utils.version}</version>
+                                    <version>${ecodex.utils.version}</version>
                                     <type>xml</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${project.build.directory}/test-classes</outputDirectory>

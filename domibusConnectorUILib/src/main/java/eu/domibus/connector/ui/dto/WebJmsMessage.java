@@ -10,7 +10,7 @@
 
 package eu.domibus.connector.ui.dto;
 
-import javax.jms.Message;
+import jakarta.jms.Message;
 import lombok.Getter;
 
 /**

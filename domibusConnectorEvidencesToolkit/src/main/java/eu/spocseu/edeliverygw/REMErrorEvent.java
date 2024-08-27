@@ -11,8 +11,8 @@
 package eu.spocseu.edeliverygw;
 
 import eu.spocseu.common.SpocsConstants.Evidences;
+import jakarta.xml.soap.SOAPConstants;
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPConstants;
 import lombok.Getter;
 import org.etsi.uri._02640.v2.EventReasonsType;
 

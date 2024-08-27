@@ -16,7 +16,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLayout;
 import eu.domibus.connector.ui.utils.DCTabHandler;
 import eu.domibus.connector.ui.view.areas.pmodes.PmodeLayout;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

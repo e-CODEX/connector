@@ -10,7 +10,7 @@
     <name>${project.artifactId}</name>
     <description>Does the business work with the messages: Generates the evidences, resolves and verifies the ASIC-S container, creates the TRUST-Tokens. It hands over the messages to the GWLink module for GW-Communication and to the BackendLinkModule for communication with the connectorClients. For this purpose it uses other modules like persistence, evidenceToolkit, securityToolkit,...</description>
     <dependencies>
-        <!-- domibus modules and libs-->
+        <!-- ecodex modules and libs-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
@@ -34,9 +34,13 @@
         <dependency>
             <groupId>eu.ecodex.utils</groupId>
             <artifactId>spring-quartz-scheduled</artifactId>
-            <version>${eu.ecodex.utils.version}</version>
+            <version>${ecodex.utils.version}</version>
         </dependency>
         <!-- spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jta-atomikos</artifactId>
@@ -54,7 +58,7 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <!-- db dependencies -->
+        <!-- database dependencies -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
@@ -78,28 +82,9 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
-            <version>1.15.2</version>
             <scope>compile</scope>
         </dependency>
-        <!-- other dependencies -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>artemis-jms-server</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jboss-logmanager</artifactId>
-                    <groupId>org.jboss.logmanager</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-        </dependency>
+        <!--log dependencies-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -123,6 +108,21 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+        <!-- other dependencies -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-server</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jboss-logmanager</artifactId>
+                    <groupId>org.jboss.logmanager</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- test dependencies -->
         <dependency>

@@ -21,7 +21,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
-import org.springframework.util.SocketUtils;
+import org.springframework.test.util.TestSocketUtils;
 import test.eu.domibus.connector.link.util.GetServerAddress;
 
 /**
@@ -41,18 +41,26 @@ public class ConnectorClientTestBackend {
     public static final String TEST_BACKEND_PROFILE_NAME = "wsbackendprofile";
     public static final String PUSH_BACKEND_PROFILE_NAME = "ws-backendclient-server";
 
+    /**
+     * This method is the entry point of the ConnectorClientTestBackend application. It starts the
+     * context for the backend client and initializes the necessary properties.
+     *
+     * @param args the command line arguments
+     */
     // client alice...
     public static void main(String[] args) {
         startContext(
-            "alice", "http://localhost:8021/services/backend", SocketUtils.findAvailableTcpPort());
+            "alice", "http://localhost:8021/services/backend",
+            TestSocketUtils.findAvailableTcpPort()
+        );
     }
 
     /**
      * Starts the context for the ConnectorClientTestBackend.
      *
-     * @param clientName        the name of the client
-     * @param connectorAddress  the address of the connector
-     * @param serverPort        the port of the server
+     * @param clientName       the name of the client
+     * @param connectorAddress the address of the connector
+     * @param serverPort       the port of the server
      * @return the started ConnectorClientTestBackend
      */
     public static ConnectorClientTestBackend startContext(

@@ -19,7 +19,7 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.grid.GridSortOrderBuilder;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -117,7 +117,7 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
     }
 
     private void initUI() {
-        var backendRoutingLabel = new Label(
+        var backendRoutingLabel = new NativeLabel(
             "Here is the configuration where routing rules are configured that define how "
                 + "messages are routed to backend(s)."
         );
@@ -203,7 +203,7 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         cancel.addClickListener(event -> dialog.close());
         buttonBar.add(ok, cancel);
 
-        var messageLabel = new Label("The following rules will be imported");
+        var messageLabel = new NativeLabel("The following rules will be imported");
         layout.add(buttonBar, messageLabel, importedRulesGrid);
 
         dialog.open();
@@ -271,14 +271,14 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 
-        var title = new Label("Add new Routing Rule");
+        var title = new NativeLabel("Add new Routing Rule");
 
         var saveCancelButton = new HorizontalLayout();
         saveCancelButton.add(title);
 
         dialog.add(saveCancelButton);
 
-        var statusLabel = new Label();
+        var statusLabel = new NativeLabel();
 
         var rrf = this.routingRuleFormObjectFactory.getObject();
         dialog.add(rrf);
@@ -322,14 +322,14 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         dialog.setCloseOnOutsideClick(false);
         dialog.setCloseOnEsc(false);
 
-        var title = new Label("Edit Routing Rule");
+        var title = new NativeLabel("Edit Routing Rule");
 
         var saveCancelButton = new HorizontalLayout();
         saveCancelButton.add(title);
 
         dialog.add(saveCancelButton);
 
-        var statusLabel = new Label();
+        var statusLabel = new NativeLabel();
 
         var routingRuleForm = this.routingRuleFormObjectFactory.getObject();
         dialog.add(routingRuleForm);
@@ -379,7 +379,7 @@ public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpB
         dialog.setWidth("80%");
         dialog.setOpened(true);
 
-        var deletionLabel = new Label("Delete Routing Rule?");
+        var deletionLabel = new NativeLabel("Delete Routing Rule?");
         dialog.add(deletionLabel);
 
         var horizontalLayout = new HorizontalLayout();

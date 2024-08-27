@@ -11,7 +11,7 @@
 package eu.domibus.connector.persistence.model.converter;
 
 import eu.domibus.connector.domain.enums.TransportState;
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 
 /**
  * The TransportStateJpaConverter class is responsible for converting the TransportState enum to a

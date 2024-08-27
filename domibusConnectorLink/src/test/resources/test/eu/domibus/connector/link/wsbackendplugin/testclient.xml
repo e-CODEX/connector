@@ -22,6 +22,9 @@
             <!--<cxf:logging/>-->
         </cxf:features>
     </cxf:bus>
+    <bean id="workaround" class="test.eu.domibus.connector.link.wsbackendplugin.CXFJaxWsClientWorkaround">
+        <property name="address" value="${ws.backendclient.connector-address}"/>
+    </bean>
     <bean id="encryptProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
             <props>
@@ -39,7 +42,7 @@
     <jaxws:client xmlns:s="http://connector.domibus.eu/ws/backend/webservice"
             id="backendClient"
             serviceClass="eu.domibus.connector.ws.backend.webservice.DomibusConnectorBackendWebService"
-            address="${ws.backendclient.connector-address}"
+            address="#{workaround.address}"
             serviceName="s:DomibusConnectorBackendWSService"
             endpointName="s:DomibusConnectorBackendWebService"
             wsdlLocation="/wsdl/DomibusConnectorBackendWebService.wsdl">

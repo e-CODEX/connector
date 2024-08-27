@@ -180,7 +180,7 @@ public class Reports extends VerticalLayout {
                 this.getUI()
                     .get()
                     .getPage()
-                    .executeJavaScript("window.open('" + link.getHref() + "');");
+                    .open(link.getHref());
             });
 
             downloadExcel.add(download);

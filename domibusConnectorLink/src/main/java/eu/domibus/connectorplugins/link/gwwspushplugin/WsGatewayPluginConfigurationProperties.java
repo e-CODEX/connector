@@ -14,9 +14,9 @@ import eu.domibus.connector.lib.spring.configuration.CxfTrustKeyStoreConfigurati
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreAndTrustStoreConfigurationProperties;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationDescription;
 import eu.ecodex.utils.configuration.api.annotation.ConfigurationLabel;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

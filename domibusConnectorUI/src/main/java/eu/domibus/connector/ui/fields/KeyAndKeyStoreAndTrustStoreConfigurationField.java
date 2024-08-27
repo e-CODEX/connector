@@ -12,7 +12,7 @@ package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import eu.domibus.connector.lib.spring.configuration.KeyAndKeyStoreAndTrustStoreConfigurationProperties;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinder;
 import eu.domibus.connector.ui.utils.binder.SpringBeanValidationBinderFactory;
@@ -34,7 +34,7 @@ public class KeyAndKeyStoreAndTrustStoreConfigurationField
     private final StoreConfigurationField trustStore;
     private final StoreConfigurationField keyStore;
     private final KeyConfigurationField privateKey;
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     private final SpringBeanValidationBinder<KeyAndKeyStoreAndTrustStoreConfigurationProperties>
         binder;

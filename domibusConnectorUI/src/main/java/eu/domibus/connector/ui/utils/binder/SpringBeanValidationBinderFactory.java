@@ -12,10 +12,10 @@ package eu.domibus.connector.ui.utils.binder;
 
 import com.vaadin.flow.data.binder.ErrorLevel;
 import com.vaadin.flow.data.binder.ValidationResult;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import org.springframework.stereotype.Component;
 
 /**

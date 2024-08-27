@@ -22,10 +22,12 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Configures Spring Security.
@@ -54,70 +56,62 @@ public class SecurityConfig {
      */
     @Configuration
     @Order(1)
-    public static class ActuatorWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    public static class ActuatorWebSecurityConfiguration {
         private final String actuatorBasePath = "actuator";
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        @Bean
+        protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             if (StringUtils.isNotEmpty(actuatorBasePath)) {
                 http
-                    .antMatcher("/" + actuatorBasePath + "/**")
-                    .httpBasic()
-                    .and()
-                    .authorizeRequests()
-                    .anyRequest()
-                    .hasAnyRole("ACTUATOR", "ADMIN");
+                    .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/" + actuatorBasePath + "/**")
+                    ).httpBasic(Customizer.withDefaults())
+                    .authorizeHttpRequests(auth -> auth
+                        .anyRequest()
+                        .hasAnyRole("ACTUATOR", "ADMIN")
+                    );
             }
+            return http.build();
         }
     }
 
     /**
-     * Configuration class for Vaadin web security. Extends {@link WebSecurityConfigurerAdapter}.
-     * This class is responsible for configuring security settings for the Vaadin application. Sets
-     * up login and logout URLs, request authorization, and ignoring certain static resources. An
-     * instance of this class should be annotated with {@link Configuration}. The class should also
-     * be assigned an order using the {@link Order} annotation to specify the priority.
+     * Configuration class for Vaadin web security.
+     *
+     * <p>This class provides configuration for securing Vaadin web applications using Spring
+     * Security. It configures the security filter chain and allows access to static resources.
      */
     @Configuration
     @Order(500)
-    public static class VaadinWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    public static class VaadinWebSecurityConfiguration {
         private static final String LOGIN_PROCESSING_URL = "/" + LoginView.ROUTE;
         private static final String LOGIN_FAILURE_URL = "/login?error";
         private static final String LOGIN_URL = "/" + LoginView.ROUTE;
         private static final String LOGOUT_SUCCESS_URL = "/" + LoginView.ROUTE;
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            // disable csrf so vaadin works!
-            http.csrf().disable()
-                // Register our CustomRequestCache, that saves unauthorized access attempts, so
-                // the user is redirected after login.
-                .requestCache().requestCache(new CustomRequestCache())
-
-                // Restrict access to our application.
-                .and().authorizeRequests()
-
-                // Allow all flow internal requests.
-                .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
-
-                // Allow all requests by logged in users.
-                .anyRequest().authenticated()
-
-                //             Configure the login page.
-                .and().formLogin().loginPage(LOGIN_URL).permitAll()
-                .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                .failureUrl(LOGIN_FAILURE_URL)
-
-                //             Configure logout
-                .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
+        @Bean
+        protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http
+                .csrf(AbstractHttpConfigurer::disable)
+                .requestCache(requestCache -> requestCache.requestCache(new CustomRequestCache()))
+                .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
+                    .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
+                    .loginPage(LOGIN_URL).permitAll().loginProcessingUrl(LOGIN_PROCESSING_URL)
+                    .failureUrl(LOGIN_FAILURE_URL)
+                )
+                .logout(logout -> logout.logoutSuccessUrl(LOGOUT_SUCCESS_URL));
+            return http.build();
         }
 
         /**
          * Allows access to static resources, bypassing Spring security.
          */
-        @Override
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers(
+        @Bean
+        public WebSecurityCustomizer webSecurityCustomizer() {
+            return web -> web.ignoring().requestMatchers(
                 // Vaadin Flow static resources
                 "/VAADIN/**",
 
@@ -151,7 +145,6 @@ public class SecurityConfig {
                 "/static/**", // allow access to static content
 
                 "/documentation/**" // allow access to documentation
-
             );
         }
     }
@@ -161,14 +154,16 @@ public class SecurityConfig {
      * It extends the WebSecurityConfigurerAdapter class to customize the security configuration.
      * The class is annotated with @Configuration, @Order(499), and @Profile("dev").
      */
-    // @Configuration
+    @Configuration
     // @Order(499)
     // @Profile("dev")
-    public static class VaadinDevelopmentWebSecurityConfiguration
-        extends WebSecurityConfigurerAdapter {
-        @Override
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers();
+    public static class VaadinDevelopmentWebSecurityConfiguration {
+        @Autowired
+        ConnectorUiConfigurationProperties connectorUiConfigurationProperties;
+
+        @Bean
+        public WebSecurityCustomizer webSecurityCustomizer() {
+            return web -> web.ignoring().requestMatchers("");
         }
     }
 }

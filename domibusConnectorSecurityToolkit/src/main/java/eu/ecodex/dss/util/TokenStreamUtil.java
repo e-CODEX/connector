@@ -22,14 +22,14 @@ package eu.ecodex.dss.util;
 
 import eu.ecodex.dss.model.token.OriginalValidationReportContainer;
 import eu.ecodex.dss.model.token.Token;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 /**
  * Utility class to decode/encode a {@link Token} It uses a static JAXBContext as this is

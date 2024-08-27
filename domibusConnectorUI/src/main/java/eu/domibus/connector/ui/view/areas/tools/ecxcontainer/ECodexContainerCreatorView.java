@@ -11,7 +11,7 @@
 package eu.domibus.connector.ui.view.areas.tools.ecxcontainer;
 
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.upload.Upload;
@@ -79,7 +79,7 @@ public class ECodexContainerCreatorView extends VerticalLayout {
     }
 
     private void initUI() {
-        var documentValidationLabel = new Label(
+        var documentValidationLabel = new NativeLabel(
             "Upload any signed document and see the certificate validation result"
         );
         this.add(documentValidationLabel);
@@ -89,7 +89,7 @@ public class ECodexContainerCreatorView extends VerticalLayout {
         upload.setMaxFiles(1);
         upload.setId("uploadBusinessDocTest");
 
-        var uploadResultLabel = new Label("");
+        var uploadResultLabel = new NativeLabel("");
 
         upload.addStartedListener(event -> resultArea.removeAll());
         upload.addSucceededListener(event -> processUploadedFile(buffer, uploadResultLabel));
@@ -103,7 +103,7 @@ public class ECodexContainerCreatorView extends VerticalLayout {
         this.add(resultArea);
     }
 
-    private void processUploadedFile(MemoryBuffer buffer, Label uploadResultLabel) {
+    private void processUploadedFile(MemoryBuffer buffer, NativeLabel uploadResultLabel) {
         try {
             CurrentBusinessDomain.setCurrentBusinessDomain(
                 DomibusConnectorBusinessDomain.getDefaultMessageLaneId());

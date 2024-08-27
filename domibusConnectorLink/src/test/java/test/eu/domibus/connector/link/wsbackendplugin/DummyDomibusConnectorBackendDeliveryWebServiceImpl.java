@@ -5,10 +5,10 @@ import static test.eu.domibus.connector.link.wsbackendplugin.BackendClientPushWe
 import eu.domibus.connector.domain.transition.DomibsConnectorAcknowledgementType;
 import eu.domibus.connector.domain.transition.DomibusConnectorMessageType;
 import eu.domibus.connector.ws.backend.delivery.webservice.DomibusConnectorBackendDeliveryWebService;
+import jakarta.annotation.Resource;
+import jakarta.xml.ws.WebServiceContext;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
-import javax.annotation.Resource;
-import javax.xml.ws.WebServiceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

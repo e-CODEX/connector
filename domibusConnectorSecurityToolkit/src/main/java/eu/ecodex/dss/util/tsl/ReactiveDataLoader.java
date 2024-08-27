@@ -39,7 +39,7 @@ import org.w3c.dom.Document;
  * @deprecated This class is deprecated and should be replaced with native DSS classes.
  */
 @SuppressWarnings("squid:S1135")
-@Deprecated // replace with native DSS classes
+@Deprecated // TODO replace with native DSS classes
 public class ReactiveDataLoader implements DataLoader {
     private static final LogDelegate LOG = new LogDelegate(ReactiveDataLoader.class);
     private final Document inMemoryTSL;
@@ -112,11 +112,6 @@ public class ReactiveDataLoader implements DataLoader {
     public DataAndUrl get(List<String> urlStrings) {
         // Not needed till now
         return null;
-    }
-
-    @Override
-    public byte[] get(String url, boolean refresh) {
-        return this.get(url);
     }
 
     @Override

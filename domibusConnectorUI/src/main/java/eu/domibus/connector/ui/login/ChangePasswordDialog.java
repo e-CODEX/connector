@@ -15,7 +15,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.textfield.PasswordField;
 import eu.domibus.connector.ui.exception.UserLoginException;
 import eu.domibus.connector.ui.service.WebUserService;
@@ -46,7 +46,7 @@ public class ChangePasswordDialog extends Dialog {
         this.username = username;
 
         var changePasswordDiv = new Div();
-        var changePassword = new Label("Change Password for User " + username);
+        var changePassword = new NativeLabel("Change Password for User " + username);
         changePassword.getStyle().set("font-weight", "bold");
         changePasswordDiv.add(changePassword);
         changePasswordDiv.getStyle().set(UiStyle.ALIGNMENT_STYLE, UiStyle.ALIGNMENT_CENTER);
@@ -54,7 +54,7 @@ public class ChangePasswordDialog extends Dialog {
         add(changePasswordDiv);
 
         var changePassword2Div = new Div();
-        var changePassword2 = new Label("Your password must be changed.");
+        var changePassword2 = new NativeLabel("Your password must be changed.");
         changePassword2Div.add(changePassword2);
         changePassword2Div.getStyle().set(UiStyle.ALIGNMENT_STYLE, UiStyle.ALIGNMENT_CENTER);
         changePassword2Div.setVisible(true);

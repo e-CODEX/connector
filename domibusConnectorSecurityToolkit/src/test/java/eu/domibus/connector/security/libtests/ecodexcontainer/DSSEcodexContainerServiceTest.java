@@ -42,9 +42,8 @@ class DSSEcodexContainerServiceTest {
 
     private DSSECodexContainerService initContainerService() throws Exception {
         DSSECodexContainerService containerService = null;
-        
 
-        CertificateStoreInfo certStore = new CertificateStoreInfo();
+        var certStore = new CertificateStoreInfo();
         certStore.setLocation(new ClassPathResource("/keys/connector-keystore.jks"));
         certStore.setPassword("connector");
         var keyAlias = "domibusConnector";
@@ -72,7 +71,9 @@ class DSSEcodexContainerServiceTest {
         var httpsProxyProperties = new ProxyProperties();
         httpsProxyProperties.setHost(properties.getProperty("https.proxy.host"));
         httpsProxyProperties.setPort(Integer.parseInt(properties.getProperty("https.proxy.port")));
-        httpsProxyProperties.setPassword(properties.getProperty("https.proxy.password"));
+        httpsProxyProperties.setPassword(
+            properties.getProperty("https.proxy.password").toCharArray()
+        );
         httpsProxyProperties.setUser(properties.getProperty("https.proxy.user"));
 
         var proxyConfig = new ProxyConfig();
@@ -81,7 +82,9 @@ class DSSEcodexContainerServiceTest {
         var httpProxyProperties = new ProxyProperties();
         httpProxyProperties.setHost(properties.getProperty("http.proxy.host"));
         httpProxyProperties.setPort(Integer.parseInt(properties.getProperty("http.proxy.port")));
-        httpProxyProperties.setPassword(properties.getProperty("http.proxy.password"));
+        httpProxyProperties.setPassword(
+            properties.getProperty("http.proxy.password").toCharArray()
+        );
         httpProxyProperties.setUser(properties.getProperty("http.proxy.user"));
         proxyConfig.setHttpProperties(httpProxyProperties);
 

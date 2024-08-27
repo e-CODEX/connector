@@ -330,7 +330,7 @@ class DSSTokenValidationCreator {
 
     private void removeSignaturesFromSimpleReport(
         final SimpleReport simpleReport, final List<String> idsToRemove) {
-        var signatures = simpleReport.getJaxbModel().getSignatureOrTimestamp();
+        var signatures = simpleReport.getJaxbModel().getSignatureOrTimestampOrEvidenceRecord();
         var toRemove = new ArrayList<XmlToken>();
 
         for (XmlToken curSig : signatures) {

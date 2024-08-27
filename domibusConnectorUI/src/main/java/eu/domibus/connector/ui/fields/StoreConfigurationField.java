@@ -12,7 +12,7 @@ package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Component
 public class StoreConfigurationField extends CustomField<StoreConfigurationProperties> {
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     private final TextField path = new TextField();
     private final PasswordField password = new PasswordField();

@@ -10,7 +10,7 @@
 
 package eu.domibus.connector.ui.view;
 
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -21,7 +21,7 @@ import eu.domibus.connector.ui.layout.DCMainLayout;
  * The DashboardView class represents the main view of the Domibus Connector Administration UI.
  *
  * @see VerticalLayout
- * @see Label
+ * @see NativeLabel
  * @see UIScope
  * @see Route
  * @see PageTitle
@@ -31,7 +31,7 @@ import eu.domibus.connector.ui.layout.DCMainLayout;
 @PageTitle("domibusConnector - Administrator")
 public class DashboardView extends VerticalLayout {
     public static final String ROUTE = "";
-    Label welcomeLabel  = new Label();
+    NativeLabel welcomeLabel = new NativeLabel();
 
     public DashboardView() {
         welcomeLabel.setText("Welcome to Domibus Connector Administration UI");

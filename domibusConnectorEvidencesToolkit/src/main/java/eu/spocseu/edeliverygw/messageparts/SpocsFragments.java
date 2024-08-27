@@ -35,13 +35,13 @@ See SPOCS_WP3_LICENSE_URL for license information
 package eu.spocseu.edeliverygw.messageparts;
 
 import eu.spocseu.common.SpocsConstants.COUNTRY_CODES;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;

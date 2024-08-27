@@ -11,16 +11,16 @@
 package eu.domibus.connector.persistence.model;
 
 import eu.domibus.connector.domain.model.DomibusConnectorKeystore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -66,7 +66,8 @@ public class PDomibusConnectorKeystore {
      * It is executed before a new instance of PDomibusConnectorKeystore is persisted to the
      * database.
      *
-     * <p>The purpose of this method is to set the "uploaded" field if it is null. If the "uploaded"
+     * <p>The purpose of this method is to set the "uploaded" field if it is null. If the
+     * "uploaded"
      * field is null, a new Date object will be created and assigned to the field.
      */
     @PrePersist

@@ -10,12 +10,12 @@
 
 package eu.domibus.connector.ui.configuration;
 
-import com.vaadin.flow.server.ServletHelper.RequestType;
+import com.vaadin.flow.server.HandlerHelper;
 import com.vaadin.flow.shared.ApplicationConstants;
 import eu.domibus.connector.ui.dto.WebUser;
 import eu.domibus.connector.ui.utils.RoleRequired;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.stream.Stream;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -46,7 +46,7 @@ public final class SecurityUtils {
         final String parameterValue =
             request.getParameter(ApplicationConstants.REQUEST_TYPE_PARAMETER);
         return parameterValue != null
-            && Stream.of(RequestType.values())
+            && Stream.of(HandlerHelper.RequestType.values())
                      .anyMatch(r -> r.getIdentifier().equals(parameterValue));
     }
 

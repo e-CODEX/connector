@@ -14,8 +14,8 @@ import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageError;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.persistence.service.exceptions.PersistenceException;
+import jakarta.annotation.Nonnull;
 import java.util.List;
-import javax.annotation.Nonnull;
 
 /**
  * The DomibusConnectorMessageErrorPersistenceService interface provides methods to interact with
@@ -43,8 +43,9 @@ public interface DomibusConnectorMessageErrorPersistenceService {
      */
     void persistMessageError(String connectorMessageId, DomibusConnectorMessageError messageError);
 
-    default void persistMessageError(DomibusConnectorMessageId id,
-                                     DomibusConnectorMessageError messageError) {
+    default void persistMessageError(
+        DomibusConnectorMessageId id,
+        DomibusConnectorMessageError messageError) {
         this.persistMessageError(id.getConnectorMessageId(), messageError);
     }
 }

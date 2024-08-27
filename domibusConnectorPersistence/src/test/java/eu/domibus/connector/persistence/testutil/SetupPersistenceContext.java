@@ -32,8 +32,7 @@ import org.springframework.context.annotation.Import;
  * properties and profiles.
  */
 @SpringBootApplication(
-    scanBasePackages = {"eu.domibus.connector.utils", "eu.domibus.connector.persistence",
-        "eu.domibus.connector.common.persistence"}
+    scanBasePackages = {"eu.domibus.connector"}
 )
 @EnableConfigurationProperties(ConnectorConfigurationProperties.class)
 @Import(

@@ -12,7 +12,7 @@ package eu.domibus.connector.ui.fields;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.textfield.TextField;
 import eu.domibus.connector.common.annotations.ConnectorConversationService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -31,7 +31,7 @@ public class SpringResourceField extends CustomField<Resource> {
     private final ApplicationContext applicationContext;
     private final ConversionService conversionService;
     private final TextField textField = new TextField("");
-    private final Label statusLabel = new Label();
+    private final NativeLabel statusLabel = new NativeLabel();
     private final FormLayout formLayout = new FormLayout();
     Resource value;
 

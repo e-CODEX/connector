@@ -159,7 +159,7 @@ public class ConnectorTestMessageForm extends FormLayout {
                            p.getPartyId(),
                            p.getPartyIdType(),
                            p.getRole()
-                       ))
+                       )).toList()
         );
         fromParty.setItems(parties.stream()
                                   .filter(p -> p.getRoleType().equals(PartyRoleType.INITIATOR))
@@ -167,7 +167,8 @@ public class ConnectorTestMessageForm extends FormLayout {
                                       p.getPartyId(),
                                       p.getPartyIdType(),
                                       p.getRole()
-                                  )));
+                                  )).toList()
+        );
     }
 
     /**

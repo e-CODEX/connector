@@ -32,9 +32,9 @@ import eu.ecodex.dss.model.token.TokenDocument;
 import eu.ecodex.dss.model.token.TokenIssuer;
 import eu.ecodex.dss.model.token.TokenValidation;
 import eu.ecodex.dss.model.token.ValidationVerification;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.annotation.XmlElementDecl;
-import javax.xml.bind.annotation.XmlRegistry;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.annotation.XmlElementDecl;
+import jakarta.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 import lombok.NoArgsConstructor;
 
@@ -168,8 +168,8 @@ public class TokenJAXBObjectFactory {
 
     /**
      * Create an instance of
-     * {@link javax.xml.bind.JAXBElement }{@code &lt;}{@link eu.ecodex.dss.model.token.Token}{@code
-     * &gt;}.
+     * {@link jakarta.xml.bind.JAXBElement }{@code &lt;}{@link
+     * eu.ecodex.dss.model.token.Token}{@code &gt;}.
      *
      * @param value the token
      * @return the new instance representing the marshalled object

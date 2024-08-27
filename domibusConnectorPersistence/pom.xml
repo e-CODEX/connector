@@ -11,7 +11,7 @@
     <name>${project.artifactId}</name>
     <description>This module is responsibly for persisting the messages and message contents into a persistent storage (Database).</description>
     <dependencies>
-        <!-- domibus modules and libs-->
+        <!-- ecodex modules and libs-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorControllerLIB</artifactId>
@@ -26,7 +26,11 @@
             <groupId>eu.ecodex.utils</groupId>
             <artifactId>spring-boot-property-converter</artifactId>
         </dependency>
-        <!-- spring framework -->
+        <!-- spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -56,8 +60,8 @@
         </dependency>
         <!-- other dependencies -->
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

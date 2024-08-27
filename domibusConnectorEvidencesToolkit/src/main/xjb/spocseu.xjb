@@ -1,4 +1,4 @@
-<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" version="2.1">
+<jaxb:bindings xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" version="3.0">
 
     <!--    <jaxb:bindings node="//xsd:schema[@targetNamespace='http://uri.eu-spocs.eu/configuration/eDelivery']">-->
     <jaxb:bindings schemaLocation="../xsd/eDeliveryDetails.xsd">

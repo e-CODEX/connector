@@ -13,7 +13,7 @@ package eu.domibus.connector.ui.view.areas.testing;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import eu.domibus.connector.ui.dto.WebMessageFileType;
@@ -33,7 +33,7 @@ public class UploadMessageFileDialog extends Dialog {
     ComboBox<WebMessageFileType> fileType;
     byte[] fileContents = null;
     String fileName;
-    Label resultLabel;
+    NativeLabel resultLabel;
     Div areaResult;
 
     /**
@@ -41,7 +41,7 @@ public class UploadMessageFileDialog extends Dialog {
      */
     public UploadMessageFileDialog() {
         var headerContent = new Div();
-        var header = new Label("Upload file to message");
+        var header = new NativeLabel("Upload file to message");
         header.getStyle().set("font-weight", "bold");
         header.getStyle().set("font-style", "italic");
         headerContent.getStyle().set(UiStyle.ALIGNMENT_STYLE, UiStyle.ALIGNMENT_CENTER);
@@ -85,7 +85,7 @@ public class UploadMessageFileDialog extends Dialog {
 
         areaResult = new Div();
 
-        resultLabel = new Label();
+        resultLabel = new NativeLabel();
 
         upload.addSucceededListener(event -> {
             fileContents = ((ByteArrayOutputStream) buffer.getFileData().getOutputBuffer())

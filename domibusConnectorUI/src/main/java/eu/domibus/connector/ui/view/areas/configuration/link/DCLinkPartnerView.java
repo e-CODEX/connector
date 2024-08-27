@@ -17,7 +17,7 @@ import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
@@ -53,7 +53,7 @@ public class DCLinkPartnerView extends VerticalLayout implements HasUrlParameter
     public static final String LINK_CONFIGURATION_NAME = "ConfigName";
     private final DCLinkFacade dcLinkFacade;
     private final DCLinkPartnerField dcLinkPartnerField;
-    private final Label titleLabel = new Label(EDIT_TITLE_LABEL_TEXT);
+    private final NativeLabel titleLabel = new NativeLabel(EDIT_TITLE_LABEL_TEXT);
     private Button discardButton;
     private Button saveButton;
     private LinkType linkType;

@@ -29,7 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.SocketUtils;
+import org.springframework.test.util.TestSocketUtils;
 import test.eu.domibus.connector.link.LinkTestContext;
 import test.eu.domibus.connector.link.impl.gwwspullplugin.TestGwWebService;
 
@@ -51,7 +51,7 @@ class DCGatewayPullPluginTest {
      */
     public static int GET_PORT() {
         if (PORT == null) {
-            PORT = SocketUtils.findAvailableTcpPort();
+            PORT = TestSocketUtils.findAvailableTcpPort();
         }
         return PORT;
     }

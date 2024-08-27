@@ -10,12 +10,11 @@
 
 package eu.domibus.connector.dss.configuration.validation;
 
-import eu.europa.esig.dss.policy.ValidationPolicy;
 import eu.europa.esig.dss.policy.ValidationPolicyFacade;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.xml.bind.JAXBException;
 import java.io.IOException;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +24,7 @@ import org.xml.sax.SAXException;
 /**
  * Validates whether a given string represents a valid EtsiValidationPolicy XML.
  */
+@SuppressWarnings("squid:S1135")
 public class ValidEtisValidationPolicyXmlValidator
     implements ConstraintValidator<ValidEtsiValidationPolicyXml, String> {
     private static final Logger LOGGER =
@@ -37,6 +37,7 @@ public class ValidEtisValidationPolicyXmlValidator
 
     @Override
     public void initialize(ValidEtsiValidationPolicyXml constraintAnnotation) {
+        // TODO see why this method body is empty
         // ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
@@ -48,9 +49,7 @@ public class ValidEtisValidationPolicyXmlValidator
         try {
             var resource = applicationContext.getResource(value);
             var policyDataStream = resource.getInputStream();
-            ValidationPolicy validationPolicy =
-                ValidationPolicyFacade.newFacade()
-                .getValidationPolicy(policyDataStream);
+            ValidationPolicyFacade.newFacade().getValidationPolicy(policyDataStream);
             return true;
         } catch (IOException ioe) {
             LOGGER.warn("Error while loading resource", ioe);

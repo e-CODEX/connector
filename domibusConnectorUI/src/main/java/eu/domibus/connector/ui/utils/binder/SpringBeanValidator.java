@@ -14,14 +14,14 @@ import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.Validator;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.internal.BeanUtil;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.MessageInterpolator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.metadata.ConstraintDescriptor;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.MessageInterpolator;
-import javax.validation.ValidatorFactory;
-import javax.validation.metadata.ConstraintDescriptor;
 
 /**
  * The SpringBeanValidator class is an implementation of the Validator interface in the Spring
@@ -29,7 +29,7 @@ import javax.validation.metadata.ConstraintDescriptor;
  * validation framework.
  */
 public class SpringBeanValidator implements Validator<Object> {
-    private final javax.validation.Validator javaxValidator;
+    private final jakarta.validation.Validator javaxValidator;
     private final String propertyName;
     private final Class<?> beanType;
 
@@ -43,7 +43,7 @@ public class SpringBeanValidator implements Validator<Object> {
      *                               false
      */
     public SpringBeanValidator(
-        javax.validation.Validator javaxValidator, Class<?> beanType, String propertyName) {
+        jakarta.validation.Validator javaxValidator, Class<?> beanType, String propertyName) {
         Objects.requireNonNull(beanType, "bean class cannot be null");
         Objects.requireNonNull(propertyName, "property name cannot be null");
 
@@ -52,7 +52,7 @@ public class SpringBeanValidator implements Validator<Object> {
         this.javaxValidator = javaxValidator;
     }
 
-    public javax.validation.Validator getJavaxBeanValidator() {
+    public jakarta.validation.Validator getJavaxBeanValidator() {
         return this.javaxValidator;
     }
 

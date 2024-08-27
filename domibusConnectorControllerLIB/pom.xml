@@ -31,6 +31,10 @@
         <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
         </dependency>
         <dependency>
@@ -60,18 +64,8 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

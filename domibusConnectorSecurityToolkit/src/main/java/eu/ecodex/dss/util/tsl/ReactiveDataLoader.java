@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.ecodex.dss.util.tsl;
@@ -34,7 +39,7 @@ import org.w3c.dom.Document;
  * @deprecated This class is deprecated and should be replaced with native DSS classes.
  */
 @SuppressWarnings("squid:S1135")
-@Deprecated // replace with native DSS classes
+@Deprecated // TODO replace with native DSS classes
 public class ReactiveDataLoader implements DataLoader {
     private static final LogDelegate LOG = new LogDelegate(ReactiveDataLoader.class);
     private final Document inMemoryTSL;
@@ -107,11 +112,6 @@ public class ReactiveDataLoader implements DataLoader {
     public DataAndUrl get(List<String> urlStrings) {
         // Not needed till now
         return null;
-    }
-
-    @Override
-    public byte[] get(String url, boolean refresh) {
-        return this.get(url);
     }
 
     @Override

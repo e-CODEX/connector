@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.persistence.service.impl;
@@ -9,9 +14,9 @@ import eu.domibus.connector.domain.model.DomibusConnectorKeystore;
 import eu.domibus.connector.persistence.dao.DomibusConnectorKeystoreDao;
 import eu.domibus.connector.persistence.model.PDomibusConnectorKeystore;
 import eu.domibus.connector.persistence.service.DomibusConnectorKeystorePersistenceService;
+import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
-import javax.persistence.NoResultException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

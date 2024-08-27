@@ -1,3 +1,13 @@
+/*
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
+ */
+
 package eu.domibus.connector.ui.view.areas.messages;
 
 import com.vaadin.flow.component.UI;
@@ -15,175 +25,199 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
-
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.ui.component.LumoLabel;
 import eu.domibus.connector.ui.dto.WebMessage;
 import eu.domibus.connector.ui.dto.WebMessageEvidence;
 import eu.domibus.connector.ui.forms.ConnectorMessageForm;
 import eu.domibus.connector.ui.service.WebMessageService;
+import eu.domibus.connector.ui.utils.UiStyle;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import io.micrometer.core.instrument.util.StringUtils;
+import jakarta.annotation.PostConstruct;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.Optional;
-
-//@HtmlImport("styles/shared-styles.html")
-//@StyleSheet("styles/grid.css")
+/**
+ * The MessageDetails class is responsible for displaying the details of a message in the UI.
+ */
 @Component
 @Route(value = MessageDetails.ROUTE, layout = MessageLayout.class)
 @UIScope
 @Order(3)
 @TabMetadata(title = "Message Details", tabGroup = MessageLayout.TAB_GROUP_NAME)
 public class MessageDetails extends VerticalLayout implements HasUrlParameter<String> {
+    public static final String ROUTE = "messageDetails";
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = LogManager.getLogger(MessageDetails.class);
+    private final WebMessageService messageService;
+    private final ConnectorMessageForm messageForm;
+    private final VerticalLayout messageEvidencesArea;
 
-	public static final String ROUTE = "messageDetails";
+    /**
+     * Constructor.
+     *
+     * @param messageService The WebMessageService object used for retrieving and manipulating web
+     *                       messages.
+     * @see WebMessageService
+     */
+    public MessageDetails(@Autowired WebMessageService messageService) {
+        this.messageService = messageService;
+        this.messageForm = new ConnectorMessageForm();
+        this.messageEvidencesArea = new VerticalLayout();
+    }
 
-	private static final long serialVersionUID = 1L;
+    @PostConstruct
+    void init() {
+        var refreshButton = new Button(new Icon(VaadinIcon.REFRESH));
+        refreshButton.setText("Refresh");
+        refreshButton.addClickListener(e -> {
+            if (messageForm.getBinder() != null) {
+                loadMessageDetails(messageForm.getBinder().getBean());
+            }
+        });
 
-	private final static Logger LOGGER = LogManager.getLogger(MessageDetails.class);
+        var buttons = new HorizontalLayout(
+            refreshButton
+        );
+        buttons.setWidth(UiStyle.WIDTH_100_VW);
+        add(buttons);
 
-	private WebMessageService messageService;
-	private ConnectorMessageForm messageForm;
-	private VerticalLayout messageEvidencesArea;
+        var messageDetailsArea = new VerticalLayout();
+        messageForm.getStyle().set("margin-top", "25px");
 
-	public MessageDetails(@Autowired WebMessageService messageService) {
-		this.messageService = messageService;
-		this.messageForm = new ConnectorMessageForm();
-		this.messageEvidencesArea = new VerticalLayout();
-	}
+        messageDetailsArea.add(messageForm);
+        messageForm.setEnabled(true);
+        messageDetailsArea.setWidth(UiStyle.WIDTH_500_PX);
+        add(messageDetailsArea);
 
-	@PostConstruct
-	void init() {
-		Button refreshButton = new Button(new Icon(VaadinIcon.REFRESH));
-		refreshButton.setText("Refresh");
-		refreshButton.addClickListener(e -> {
-			if(messageForm.getBinder()!=null)loadMessageDetails(messageForm.getBinder().getBean());
-		});
+        add(messageEvidencesArea);
 
-		HorizontalLayout buttons = new HorizontalLayout(
-				refreshButton
-		);
-		buttons.setWidth("100vw");
-		add(buttons);
+        setSizeFull();
+    }
 
-		VerticalLayout messageDetailsArea = new VerticalLayout();
-		messageForm.getStyle().set("margin-top","25px");
+    /**
+     * Loads the details of a web message.
+     *
+     * @param connectorMessage the WebMessage object containing the connector message details
+     */
+    public void loadMessageDetails(WebMessage connectorMessage) {
+        Optional<WebMessage> optionalMessage = Optional.empty();
 
-		messageDetailsArea.add(messageForm);
-		//setAlignItems(Alignment.START);
-		messageForm.setEnabled(true);
-//		messageDetailsArea.setHeight("100vh");
-		messageDetailsArea.setWidth("500px");
-		add(messageDetailsArea);
+        if (!StringUtils.isEmpty(connectorMessage.getConnectorMessageId())) {
+            LOGGER.debug(
+                "MessageDetails loaded with connectorMessageId [{}]",
+                connectorMessage.getConnectorMessageId()
+            );
+            optionalMessage =
+                messageService.getMessageByConnectorId(connectorMessage.getConnectorMessageId());
+        }
 
-		add(messageEvidencesArea);
+        if ((optionalMessage.isEmpty()) && !StringUtils.isEmpty(
+            connectorMessage.getBackendMessageId())) {
+            LOGGER.debug(
+                "MessageDetails loaded with backendMessageId [{}]",
+                connectorMessage.getBackendMessageId()
+            );
+            optionalMessage =
+                messageService.getMessageByBackendMessageId(connectorMessage.getBackendMessageId());
+        }
 
-		setSizeFull();
-//		setHeight("100vh");
-	}
+        if ((optionalMessage.isEmpty()) && !StringUtils.isEmpty(
+            connectorMessage.getEbmsMessageId())) {
+            LOGGER.debug(
+                "MessageDetails loaded with ebmsMessageId [{}]",
+                connectorMessage.getEbmsMessageId()
+            );
+            optionalMessage =
+                messageService.getMessageByEbmsId(connectorMessage.getEbmsMessageId());
+        }
 
+        if (optionalMessage.isEmpty()) {
+            var errorMessage = String.format(
+                "No message found within database with connectorMessageId [%s], ebmsMessageId [%s] "
+                    + "or backendMessageId [%s] !",
+                connectorMessage.getConnectorMessageId(), connectorMessage.getEbmsMessageId(),
+                connectorMessage.getBackendMessageId()
+            );
+            LOGGER.warn(errorMessage);
+            Notification.show(errorMessage);
+        }
 
-	public void loadMessageDetails(WebMessage connectorMessage) {
+        var webMessageDetail = optionalMessage.get();
+        messageForm.setConnectorMessage(webMessageDetail);
 
-		Optional<WebMessage> optionalMessage = Optional.empty();
+        if (!webMessageDetail.getEvidences().isEmpty()) {
+            messageEvidencesArea.removeAll();
 
-		if(!StringUtils.isEmpty(connectorMessage.getConnectorMessageId())) {
-			LOGGER.debug("MessageDetails loaded with connectorMessageId [{}]", connectorMessage.getConnectorMessageId());
-			optionalMessage = messageService.getMessageByConnectorId(connectorMessage.getConnectorMessageId());
-		}
+            var evidences = new Div();
+            evidences.setWidth(UiStyle.WIDTH_100_VW);
+            var evidencesLabel = new LumoLabel();
+            evidencesLabel.setText("Evidences:");
+            evidencesLabel.getStyle().set("font-size", "20px");
+            evidences.add(evidencesLabel);
 
-		if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getBackendMessageId())) {
-			LOGGER.debug("MessageDetails loaded with backendMessageId [{}]", connectorMessage.getBackendMessageId());
-			optionalMessage = messageService.getMessageByBackendMessageId(connectorMessage.getBackendMessageId());
-		}
+            messageEvidencesArea.add(evidences);
 
-		if ((!optionalMessage.isPresent()) && !StringUtils.isEmpty(connectorMessage.getEbmsMessageId())) {
-			LOGGER.debug("MessageDetails loaded with ebmsMessageId [{}]", connectorMessage.getEbmsMessageId());
-			optionalMessage = messageService.getMessageByEbmsId(connectorMessage.getEbmsMessageId());
-		}
+            var details = new Div();
+            details.setWidth(UiStyle.WIDTH_100_VW);
 
-		if (!optionalMessage.isPresent()) {
-			String errorMessage = String.format("No message found within database with connectorMessageId [%s], ebmsMessageId [%s] or backendMessageId [%s] !", connectorMessage.getConnectorMessageId(), connectorMessage.getEbmsMessageId(), connectorMessage.getBackendMessageId());
-			LOGGER.warn(errorMessage);
-			Notification.show(errorMessage);
-		}
+            Grid<WebMessageEvidence> grid = new Grid<>();
 
-			WebMessage webMessageDetail = optionalMessage.get();
-			messageForm.setConnectorMessage(webMessageDetail);
+            grid.setItems(webMessageDetail.getEvidences());
 
-			if (!webMessageDetail.getEvidences().isEmpty()) {
-				messageEvidencesArea.removeAll();
+            grid.addColumn(WebMessageEvidence::getEvidenceType).setHeader("Evidence Type")
+                .setWidth(UiStyle.WIDTH_300_PX);
+            grid.addColumn(WebMessageEvidence::getDeliveredToGatewayString)
+                .setHeader("Delivered to Gateway").setWidth(UiStyle.WIDTH_300_PX);
+            grid.addColumn(WebMessageEvidence::getDeliveredToBackendString)
+                .setHeader("Delivered to Backend").setWidth(UiStyle.WIDTH_300_PX);
 
-				Div evidences = new Div();
-				evidences.setWidth("100vw");
-				LumoLabel evidencesLabel = new LumoLabel();
-				evidencesLabel.setText("Evidences:");
-				evidencesLabel.getStyle().set("font-size", "20px");
-				evidences.add(evidencesLabel);
+            grid.setWidth("1000px");
+            grid.setHeight("210px");
+            grid.setMultiSort(true);
 
-				messageEvidencesArea.add(evidences);
+            for (Column<WebMessageEvidence> col : grid.getColumns()) {
+                col.setSortable(true);
+                col.setResizable(true);
+            }
 
-				Div details = new Div();
-				details.setWidth("100vw");
+            details.add(grid);
 
-				Grid<WebMessageEvidence> grid = new Grid<>();
+            messageEvidencesArea.add(details);
 
-				grid.setItems(webMessageDetail.getEvidences());
+            messageEvidencesArea.setWidth(UiStyle.WIDTH_100_VW);
+            messageEvidencesArea.setVisible(true);
+        }
+    }
 
-				grid.addColumn(WebMessageEvidence::getEvidenceType).setHeader("Evidence Type").setWidth("300px");
-				grid.addColumn(WebMessageEvidence::getDeliveredToGatewayString).setHeader("Delivered to Gateway").setWidth("300px");
-				grid.addColumn(WebMessageEvidence::getDeliveredToBackendString).setHeader("Delivered to Backend").setWidth("300px");
+    public static void navigateTo(DomibusConnectorMessageId messageId) {
+        UI.getCurrent().navigate(MessageDetails.class, messageId.getConnectorMessageId());
+    }
 
-				grid.setWidth("1000px");
-				grid.setHeight("210px");
-				grid.setMultiSort(true);
+    public void show(WebMessage message) {
+        UI.getCurrent().navigate(MessageDetails.class, message.getConnectorMessageId());
+    }
 
-				for (Column<WebMessageEvidence> col : grid.getColumns()) {
-					col.setSortable(true);
-					col.setResizable(true);
-				}
+    private void clearMessageDetails() {
+        messageForm.setConnectorMessage(new WebMessage());
 
-				details.add(grid);
+        messageEvidencesArea.removeAll();
+        messageEvidencesArea.setVisible(false);
+    }
 
-				messageEvidencesArea.add(details);
-
-				messageEvidencesArea.setWidth("100vw");
-				//			add(messageEvidencesArea);
-				messageEvidencesArea.setVisible(true);
-			}
-
-	}
-
-	public static void navigateTo(DomibusConnectorMessageId messageId) {
-		UI.getCurrent().navigate(MessageDetails.class, messageId.getConnectorMessageId());
-	}
-
-	public void show(WebMessage message) {
-		UI.getCurrent().navigate(MessageDetails.class, message.getConnectorMessageId());
-	}
-
-	private void clearMessageDetails() {
-		messageForm.setConnectorMessage(new WebMessage());
-
-		messageEvidencesArea.removeAll();
-		messageEvidencesArea.setVisible(false);
-	}
-
-	@Override
-	public void setParameter(BeforeEvent event
-			, @OptionalParameter String parameter) {
-		if(parameter!=null) {
-			WebMessage webMessage = new WebMessage();
-			webMessage.setConnectorMessageId(parameter);
-			loadMessageDetails(webMessage);
-		}else {
-			clearMessageDetails();
-		}
-	}
+    @Override
+    public void setParameter(BeforeEvent event, @OptionalParameter String parameter) {
+        if (parameter != null) {
+            var webMessage = new WebMessage();
+            webMessage.setConnectorMessageId(parameter);
+            loadMessageDetails(webMessage);
+        } else {
+            clearMessageDetails();
+        }
+    }
 }

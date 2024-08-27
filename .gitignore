@@ -107,6 +107,14 @@ buildNumber.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,maven
 
+# Vaadin
+node_modules/
+src/main/frontend/generated/
+pnpmfile.js
+.npmrc
+webpack.generated.js
+vite.generated.ts
+
 domibusConnectorStarter/src/main/resources/connector.properties
 domibusConnectorStarter/src/main/resources/log4j2-spring.xml
 domibusConnectorWeb/src/main/resources/connector.properties

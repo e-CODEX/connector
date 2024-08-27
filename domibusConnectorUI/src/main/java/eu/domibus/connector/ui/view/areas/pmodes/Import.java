@@ -1,3 +1,13 @@
+/*
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
+ */
+
 package eu.domibus.connector.ui.view.areas.pmodes;
 
 import com.vaadin.flow.component.button.Button;
@@ -19,233 +29,236 @@ import eu.domibus.connector.domain.model.DomibusConnectorKeystore.KeystoreType;
 import eu.domibus.connector.ui.component.LumoLabel;
 import eu.domibus.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
 import eu.domibus.connector.ui.service.WebPModeService;
+import eu.domibus.connector.ui.utils.UiStyle;
 import eu.domibus.connector.ui.view.areas.configuration.TabMetadata;
 import eu.domibus.connector.ui.view.areas.configuration.util.ConfigurationUtil;
 import io.micrometer.core.instrument.util.StringUtils;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-
-
-
+/**
+ * The Import class is a component that allows users to import a PMode-Set, which includes a PMode
+ * file and a connectorstore file. It provides a UI for uploading these files, entering a
+ * description for the PMode Set, and providing a password for the connector store.
+ */
 @Component
 @UIScope
 @Route(value = Import.ROUTE, layout = PmodeLayout.class)
 @Order(1)
 @TabMetadata(title = "Import PMode-Set", tabGroup = PmodeLayout.TAB_GROUP_NAME)
-public class Import extends DCVerticalLayoutWithTitleAndHelpButton implements AfterNavigationObserver{
+public class Import extends DCVerticalLayoutWithTitleAndHelpButton
+    implements AfterNavigationObserver {
+    public static final String ROUTE = "import";
+    public static final String TITLE = "Import new active PMode-Set";
+    public static final String HELP_ID = "ui/pmodes/pmodeset_import.html";
+    public static final String DEFAULT_CONNECTOR_STORE_PW = "changeit";
+    WebPModeService pmodeService;
+    byte[] pmodeFile = null;
+    VerticalLayout areaImportResult = new VerticalLayout();
+    Div areaPModeFileUploadResult = new Div();
+    LumoLabel connectorPModeFileUploadResultLabel = new LumoLabel();
+    byte[] connectorstore = null;
+    Div areaConnectorstoreUploadResult = new Div();
+    LumoLabel connectorstoreUploadResultLabel = new LumoLabel();
+    TextArea connectorPModeSetDescription = new TextArea("Description:");
+    TextField connectorstorePwd = new TextField("Connectorstore password");
+    ComboBox<KeystoreType> connectorstoreType = new ComboBox<>();
 
-	public static final String ROUTE = "import";
-	
-	public static final String TITLE = "Import new active PMode-Set";
-	public static final String HELP_ID = "ui/pmodes/pmodeset_import.html";
+    /**
+     * Constructor.
+     *
+     * @param pmodeService The WebPModeService used for importing the PMode.
+     * @param util         The ConfigurationUtil used for importing the PMode.
+     */
+    public Import(@Autowired WebPModeService pmodeService, @Autowired ConfigurationUtil util) {
+        super(HELP_ID, TITLE);
 
-	public static final String DEFAULT_CONNECTOR_STORE_PW = "changeit";
+        this.pmodeService = pmodeService;
 
-	WebPModeService pmodeService;
-	
-	byte[] pmodeFile = null;
-	
-	VerticalLayout areaImportResult = new VerticalLayout();
-	
-	Div areaPModeFileUploadResult = new Div();
-	LumoLabel pModeFileUploadResultLabel = new LumoLabel();
-	
-	byte[] connectorstore = null;
-	
-	Div areaConnectorstoreUploadResult = new Div();
-	LumoLabel connectorstoreUploadResultLabel = new LumoLabel();
-	
-	TextArea pModeSetDescription = new TextArea("Description:");
-	TextField connectorstorePwd = new TextField("Connectorstore password");
-	ComboBox<KeystoreType> connectorstoreType = new ComboBox<KeystoreType>();
+        var areaPmodeFileUpload = createPModeImportArea();
 
-	public Import(@Autowired WebPModeService pmodeService, @Autowired ConfigurationUtil util) {
-		super(HELP_ID, TITLE);
-		
-		this.pmodeService = pmodeService;
-		
-		
-		Div areaPmodeFileUpload = createPModeImportArea();
-		
-		add(areaPmodeFileUpload);
-		add(areaPModeFileUploadResult);
+        add(areaPmodeFileUpload);
+        add(areaPModeFileUploadResult);
 
-		Div areaPModeSetDescription = createPModeSetDescriptionArea();
-		
-		add(areaPModeSetDescription);
-		
-		Div areaConnectorstoreUpload = createConnectorstoreUploadArea();
-		
-		add(areaConnectorstoreUpload);
-		add(areaConnectorstoreUploadResult);
-		
-		connectorstorePwd.setHelperText("The password of the truststore.");
-		add(connectorstorePwd);
-		connectorstorePwd.setValue(DEFAULT_CONNECTOR_STORE_PW);
-		
-		connectorstoreType.setLabel("Connectorstore type: ");
-		connectorstoreType.setHelperText("The type of the truststore. Usually JKS.");
-		connectorstoreType.setItems(KeystoreType.values());
-		connectorstoreType.setValue(KeystoreType.JKS);
-		add(connectorstoreType);
-		
-		Button importBtn = new Button();
-		importBtn.setIcon(new Icon(VaadinIcon.EDIT));
-		importBtn.setText("Import PMode-Set");
-		importBtn.addClickListener(e -> {
-			boolean result = false;
-			result = importPModeSet(pmodeFile, pModeSetDescription.getValue(), connectorstore, connectorstorePwd.getValue(), connectorstoreType.getValue());
-			showOutput(result, result?"PMode-Set successfully imported!":"Import of PMode-Set failed!");
-		});
-		importBtn.setEnabled(true);
-		
-		add(importBtn);
-		
-		add(areaImportResult);
+        var areaPModeSetDescription = createPModeSetDescriptionArea();
 
-		
-	}
-	
-	private Div createPModeImportArea() {
-		Div areaPmodeFileUpload = new Div();
-		
-		areaPmodeFileUpload.add(new LumoLabel("Upload new PMode file:"));
-		
-		MemoryBuffer  buffer = new MemoryBuffer ();
-		
-		Upload upload = new Upload(buffer);
-		upload.setMaxFiles(1);
-		upload.setId("Upload PModes-File");
-		upload.setAcceptedFileTypes("application/xml", "text/xml");
-		
-		upload.addSucceededListener(event -> {
-			pmodeFile = ((ByteArrayOutputStream) buffer.getFileData().getOutputBuffer())
-                            .toByteArray();
-			String fileName = buffer.getFileName();
-			pModeFileUploadResultLabel.setText("File "+fileName+" uploaded");
-			pModeFileUploadResultLabel.getStyle().set("color", "green");
-			areaPModeFileUploadResult.add(pModeFileUploadResultLabel);
-		});
-		upload.addFailedListener(e -> {
-			pModeFileUploadResultLabel.setText("File upload failed!");
-			pModeFileUploadResultLabel.getStyle().set("color", "red");
-			areaPModeFileUploadResult.add(pModeFileUploadResultLabel);
-		});
-		
-		
-		areaPmodeFileUpload.add(upload);
-		
-		return areaPmodeFileUpload;
-	}
-	
-	private Div createPModeSetDescriptionArea() {
-		Div areaPModeSetDescription = new Div();
-		
-		pModeSetDescription.setHelperText("Describes the contents of the PMode Set like project or use-case name");
-		pModeSetDescription.setRequired(true);
-		
-		areaPModeSetDescription.add(pModeSetDescription);
-		
-		return areaPModeSetDescription;
-	}
+        add(areaPModeSetDescription);
 
-	private Div createConnectorstoreUploadArea() {
-		Div areaConnectorstoreUpload = new Div();
-		
-		areaConnectorstoreUpload.add(new LumoLabel("Upload new Connectorstore file:"));
-		
-		MemoryBuffer  buffer = new MemoryBuffer ();
-		
-		Upload upload = new Upload(buffer);
-		upload.setMaxFiles(1);
-		upload.setId("Upload Connectorstore");
-//		upload.setAcceptedFileTypes("application/xml", "text/xml");
+        var areaConnectorstoreUpload = createConnectorstoreUploadArea();
 
-		upload.addSucceededListener(event -> {
-			connectorstore = ((ByteArrayOutputStream) buffer.getFileData().getOutputBuffer())
-                            .toByteArray();
-			String fileName = buffer.getFileName();
-			connectorstoreUploadResultLabel.setText("File "+fileName+" uploaded");
-			connectorstoreUploadResultLabel.getStyle().set("color", "green");
-			areaConnectorstoreUploadResult.add(connectorstoreUploadResultLabel);
-		});
-		upload.addFailedListener(e -> {
-			connectorstoreUploadResultLabel.setText("File upload failed!");
-			connectorstoreUploadResultLabel.getStyle().set("color", "red");
-			areaConnectorstoreUploadResult.add(connectorstoreUploadResultLabel);
-		});
-		
-		
-		areaConnectorstoreUpload.add(upload);
+        add(areaConnectorstoreUpload);
+        add(areaConnectorstoreUploadResult);
 
-		
-		
-		return areaConnectorstoreUpload;
-	}
-	
-	private void showOutput(boolean success, String text) {
-		areaImportResult.removeAll();
-		areaConnectorstoreUploadResult.removeAll();
-		areaPModeFileUploadResult.removeAll();
-		
-		LumoLabel resultLabel = new LumoLabel();
-		resultLabel.setText("PMode-Set successfully imported!");
-		if(success) {
-			resultLabel.getStyle().set("color", "green");
-		}else {
-			resultLabel.setText("Import of PMode-Set failed!");
-			resultLabel.getStyle().set("color", "red");
-		}
-		areaImportResult.add(resultLabel);
-		
-		if(success) {
-			LumoLabel pModeFileText = new LumoLabel("Imported P-Mode file: ");
-			TextArea area = new TextArea();
-			try {
-				area.setValue(new String(pmodeFile, "UTF-8"));
-				area.setWidth("80vw");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
-			areaImportResult.setWidth("100vw");
-			areaImportResult.add(pModeFileText);
-			areaImportResult.add(area);
-		}
-	}
+        connectorstorePwd.setHelperText("The password of the truststore.");
+        add(connectorstorePwd);
+        connectorstorePwd.setValue(DEFAULT_CONNECTOR_STORE_PW);
 
-	private boolean importPModeSet(byte[] pmodeFile, String description, byte[] connectorstore, String connectorStorePwd, KeystoreType connectorstoreType) {
+        connectorstoreType.setLabel("Connectorstore type: ");
+        connectorstoreType.setHelperText("The type of the truststore. Usually JKS.");
+        connectorstoreType.setItems(KeystoreType.values());
+        connectorstoreType.setValue(KeystoreType.JKS);
+        add(connectorstoreType);
 
-		if (pmodeFile == null || pmodeFile.length < 1
-				|| connectorstore == null || connectorstore.length < 1
-				|| StringUtils.isEmpty(description)) {
-			return false;
-		}
-		DomibusConnectorKeystore connectorstoreUUID = pmodeService.importConnectorstore(connectorstore, connectorStorePwd, connectorstoreType);
+        var importBtn = new Button();
+        importBtn.setIcon(new Icon(VaadinIcon.EDIT));
+        importBtn.setText("Import PMode-Set");
+        importBtn.addClickListener(e -> {
+            boolean result;
+            result = importPModeSet(
+                pmodeFile,
+                connectorPModeSetDescription.getValue(),
+                connectorstore,
+                connectorstorePwd.getValue(),
+                connectorstoreType.getValue()
+            );
+            showOutput(
+                result,
+                result ? "PMode-Set successfully imported!" : "Import of PMode-Set failed!"
+            );
+        });
+        importBtn.setEnabled(true);
 
-		if (connectorstoreUUID != null) {
-			return pmodeService.importPModes(pmodeFile, description, connectorstoreUUID);
-		} else {
-			return false;
-		}
-	}
+        add(importBtn);
 
-	@Override
-	public void afterNavigation(AfterNavigationEvent arg0) {
-		areaImportResult.removeAll();
-		areaConnectorstoreUploadResult.removeAll();
-		areaPModeFileUploadResult.removeAll();
-		
-		pModeSetDescription.setValue("");
-		pmodeFile = null;
-		
-		connectorstore = null;
-		connectorstorePwd.setValue("");
-		connectorstoreType.setValue(KeystoreType.JKS);
-	}
+        add(areaImportResult);
+    }
 
+    private Div createPModeImportArea() {
+        var areaPmodeFileUpload = new Div();
 
+        areaPmodeFileUpload.add(new LumoLabel("Upload new PMode file:"));
+
+        var buffer = new MemoryBuffer();
+
+        var upload = new Upload(buffer);
+        upload.setMaxFiles(1);
+        upload.setId("Upload PModes-File");
+        upload.setAcceptedFileTypes("application/xml", "text/xml");
+
+        upload.addSucceededListener(event -> {
+            pmodeFile = ((ByteArrayOutputStream) buffer.getFileData().getOutputBuffer())
+                .toByteArray();
+            String fileName = buffer.getFileName();
+            connectorPModeFileUploadResultLabel.setText("File " + fileName + " uploaded");
+            connectorPModeFileUploadResultLabel.getStyle()
+                                               .set(UiStyle.TAG_COLOR, UiStyle.COLOR_GREEN);
+            areaPModeFileUploadResult.add(connectorPModeFileUploadResultLabel);
+        });
+        upload.addFailedListener(e -> {
+            connectorPModeFileUploadResultLabel.setText("File upload failed!");
+            connectorPModeFileUploadResultLabel.getStyle().set(UiStyle.TAG_COLOR, "red");
+            areaPModeFileUploadResult.add(connectorPModeFileUploadResultLabel);
+        });
+
+        areaPmodeFileUpload.add(upload);
+
+        return areaPmodeFileUpload;
+    }
+
+    private Div createPModeSetDescriptionArea() {
+        var areaPModeSetDescription = new Div();
+
+        connectorPModeSetDescription.setHelperText(
+            "Describes the contents of the PMode Set like project or use-case name");
+        connectorPModeSetDescription.setRequired(true);
+
+        areaPModeSetDescription.add(connectorPModeSetDescription);
+
+        return areaPModeSetDescription;
+    }
+
+    private Div createConnectorstoreUploadArea() {
+        var areaConnectorstoreUpload = new Div();
+
+        areaConnectorstoreUpload.add(new LumoLabel("Upload new Connectorstore file:"));
+
+        var buffer = new MemoryBuffer();
+
+        var upload = new Upload(buffer);
+        upload.setMaxFiles(1);
+        upload.setId("Upload Connectorstore");
+
+        upload.addSucceededListener(event -> {
+            connectorstore = ((ByteArrayOutputStream) buffer.getFileData().getOutputBuffer())
+                .toByteArray();
+            String fileName = buffer.getFileName();
+            connectorstoreUploadResultLabel.setText("File " + fileName + " uploaded");
+            connectorstoreUploadResultLabel.getStyle().set(UiStyle.TAG_COLOR, UiStyle.COLOR_GREEN);
+            areaConnectorstoreUploadResult.add(connectorstoreUploadResultLabel);
+        });
+        upload.addFailedListener(e -> {
+            connectorstoreUploadResultLabel.setText("File upload failed!");
+            connectorstoreUploadResultLabel.getStyle().set(UiStyle.TAG_COLOR, "red");
+            areaConnectorstoreUploadResult.add(connectorstoreUploadResultLabel);
+        });
+
+        areaConnectorstoreUpload.add(upload);
+
+        return areaConnectorstoreUpload;
+    }
+
+    private void showOutput(boolean success, String text) {
+        areaImportResult.removeAll();
+        areaConnectorstoreUploadResult.removeAll();
+        areaPModeFileUploadResult.removeAll();
+
+        var resultLabel = new LumoLabel();
+        resultLabel.setText("PMode-Set successfully imported!");
+        if (success) {
+            resultLabel.getStyle().set(UiStyle.TAG_COLOR, UiStyle.COLOR_GREEN);
+        } else {
+            resultLabel.setText("Import of PMode-Set failed!");
+            resultLabel.getStyle().set(UiStyle.TAG_COLOR, "red");
+        }
+        areaImportResult.add(resultLabel);
+
+        if (success) {
+            var area = new TextArea();
+            area.setValue(new String(pmodeFile, StandardCharsets.UTF_8));
+            area.setWidth("80vw");
+            areaImportResult.setWidth("100vw");
+
+            var importPModeLabel = new LumoLabel("Imported P-Mode file: ");
+            areaImportResult.add(importPModeLabel);
+            areaImportResult.add(area);
+        }
+    }
+
+    private boolean importPModeSet(
+        byte[] pmodeFile, String description, byte[] connectorstore, String connectorStorePwd,
+        KeystoreType connectorstoreType) {
+
+        if (pmodeFile == null || pmodeFile.length < 1
+            || connectorstore == null || connectorstore.length < 1
+            || StringUtils.isEmpty(description)) {
+            return false;
+        }
+        DomibusConnectorKeystore connectorstoreUUID =
+            pmodeService.importConnectorstore(
+                connectorstore, connectorStorePwd, connectorstoreType
+            );
+
+        if (connectorstoreUUID != null) {
+            return pmodeService.importPModes(pmodeFile, description, connectorstoreUUID);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent arg0) {
+        areaImportResult.removeAll();
+        areaConnectorstoreUploadResult.removeAll();
+        areaPModeFileUploadResult.removeAll();
+
+        connectorPModeSetDescription.setValue("");
+        pmodeFile = null;
+
+        connectorstore = null;
+        connectorstorePwd.setValue("");
+        connectorstoreType.setValue(KeystoreType.JKS);
+    }
 }

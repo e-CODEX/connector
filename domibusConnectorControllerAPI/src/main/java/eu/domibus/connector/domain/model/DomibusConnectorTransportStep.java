@@ -1,19 +1,24 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 package eu.domibus.connector.domain.model;
 
 import eu.domibus.connector.controller.service.TransportStateService;
 import eu.domibus.connector.domain.enums.TransportState;
+import jakarta.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
-import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -153,7 +158,7 @@ public class DomibusConnectorTransportStep {
         if (this.transportedMessage != null
             && this.transportedMessage.getConnectorMessageId() != null
             && !this.transportedMessage.getConnectorMessageId()
-            .equals(transportedMessageConnectorMessageId)) {
+                                       .equals(transportedMessageConnectorMessageId)) {
             throw new IllegalArgumentException("Cannot set a different connector message id here!");
         }
     }
@@ -167,8 +172,9 @@ public class DomibusConnectorTransportStep {
     private static class TransportStepComparator
         implements Comparator<DomibusConnectorTransportStepStatusUpdate> {
         @Override
-        public int compare(DomibusConnectorTransportStepStatusUpdate o1,
-                           DomibusConnectorTransportStepStatusUpdate o2) {
+        public int compare(
+            DomibusConnectorTransportStepStatusUpdate o1,
+            DomibusConnectorTransportStepStatusUpdate o2) {
             LocalDateTime time1 = LocalDateTime.MIN;
             if (o1.getCreated() != null) {
                 time1 = o1.getCreated();

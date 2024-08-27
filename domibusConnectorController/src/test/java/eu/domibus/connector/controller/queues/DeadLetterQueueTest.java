@@ -15,8 +15,8 @@ import eu.domibus.connector.controller.service.SubmitToLinkService;
 import eu.domibus.connector.domain.model.DomibusConnectorMessage;
 import eu.domibus.connector.domain.model.DomibusConnectorMessageId;
 import eu.domibus.connector.domain.testutil.DomainEntityCreator;
+import jakarta.jms.ConnectionFactory;
 import java.time.Duration;
-import javax.jms.ConnectionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -95,7 +95,7 @@ class DeadLetterQueueTest {
     void when_message_handling_of_clean_up_queue_messages_fails_the_message_should_end_up_in_the_dead_letter_queue_configured_for_that_queue() {
         // Arrange
         Mockito.doThrow(new RuntimeException("FAIL MESSAGE")).when(cleanupMessageProcessor)
-            .processMessage(any());
+               .processMessage(any());
 
         DomibusConnectorMessage message = DomainEntityCreator.createMessage();
         message.setConnectorMessageId(new DomibusConnectorMessageId("asdfasdfasdf"));
@@ -129,7 +129,7 @@ class DeadLetterQueueTest {
     void when_message_handling_in_transition_from_gateway_to_backend_fails_the_message_should_end_up_in_the_dead_letter_queue_configured_for_connector_to_link_queue() {
         // Arrange
         Mockito.doThrow(new RuntimeException("FAIL MESSAGE")).when(submitToLinkService)
-            .submitToLink(any());
+               .submitToLink(any());
 
         DomibusConnectorMessage message = DomainEntityCreator.createMessage();
         message.setConnectorMessageId(new DomibusConnectorMessageId("qwerqwerqwrerttz"));
@@ -168,11 +168,11 @@ class DeadLetterQueueTest {
 
         // Arrange
         Mockito.doThrow(new RuntimeException("FAIL MESSAGE")).when(evidenceMessageProcessor)
-            .processMessage(any());
+               .processMessage(any());
         Mockito.doThrow(new RuntimeException("FAIL MESSAGE"))
-            .when(toGatewayBusinessMessageProcessor).processMessage(any());
+               .when(toGatewayBusinessMessageProcessor).processMessage(any());
         Mockito.doThrow(new RuntimeException("FAIL MESSAGE"))
-            .when(toBackendBusinessMessageProcessor).processMessage(any());
+               .when(toBackendBusinessMessageProcessor).processMessage(any());
 
         DomibusConnectorMessage message = DomainEntityCreator.createMessage();
         message.setConnectorMessageId(new DomibusConnectorMessageId("yxcvyxcvyxcv"));

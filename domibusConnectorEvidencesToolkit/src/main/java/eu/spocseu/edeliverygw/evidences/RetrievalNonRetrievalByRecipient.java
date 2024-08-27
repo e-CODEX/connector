@@ -1,6 +1,11 @@
 /*
- * Copyright 2024 European Union. All rights reserved.
- * European Union EUPL version 1.1.
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
  */
 
 /* ---------------------------------------------------------------------------
@@ -33,9 +38,9 @@ import eu.spocseu.common.SpocsConstants.Evidences;
 import eu.spocseu.edeliverygw.JaxbContextHolder;
 import eu.spocseu.edeliverygw.SpocsWrongInputDataException;
 import eu.spocseu.edeliverygw.configuration.EDeliveryDetails;
+import jakarta.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.xml.bind.JAXBException;
 import org.etsi.uri._02640.v2.EventReasonType;
 import org.etsi.uri._02640.v2.ObjectFactory;
 import org.etsi.uri._02640.v2.REMEvidenceType;

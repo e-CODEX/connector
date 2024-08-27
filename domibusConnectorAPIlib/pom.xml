@@ -11,7 +11,12 @@
     <name>${project.artifactId}</name>
     <description>Provides helper classes and methods which can be used in connector, connectorClient and connectorGatewayPlugin</description>
     <dependencies>
-        <!-- domibus modules and libs-->
+        <!-- spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+        </dependency>
+        <!-- ecodex modules and dependencies-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domibusConnectorAPI</artifactId>
@@ -27,8 +32,8 @@
             <artifactId>spring-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

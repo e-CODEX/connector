@@ -41,6 +41,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import test.eu.domibus.connector.link.wsbackendplugin.TestConfigurationCXFWsBug;
 
 /**
  * The LinkTestContext class is used for configuring the test context for LinkModule tests.
@@ -52,7 +53,8 @@ import org.springframework.context.annotation.Primary;
         DCKeyStoreService.class,
         ConfigurationPropertyLoaderServiceImpl.class,
         DCBusinessDomainManagerImpl.class,
-        ConnectorConfigurationProperties.class
+        ConnectorConfigurationProperties.class,
+        TestConfigurationCXFWsBug.class
     }
 )
 @ComponentScan(basePackages = {"eu.domibus.connector.common", "eu.domibus.connector.utils"})

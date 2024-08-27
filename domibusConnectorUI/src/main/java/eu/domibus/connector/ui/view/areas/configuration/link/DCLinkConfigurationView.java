@@ -1,13 +1,24 @@
+/*
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
+ */
+
 package eu.domibus.connector.ui.view.areas.configuration.link;
 
-import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.domibus.connector.domain.enums.ConfigurationSource;
 import eu.domibus.connector.domain.enums.LinkType;
@@ -16,43 +27,43 @@ import eu.domibus.connector.link.service.DCLinkFacade;
 import eu.domibus.connector.ui.utils.RoleRequired;
 import eu.domibus.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.domibus.connector.ui.view.areas.configuration.ConfigurationOverview;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+/**
+ * This class represents the view for configuring DC link settings.
+ */
 @Component
 @UIScope
 @Route(value = DCLinkConfigurationView.ROUTE, layout = ConfigurationLayout.class)
 @RoleRequired(role = "ADMIN")
 public class DCLinkConfigurationView extends VerticalLayout implements HasUrlParameter<String> {
-
-	private static final Logger LOGGER = LogManager.getLogger(DCLinkConfigurationView.class);
-
     public static final String ROUTE = "linkConfig";
     public static final String LINK_TYPE_QUERY_PARAM = "linkType";
     public static final String EDIT_MODE_TYPE_QUERY_PARAM = "modeType";
-
     public static final String TITLE_LABEL_TEXT = "Edit LinkConfiguration";
-
     private final DCLinkFacade dcLinkFacade;
     private final DCLinkConfigurationField linkConfigurationField;
-
-    private final Label titleLabel = new Label();
+    private final NativeLabel titleLabel = new NativeLabel();
     private final Button discardButton = new Button("Back");
     private final Button saveButton = new Button("Save");
-
     private LinkType linkType;
     private EditMode editMode;
     private DomibusConnectorLinkConfiguration linkConfig;
 
-
-    public DCLinkConfigurationView(DCLinkFacade dcLinkFacade, DCLinkConfigurationField linkConfigurationField) {
+    /**
+     * Constructs a new instance of the {@code DCLinkConfigurationView} class.
+     *
+     * @param dcLinkFacade           the {@code DCLinkFacade} instance used for accessing DC link
+     *                               functionality
+     * @param linkConfigurationField the {@code DCLinkConfigurationField} instance used for
+     *                               configuring DC links
+     */
+    public DCLinkConfigurationView(
+        DCLinkFacade dcLinkFacade, DCLinkConfigurationField linkConfigurationField) {
         this.dcLinkFacade = dcLinkFacade;
         this.linkConfigurationField = linkConfigurationField;
 
@@ -64,7 +75,7 @@ public class DCLinkConfigurationView extends VerticalLayout implements HasUrlPar
         discardButton.addClickListener(this::discardButtonClicked);
         saveButton.addClickListener(this::saveButtonClicked);
 
-        HorizontalLayout buttonBar = new HorizontalLayout();
+        var buttonBar = new HorizontalLayout();
         buttonBar.add(discardButton, saveButton);
 
         this.add(titleLabel, buttonBar, linkConfigurationField);
@@ -88,44 +99,41 @@ public class DCLinkConfigurationView extends VerticalLayout implements HasUrlPar
 
     private void navigateBack() {
         getUI().ifPresent(ui -> {
-            if (linkType == LinkType.GATEWAY) {
-                ui.navigate(GatewayLinkConfiguration.class);
-            } else if (linkType == LinkType.BACKEND) {
-                ui.navigate(BackendLinkConfiguration.class);
-            } else {
-                ui.navigate(ConfigurationOverview.class);
+            switch (linkType) {
+                case LinkType.GATEWAY -> ui.navigate(GatewayLinkConfiguration.class);
+                case LinkType.BACKEND -> ui.navigate(BackendLinkConfiguration.class);
+                default -> ui.navigate(ConfigurationOverview.class);
             }
         });
     }
 
-
     @Override
     public void setParameter(BeforeEvent event, @OptionalParameter String parameter) {
-        Location location = event.getLocation();
+        var location = event.getLocation();
         Map<String, List<String>> parameters = location.getQueryParameters().getParameters();
         this.linkType = parameters.getOrDefault(LINK_TYPE_QUERY_PARAM, Collections.emptyList())
-                .stream().findFirst().map(LinkType::valueOf).orElse(null);
+                                  .stream().findFirst().map(LinkType::valueOf).orElse(null);
         this.editMode = parameters.getOrDefault(EDIT_MODE_TYPE_QUERY_PARAM, Collections.emptyList())
-                .stream().findFirst().map(EditMode::valueOf).orElse(EditMode.VIEW);
+                                  .stream().findFirst().map(EditMode::valueOf)
+                                  .orElse(EditMode.VIEW);
 
-
-
-        DomibusConnectorLinkConfiguration.LinkConfigName configName = new DomibusConnectorLinkConfiguration.LinkConfigName((parameter));
-        Optional<DomibusConnectorLinkConfiguration> optionalConfig = dcLinkFacade.loadLinkConfig(configName);
+        var configName = new DomibusConnectorLinkConfiguration.LinkConfigName((parameter));
+        Optional<DomibusConnectorLinkConfiguration> optionalConfig =
+            dcLinkFacade.loadLinkConfig(configName);
         if (optionalConfig.isPresent()) {
             DomibusConnectorLinkConfiguration linkConfig = optionalConfig.get();
-            linkConfigurationField.setValue(linkConfigurationField.getEmptyValue()); //force value change event
+            linkConfigurationField.setValue(
+                linkConfigurationField.getEmptyValue()); // force value change event
             linkConfigurationField.setValue(linkConfig);
-//            linkConfigPanel.setImplAndConfigNameReadOnly(true);
             linkConfigurationField.setVisible(true);
             this.linkConfig = linkConfig;
             titleLabel.setText(TITLE_LABEL_TEXT + " " + parameter);
         } else if (editMode == EditMode.CREATE) {
-            DomibusConnectorLinkConfiguration linkConfig = new DomibusConnectorLinkConfiguration();
+            var linkConfig = new DomibusConnectorLinkConfiguration();
             linkConfig.setConfigurationSource(ConfigurationSource.DB);
-            linkConfig.setConfigName(new DomibusConnectorLinkConfiguration.LinkConfigName("New Link Config"));
+            linkConfig.setConfigName(
+                new DomibusConnectorLinkConfiguration.LinkConfigName("New Link Config"));
             linkConfigurationField.setValue(linkConfig);
-//            linkConfigPanel.setImplAndConfigNameReadOnly(false);
             linkConfigurationField.setVisible(true);
             this.linkConfig = linkConfig;
             titleLabel.setText(TITLE_LABEL_TEXT + " new config");
@@ -135,7 +143,6 @@ public class DCLinkConfigurationView extends VerticalLayout implements HasUrlPar
         }
         linkConfigurationField.setEditMode(editMode);
         updateUI();
-
     }
 
     private void updateUI() {
@@ -147,5 +154,4 @@ public class DCLinkConfigurationView extends VerticalLayout implements HasUrlPar
             saveButton.setEnabled(linkConfig.getConfigurationSource() == ConfigurationSource.DB);
         }
     }
-
 }

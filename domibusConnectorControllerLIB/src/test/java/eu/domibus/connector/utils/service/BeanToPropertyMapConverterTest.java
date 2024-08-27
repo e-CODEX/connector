@@ -19,7 +19,11 @@ import org.springframework.core.io.ClassPathResource;
 class BeanToPropertyMapConverterTest {
     private static final Logger LOGGER = LogManager.getLogger(BeanToPropertyMapConverterTest.class);
 
-    @SpringBootApplication(scanBasePackages = "eu.domibus.connector.utils")
+    @SpringBootApplication(
+        scanBasePackages = {
+            "eu.domibus.connector.utils", "eu.domibus.connector.common.configuration"
+        }
+    )
     public static class TestContext {
     }
 

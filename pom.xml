@@ -150,7 +150,7 @@
         <!-- documentation -->
         <asciidoclet.version>1.5.6</asciidoclet.version>
         <asciidoctor.version>2.5.12</asciidoctor.version>
-        <asciidoctor.diagram.version>2.3.0</asciidoctor.diagram.version>
+        <asciidoctor.diagram.version>2.3.1</asciidoctor.diagram.version>
         <asciidoctor.diagram-plantuml.version>1.2024.5</asciidoctor.diagram-plantuml.version>
         <asciidoctor.pdf.version>2.3.18</asciidoctor.pdf.version>
         <asciidoctor.plugin.version>3.0.0</asciidoctor.plugin.version>

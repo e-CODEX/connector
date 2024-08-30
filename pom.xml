@@ -16,13 +16,13 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/eu-LISA/domibusConnector</url>
-        <connection>scm:git:git@github.com:eu-LISA/domibusConnector.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:eu-LISA/domibusConnector.git</developerConnection>
+        <url>https://github.com/e-CODEX/connector</url>
+        <connection>scm:git:git@github.com:e-CODEX/connector.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:e-CODEX/connector.git</developerConnection>
     </scm>
     <ciManagement>
         <system>Github Actions</system>
-        <url>https://github.com/eu-LISA/domibusConnector/actions</url>
+        <url>https://github.com/e-CODEX/connector/actions</url>
     </ciManagement>
     <modules>
         <module>domibusConnectorEvidencesToolkit</module>

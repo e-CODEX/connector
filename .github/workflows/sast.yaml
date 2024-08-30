@@ -6,13 +6,13 @@ on:
 name: Static Analysis Java    
 jobs:
   sonar:
-    uses: eu-LISA/ecodex-workflows/.github/workflows/sonar-java.yaml@main
+    uses: e-CODEX/workflows/.github/workflows/sonar-java.yaml@main
     with:
         java-version: 21
         build-tool: 'maven'
     secrets: inherit
   codeql:
-    uses: eu-LISA/ecodex-workflows/.github/workflows/codeql-java.yaml@main
+    uses: e-CODEX/workflows/.github/workflows/codeql-java.yaml@main
     with:
       java-version: 21
       build-tool: 'maven' 

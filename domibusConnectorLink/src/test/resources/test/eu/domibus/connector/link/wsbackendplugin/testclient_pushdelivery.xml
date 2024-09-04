@@ -18,7 +18,7 @@
     <!--        </cxf:features>-->
     <!--    </cxf:bus>-->
     <jaxws:endpoint
-            xmlns:s="http://connector.domibus.eu/ws/backend/delivery/webservice/"
+            xmlns:s="http://connector.ecodex.eu/ws/backend/delivery/webservice/"
             id="connectorBackendClientDeliveryWS"
             implementor="#backendDeliveryWebService"
             address="/backendDelivery"

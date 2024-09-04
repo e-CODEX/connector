@@ -10,7 +10,7 @@
 
 package eu.ecodex.signature;
 
-import static eu.domibus.connector.tools.logging.LoggingUtils.logPassword;
+import static eu.ecodex.connector.tools.logging.LoggingUtils.logPassword;
 
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.SignatureLevel;

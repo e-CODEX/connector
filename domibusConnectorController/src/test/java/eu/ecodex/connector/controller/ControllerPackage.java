@@ -1,0 +1,22 @@
+/*
+ * Copyright 2024 European Union Agency for the Operational Management of Large-Scale IT Systems
+ * in the Area of Freedom, Security and Justice (eu-LISA)
+ *
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the
+ * European Commission - subsequent versions of the EUPL (the "Licence");
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy at: https://joinup.ec.europa.eu/software/page/eupl
+ */
+
+package eu.ecodex.connector.controller;
+
+/**
+ * The ControllerPackage interface is designed to define the
+ * basic structure and behavior for a controller within the
+ * application. It serves as a marker interface to group
+ * different controllers under a common type, facilitating
+ * easier management and organization of controller classes
+ * in the codebase.
+ */
+public interface ControllerPackage {
+}

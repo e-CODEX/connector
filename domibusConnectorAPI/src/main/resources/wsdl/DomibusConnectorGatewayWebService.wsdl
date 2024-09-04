@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions
-        xmlns:tns="http://connector.domibus.eu/ws/gateway/webservice"
-        xmlns:dct="transition.domain.connector.domibus.eu"
-        xmlns:wp="http://connector.domibus.eu/ws/gateway/webservice"
+        xmlns:tns="http://connector.ecodex.eu/ws/gateway/webservice"
+        xmlns:dct="transition.domain.connector.ecodex.eu"
+        xmlns:wp="http://connector.ecodex.eu/ws/gateway/webservice"
         xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorGatewayWebService"
-        targetNamespace="http://connector.domibus.eu/ws/gateway/webservice">
+        targetNamespace="http://connector.ecodex.eu/ws/gateway/webservice">
 
     <wsdl:import
-            namespace="transition.domain.connector.domibus.eu"
-            location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
+            namespace="transition.domain.connector.ecodex.eu"
+            location="eu.ecodex.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
 
     <wsdl:types>
         <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                targetNamespace="http://connector.domibus.eu/ws/gateway/webservice">
+                targetNamespace="http://connector.ecodex.eu/ws/gateway/webservice">
             <xsd:complexType name="ListPendingMessageIdsRequest">
                 <!-- empty type -->
             </xsd:complexType>
@@ -98,7 +98,7 @@
 
     <wsdl:service name="DomibusConnectorGatewayWSService">
         <wsdl:port binding="tns:DomibusConnectorGatewayWSBinding" name="DomibusConnectorGatewayWebService">
-            <soap12:backendPublishAddress location="http://connector.domibus.eu/ws/gateway/webservice"/>
+            <soap12:backendPublishAddress location="http://connector.ecodex.eu/ws/gateway/webservice"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

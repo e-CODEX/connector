@@ -1,2 +1,2 @@
 org.springframework.context.ApplicationContextInitializer=\
-  eu.domibus.connector.persistence.spring.DatabaseResourceLoaderConfiguration
+  eu.ecodex.connector.persistence.spring.DatabaseResourceLoaderConfiguration

@@ -33,7 +33,7 @@ LoggingMarker java class:
 
 [source,java]
 ----
-package eu.domibus.connector.tools.logging;
+package eu.ecodex.connector.tools.logging;
 
 import org.apache.logging.log4j.MarkerManager;
 import org.slf4j.Marker;

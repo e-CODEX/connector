@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions
-        xmlns:tns="http://connector.domibus.eu/ws/gateway/delivery/webservice"
-        xmlns:dct="transition.domain.connector.domibus.eu"
+        xmlns:tns="http://connector.ecodex.eu/ws/gateway/delivery/webservice"
+        xmlns:dct="transition.domain.connector.ecodex.eu"
         xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorGatewayDeliveryWebService"
-        targetNamespace="http://connector.domibus.eu/ws/gateway/delivery/webservice">
+        targetNamespace="http://connector.ecodex.eu/ws/gateway/delivery/webservice">
 
     <wsdl:import
-            namespace="transition.domain.connector.domibus.eu"
-            location="./eu.domibus.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
+            namespace="transition.domain.connector.ecodex.eu"
+            location="eu.ecodex.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
 
     <wsdl:message name="deliverMessageRequest">
         <wsdl:part name="deliverMessageRequest" type="dct:DomibusConnectorMessageType"/>
@@ -41,7 +41,7 @@
     <wsdl:service name="DomibusConnectorGatewayDeliveryWSService">
         <wsdl:port binding="tns:DomibusConnectorGatewayDeliveryWSBinding"
                 name="DomibusConnectorGatewayDeliveryWebService">
-            <soap12:backendPublishAddress location="http://connector.domibus.eu/ws/gateway/delivery/webservice"/>
+            <soap12:backendPublishAddress location="http://connector.ecodex.eu/ws/gateway/delivery/webservice"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

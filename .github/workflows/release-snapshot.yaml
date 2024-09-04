@@ -1,0 +1,10 @@
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  publish:
+    uses: e-CODEX/workflows/.github/workflows/maven-snapshot-publish.yaml@main
+    with:
+      java-version: 21
+      maven-repo-id: 'snapshots'

@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>eu.domibus.connector</groupId>
+        <groupId>eu.ecodex.connector</groupId>
         <artifactId>domibusConnectorBuilder</artifactId>
-        <version>4.4.12-SNAPSHOT</version>
+        <version>6.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>domibusConnectorBuilderStandalone</artifactId>
     <properties>
@@ -13,12 +13,12 @@
     <dependencies>
         <!--ecodex modules-->
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorUI</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorStarter</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -98,10 +98,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>eu.domibus.connector.starter.DomibusConnectorStarter</mainClass>
+                    <mainClass>eu.ecodex.connector.starter.DomibusConnectorStarter</mainClass>
                     <requiresUnpack>
                         <dependency>
-                            <groupId>eu.domibus.connector</groupId>
+                            <groupId>eu.ecodex.connector</groupId>
                             <artifactId>domibusConnectorUI</artifactId>
                         </dependency>
                     </requiresUnpack>
@@ -367,7 +367,7 @@
                                     <jvmFlag>-Dspring.config.additional-location=/app/config/labenv01/config/</jvmFlag>
                                     -->
                                     <jvmFlag>-Dspring.config.name=connector</jvmFlag>
-                                    <jvmFlag>-Dloader.main=eu.domibus.connector.starter.DomibusConnectorStarter</jvmFlag>
+                                    <jvmFlag>-Dloader.main=eu.ecodex.connector.starter.DomibusConnectorStarter</jvmFlag>
                                 </jvmFlags>
                                 <ports>
                                     <port>8080</port>

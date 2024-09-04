@@ -1,6 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    eu.domibus.connector.common.configuration.ConnectorConverterAutoConfiguration,\
-    eu.domibus.connector.common.configuration.ConnectorConversionServiceAutoConfiguration,\
-    eu.domibus.connector.domain.model.json.DomainModeJsonObjectMapperFactoryConfiguration
+    eu.ecodex.connector.common.configuration.ConnectorConverterAutoConfiguration,\
+    eu.ecodex.connector.common.configuration.ConnectorConversionServiceAutoConfiguration,\
+    eu.ecodex.connector.domain.model.json.DomainModeJsonObjectMapperFactoryConfiguration
 org.springframework.context.ApplicationContextInitializer=\
-  eu.domibus.connector.common.spring.RegisterBusinessDomainPropertySource
+  eu.ecodex.connector.common.spring.RegisterBusinessDomainPropertySource

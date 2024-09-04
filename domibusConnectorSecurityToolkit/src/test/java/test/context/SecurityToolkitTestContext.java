@@ -1,10 +1,10 @@
 package test.context;
 
-import eu.domibus.connector.common.configuration.ConnectorConfigurationProperties;
-import eu.domibus.connector.domain.model.DomibusConnectorBusinessDomain;
-import eu.domibus.connector.persistence.service.DCBusinessDomainPersistenceService;
-import eu.domibus.connector.persistence.service.LargeFilePersistenceService;
-import eu.domibus.connector.persistence.service.testutil.LargeFilePersistenceServicePassthroughImpl;
+import eu.ecodex.connector.common.configuration.ConnectorConfigurationProperties;
+import eu.ecodex.connector.domain.model.DomibusConnectorBusinessDomain;
+import eu.ecodex.connector.persistence.service.DCBusinessDomainPersistenceService;
+import eu.ecodex.connector.persistence.service.LargeFilePersistenceService;
+import eu.ecodex.connector.persistence.service.testutil.LargeFilePersistenceServicePassthroughImpl;
 import java.util.Optional;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -29,8 +29,8 @@ import org.springframework.context.annotation.Configuration;
  * @see ConnectorConfigurationProperties
  */
 @ComponentScan(
-    basePackages = {"eu.domibus.connector.security", "eu.domibus.connector.common",
-        "eu.domibus.connector.dss"}
+    basePackages = {"eu.ecodex.connector.security", "eu.ecodex.connector.common",
+        "eu.ecodex.connector.dss"}
 )
 @EnableAutoConfiguration(
     exclude = {

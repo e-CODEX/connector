@@ -29,7 +29,7 @@ For Filesystem Storage:
 #is enabled by default
 #connector.persistence.provider-jpa.enabled=true
 #file provider is the recommended default
-connector.persistence.default-large-file-provider-class=eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceServiceFilesystemImpl
+connector.persistence.default-large-file-provider-class=eu.ecodex.connector.persistence.largefiles.provider.LargeFilePersistenceServiceFilesystemImpl
 ----
 
 For DB storage:
@@ -37,7 +37,7 @@ For DB storage:
 ----
 #enabled by default
 #connector.persistence.provider-filesystem.enabled=true
-connector.persistence.default-large-file-provider-class=eu.domibus.connector.persistence.largefiles.provider.LargeFilePersistenceServiceJpaImpl
+connector.persistence.default-large-file-provider-class=eu.ecodex.connector.persistence.largefiles.provider.LargeFilePersistenceServiceJpaImpl
 ----
 
 CAUTION: The as default configured large file persistence provider must also be active!

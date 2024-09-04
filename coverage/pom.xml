@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>eu.domibus.connector</groupId>
+        <groupId>eu.ecodex.connector</groupId>
         <artifactId>domibusConnector</artifactId>
-        <version>4.4.12-SNAPSHOT</version>
+        <version>6.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>coverage</artifactId>
@@ -16,77 +16,77 @@
     <dependencies>
         <!--Depends on all other modules-->
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorAPI</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorAPIlib</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorController</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorControllerAPI</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorControllerLIB</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorDocumentation</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorDssToolkit</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorEvidencesToolkit</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorLink</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorPersistence</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorSecurityToolkit</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorStarter</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorTestData</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorUI</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.domibus.connector</groupId>
+            <groupId>eu.ecodex.connector</groupId>
             <artifactId>domibusConnectorUILib</artifactId>
             <version>${project.version}</version>
         </dependency>

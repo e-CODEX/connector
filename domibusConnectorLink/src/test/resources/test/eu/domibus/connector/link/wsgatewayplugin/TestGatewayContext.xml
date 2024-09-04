@@ -19,9 +19,9 @@
         http://cxf.apache.org/bindings/soap
         http://cxf.apache.org/schemas/configuration/soap.xsd">
 
-    <jaxws:client xmlns:s="http://connector.domibus.eu/ws/gateway/delivery/webservice"
+    <jaxws:client xmlns:s="http://connector.ecodex.eu/ws/gateway/delivery/webservice"
             id="connectorDeliveryClient"
-            serviceClass="eu.domibus.connector.ws.gateway.delivery.webservice.DomibusConnectorGatewayDeliveryWebService"
+            serviceClass="eu.ecodex.connector.ws.gateway.delivery.webservice.DomibusConnectorGatewayDeliveryWebService"
             address="${connector.address}"
             serviceName="s:DomibusConnectorGatewayDeliveryWebService"
             wsdlLocation="wsdl/DomibusConnectorGatewayDeliveryWebService.wsdl">
@@ -46,9 +46,9 @@
     <!--
 portName: DomibusConnectorGatewaySubmissionWebService
 serviceName: DomibusConnectorGatewaySubmissionWSService
-http://connector.domibus.eu/ws/gateway/submission/webservice
+http://connector.ecodex.eu/ws/gateway/submission/webservice
             -->
-    <jaxws:endpoint xmlns:s="http://connector.domibus.eu/ws/gateway/submission/webservice"
+    <jaxws:endpoint xmlns:s="http://connector.ecodex.eu/ws/gateway/submission/webservice"
             id="testGwSubmissionServiceEndpoint"
             implementor="#testGwSubmissionService"
             address="/dcplugin"

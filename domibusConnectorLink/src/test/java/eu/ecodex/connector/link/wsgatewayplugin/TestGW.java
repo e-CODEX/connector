@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Profile;
 @SpringBootApplication(
     scanBasePackageClasses = {TestGW.class}, exclude = {DataSourceAutoConfiguration.class}
 )
-@ImportResource("classpath:/test/eu/domibus/connector/link/wsgatewayplugin/TestGatewayContext.xml")
+@ImportResource("classpath:/eu/ecodex/connector/link/wsgatewayplugin/TestGatewayContext.xml")
 @Profile("testgw")
 public class TestGW {
     public static final String TO_GW_SUBMITTED_MESSAGES_BLOCKING_QUEUE_BEAN_NAME =

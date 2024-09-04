@@ -57,7 +57,7 @@
             <AppenderRef ref="File" />
         </Logger>
         -->
-        <Logger name="eu.domibus.connector" level="INFO" additivity="false">
+        <Logger name="eu.ecodex.connector" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Business"/>
             <AppenderRef ref="File"/>

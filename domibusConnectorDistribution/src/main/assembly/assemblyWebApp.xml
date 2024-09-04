@@ -81,14 +81,14 @@
             <outputDirectory>webapp</outputDirectory>
             <unpack>false</unpack>
             <includes>
-                <include>eu.domibus.connector:domibusConnectorBuilderDeployable:war</include>
+                <include>eu.ecodex.connector:domibusConnectorBuilderDeployable:war</include>
             </includes>
         </dependencySet>
         <dependencySet>
             <outputDirectory>standalone/bin</outputDirectory>
             <unpack>false</unpack>
             <includes>
-                <include>eu.domibus.connector:domibusConnectorBuilderStandalone:jar</include>
+                <include>eu.ecodex.connector:domibusConnectorBuilderStandalone:jar</include>
             </includes>
         </dependencySet>
     </dependencySets>

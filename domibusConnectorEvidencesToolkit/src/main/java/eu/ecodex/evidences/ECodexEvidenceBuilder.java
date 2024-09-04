@@ -10,7 +10,7 @@
 
 package eu.ecodex.evidences;
 
-import eu.domibus.connector.common.annotations.BusinessDomainScoped;
+import eu.ecodex.connector.common.annotations.BusinessDomainScoped;
 import eu.ecodex.evidences.types.ECodexMessageDetails;
 import eu.ecodex.signature.EvidenceUtils;
 import eu.ecodex.signature.EvidenceUtilsXades;

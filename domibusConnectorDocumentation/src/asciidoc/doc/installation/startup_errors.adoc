@@ -24,7 +24,7 @@ APPLICATION FAILED TO START
 
 Description:
 
-Binding to target org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'token.issuer' to eu.domibus.connector.security.container.service.TokenIssuerFactoryProperties failed:
+Binding to target org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'token.issuer' to eu.ecodex.connector.security.container.service.TokenIssuerFactoryProperties failed:
 
     Property: token.issuer.advancedElectronicSystemType
     Value: null

@@ -18,7 +18,7 @@
         http://cxf.apache.org/bindings/soap
         http://cxf.apache.org/schemas/configuration/soap.xsd">
 
-    <jaxws:endpoint xmlns:s="http://connector.domibus.eu/ws/gateway/webservice"
+    <jaxws:endpoint xmlns:s="http://connector.ecodex.eu/ws/gateway/webservice"
             id="testGwPullServiceEndpoint"
             implementor="#testGwPullService"
             address="/dcpullplugin"

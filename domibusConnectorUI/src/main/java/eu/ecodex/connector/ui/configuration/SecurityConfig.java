@@ -60,7 +60,7 @@ public class SecurityConfig {
         private final String actuatorBasePath = "actuator";
 
         @Bean
-        protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        protected SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
             if (StringUtils.isNotEmpty(actuatorBasePath)) {
                 http
                     .authorizeHttpRequests(auth -> auth
@@ -90,7 +90,7 @@ public class SecurityConfig {
         private static final String LOGOUT_SUCCESS_URL = "/" + LoginView.ROUTE;
 
         @Bean
-        protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        protected SecurityFilterChain vaadinFilterChain(HttpSecurity http) throws Exception {
             http
                 .csrf(AbstractHttpConfigurer::disable)
                 .requestCache(requestCache -> requestCache.requestCache(new CustomRequestCache()))
@@ -110,7 +110,7 @@ public class SecurityConfig {
          * Allows access to static resources, bypassing Spring security.
          */
         @Bean
-        public WebSecurityCustomizer webSecurityCustomizer() {
+        public WebSecurityCustomizer vaadinWebSecurityCustomizer() {
             return web -> web.ignoring().requestMatchers(
                 // Vaadin Flow static resources
                 "/VAADIN/**",
@@ -162,7 +162,7 @@ public class SecurityConfig {
         ConnectorUiConfigurationProperties connectorUiConfigurationProperties;
 
         @Bean
-        public WebSecurityCustomizer webSecurityCustomizer() {
+        public WebSecurityCustomizer vaadinDevelopmentWebSecurityCustomizer() {
             return web -> web.ignoring().requestMatchers("");
         }
     }

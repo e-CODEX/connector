@@ -34,7 +34,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @Configuration
 @Profile(PUSH_BACKEND_PROFILE_NAME)
 @ImportResource(
-    {"classpath:/test/eu/domibus/connector/link/wsbackendplugin/testclient_pushdelivery.xml"}
+    {"classpath:/eu/ecodex/connector/link/wsbackendplugin/testclient_pushdelivery.xml"}
 )
 public class BackendClientPushWebServiceConfiguration {
     public static final String PUSH_DELIVERED_MESSAGES_LIST_BEAN_NAME = "deliveredMessagesListBean";

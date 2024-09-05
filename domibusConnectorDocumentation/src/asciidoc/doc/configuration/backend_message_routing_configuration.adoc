@@ -28,7 +28,7 @@ include::{mvnbasedir}/domibusConnectorController/src/test/resources-filtered/con
 
 [source]
 ----
-include::{mvnbasedir}/domibusConnectorControllerAPI/src/main/java/eu/domibus/connector/controller/routing/RoutingRulePattern.java[tag=BNF]
+include::{mvnbasedir}/domibusConnectorControllerAPI/src/main/java/eu/ecodex/connector/controller/routing/RoutingRulePattern.java[tag=BNF]
 ----
 
 

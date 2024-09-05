@@ -46,7 +46,7 @@ import org.springframework.test.util.TestSocketUtils;
         QuartzAutoConfiguration.class}
 )
 @Profile(ConnectorClientTestBackend.TEST_BACKEND_PROFILE_NAME)
-@ImportResource("classpath:/test/eu/domibus/connector/link/wsbackendplugin/testclient.xml")
+@ImportResource("classpath:/eu/ecodex/connector/link/wsbackendplugin/testclient.xml")
 public class ConnectorClientTestBackend {
     public static final String TEST_BACKEND_PROFILE_NAME = "wsbackendprofile";
     public static final String PUSH_BACKEND_PROFILE_NAME = "ws-backendclient-server";

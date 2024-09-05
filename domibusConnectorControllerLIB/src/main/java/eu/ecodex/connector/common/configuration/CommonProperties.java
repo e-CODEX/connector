@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @Component
 @ConfigurationProperties(prefix = CommonProperties.COMMON_PROPERTIES_CONFIG_PREFIX)
-// @PropertySource("classpath:/eu/domibus/connector/security/spring/
+// @PropertySource("classpath:/eu/ecodex/connector/security/spring/
 // security-default-configuration.properties")
 @Validated
 @Data

@@ -39,7 +39,7 @@ import eu.ecodex.connector.link.util.GetServerAddress;
     scanBasePackageClasses = {TestGwWebService.class}, exclude = {DataSourceAutoConfiguration.class}
 )
 @ImportResource(
-    "classpath:/test/eu/domibus/connector/link/gwwspullplugin/TestPullGatewayContext.xml"
+    "classpath:/eu/ecodex/connector/link/gwwspullplugin/TestPullGatewayContext.xml"
 )
 @Profile("testgwpull")
 public class TestGwWebService {

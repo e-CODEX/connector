@@ -10,3 +10,4 @@ jobs:
       java-version: 21
       sbom-path: 'target/bom.xml'
       artifact-path: 'domibusConnectorDistribution/target/domibusConnector.zip'
+      maven-parameters: '-Pproduction'

@@ -44,6 +44,11 @@
             <artifactId>domibusConnectorPersistence</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>domibusConnectorLink</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- spring dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

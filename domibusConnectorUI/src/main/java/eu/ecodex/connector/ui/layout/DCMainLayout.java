@@ -14,7 +14,6 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -40,7 +39,6 @@ import eu.ecodex.connector.ui.view.areas.users.UserOverview;
  */
 @UIScope
 @org.springframework.stereotype.Component
-@Push
 public class DCMainLayout extends AppLayout implements RouterLayout, BeforeEnterObserver {
     private final Tabs tabs;
     private final DCTabHandler tabManager = new DCTabHandler();

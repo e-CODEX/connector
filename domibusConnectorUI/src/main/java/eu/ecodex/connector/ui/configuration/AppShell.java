@@ -13,6 +13,10 @@ package eu.ecodex.connector.ui.configuration;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 
+/**
+ * This class is used to configure the application shell for a Vaadin application.
+ * The @Push annotation enables server-initiated updates to the user interface.
+ */
 @Push
 public class AppShell implements AppShellConfigurator {
 }

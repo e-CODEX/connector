@@ -125,6 +125,7 @@ domibusConnectorLauncher/domibusConnectorStandaloneLauncher/package-lock.json
 domibusConnectorWeb/transaction-logs/*.log
 domibusConnectorDocumentation/src/main/resources/META-INF/resources/
 domibusConnectorController/data/artemis/
+data/artemis/
 .idea
 diagram
 domibusConnectorDocumentation/.asciidoctorconfig.adoc

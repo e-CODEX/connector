@@ -148,23 +148,5 @@ public class SecurityConfig {
             );
         }
     }
-
-    /**
-     * This class represents the configuration for Vaadin web security in a development environment.
-     * It extends the WebSecurityConfigurerAdapter class to customize the security configuration.
-     * The class is annotated with @Configuration, @Order(499), and @Profile("dev").
-     */
-    @Configuration
-    // @Order(499)
-    // @Profile("dev")
-    public static class VaadinDevelopmentWebSecurityConfiguration {
-        @Autowired
-        ConnectorUiConfigurationProperties connectorUiConfigurationProperties;
-
-        @Bean
-        public WebSecurityCustomizer vaadinDevelopmentWebSecurityCustomizer() {
-            return web -> web.ignoring().requestMatchers("");
-        }
-    }
 }
 

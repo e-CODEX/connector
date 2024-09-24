@@ -1,12 +1,11 @@
-
 :path: ../../../
 
-ifndef::basepath[]
-:basepath: ../../../
-endif::basepath[]
+ifndef::basedir[]
+:basedir: {path}
+endif::basedir[]
 
 ifndef::header[]
-include::{basepath}/doc/header.adoc[]
+include::{basedir}/doc/header.adoc[]
 endif::header[]
 
 = Message Processing
@@ -16,10 +15,10 @@ This page shows how the message processing of the domibusConnector works.
 It contains examples of the message flows and focus on the technical transportation within the domibusConnector.
 Some of the examples also contain diagrams to show how messages are transformed during this process.
 
-For a better understanding the flows are simplyfied.
+For a better understanding the flows are simplified.
 
-include::{basepath}/doc/architecture/message_processing/message_processing_outgoing_business.adoc[leveloffset=+1]
-include::{basepath}/doc/architecture/message_processing/message_processing_outgoing_evidence.adoc[leveloffset=+1]
-include::{basepath}/doc/architecture/message_processing/message_processing_incoming_business.adoc[leveloffset=+1]
-include::{basepath}/doc/architecture/message_processing/message_processing_incoming_evidence.adoc[leveloffset=+1]
-include::{basepath}/doc/architecture/message_processing/message_processing_incoming_business.adoc[leveloffset=+1]
+include::{basedir}/doc/architecture/message_processing/message_processing_outgoing_business.adoc[leveloffset=+1]
+include::{basedir}/doc/architecture/message_processing/message_processing_outgoing_evidence.adoc[leveloffset=+1]
+include::{basedir}/doc/architecture/message_processing/message_processing_incoming_business.adoc[leveloffset=+1]
+include::{basedir}/doc/architecture/message_processing/message_processing_incoming_evidence.adoc[leveloffset=+1]
+// include::{basedir}/doc/architecture/message_processing/message_processing_incoming_business.adoc[leveloffset=+1]

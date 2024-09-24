@@ -87,7 +87,7 @@ image:screenshot_add_link_configuration.png[]
 
 === Add Link Partner
 
-A link partner can be added to a link configuration by using the + button. But this can only be done if the link configuration is configured via DB. Also if there is already a link partner configured the link plugin must support multiple link partners.
+A link partner can be added to a link configuration by using the + button. But this can only be done if the link configuration is configured via DB. Also, if there is already a link partner configured the link plugin must support multiple link partners.
 
 1. A 'Link Partner Name' is required. This name has to be unique. The uniqueness is currently not enforced!
 

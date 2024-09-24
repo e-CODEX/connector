@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -19,7 +18,7 @@ endif::mvnbasedir[]
 
 Since 4.3.0 the connector comes with different link plugins.
 
-This document describes how this links are configured with properties. The UI configuration manual is link:../ui/linkconfig/link_configuration.html[here] aviailable.
+This document describes how these links are configured with properties. The UI configuration manual is link:../ui/linkconfig/link_configuration.html[here] available.
 
 The general architecture of the link is link:../architecture/link_partners.html[here] available.
 
@@ -34,11 +33,11 @@ The general architecture of the link is link:../architecture/link_partners.html[
 
 The Links are known to the connectorController only by
 DomibusConnectorLinkPartner. Only the LinkPartner name is stored
-to the message processing. So how/who the LinkPartner is is completly
+to the message processing. So how/who the LinkPartner is  completely
 transparent to the message processing flow.
 
 The configuration itself is read into the DomibusConnectorLink and
-DomibusConnectorLinkPartner classes. Afterwards when the LinkPartner and Link is
+DomibusConnectorLinkPartner classes. Afterward when the LinkPartner and Link is
 activated during startup the ActiveLinkConfiguration and ActiveLInkPartner
 is created.
 
@@ -107,7 +106,7 @@ ActiveLinkPartner "1" --> "*" DomibusConnectorLinkPartner
 ----
 
 
-CAUTION: The backends are authenticated with certificates at the connector. The CN of the certificate is used to determine which backend is talking to the connector. So make sure every backend has it's own CN within its certificate.
+CAUTION: The backends are authenticated with certificates at the connector. The CN of the certificate is used to determine which backend is talking to the connector. So make sure every backend has its own CN within its certificate.
 
 === Configuration via Property File
 

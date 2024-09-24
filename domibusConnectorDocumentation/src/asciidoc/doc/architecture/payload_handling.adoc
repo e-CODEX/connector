@@ -18,7 +18,7 @@ Streaming support means that the content of the file is streamed into the applic
 
 == Class diagram
 
-The main entry point for using the storage sytem is the DCBusinessDomainPersistenceService. This services offers to create, get, delete a Storage reference.
+The main entry point for using the storage system is the DCBusinessDomainPersistenceService. This services offers to create, get, delete a Storage reference.
 
 
 [plantuml,storage_architecture,format=svg]
@@ -52,14 +52,14 @@ Currently 2 storage implementations are available:
 
 === FileSystemStorage (supports streaming)
 
-The filesystem storage stores the content on the filesystem. Optional a encryption of the content is supported. The encryption key is stored in the returned LargeFileReferenceObject. Since this object becomes part of the message process (DomibusConnectorMessage class) it is put on the JMS queue and database.
+The filesystem storage stores the content on the filesystem. Optional an encryption of the content is supported. The encryption key is stored in the returned LargeFileReferenceObject. Since this object becomes part of the message process (DomibusConnectorMessage class) it is put on the JMS queue and database.
 
 The storage follows this organisation:
 
 * <basepath>/<connector_messageid>/<storage_item_1>
 * <basepath>/<connector_messageid>/<storage_item_2>
 
-With this organisation after a message has been completly processed the <basepath>/<connector_message_id> folder can be deleted.
+With this organisation after a message has been completely processed the <basepath>/<connector_message_id> folder can be deleted.
 
 ==== Deletion
 
@@ -71,7 +71,7 @@ The deletion happens in 2 steps.
 
 === JPABased Database Storage (Does NOT support streaming)
 
-The JPA storage stores the content into the database. For this JPA mapping is used. The implementation needs to load the complete file into a byte array before writing it into the database. Also when the content is read the whole file is stored into a byte array. So this storage engine should not used if large files are expected.
+The JPA storage stores the content into the database. For this JPA mapping is used. The implementation needs to load the complete file into a byte array before writing it into the database. Also when the content is read the whole file is stored into a byte array. So this storage engine should not be used if large files are expected.
 
 == Discussion
 

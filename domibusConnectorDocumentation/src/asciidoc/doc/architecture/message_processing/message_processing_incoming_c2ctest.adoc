@@ -18,7 +18,7 @@ by the gateway which fulfills the requirements of a connector test message.
 
 The following diagram shows how a message that is sent to the domibusConnector is transported to the domibusConnectorController message queue.
 
-[plantuml,message_proc_in_business_1,format=svg]
+[plantuml,message_proc_in_c2ctest_1,format=svg]
 ----
 @startuml
 

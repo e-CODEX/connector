@@ -10,7 +10,7 @@ endif::header[]
 
 = Connector Test Messages List
 
-In this list every connector-to-connector test message can be seen. All messages received or sent by/to the defaul-test-backend
+In this list every connector-to-connector test message can be seen. All messages received or sent by/to the default-test-backend
 are listed.
 
 Every message in the list starts with a button that leads to the message details.

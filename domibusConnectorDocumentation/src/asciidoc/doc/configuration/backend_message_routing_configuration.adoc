@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -15,7 +14,7 @@ endif::mvnbasedir[]
 
 = Routing Rule Configuration
 
-Currently the routing rules can only be configured via the spring environment (connector.properties).
+Currently, the routing rules can only be configured via the spring environment (connector.properties).
 
 Example of routing rules:
 

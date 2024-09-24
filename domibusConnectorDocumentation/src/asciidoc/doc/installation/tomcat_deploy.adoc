@@ -59,14 +59,14 @@ If you want to pass more configuration or settings to the application. You can u
 For further information consult the tomcat documentation: https://tomcat.apache.org/tomcat-7.0-doc/config/context.html#Defining_a_context
 
 Copy the domibusConnectorTomcatStarter.war file to a location where the application server can read it. But *NOT* in the
-webapps folder (or any other folder where tomcat is auto deploying from). Because tomcat will automatically deploy it and you cannot
+webapps folder (or any other folder where tomcat is auto deploying from). Because tomcat will automatically deploy it, and you cannot
 define a custom context for this application anymore. Remember this path!
 
 Open your tomcat home directory. And put the domibusConnectorWebAppModule.xml into &lt;your tomcat root path&gt;/Catalina/localhost/.
 Edit the xml and change the data-source according to your needs. Don't forget to
 put the according jdbc driver jar into the tomcat libs folder.
 
-Restart your tomcat. During startup tomcat dedects the new context configuration and loads it. Tomcat initializes the datasource connection
+Restart your tomcat. During startup tomcat detects the new context configuration and loads it. Tomcat initializes the datasource connection
 and also deploys the domibusConnectorTomcatStarter.war from the specified path (docBase). Als the specified parameters are put into the servlet
 context and are available to the starting application.
 

@@ -1,4 +1,3 @@
-
 :path: ../../../
 
 ifndef::basepath[]
@@ -105,7 +104,7 @@ JTATransaction_Connector -d-> DLQ.toConnectorControllerQueue : on failure
 ----
 
 During processing in ToGatewayBusinessMessageProcessor, the ASIC-S container ist built and the ETSI-REM evidence SUBMISSION_ACCEPTANCE is generated and added to the message.
-After the message is successfully put on the submitToLinkQueue, the SUBMISSIO_ACCEPTANCE evidence is sent back to the backend where the business message came from (can be deactivated by configuration).
+After the message is successfully put on the submitToLinkQueue, the SUBMISSION_ACCEPTANCE evidence is sent back to the backend where the business message came from (can be deactivated by configuration).
 
 Diagram: ToGatewayBusinessMessageProcessor process message
 

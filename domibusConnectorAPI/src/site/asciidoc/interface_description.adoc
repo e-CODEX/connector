@@ -343,7 +343,7 @@ set with the backendMessageId
 * In all other cases the refToMessageId will be set to the EBMS_ID
 
 This means if the backend always returns a backendMessageId for a received message, the EBMS ID will be
-completly transparent for the backend. The backendMessageId is mapped by the connector to the EBMS ID.
+completely transparent for the backend. The backendMessageId is mapped by the connector to the EBMS ID.
 
 ==== Ordering of the confirmation messages
 

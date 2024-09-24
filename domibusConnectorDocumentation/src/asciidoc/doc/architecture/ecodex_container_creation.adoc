@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -30,7 +29,7 @@ Depending on the underlying zip implementation of the JVM the maximum file limit
 . The business document is validated
 .. The existence of a business document is validated
 .. Depending on the authentication System (AUTHENTICATION_BASED, SIGNATURE_BASED) the signature of the document is validated
-.. Dependent on the checkes a Trust Token is created both in PDF Form (human readable) and strucutered as XML. Both documents are signed by the connector
+.. Dependent on the checks a Trust Token is created both in PDF Form (human-readable) and structured as XML. Both documents are signed by the connector
 . The BusinessDocumentPDF, TrustTokenPDF and all attachments are put into the  ASIC-S container
 
 The message now contains the ASIC-S container, the BusinessDocumentXML and the TrustTokenXML.
@@ -44,9 +43,9 @@ The signature based validation uses DSS library to validate the document signatu
 * A custom certificate validation policy.
 * A trust store (which holds all certificates considered as trusted for signing a document)
 * Including a trusted list source
-* Using a ignore store (a keystore which holds all certificates considered as non trusted)
+* Using an ignore store (a keystore which holds all certificates considered as non-trusted)
 
-Based on this informations the signature is checked technical. If the check is successfull and the legal check of document and signature to. The document is considered legally valid in the sending country.
+Based on this information the signature is checked technical. If the check is successful and the legal check of document and signature to. The document is considered legally valid in the sending country.
 
 === Authentication Based Validation
 
@@ -54,11 +53,11 @@ The authentication based approach has been invented by the e-Codex project to al
 
 In this case the Authentication Based System assumes that only a valid document can be handed over to the connector. The connector uses in this case the originalSender as authenticated document issuer. The identity provider system is set by configuration.
 
-NOTE: Since the eIDAS regulation this approach seems a little bit odd, but still this enables also older systems to particiapte in international digital data exchange. For more information see link:www.e-codex.eu[]
+NOTE: Since the eIDAS regulation this approach seems a little bit odd, but still this enables also older systems to participate in international digital data exchange. For more information see link:https://ecodex.eu[Ecodex]
 
 ==== Discussion on Authentication Based System
 
-This approach most likely needs som adaptions to national systems. Like passing on authenticatoin tokens to the connector for valdiation (eg. SAML-Token, JWT-Token, ...). There are plenty of use cases for that. Please contact the ME-Codex consortium if you need adaptions/extensions on this part.
+This approach most likely needs som adaptions to national systems. Like passing on authentication tokens to the connector for validation (e.g. SAML-Token, JWT-Token, ...). There are plenty of use cases for that. Please contact the ME-Codex consortium if you need adaptions/extensions on this part.
 
 Still the recommendation is if possible use eIDAS conformant signatures.
 

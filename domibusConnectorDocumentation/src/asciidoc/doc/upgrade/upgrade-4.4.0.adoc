@@ -36,7 +36,7 @@ endif::header[]
 
 ==== Security Configuration
 
-As the security lib configuration has been splitted into the eCodexContainer and BusinessDocumentVerification configuration the following properties have changed:
+As the security lib configuration has been split into the eCodexContainer and BusinessDocumentVerification configuration the following properties have changed:
 
 More details are available here:
 

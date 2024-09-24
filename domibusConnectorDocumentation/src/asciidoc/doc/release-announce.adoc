@@ -12,7 +12,7 @@ The new version is domibusConnector-{project-version}.
 
 == Download location
 
-It is available under https://secure.e-codex.eu/nexus/content/groups/public/eu/domibus/connector/domibusConnectorDistribution/{project-version}/domibusConnectorDistribution-{project-version}.zip
+It is available under https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/domibusConnectorDistribution/{project-version}/domibusConnectorDistribution-{project-version}.zip
 
 Username and password will by provided via e-mail request.
 

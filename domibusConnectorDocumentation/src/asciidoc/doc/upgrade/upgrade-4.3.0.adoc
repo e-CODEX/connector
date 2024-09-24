@@ -57,7 +57,7 @@ If you are planning to use JTA, which is recommended please add the following pr
 * spring.jta.atomikos.datasource.max-pool-size=10
 * spring.activemq.broker-url=vm://broker1?brokerConfig=xbean:config/activemq.xml
 
-If you are using oracle, please use a JDBC driver which is XA complient, this means
+If you are using oracle, please use a JDBC driver which is XA compliant, this means
 for oracle a driver change to:
 
 * spring.datasource.driver-class-name=oracle.jdbc.xa.client.OracleXADataSource

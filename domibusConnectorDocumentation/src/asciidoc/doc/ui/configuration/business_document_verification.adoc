@@ -98,14 +98,14 @@ The following properties will only be used in case of SIGNATURE_BASED AES type.
 | property | description | field type | example values
 
 | Location of EtsiValidationPolicyXml
-| The Location of the Etsi Validation Policy. This policy is used by the DSS Utils to verify the certificate of the attched signature on the business document.
+| The Location of the Etsi Validation Policy. This policy is used by the DSS Utils to verify the certificate of the attached signature on the business document.
 | TextField
 | by default a classpath reference.
 
 | Use Trust Store
 | Use an own TrustStore Configuration for verification.
 | Checkbox
-a| * set (true): the following properties deifine the TrustStore used for verification.
+a| * set (true): the following properties define the TrustStore used for verification.
 * not set (false): the trustStore imported with the PMode-Set will be used for verification. 
 
 | Trust Store Configuration
@@ -116,7 +116,7 @@ a| * set (true): the following properties deifine the TrustStore used for verifi
 | Use Ignore Store
 | Use the Ignore Store, any certificate in here would be considered not trusted.
 | Checkbox
-a| * set (true): the following properties deifine the TrustStore with certificates ignored.
+a| * set (true): the following properties define the TrustStore with certificates ignored.
 * not set (false): no TrustStore used with certificates ignored. 
 
 | Ignore Store Configuration

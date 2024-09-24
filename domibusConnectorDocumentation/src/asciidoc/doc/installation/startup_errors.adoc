@@ -42,5 +42,5 @@ token.issuer.advancedElectronicSystemType
 
 NOTE: The property
 **token.issuer.advancedElectronicSystemType**
-is equevalent to
+is equivalent to
 **token.issuer.advanced-electronic-system-type**

@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -80,6 +79,6 @@ Also see: link:http://www.quartz-scheduler.org/documentation/quartz-2.3.0/config
 === Backend and Gateway Connection
 
 As the connector exposes webservices to gateway and the backends, this
-services should be made fault-tolerant with an load-balancer.
+services should be made fault-tolerant with a load-balancer.
 
 

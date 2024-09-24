@@ -124,7 +124,7 @@ The following diagram shows how a message that is put on the submitToLink queue 
 
 The following diagram shows how a message that is put on the submitToLink queue is processed
 
-[plantuml,message_proc_out_business_3,format=svg]
+[plantuml,message_proc_out_evidence_3,format=svg]
 ----
 @startuml
 

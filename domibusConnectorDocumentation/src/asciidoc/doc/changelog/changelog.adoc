@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]

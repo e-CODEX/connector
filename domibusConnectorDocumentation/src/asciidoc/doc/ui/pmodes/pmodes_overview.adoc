@@ -66,7 +66,7 @@ m|<party name="service_ctp" endpoint="https://someURL:somePort/contextPath" allo
 m|DOMIBUS_CONNECTOR_PARTY
 a| * name=IDENTIFIER
  * partyId=PARTY_ID
- * partyIdType=PARTY_ID_TYPE - points to the definition of paryIdTypes in XML file
+ * partyIdType=PARTY_ID_TYPE - points to the definition of partyIdTypes in XML file
 |The parties are the actual members participating. Each party defines a gateway connected to the e-CODEX network within this PModes definitions.
 
 |roles

@@ -17,7 +17,7 @@ is part of the domibusConnectorDistribution and located within the folder 'stand
 
 
 === Starting
-The standalone package is ready to run. Everything es preconfigured, even a embedded database is spinning up during startup.
+The standalone package is ready to run. Everything es preconfigured, even an embedded database is spinning up during startup.
 
 === Customizing
 
@@ -38,8 +38,8 @@ The configuration is located under config within the connector.properties file.
 
 === Installing on Linux
 
-Currently systemd is the way to go. The recommendation is to put the connector under /opt/connector and
-create a own user for operating it.
+Currently, systemd is the way to go. The recommendation is to put the connector under /opt/connector and
+create an own user for operating it.
 
 Example systemd unit file:
 

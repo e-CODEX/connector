@@ -1,4 +1,3 @@
-
 == Changelog for domibusConnector-4.2.x
 
 === 4.2.0
@@ -15,7 +14,7 @@ link:upgrade/upgrade-4.2.0.html[Upgrade to 4.2.0]
 * Packaging:
 ** Packaged with web based documentation (as part of the distribution package)
 ** Standalone Package (as part of the Distribution package)
-** Docker assembly (available via nexus: https://secure.e-codex.eu/nexus/content/groups/public/eu/domibus/connector/domibusConnectorStandaloneLauncher/<version>/domibusConnectorStandaloneLauncher-<version>-docker-assembly.zip)
+** Docker assembly (available via nexus: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/domibusConnectorStandaloneLauncher/<version>/domibusConnectorStandaloneLauncher-<version>-docker-assembly.zip)
 * Admin UI:
 ** Refreshable lists: relevant lists in UI get a "Refresh" button.
 ** Certificate information to be displayed.
@@ -27,7 +26,7 @@ link:upgrade/upgrade-4.2.0.html[Upgrade to 4.2.0]
 * ETSI-REM evidence handling: generated evidences to be sent back to backend/client using the known IDs. link:domibusConnectorAPI/interface_description.html[Interface Description]
 
 ==== Compatibility:
-* The 4.2.x connector is compatible with the 4.1.3-RELEASE of the domibus-connector-plugin-Distribution (available via nexus: https://secure.e-codex.eu/nexus/content/groups/public/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.1.3-RELEASE/)
+* The 4.2.x connector is compatible with the 4.1.3-RELEASE of the domibus-connector-plugin-Distribution (available via nexus: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.1.3-RELEASE/)
 
 * Also all connector backends build against the domibusConnectorAPI from version 4.0 to 4.2 are compatible, since there have been no
 API changes!
@@ -149,6 +148,6 @@ because its loading ALL messages from DB
 
 ==== Changes
 
-* Fixed handling of partyRoles: roles are now taken into account wether it is an initiator or responder. Important for PModes where role for initiator and responder are different.
+* Fixed handling of partyRoles: roles are now taken into account whether it is an initiator or responder. Important for PModes where role for initiator and responder are different.
 * Fix: upper/lower case bug in database script for generating reports with evidences as own messages. Concerns MySQL based DBMS (as those are case sensitive).
 

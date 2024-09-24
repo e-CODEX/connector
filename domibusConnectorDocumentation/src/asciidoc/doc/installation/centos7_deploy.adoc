@@ -10,7 +10,7 @@ endif::header[]
 
 = Centos 7 deployment
 
-This contains a example deployment on an centos 7 system.
+This contains an example deployment on a Centos 7 system.
 
 == System preparation
 
@@ -28,11 +28,11 @@ sudo yum install -y java-1.8.0-openjdk-headless mariadb tomcat mysql-connector-j
 
 * java-1.8.0-openjdk-headless java runtime environment
 * mariadb (the database)
-* tomcat tomcat web application container
+* tomcat web application container
 * mysql-connector-java jdbc driver for accessing the database
 
 Make the database jdbc driver for tomcat available by linking it into the tomcat libs folder.
-By linking you get the benifit, that the driver is updated by the centos distribution.
+By linking you get the benefit, that the driver is updated by the Centos distribution.
 
 ____
 
@@ -54,7 +54,7 @@ sudo systemctl enable mariadb
 
 Create a database and a database user:
 
-If the database has started successfully log into the datbase with the following command
+If the database has started successfully log into the database with the following command
 
 ----
 sudo mysql
@@ -100,11 +100,11 @@ Copy the application example properties to /opt/domibusConnector/config
 ----
 cp application.properties /opt/domibusConnector/config
 ----
-and configure the properties. You might enabled liquibase for database initialisation by setting
+and configure the properties. You might enable liquibase for database initialisation by setting
 ----
     spring.liquibase.enabled=true
 ----
-otherwise you have to apply the database scripts to the databse.
+otherwise you have to apply the database scripts to the database.
 
 
 Restart the tomcat
@@ -117,4 +117,4 @@ Enable tomcat for startup on boot
 systemctl enabled tomcat
 ----
 
-NOTE: if you plan to also install domibus (AS4 Gateway) make surce that you are using a different tomcat!
+NOTE: if you plan to also install domibus (AS4 Gateway) make sure that you are using a different tomcat!

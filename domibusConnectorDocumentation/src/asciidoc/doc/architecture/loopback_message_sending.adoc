@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -28,7 +27,7 @@ The specific database changes are provided with the database migration scripts.
 
 The domibus gateway supports loopback message sending according to the
 documentation only for testing purposes. The domibus gateway also
-is appending on an loop backed message (sender=receiver) a _1 to the EBMS id.
+is appending on a loop backed message (sender=receiver) a _1 to the EBMS id.
 This behaviour does break the EBMS standard so the connector is removing this
 _1 from any EBMS id. In future implementations this workaround will be moved
 into the domibusConnectorPlugin.

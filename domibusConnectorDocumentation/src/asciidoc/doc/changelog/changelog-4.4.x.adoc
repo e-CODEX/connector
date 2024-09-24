@@ -6,7 +6,7 @@
 
 * New API web-service methods to support backend pull mechanism with technical message acknowledgement.
 * The "role" of parties in message transition model is set to "optional".
-* Additional field to give backends the possibility to add the informaiton if the business document of one message is either SIGNATURE_BASED or AUTHENTICATION_BASED. 
+* Additional field to give backends the possibility to add the information if the business document of one message is either SIGNATURE_BASED or AUTHENTICATION_BASED.
 
 For further details see the following chapters of the domibusConnector-Architecture.pdf:
 
@@ -82,7 +82,7 @@ if the AIA source was not reachable.
 
 ==== Fixes
 
-* Multiple updates of dependentant libraries
+* Multiple updates of dependent libraries
 * Fix for issues related to pull for web service backends
 * UI fix for enable change of message process settings
 ** EBMS generation

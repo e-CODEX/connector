@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -13,7 +12,7 @@ endif::header[]
 
 How are the messages distributed to the different connectorClients?
 
-The routing occures in the following priority:
+The routing occurres in the following priority:
 
 1. refToMessageId: If the transported message relates to an EBMS id of an already processed business message. The backend_name of this message is used.
 

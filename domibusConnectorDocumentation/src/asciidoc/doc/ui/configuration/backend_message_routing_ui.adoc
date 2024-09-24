@@ -108,11 +108,11 @@ The currently supported content types are:
 * FromPartyIdRole: The Role of the AS4 From Party.
 * FinalRecipient: The finalRecipient defined in the ebms header of the message.
 
-Most of the content types rely to the PMode-Set data. So the values can be taken from there.
+Most of the content types rely on the PMode-Set data. So the values can be taken from there.
 
 ==== Values
 
-Values are strings that are compared. The are delimited by "*'*" symbols.
+Values are strings that are compared. They are delimited by "*'*" symbols.
 
 Example:
 'someValue'
@@ -179,7 +179,7 @@ IMPORTANT: Instead of combining token with an OR condition it is also possible t
 
 .Examples of combinations of token
 |===
-|route expression|explaination|matching message content | not matching message content
+|route expression|explanation|matching message content | not matching message content
 
 |&(equals(ServiceName,'Mla'),startsWith(FinalRecipient,'Court'))
 |his route expression matches to all messages of AS4 Service 'EPO' which finalRecipient starts with 'Court'.

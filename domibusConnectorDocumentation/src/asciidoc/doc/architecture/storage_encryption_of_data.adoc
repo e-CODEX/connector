@@ -15,7 +15,7 @@ endif::header[]
 
 Within the connector the data is categorized in the following groups:
 
-* Adressing Data / AS4 Data
+* Addressing Data / AS4 Data
 * Payload Data
 * Legal Data / Proof of communication, recipient, sent
 * Technical Data / Log Data
@@ -39,7 +39,7 @@ For more details consult the eDelivery profile and the eCodex protocol specifica
 * EBMSID
 * RefToMessageId
 
-All this data is stored by the connector within the database. There is no purge or deletion mechanism in place. So the products or usecases which are using the connector should make sure that no sensitive data is used within this fields.
+All this data is stored by the connector within the database. There is no purge or deletion mechanism in place. So the products or usecases which are using the connector should make sure that no sensitive data is used within these fields.
 
 NOTE: In some backend systems the case number (or parts of it) is used as a conversation id. So if the case number is considered sensitive the backend system should not write the case id into the conversationId field. As the original sender and final recipient are already part of the public address book (criminal court database, civil court database, ...) this data can already be considered as public.
 
@@ -50,7 +50,7 @@ The connector treats the following as payload data:
 * AS4 container
 * XML Business Document
 
-The payload data is handled by the large file handling module. Currently the connector has 2 modules for that (for mor details see link:payload_handling.adoc[Payload Handling]) :
+The payload data is handled by the large file handling module. Currently, the connector has 2 modules for that (for mor details see link:payload_handling.adoc[Payload Handling]) :
 
 ** FileSystem (Payload can be stored encrypted on disk, Password is stored in DB and JMS Broker)
 ** Database (Payload is written into DB)

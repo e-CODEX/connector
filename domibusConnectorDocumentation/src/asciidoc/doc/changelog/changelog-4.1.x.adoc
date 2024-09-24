@@ -4,13 +4,13 @@
 
 Feature: Filesystem handling for streaming of attachments.
 Feature: WS-Security at gateway webservice side
-Bugfix: Cleanup of Message Contents after successfull submission.
+Bugfix: Cleanup of Message Contents after successful submission.
 Feature: Connector properties can be loaded from database
 Feature: The logging of the domibusConnector will be improved.
 Logging of message related operations will be driven by connectorId (connectorId is put into the MDC (Mapped Diagnostik Context) of the logging engine). Filtering possibilities.
-Warning in logging if messages are not confirmed by evidencs within configurable period.
+Warning in logging if messages are not confirmed by evidences within configurable period.
 Warning in case of a red TrustOKToken.
-Seperation between technical and message logging.
+Separation between technical and message logging.
 
 Feature: Enhancements of the administration console:
 New design
@@ -21,7 +21,7 @@ Monitoring of messages
 domibus-connector-plugin:
 
 Adaptions for domibus gateway 4.0.
-Feature: Configuration improvements - seperate properties file for plugin.
+Feature: Configuration improvements - separate properties file for plugin.
 Feature: WS-Security on webservices to connector.
 
 === 4.1.1-RELEASE

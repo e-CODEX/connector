@@ -39,7 +39,7 @@ The domibusConnector is a software that has been completely implemented using th
 
 As JAVA is by definition a platform independent environment, every operating system with a proper JAVA installation should fit the needs of setting up the domibusConnector.
 
-During implementation and testing phase of the domibusConnector, it was installend and tested on the following environments:
+During implementation and testing phase of the domibusConnector, it was installed and tested on the following environments:
 
 
 === Java Runtime
@@ -49,7 +49,7 @@ Please have a look at the link:../versioning_and_compatibility/testing_matrix.ad
 
 [#_database]
 === Database
-The domibusConnector needs an underlying database to store information.Currently the following DBMS are supported:
+The domibusConnector needs an underlying database to store information. Currently, the following DBMS are supported:
 
 * MariaDB Server 10.3 and higher
 * MySQL 5.6.6 and higher
@@ -86,7 +86,7 @@ As the domibusConnector needs some sources from the internet for the security li
 === The domibusConnector distribution package
 To get started, you first need to have downloaded and extracted the distribution package.
 The domibusConnector provides different distribution packages all placed on the e-CODEX Nexus repository server at:
-https://secure.e-codex.eu/nexus/content/groups/public/eu/domibus/connector/domibusConnectorDistribution/{project-version}/
+https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/domibusConnectorDistribution/{project-version}/
 
 * domibusConnectorDistribution-{project-version}.zip
 
@@ -202,7 +202,7 @@ For more details see: https://docs.spring.io/spring-boot/docs/2.6.8/reference/ht
 This enables the possibility to integrate spring config server or similar products.
 
 The variants on how to set those environment variables on your web server environment is dependent on what product you have in place.
-For the web server products Apache Tomcat this is described exemplarily in the Chapter xref:_deployment[Deployment].
+For the web server products Apache Tomcat this is described exemplary in the Chapter xref:_deployment[Deployment].
 
 Also consider that most configuration parts can be done using the domibusConnector-Administration UI once installed and started.
 

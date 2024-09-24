@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -55,7 +54,7 @@ For details, please see the documentation of the domibusConnectorClient-Librarie
 == Push/Push connection
 
 This is the possibility to push messages between the domibusConnector and the backend.
-It means that incoming messages processed by the domibusConnector are pushed to the backend synchroniously,
+It means that incoming messages processed by the domibusConnector are pushed to the backend synchronously,
 just like the backend pushes messages to the domibusConnector directly.
 
 === Backend submitting messages to the domibusConnector
@@ -111,10 +110,10 @@ produce ETSI-REM evidences.
 
 === Backend pulling messages from the domibusConnector
 
-Pulling a message is now split into three seperate web-service calls:
+Pulling a message is now split into three separate web-service calls:
 
 * listPendingMessageIds	- it returns a list of message transport ids from the domibusConnector of message in state PENDING for this backend at the connector.
-* getMessageById		- each message must be downloaded seperately. The ids are received at the previous call. This allows the backend to control the number of pulled messages.
+* getMessageById		- each message must be downloaded separately. The ids are received at the previous call. This allows the backend to control the number of pulled messages.
 This causes the downloaded message to get into state PENDING_DOWNLOADED at the domibusConnector. 
 * acknowledgeMessage 	- This method needs to be called for each message successfully downloaded after processing at the backend. According to the result sent with this method call, the message
 changes state at the domibusConnector to either FINISHED (is success) or FAILED (otherwise). 

@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -24,7 +23,7 @@ The connector supports the use of trusted lists as a trust source for certificat
 
 === Basic DSS configuration
 
-The basic dss configurtion includes the location of tl cache. This cache is used to store downloaded trusted lists informations.
+The basic dss configuration includes the location of tl cache. This cache is used to store downloaded trusted lists information.
 
 For every connection by the dss tools a proxy can be configured. This proxy is used to
 
@@ -50,7 +49,7 @@ include::{mvnbasedir}/domibusConnectorDssToolkit/src/test/resources/config/appli
 ----
 
 
-WARNING: Currently the connector only updates the Trusted Lists during startup!
+WARNING: Currently, the connector only updates the Trusted Lists during startup!
 
 === Example configuration of Time Stamp Servers
 

@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -21,10 +20,10 @@ image:database_diagram.svg[Database Diagram]
 ==== Liquibase
 
 Liquibase is a framework to keep track of database schema changes and add some kind of versioning on it.
-It enables the connetor to automatically apply any database changes. Liquibase uses the following tables:
+It enables the connector to automatically apply any database changes. Liquibase uses the following tables:
 
 * DATABASECHANGELOG:
-    Contains a List of all scripts which has been run by liquibase to update/change database strucuture
+    Contains a List of all scripts which has been run by liquibase to update/change database structure
 * DATABASECHANGELOGLOCK
 
 

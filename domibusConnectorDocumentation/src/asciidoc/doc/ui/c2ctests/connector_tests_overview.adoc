@@ -25,7 +25,7 @@ link:../architecture/connector_message_flow.html[connector_message_flow].
 It processes a message the whole chain of process steps within the domibusConnector.
 
 * At sending, it builds the ASIC-S container like described in link:../architecture/ecodex_container_creation.html[ecodex_container_creation].
-* At sending, it generates a first ETSI-REM evidence (SUBMISSION_ACCEPTENCE).
+* At sending, it generates a first ETSI-REM evidence (SUBMISSION_ACCEPTANCE).
 * It transmits the message to another e-CODEX participant from the PModes.
 * At receiving, it resolves and validates the ASIC-S container.
 * At receiving, it generates all necessary ETSI-REM evidences and sends them back to the sender.

@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -24,7 +23,7 @@ The DSS library is provided by CEF and is used for certificate verification and 
 
 The trust list (TL) is basically a list of certificates. The list of trusted lists (LTOL) is a list of trust list. Both can be downloaded by the dss library, which also handles updating and caching.
 
-An example of a LOTL (List of trusted lists) is the EU-LOTL - which contains all trusted certificates within the EU (see: link: https://esignature.ec.europa.eu/efda/tl-browser[EU Trust Services Dashboard]).
+An example of a LOTL (List of trusted lists) is the EU-LOTL - which contains all trusted certificates within the EU (see: link:https://esignature.ec.europa.eu/efda/tl-browser[EU Trust Services Dashboard]).
 
 The connector supports the usage of trust lists for certificate validation with some limitations:
 
@@ -50,7 +49,7 @@ Signature Creation is used for the following tasks:
 
 == Time Stamps
 
-The DSS library also supports time stamp servers. Currently it is possible to configure time stamp servers but they are not used yet. It is planned to support more link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#_signatures_profile_simplification[signature profiles].
+The DSS library also supports time stamp servers. Currently, it is possible to configure time stamp servers, but they are not used yet. It is planned to support more link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#_signatures_profile_simplification[signature profiles].
 
 
 

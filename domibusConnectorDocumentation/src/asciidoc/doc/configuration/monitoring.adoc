@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -21,7 +20,7 @@ The connector uses link:https://docs.spring.io/spring-boot/docs/current/referenc
 The actuator interface can be exposed over http and JMX.
 
 === Actuator Security
-The actuator interface is located under <connectorURL>/acatuator and is password protected. To access the
+The actuator interface is located under <connectorURL>/actuator and is password protected. To access the
 actuator interface a user with the ROLE actuator or admin is required!
 
 NOTE: The initial admin user has the role admin
@@ -48,13 +47,13 @@ management.endpoints.web.exposure.include=info,health,metrics,configprops,promet
 
 === Exposed Health Endpoints
 
-Currently no custom HealthEndpoint is created. For the future it is planned to expose the following health metrics:
+Currently, no custom HealthEndpoint is created. For the future it is planned to expose the following health metrics:
 
 * Certificate health
 * ActiveMQ Queues
 
 
-NOTE: A preview on the health metrics is here link:https://secure.e-codex.eu/nexus/content/groups/public/eu/ecodex/utils/monitor/ecodex-monitor-app/0.0.12-RELEASE/[]
+NOTE: A preview on the health metrics is here link:https://scm.ecodex.eu/artifactory/libs-release/eu/ecodex/utils/monitor/ecodex-monitor-app/0.0.12-RELEASE/[]
 available. It is a war deployable which can be deployed next to the domibusGateway or connector and can expose
 certificates and activeMQ queues over a spring actuator interface.
 

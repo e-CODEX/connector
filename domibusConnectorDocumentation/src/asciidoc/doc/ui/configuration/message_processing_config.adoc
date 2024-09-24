@@ -25,7 +25,7 @@ general message processing.
 | Name | Description
 
 | sendGeneratedEvidencesToBackend
-| If true is enabled, the connector sends every generated evidence back to the backend. Also the by the backend triggered evidences are sent back. This could be useful if the backend wants to archive the whole evidence chain.
+| If true is enabled, the connector sends every generated evidence back to the backend. Also, the by the backend triggered evidences are sent back. This could be useful if the backend wants to archive the whole evidence chain.
 The default is true
 
 | ebmsIdGeneratorEnabled

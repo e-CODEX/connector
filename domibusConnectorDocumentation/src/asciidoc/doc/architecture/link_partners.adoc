@@ -1,5 +1,3 @@
-
-
 :path: ../../
 
 ifndef::basepath[]
@@ -79,7 +77,7 @@ ActiveLinkPartner "1" --> "*" DomibusConnectorLinkPartner
 
 === Spring Child Context - Link Context
 
-If a link configuration is started this is usually done within in a seperate spring application context (child context). This approach reduces the visible of controller beans to child context beans. It also helps to implement a start and stop logic  for link configurations and link partners.
+If a link configuration is started this is usually done within in a separate spring application context (child context). This approach reduces the visible of controller beans to child context beans. It also helps to implement a start and stop logic  for link configurations and link partners.
 If a child context is used and when is in the responsibility of the plugin.
 
 == Transport
@@ -94,7 +92,7 @@ image:database_diagram.svg[Database Diagram]
 | Column    | Description
 
 | ID
-| A syntetic primary key
+| A synthetic primary key
 
 | CONNECTOR_MESSAGE_ID
 | The connector message id as string
@@ -106,7 +104,7 @@ image:database_diagram.svg[Database Diagram]
 | The id of the transport (unique)
 
 | TRANSPORT_SYSTEM_MESSAGE_ID
-| This column holds a id of a transport system like JMS, CXF, ...
+| This column holds an id of a transport system like JMS, CXF, ...
 
 | REMOTE_MESSAGE_ID
 | The assigned message id on the remote system (EBMSID, NationalMessageId)

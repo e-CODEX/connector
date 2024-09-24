@@ -1,13 +1,13 @@
-ifndef::rootpath[]
-:rootpath: ../
-endif::rootpath[]
+ifndef::basedirs[]
+:basedirs: ../
+endif::basedirs[]
 
 //ifndef::imagesdir[]
-//:imagesdir: {rootpath}/resources/images/
+//:imagesdir: {basedir}/resources/images/
 //endif::imagesdir[]
 
 :doctype: book
 :title: domibusConnector Architecture : domibusConnector-{project-version}
 :title-logo-image: ../resources/images/logo_ecodex_0.png
 
-include::../doc/architecture/architecture_index.adoc[]
+include::{basedirs}/doc/architecture/architecture_index.adoc[]

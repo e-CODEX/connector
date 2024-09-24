@@ -11,14 +11,14 @@ endif::header[]
 
 = Processing of an incoming evidence message
 
-This chapter shows the example of an incoming evidence message. That means, that a evidence message is delivered
+This chapter shows the example of an incoming evidence message. That means, that an evidence message is delivered
 by the gateway.
 
 == Message from gateway to the domibusConnectorController message queue
 
 The following diagram shows how a message that is sent to the domibusConnector is transported to the domibusConnectorController message queue.
 
-[plantuml,message_proc_in_business_1,format=svg]
+[plantuml,message_proc_in_evidence_1,format=svg]
 ----
 @startuml
 
@@ -106,7 +106,7 @@ JTATransaction_Connector -d-> DLQ.toConnectorControllerQueue : on failure
 
 The following diagram shows how a message that is put on the submitToLink queue is processed
 
-[plantuml,message_proc_in_business_3,format=svg]
+[plantuml,message_proc_in_evidence_3,format=svg]
 ----
 @startuml
 

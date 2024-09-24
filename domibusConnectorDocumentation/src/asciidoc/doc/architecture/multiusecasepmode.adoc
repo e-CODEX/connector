@@ -1,4 +1,3 @@
-
 :path: ../../
 
 ifndef::basepath[]
@@ -25,7 +24,7 @@ components:
 
 | Webserver | Apache | HTTPS/TLS | TLS-Termination, TLS-Client Authentication
 
-| AS4-Gateway | Domibus | eDelivery | AS4 message creation, signing AS4-Message, fullfilling eDelivery Policy
+| AS4-Gateway | Domibus | eDelivery | AS4 message creation, signing AS4-Message, fulfilling eDelivery Policy
 
 | eCodexConnector | DomibusConnector | eCodex | ASIC-S container creation and validation, ETSI-REM evidence generation
 
@@ -49,7 +48,7 @@ CAUTION: Within a p-Modes set every Action, Party, Service, ServiceLeg must be u
 
 == Multi Backend / AS4 Service based Routing [already implemented]
 
-* Every UseCase is within the same P-Mode set. This meanst that the merged usecases must not use the same name for a p-Mode item.
+* Every UseCase is within the same P-Mode set. This means that the merged usecases must not use the same name for a p-Mode item.
 * Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name]
 
 
@@ -83,7 +82,7 @@ backend2 -[hidden]- backend1
 
 * Every Routable Use Case is within the same P-Mode set
 * Interferes with the national addressing attributes originalSender, finalRecipient
-** The OriginalSender, FinalRecipient has to follow a pattern eg.: {{appid}::{{nationalpart}
+** The OriginalSender, FinalRecipient has to follow a pattern e.g.: {{appid}::{{nationalpart}
 ** This address must be published into Authority Database (CCDB,CDB,...)
 
 This can be done by using the startswith match pattern within the backend routing rules (introduced with connector 4.4.x).
@@ -122,7 +121,7 @@ backend2 -[hidden]- backend1
 * Different p-Mode sets
 * Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name] and the p-Mode set (domain name of Gateway)
 
-Currently the domibus connector plugin has no support for this setup.
+Currently, the domibus connector plugin has no support for this setup.
 
 [plantuml,multiusecase_3]
 ----

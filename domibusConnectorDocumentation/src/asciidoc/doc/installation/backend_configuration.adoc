@@ -1,5 +1,3 @@
-
-
 :path: ../../
 
 ifndef::basepath[]
@@ -87,7 +85,7 @@ Consult the client lib documentation how the keystores are configured.
     keytool -export -alias ${connectorClientName} -file ${connectorClientName}.cer \
     -keystore ${connectorClientKeystorePath} -storepass ${keystorePassword}
 
-The exported certificate will later imported into the connector key store. So the connector will trust messages received from
+The exported certificate will later be imported into the connector key store. So the connector will trust messages received from
 this connector client.
 
 4) Establish the trust to the connector by importing the connector certificate
@@ -164,7 +162,7 @@ The backend information are stored in two tables:
 | a unique technical id
 
 | BACKEND_NAME
-| The name of the backend **this name must match the whole dname of the certificate (eg: CN=name,DC=example,dc=com)** field of the assigned certifcate
+| The name of the backend **this name must match the whole dname of the certificate (eg: CN=name,DC=example,dc=com)** field of the assigned certificate
 
 | BACKEND_KEY_ALIAS
 | The key alias in the connector backend keystore for the certificate to use to encrypt messages for the connectorClient

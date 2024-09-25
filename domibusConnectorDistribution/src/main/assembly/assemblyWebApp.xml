@@ -14,13 +14,6 @@
                 <include>*/**</include>
             </includes>
         </fileSet>
-        <!-- <fileSet>
-              <includes>
-                  <include>**/*</include>
-              </includes>
-              <directory>${project.basedir}/../domibusConnectorDocumentation/src/main/resources/config</directory>
-              <outputDirectory>documentation/example-config</outputDirectory>
-          </fileSet> -->
         <fileSet>
             <directory>${project.basedir}/src/main/resources/config</directory>
             <includes>
@@ -86,6 +79,7 @@
         </dependencySet>
         <dependencySet>
             <outputDirectory>standalone/bin</outputDirectory>
+            <outputFileNameMapping>connector.jar</outputFileNameMapping>
             <unpack>false</unpack>
             <includes>
                 <include>eu.ecodex.connector:domibusConnectorBuilderStandalone:jar</include>

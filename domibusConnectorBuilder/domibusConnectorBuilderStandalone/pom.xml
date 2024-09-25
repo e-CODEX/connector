@@ -361,7 +361,7 @@
                                 </paths>
                             </extraDirectories>
                             <container>
-                                <mainClass>org.springframework.boot.loader.PropertiesLauncher</mainClass>
+                                <mainClass>org.springframework.boot.loader.launch.PropertiesLauncher</mainClass>
                                 <jvmFlags>
                                     <!--
                                     <jvmFlag>-Dspring.config.additional-location=/app/config/labenv01/config/</jvmFlag>

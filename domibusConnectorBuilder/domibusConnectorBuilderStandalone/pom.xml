@@ -159,7 +159,7 @@
                                     <overWrite>true</overWrite>
                                     <groupId>org.mariadb.jdbc</groupId>
                                     <artifactId>mariadb-java-client</artifactId>
-                                    <version>3.0.4</version>
+                                    <version>3.4.1</version>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

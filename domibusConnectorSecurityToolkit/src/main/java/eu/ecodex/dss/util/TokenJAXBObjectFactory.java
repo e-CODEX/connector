@@ -59,7 +59,7 @@ public class TokenJAXBObjectFactory {
     private static final QName _TrustOkToken_QNAME = new QName("", "TrustOkToken");
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.Token }.
+     * Create an instance of {@link Token }.
      *
      * @return the new instance of xsd type TokenType
      */
@@ -68,7 +68,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.SignatureAttributes }.
+     * Create an instance of {@link SignatureAttributes }.
      *
      * @return the new instance of xsd type SignatureInformationType
      */
@@ -77,7 +77,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.TokenIssuer }.
+     * Create an instance of {@link TokenIssuer }.
      *
      * @return the new instance of xsd type IssuerType
      */
@@ -86,7 +86,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.ValidationVerification }.
+     * Create an instance of {@link ValidationVerification }.
      *
      * @return the new instance of xsd type VerificationDataType
      */
@@ -95,7 +95,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.AuthenticationInformation }.
+     * Create an instance of {@link AuthenticationInformation }.
      *
      * @return the new instance of xsd type AuthenticationInformationType
      */
@@ -104,7 +104,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.TokenValidation }.
+     * Create an instance of {@link TokenValidation }.
      *
      * @return the new instance of xsd type
      */
@@ -113,7 +113,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.OriginalValidationReportContainer }.
+     * Create an instance of {@link OriginalValidationReportContainer }.
      *
      * @return the new instance of xsd type
      */
@@ -122,7 +122,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.SignatureCertificate }.
+     * Create an instance of {@link SignatureCertificate }.
      *
      * @return the new instance of xsd type
      */
@@ -131,7 +131,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.Signature }.
+     * Create an instance of {@link Signature }.
      *
      * @return the new instance
      */
@@ -140,7 +140,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.TokenDocument }.
+     * Create an instance of {@link TokenDocument }.
      *
      * @return the new instance
      */
@@ -149,7 +149,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.TechnicalValidationResult }.
+     * Create an instance of {@link TechnicalValidationResult }.
      *
      * @return the new instance
      */
@@ -158,7 +158,7 @@ public class TokenJAXBObjectFactory {
     }
 
     /**
-     * Create an instance of {@link eu.ecodex.dss.model.token.LegalValidationResult }.
+     * Create an instance of {@link LegalValidationResult }.
      *
      * @return the new instance
      */

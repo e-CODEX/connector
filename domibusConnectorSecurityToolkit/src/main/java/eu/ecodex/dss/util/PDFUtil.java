@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Provides convenience-methods for PDF documents.
@@ -59,11 +59,7 @@ public class PDFUtil {
     /**
      * Fonts.
      */
-    public enum Font {
-        LIBERATION_REGULAR("LiberationSans-Regular.ttf"),
-        LIBERATION_BOLD_ITALIC("LiberationSans-BoldItalic.ttf"),
-        LIBERATION_BOLD("LiberationSans-Bold.ttf"),
-        LIBERATION_ITALIC("LiberationSans-Italic.ttf");
+    public enum Font {;
         private final String name;
 
         Font(String name) {
@@ -75,14 +71,10 @@ public class PDFUtil {
      * Images and Logos.
      */
     public enum Image {
-        LOGO_ECODEX("pdf_logo_ecodex.jpg"),
-        LOGO_CIP("pdf_logo_cip.png"),
-        TECHNICAL_FAIL("pdf_icon_technical_fail.png"),
-        TECHNICAL_SUFFICIENT("pdf_icon_technical_sufficient.png"),
-        TECHNICAL_SUCCESSFUL("pdf_icon_technical_successful.png"),
-        LEGAL_NOTSUCCESSFUL("pdf_icon_legal_notsuccessful.png"),
-        // LEGAL_UNDETERMINED("pdf_icon_legal_unknown.png"),
-        LEGAL_SUCCESSFUL("pdf_icon_legal_successful.png");
+        HEADER_IMAGE_LOGO("eulisa-header.png"),
+        SUCCESSFUL("green-min.png"),
+        SUFFICIENT("orange-min.png"),
+        FAIL("red-min.png");
         private final String name;
 
         Image(String name) {
@@ -106,11 +98,11 @@ public class PDFUtil {
      * @param font The font name
      * @param size The font size
      * @return a font
-     * @throws java.io.IOException The {@link java.io.IOException}
+     * @throws IOException The {@link IOException}
      * @throws DocumentException   The {@link DocumentException}
      */
     public static com.lowagie.text.Font createFont(final Font font, final int size)
-        throws IOException, DocumentException {
+            throws IOException, DocumentException {
         return createFont(font.name, size);
     }
 
@@ -123,20 +115,20 @@ public class PDFUtil {
      * @param name The ttf font name
      * @param size The font size
      * @return a font
-     * @throws java.io.IOException The {@link java.io.IOException}
+     * @throws IOException The {@link IOException}
      * @throws DocumentException   The {@link DocumentException}
      */
     public static com.lowagie.text.Font createFont(final String name, final int size)
-        throws IOException, DocumentException {
+            throws IOException, DocumentException {
         final InputStream input = PDFUtil.class.getResourceAsStream(REF_FONTS + name);
         if (input == null) {
             throw new IllegalArgumentException(
-                "The resource '" + name + "' could not be resolved in the directory '" + REF_FONTS
-                    + "'.");
+                    "The resource '" + name + "' could not be resolved in the directory '" + REF_FONTS
+                            + "'.");
         }
         final byte[] data = DSSUtils.toByteArray(input);
         final var baseFont = BaseFont.createFont(
-            name, BaseFont.WINANSI, BaseFont.EMBEDDED, BaseFont.CACHED, data, null
+                name, BaseFont.WINANSI, BaseFont.EMBEDDED, BaseFont.CACHED, data, null
         );
         return new com.lowagie.text.Font(baseFont, size);
     }
@@ -153,7 +145,7 @@ public class PDFUtil {
      * @throws IOException         as of the underlying classes
      */
     public static com.lowagie.text.Image createImage(final Image image)
-        throws BadElementException, IOException {
+            throws BadElementException, IOException {
         return createImage(image.name);
     }
 
@@ -169,17 +161,16 @@ public class PDFUtil {
      * @throws IOException         as of the underlying classes
      */
     public static com.lowagie.text.Image createImage(final String name)
-        throws BadElementException, IOException {
+            throws BadElementException, IOException {
         final InputStream input = PDFUtil.class.getResourceAsStream(REF_IMAGES + name);
         if (input == null) {
             throw new IllegalArgumentException(
-                "The resource '" + name + "' could not be resolved in the directory '" + REF_IMAGES
-                    + "'.");
+                    "The resource '" + name + "' could not be resolved in the directory '" + REF_IMAGES
+                            + "'.");
         }
         final byte[] data = DSSUtils.toByteArray(input);
         return com.lowagie.text.Image.getInstance(data);
     }
-
     /**
      * Formats a date to string.
      *
@@ -284,17 +275,17 @@ public class PDFUtil {
      * @param filename  The merged file name
      * @param documents PDF files.
      * @return a document that contains the result of merging.
-     * @throws java.io.IOException                The {@link java.io.IOException} if all document
+     * @throws IOException                The {@link IOException} if all document
      *                                            are empty or one of them is not a PDF.
-     * @throws com.lowagie.text.DocumentException as of the underlying classes
+     * @throws DocumentException as of the underlying classes
      */
     public static DSSDocument concatenate(final String filename, final DSSDocument... documents)
-        throws IOException, DocumentException {
+            throws IOException, DocumentException {
 
         // lazy create the footer font
         if (FOOTER_FONT == null) {
             FOOTER_FONT =
-                BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                    BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         }
 
         // used further below
@@ -315,8 +306,8 @@ public class PDFUtil {
             } catch (Exception e) {
                 closeQuietly(sourceReaders);
                 throw new IOException(
-                    "The document '" + doc.getName() + "' with mime-type '" + doc.getMimeType()
-                        + "' is not a PDF file");
+                        "The document '" + doc.getName() + "' with mime-type '" + doc.getMimeType()
+                                + "' is not a PDF file");
             }
         }
 
@@ -334,6 +325,7 @@ public class PDFUtil {
 
             // Create a writer for the outputstream
             final var totalWriter = PdfWriter.getInstance(targetDoc, targetStream);
+
             // open to write
             targetDoc.open();
             // Holds the PDF data
@@ -354,15 +346,15 @@ public class PDFUtil {
                     // transfer the source page to the total document
                     targetDoc.newPage();
                     final PdfImportedPage page =
-                        totalWriter.getImportedPage(sourceReader, importedPagesCount);
+                            totalWriter.getImportedPage(sourceReader, importedPagesCount);
                     targetContent.addTemplate(page, 0, 0);
 
                     // add a footer with page-information
                     targetContent.beginText();
                     targetContent.setFontAndSize(FOOTER_FONT, 9);
                     targetContent.showTextAligned(
-                        PdfContentByte.ALIGN_CENTER, targetCurrentCount + " of "
-                            + targetTotalCount, 520, 5, 0);
+                            PdfContentByte.ALIGN_CENTER, targetCurrentCount + " of "
+                                    + targetTotalCount, 520, 5, 0);
                     targetContent.endText();
                 }
             }

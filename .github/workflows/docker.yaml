@@ -1,0 +1,10 @@
+name: Docker Action
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  docker:
+    uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
+    with:
+      image-name: ecodex-workflows

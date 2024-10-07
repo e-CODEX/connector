@@ -1,0 +1,42 @@
+# version: "3.8"
+services:
+    connector-db:
+        container_name: mysql
+        # can be replaced with appropriate database image. e.g. postgres
+        image: mysql:8
+        restart: always
+        environment:
+            # can be replaced with appropriate database env. e.g. POSTGRES_PASSWORD, POSTGRES_USER ...
+            MYSQL_DATABASE: ecodex
+            MYSQL_USER: ecodex
+            MYSQL_PASSWORD: ecodex
+            MYSQL_ROOT_PASSWORD: ecodex
+        ports:
+            - "3307:3306"
+        expose:
+            - "3306"
+        volumes:
+            # based on your DBMS, initial scripts can be found in documentation/database-scripts/initial
+            # copy and place them in sql folder
+            - ./sql/:/docker-entrypoint-initdb.d/
+    connector:
+         # uncomment bellow section if you want to build you connector image during the launch of docker-compose
+         # build:
+         #   context: ./
+         #   dockerfile: Dockerfile
+        container_name: connector
+        image: connector:latest
+        depends_on:
+            - connector-db
+        environment:
+            SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+            SPRING_DATASOURCE_URL: "jdbc:mysql://connector-db:3306/ecodex?useSSL=false&allowPublicKeyRetrieval=true"
+            SPRING_DATASOURCE_USERNAME: ecodex
+            SPRING_DATASOURCE_PASSWORD: ecodex
+        ports:
+            - "9081:9081"
+        volumes:
+            - ./data/logs:/logs
+            - ./data/data:/app/data
+            - ./data/temp:/app/temp
+            - ./config:/app/config

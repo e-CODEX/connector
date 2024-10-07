@@ -122,9 +122,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-                    <!-- download mysql driver -->
+                    <!-- download db drivers -->
                     <execution>
-                        <id>copy-mysql-driver</id>
+                        <id>copy-db-drivers</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy</goal>
@@ -134,114 +134,45 @@
                             <overWriteReleases>true</overWriteReleases>
                             <outputDirectory>target/gw/domibus/lib</outputDirectory>
                             <artifactItems>
+                                <!-- download h2 driver -->
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>com.h2database</groupId>
+                                    <artifactId>h2</artifactId>
+                                    <version>${h2database.h2.version}</version>
+                                </artifactItem>
+                                <!-- download mysql driver -->
                                 <artifactItem>
                                     <overWrite>true</overWrite>
                                     <groupId>com.mysql</groupId>
                                     <artifactId>mysql-connector-j</artifactId>
                                     <version>${mysql.connector-java.version}</version>
                                 </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!-- download mariadb driver -->
-                    <execution>
-                        <id>copy-mariadb-driver</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <overWriteReleases>true</overWriteReleases>
-                            <outputDirectory>target/gw/domibus/lib</outputDirectory>
-                            <artifactItems>
+                                <!-- download mariadb driver -->
                                 <artifactItem>
                                     <overWrite>true</overWrite>
                                     <groupId>org.mariadb.jdbc</groupId>
                                     <artifactId>mariadb-java-client</artifactId>
-                                    <version>3.0.4</version>
+                                    <version>${mariadb-java-client.version}</version>
                                 </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!-- download h2 driver -->
-                    <execution>
-                        <id>copy-h2-driver</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <overWriteReleases>true</overWriteReleases>
-                            <outputDirectory>target/gw/domibus/lib</outputDirectory>
-                            <artifactItems>
+                                <!-- download oracle driver -->
                                 <artifactItem>
                                     <overWrite>true</overWrite>
-                                    <groupId>com.h2database</groupId>
-                                    <artifactId>h2</artifactId>
-                                    <version>2.3.232</version>
+                                    <groupId>com.oracle.database.jdbc</groupId>
+                                    <artifactId>ojdbc8</artifactId>
+                                    <version>${oracle.ojdbc8.version}</version>
+                                </artifactItem>
+                                <!-- download postgresql driver -->
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>org.postgresql</groupId>
+                                    <artifactId>postgresql</artifactId>
+                                    <version>${postgresql.version}</version>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.jkube</groupId>
-                <artifactId>openshift-maven-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
-                    <buildStrategy>docker</buildStrategy>
-                    <resources>
-                        <openshiftBuildConfig>
-                            <requests>
-                                <cpu>200m</cpu>
-                                <memory>256Mi</memory>
-                            </requests>
-                            <limits>
-                                <cpu>1000m</cpu>
-                                <memory>1Gi</memory>
-                            </limits>
-                        </openshiftBuildConfig>
-                    </resources>
-                    <images>
-                        <image>
-                            <name>dc-connector</name>
-                            <build>
-                                <tags>
-                                    <tag>4.4.x</tag>
-                                    <tag>latest</tag>
-                                    <tag>${project.version}</tag>
-                                </tags>
-                                <dockerFile>Dockerfile</dockerFile>
-                                <fromExt>
-                                    <name>java:openjdk-8-ubi8</name>
-                                    <kind>ImageStreamTag</kind>
-                                    <namespace>openshift</namespace>
-                                </fromExt>
-                                <assembly>
-                                    <name>connector_assembly</name>
-                                    <mode>dir</mode>
-                                    <targetDir>app</targetDir>
-                                    <excludeFinalOutputArtifact>true</excludeFinalOutputArtifact>
-                                    <layers>
-                                        <layer>
-                                            <id>connector-jar</id>
-                                            <files>
-                                                <file>
-                                                    <source>${project.basedir}/target/${project.artifactId}-${project.version}.jar</source>
-                                                    <outputDirectory>./</outputDirectory>
-                                                    <destName>connector.jar</destName>
-                                                </file>
-                                            </files>
-                                        </layer>
-                                    </layers>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -267,128 +198,6 @@
             <properties>
                 <vaadin.productionMode>true</vaadin.productionMode>
             </properties>
-        </profile>
-        <profile>
-            <id>jib</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.vaadin</groupId>
-                        <artifactId>vaadin-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>prepare-frontend</goal>
-                                    <goal>build-frontend</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-dependency-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-spring-boot-starter</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.build.directory}/jib-extra-libs</outputDirectory>
-                                    <artifactItems>
-                                        <artifactItem>
-                                            <groupId>org.springframework.boot</groupId>
-                                            <artifactId>spring-boot-loader</artifactId>
-                                            <version>${spring.boot.version}</version>
-                                        </artifactItem>
-                                    </artifactItems>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>copy-labbox-config</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>unpack</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.build.directory}/jib-extra-config</outputDirectory>
-                                    <artifactItems>
-                                        <artifactItem>
-                                            <groupId>${project.groupId}</groupId>
-                                            <artifactId>domibusConnectorTestData</artifactId>
-                                            <version>${project.version}</version>
-                                            <classifier>testconfig</classifier>
-                                            <type>zip</type>
-                                        </artifactItem>
-                                        <artifactItem>
-                                            <groupId>${project.groupId}</groupId>
-                                            <artifactId>domibusConnectorTestData</artifactId>
-                                            <version>${project.version}</version>
-                                            <classifier>testkeystores</classifier>
-                                            <type>zip</type>
-                                        </artifactItem>
-                                    </artifactItems>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.google.cloud.tools</groupId>
-                        <artifactId>jib-maven-plugin</artifactId>
-                        <version>3.4.3</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                    <goal>buildTar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <extraDirectories>
-                                <paths>
-                                    <path>
-                                        <from>${project.build.directory}/jib-extra-libs</from>
-                                        <into>/app/libs</into>
-                                    </path>
-                                    <path>
-                                        <from>${project.build.directory}/jib-extra-config</from>
-                                        <into>/app/config</into>
-                                    </path>
-                                </paths>
-                            </extraDirectories>
-                            <container>
-                                <mainClass>org.springframework.boot.loader.launch.PropertiesLauncher</mainClass>
-                                <jvmFlags>
-                                    <!--
-                                    <jvmFlag>-Dspring.config.additional-location=/app/config/labenv01/config/</jvmFlag>
-                                    -->
-                                    <jvmFlag>-Dspring.config.name=connector</jvmFlag>
-                                    <jvmFlag>-Dloader.main=eu.ecodex.connector.starter.DomibusConnectorStarter</jvmFlag>
-                                </jvmFlags>
-                                <ports>
-                                    <port>8080</port>
-                                </ports>
-                                <user>185:185</user>
-                                <workingDirectory>/app</workingDirectory>
-                            </container>
-                            <from>
-                                <image>centralrepo.apps.a3.cp.cna.at/brz-cp-a2-docker/cp-baseimages/brz-cp-ubi8-openjdk11:latest</image>
-                            </from>
-                            <to>
-                                <image>centralrepo.apps.a3.cp.cna.at/brz-ju-images-poc-docker/jueu/dc-connector</image>
-                                <tags>
-                                    <tag>${project.version}</tag>
-                                    <tag>${project.version}_${git.commit.id.abbrev}</tag>
-                                </tags>
-                            </to>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 </project>

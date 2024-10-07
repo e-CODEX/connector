@@ -124,7 +124,6 @@
         <ferstl.depgraph-plugin.version>4.0.3</ferstl.depgraph-plugin.version>
         <github.commit-id-plugin.version>9.0.1</github.commit-id-plugin.version>
         <github.sortpom-plugin.version>4.0.0</github.sortpom-plugin.version>
-        <google.jib-plugin.version>3.4.3</google.jib-plugin.version>
         <jacoco.plugin.version>0.8.12</jacoco.plugin.version>
         <jaxb.plugin.version>4.0.8</jaxb.plugin.version>
         <maven.assembly-plugin.version>3.7.1</maven.assembly-plugin.version>
@@ -866,11 +865,6 @@
                     <version>${spring.boot.version}</version>
                 </plugin>
                 <!-- other -->
-                <plugin>
-                    <groupId>com.google.cloud.tools</groupId>
-                    <artifactId>jib-maven-plugin</artifactId>
-                    <version>${google.jib-plugin.version}</version>
-                </plugin>
                 <plugin>
                     <groupId>com.vaadin</groupId>
                     <artifactId>vaadin-maven-plugin</artifactId>

@@ -13,12 +13,12 @@ The following section assumes that you are familiar with Docker and have it inst
 
 ### Already built image
 
-A built image of the connector is available here: [here](https://scm.ecodex.eu[]).
+A built image of the connector is available here: [here](https://scm.ecodex.eu/docker/connector:latest).
 
 Pull the image by running:
 
 ```shell
-docker pull https://scm.ecodex.eu/connector:latest
+docker pull https://scm.ecodex.eu/docker/connector:latest
 ```
 
 ### Build your own image
@@ -30,13 +30,13 @@ By default, there is a ```Dockerfile``` in the root of this project.
 Build the connector project in production mode by running:
 
 ```shell
-mvn build install -Pproduction
+mvn build -Pproduction
 ```
 
 Build the connector image by running:
 
 ```shell
-docker build -t connector:ltest .
+docker build -t connector:latest .
 ```
 
 ## Run the docker container
@@ -161,12 +161,8 @@ Follow the steps bellow:
 ```
   /domibusConnectorDistribution/target/domibusConnector/documentation/database-scripts/initial/MySQL
 ```
-* in the `sql` subfolder rename the files as follows:
-  * `mysql_initial.sql` -> `0.sql`
-  * `mysql_initial_data.sql` -> `1.sql`
-  * `mysql_quartz.sql` -> `2.sql`
 
-We can now run our `connector' and `mysql' container as a service by running:
+We can now run our `connector` and `mysql` container as a service by running:
 
 ```shell
 docker-compose up -d

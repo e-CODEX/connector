@@ -18,8 +18,7 @@ RUN groupadd --system ${USER_GROUP} \
     && useradd  --system -s /usr/sbin/nologin -g ${USER_GROUP} ${USERNAME} \
     && mkdir -p data temp ../logs config \
     && chown -R ${USERNAME}:${USER_GROUP} ${APP_FOLDER} \
-    && chown -R ${USERNAME}:${USER_GROUP} /logs \
-    && rm config/connector.properties
+    && chown -R ${USERNAME}:${USER_GROUP} /logs
 
 USER $USERNAME
 

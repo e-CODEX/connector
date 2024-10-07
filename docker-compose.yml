@@ -17,7 +17,7 @@ services:
             - "3306"
         volumes:
             # based on your DBMS, initial scripts can be found in documentation/database-scripts/initial
-            # copy them and renamed them sequentially and placed them in sql folder
+            # copy and place them in sql folder
             - ./sql/:/docker-entrypoint-initdb.d/
     connector:
          # uncomment bellow section if you want to build you connector image during the launch of docker-compose

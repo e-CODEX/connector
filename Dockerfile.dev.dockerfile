@@ -1,8 +1,3 @@
-FROM maven:3.9-eclipse-temurin-21 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests -Pproduction
-
 FROM eclipse-temurin:21
 
 LABEL maintainer="e-codex@eulisa.europa.eu"
@@ -10,14 +5,14 @@ LABEL description="e-CODEX connector"
 
 ARG USERNAME=connector
 ARG USER_GROUP=${USERNAME}
-ARG DISTRIBUTION_PATH=/app/domibusConnectorDistribution/target/domibusConnector
+ARG DISTRIBUTION_PATH=./domibusConnectorDistribution/target/domibusConnector
 ARG APP_FOLDER=/app
 
 WORKDIR ${APP_FOLDER}
 
-COPY --from=build ${DISTRIBUTION_PATH}/standalone/bin/ ${APP_FOLDER}/bin/
-COPY --from=build ${DISTRIBUTION_PATH}/standalone/lib/ ${APP_FOLDER}/lib/
-COPY --from=build ${DISTRIBUTION_PATH}/standalone/start.sh ${APP_FOLDER}/
+COPY ${DISTRIBUTION_PATH}/standalone/bin/ ${APP_FOLDER}/bin/
+COPY ${DISTRIBUTION_PATH}/standalone/lib/ ${APP_FOLDER}/lib/
+COPY ${DISTRIBUTION_PATH}/standalone/start.sh ${APP_FOLDER}/
 
 RUN groupadd --system ${USER_GROUP} \
     && useradd  --system -s /usr/sbin/nologin -g ${USER_GROUP} ${USERNAME} \

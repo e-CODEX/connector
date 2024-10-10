@@ -7,4 +7,4 @@ jobs:
   docker:
     uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
     with:
-      image-name: ecodex-workflows
+      image-name: connector

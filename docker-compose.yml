@@ -36,7 +36,6 @@ services:
         ports:
             - "9081:9081"
         volumes:
-            - ./data/logs:/logs
-            - ./data/data:/app/data
-            - ./data/temp:/app/temp
+            - ./logs:/logs
+            - ./data:/app/data
             - ./config:/app/config

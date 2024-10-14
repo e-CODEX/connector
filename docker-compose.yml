@@ -15,6 +15,11 @@ services:
             - "3307:3306"
         expose:
             - "3306"
+        healthcheck:
+            test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+            interval: 3s
+            retries: 5
+            timeout: 5s
         volumes:
             # based on your DBMS, initial scripts can be found in documentation/database-scripts/initial
             # copy and place them in sql folder
@@ -27,7 +32,8 @@ services:
         container_name: connector
         image: connector:latest
         depends_on:
-            - connector-db
+            connector-db:
+                condition: service_healthy
         environment:
             SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
             SPRING_DATASOURCE_URL: "jdbc:mysql://connector-db:3306/ecodex?useSSL=false&allowPublicKeyRetrieval=true"

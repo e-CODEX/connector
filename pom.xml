@@ -183,7 +183,7 @@
         <h2database.h2.version>2.3.232</h2database.h2.version>
         <github.database-rider-spring.version>1.44.0</github.database-rider-spring.version>
         <liquibase-core.version>4.29.1</liquibase-core.version>
-        <mariadb-java-client.version>3.4.1</mariadb-java-client.version>
+        <mariadb-java-client.version>3.5.0</mariadb-java-client.version>
         <mysql.connector-java.version>9.0.0</mysql.connector-java.version>
         <oracle.ojdbc8.version>23.5.0.24.07</oracle.ojdbc8.version>
         <postgresql.version>42.7.4</postgresql.version>

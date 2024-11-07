@@ -14,8 +14,8 @@ import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.connector.ui.utils.RoleRequired;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 @Route(value = ToolsView.ROUTE, layout = ToolsLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 @TabMetadata(title = "Tools", tabGroup = ToolsLayout.TAB_GROUP_NAME)
 public class ToolsView extends VerticalLayout {
     public static final String ROUTE = "tools";

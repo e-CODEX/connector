@@ -25,6 +25,7 @@ import eu.ecodex.connector.ui.service.WebMessageService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.PermitAll;
 import java.util.Optional;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = Search.ROUTE, layout = MessageLayout.class)
 @Order(2)
+@PermitAll
 @TabMetadata(title = "Search", tabGroup = MessageLayout.TAB_GROUP_NAME)
 public class Search extends VerticalLayout {
     public static final String ROUTE = "search";

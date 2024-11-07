@@ -13,13 +13,16 @@ package eu.ecodex.connector.ui.configuration;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
+import com.vaadin.flow.server.VaadinServletRequest;
 import eu.ecodex.connector.ui.login.LoginView;
-import eu.ecodex.connector.ui.view.AccessDeniedView;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -61,7 +64,12 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
                     connectorUiConfigurationProperties.getAutoLoginUser(),
                     connectorUiConfigurationProperties.getAutoLoginPassword()
                 ));
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(authenticate);
+            HttpSession httpSession = VaadinServletRequest.getCurrent().getSession(true);
+            httpSession.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext
+            );
         }
 
         if (!LoginView.class.equals(event.getNavigationTarget())
@@ -72,10 +80,6 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
             //  RouteParameters p = new RouteParameters(LoginView.PREVIOUS_ROUTE_PARAMETER, path);
             //  event.forwardTo(LoginView.class, p);
             event.forwardTo(LoginView.class);
-        }
-        Class<?> navigationTarget = event.getNavigationTarget();
-        if (!SecurityUtils.isUserAllowedToView(navigationTarget)) {
-            event.forwardTo(AccessDeniedView.class);
         }
         // forward to default page, used for development
         if (connectorUiConfigurationProperties.isAutoLoginEnabled()

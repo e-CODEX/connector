@@ -14,10 +14,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.controller.spring.ConnectorMessageProcessingProperties;
 import eu.ecodex.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
-import eu.ecodex.connector.ui.utils.RoleRequired;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationPanelFactory;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 @Route(value = ConnectorMessageProcessingConfigPanel.ROUTE, layout = ConfigurationLayout.class)
-@RoleRequired(role = "ADMIN")
-
+@RolesAllowed("ADMIN")
 @TabMetadata(
     title = "General Message Processing Config", tabGroup = ConfigurationLayout.TAB_GROUP_NAME
 )

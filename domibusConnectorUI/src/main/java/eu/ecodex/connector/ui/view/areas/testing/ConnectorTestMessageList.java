@@ -23,6 +23,7 @@ import eu.ecodex.connector.ui.persistence.service.DomibusConnectorWebMessagePers
 import eu.ecodex.connector.ui.service.WebConnectorTestService;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.messages.MessageDetails;
+import jakarta.annotation.security.PermitAll;
 import java.util.Optional;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = ConnectorTestMessageList.ROUTE, layout = ConnectorTestsLayout.class)
 @Order(1)
+@PermitAll
 @TabMetadata(title = "Connector Test Messages List", tabGroup = ConnectorTestsLayout.TAB_GROUP_NAME)
 @SuppressWarnings("squid:S1135")
 public class ConnectorTestMessageList extends DCVerticalLayoutWithTitleAndHelpButton

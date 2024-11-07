@@ -35,6 +35,7 @@ import eu.ecodex.connector.ui.component.WizardStep;
 import eu.ecodex.connector.ui.view.areas.configuration.link.wizard.ChooseImplStep;
 import eu.ecodex.connector.ui.view.areas.configuration.link.wizard.CreateLinkConfigurationStep;
 import eu.ecodex.connector.ui.view.areas.configuration.link.wizard.CreateLinkPartnerStep;
+import jakarta.annotation.security.PermitAll;
 import java.time.Duration;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
@@ -51,6 +52,7 @@ import org.springframework.context.annotation.Scope;
 @Route("createlink")
 @lombok.Setter
 @Getter
+@PermitAll
 @SuppressWarnings("squid:S1135")
 public class CreateLinkPanel extends VerticalLayout {
     private static final Logger LOGGER = LogManager.getLogger(CreateLinkPanel.class);

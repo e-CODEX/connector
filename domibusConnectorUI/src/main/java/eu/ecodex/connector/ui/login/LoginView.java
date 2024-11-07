@@ -27,7 +27,8 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.server.VaadinServletRequest;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.exception.InitialPasswordException;
 import eu.ecodex.connector.ui.exception.UserLoginException;
@@ -35,21 +36,25 @@ import eu.ecodex.connector.ui.service.WebUserService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.DashboardView;
 import eu.ecodex.connector.ui.view.DomibusConnectorAdminHeader;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.util.StringUtils;
 
 /**
  * Represents a login view for the application.
  */
 @SuppressWarnings("squid:S1135")
-@SpringComponent
+// @SpringComponent
 @UIScope
 @Route(value = LoginView.ROUTE)
 @PageTitle("domibusConnector - Login")
+@AnonymousAllowed
 public class LoginView extends VerticalLayout implements HasUrlParameter<String> {
     public static final String ROUTE = "login";
     public static final String PREVIOUS_ROUTE_PARAMETER = "afterLoginGoTo";
@@ -169,7 +174,12 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
             var authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username.getValue(), password.getValue())
             );
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(authenticate);
+            HttpSession httpSession = VaadinServletRequest.getCurrent().getSession(true);
+            httpSession.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext
+            );
         } catch (UserLoginException e1) {
             Dialog errorDialog = new LoginErrorDialog(e1.getMessage());
             username.clear();

@@ -34,6 +34,7 @@ import eu.ecodex.dss.model.ECodexContainer;
 import eu.ecodex.dss.service.ECodexException;
 import eu.europa.esig.dss.model.DSSDocument;
 import eu.europa.esig.dss.model.InMemoryDocument;
+import jakarta.annotation.security.RolesAllowed;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,7 +59,7 @@ import org.springframework.util.StreamUtils;
 @Component
 @UIScope
 @Route(value = ECodexContainerCreatorView.ROUTE, layout = ToolsLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 @TabMetadata(title = "Create ECodex Container", tabGroup = ToolsLayout.TAB_GROUP_NAME)
 @SuppressWarnings("squid:S1135")
 public class ECodexContainerCreatorView extends VerticalLayout {

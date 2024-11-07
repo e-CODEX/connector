@@ -10,12 +10,12 @@
 
 package eu.ecodex.connector.ui.configuration;
 
+import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import eu.ecodex.connector.spring.WebUserAuthenticationProvider;
 import eu.ecodex.connector.ui.login.LoginView;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -24,9 +24,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -37,8 +36,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    WebUserAuthenticationProvider authProvider;
+    private final WebUserAuthenticationProvider authProvider;
+
+    public SecurityConfig(WebUserAuthenticationProvider authProvider) {
+        this.authProvider = authProvider;
+    }
 
     /**
      * Creates an Authentication Provider including authProvider.
@@ -46,7 +48,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager() {
         List<AuthenticationProvider> authProviders = new ArrayList<>();
-        authProviders.add(authProvider);
+        authProviders.add(this.authProvider);
         return new ProviderManager(authProviders);
     }
 
@@ -57,19 +59,18 @@ public class SecurityConfig {
     @Configuration
     @Order(1)
     public static class ActuatorWebSecurityConfiguration {
-        private final String actuatorBasePath = "actuator";
+        private static final String ACTUATOR_BASE_PATH = "actuator";
 
         @Bean
-        protected SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
-            if (StringUtils.isNotEmpty(actuatorBasePath)) {
+        protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            if (StringUtils.isNotEmpty(ACTUATOR_BASE_PATH)) {
                 http
-                    .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/" + actuatorBasePath + "/**")
-                    ).httpBasic(Customizer.withDefaults())
+                    .securityMatcher("/" + ACTUATOR_BASE_PATH + "/**")
                     .authorizeHttpRequests(auth -> auth
                         .anyRequest()
                         .hasAnyRole("ACTUATOR", "ADMIN")
-                    );
+                    )
+                    .httpBasic(Customizer.withDefaults());
             }
             return http.build();
         }
@@ -83,70 +84,31 @@ public class SecurityConfig {
      */
     @Configuration
     @Order(500)
-    public static class VaadinWebSecurityConfiguration {
-        private static final String LOGIN_PROCESSING_URL = "/" + LoginView.ROUTE;
-        private static final String LOGIN_FAILURE_URL = "/login?error";
-        private static final String LOGIN_URL = "/" + LoginView.ROUTE;
-        private static final String LOGOUT_SUCCESS_URL = "/" + LoginView.ROUTE;
-
-        @Bean
-        protected SecurityFilterChain vaadinFilterChain(HttpSecurity http) throws Exception {
-            http
-                .csrf(AbstractHttpConfigurer::disable)
-                .requestCache(requestCache -> requestCache.requestCache(new CustomRequestCache()))
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
-                    .anyRequest().authenticated()
-                )
-                .formLogin(formLogin -> formLogin
-                    .loginPage(LOGIN_URL).permitAll().loginProcessingUrl(LOGIN_PROCESSING_URL)
-                    .failureUrl(LOGIN_FAILURE_URL)
-                )
-                .logout(logout -> logout.logoutSuccessUrl(LOGOUT_SUCCESS_URL));
-            return http.build();
+    public static class VaadinWebSecurityConfiguration extends VaadinWebSecurity {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            super.configure(http);
+            setLoginView(http, LoginView.class);
         }
 
-        /**
-         * Allows access to static resources, bypassing Spring security.
-         */
-        @Bean
-        public WebSecurityCustomizer vaadinWebSecurityCustomizer() {
-            return web -> web.ignoring().requestMatchers(
-                // Vaadin Flow static resources
-                "/VAADIN/**",
-
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+            web.ignoring().requestMatchers(
                 // the standard favicon URI
                 "/favicon.ico",
-
-                // the robots exclusion standard
-                "/robots.txt",
-
-                // web application manifest
-                "/manifest.webmanifest",
-                "/sw.js",
-                "/offline-page.html",
-
                 // icons and images
                 "/icons/**",
                 "/images/**",
-
                 // (production mode) static resources
                 "/frontend-es5/**", "/frontend-es6/**",
                 // (development mode) static resources
                 "/frontend/**",
-
-                // (development mode) webjars
-                "/webjars/**",
-
                 // (development mode) H2 debugging console
                 "/h2-console/**",
-                // allow access to webservices
-                "/services/**",
-                "/static/**", // allow access to static content
 
                 "/documentation/**" // allow access to documentation
             );
+            super.configure(web);
         }
     }
 }
-

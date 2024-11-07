@@ -14,6 +14,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.view.StaticContentView;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = UpgradeDocumentationView.ROUTE, layout = DocumentationLayout.class)
 @Order(5)
+@PermitAll
 @TabMetadata(title = "Upgrade", tabGroup = DocumentationLayout.TAB_GROUP_NAME)
 public class UpgradeDocumentationView extends StaticContentView {
     public static final String ROUTE = "upgrade";

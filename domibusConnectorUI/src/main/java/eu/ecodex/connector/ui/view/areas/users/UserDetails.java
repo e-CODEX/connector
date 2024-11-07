@@ -29,6 +29,7 @@ import eu.ecodex.connector.ui.forms.WebUserForm;
 import eu.ecodex.connector.ui.service.WebUserService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -56,6 +57,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = UserDetails.ROUTE, layout = UserLayout.class)
 @Order(2)
+@PermitAll
 @TabMetadata(title = "User Details", tabGroup = UserLayout.TAB_GROUP_NAME)
 public class UserDetails extends VerticalLayout implements HasUrlParameter<String> {
     public static final String ROUTE = "userdetails";

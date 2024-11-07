@@ -20,6 +20,7 @@ import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationPanelFactory;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.configuration.security.importoldconfig.ImportOldEvidenceConfigDialog;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -40,7 +41,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 @Route(value = EvidenceBuilderConfiguration.ROUTE, layout = ConfigurationLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 @TabMetadata(
     title = "Evidence Builder Configuration", tabGroup = ConfigurationLayout.TAB_GROUP_NAME
 )

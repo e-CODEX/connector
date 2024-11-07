@@ -27,6 +27,7 @@ import eu.ecodex.connector.ui.service.WebUserService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.PermitAll;
 import java.util.EnumSet;
 import java.util.Optional;
 import org.springframework.core.annotation.Order;
@@ -48,6 +49,7 @@ import org.springframework.stereotype.Component;
 @Route(value = NewUser.ROUTE, layout = UserLayout.class)
 @Order(3)
 @TabMetadata(title = "Add new User", tabGroup = "User")
+@PermitAll
 @SuppressWarnings("squid:S1135")
 public class NewUser extends VerticalLayout {
     public static final String ROUTE = "newuser";

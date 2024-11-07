@@ -42,9 +42,9 @@ import eu.ecodex.connector.link.utils.Connector42RoutingRulesTo43RoutingRulesCon
 import eu.ecodex.connector.ui.component.LumoLabel;
 import eu.ecodex.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
 import eu.ecodex.connector.ui.service.WebBusinessDomainService;
-import eu.ecodex.connector.ui.utils.RoleRequired;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,7 +61,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @TabMetadata(title = "Backend Message Routing", tabGroup = ConfigurationLayout.TAB_GROUP_NAME)
 @Route(value = BackendMessageRoutingView.ROUTE, layout = ConfigurationLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 @Order(3)
 @SuppressWarnings("squid:S1135")
 public class BackendMessageRoutingView extends DCVerticalLayoutWithTitleAndHelpButton

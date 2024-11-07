@@ -20,6 +20,7 @@ import eu.ecodex.connector.ui.controller.QueueController;
 import eu.ecodex.connector.ui.dto.WebQueue;
 import eu.ecodex.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = JmsMonitoringView.ROUTE, layout = MonitoringLayout.class)
 @Order(1)
+@PermitAll
 @TabMetadata(title = "Jms Queues", tabGroup = MonitoringLayout.TAB_GROUP_NAME)
 public class JmsMonitoringView extends DCVerticalLayoutWithTitleAndHelpButton
     implements AfterNavigationObserver {

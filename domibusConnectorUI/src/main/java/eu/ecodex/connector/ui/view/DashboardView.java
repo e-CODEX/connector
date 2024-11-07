@@ -16,6 +16,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.layout.DCMainLayout;
+import jakarta.annotation.security.PermitAll;
 
 /**
  * The DashboardView class represents the main view of the Domibus Connector Administration UI.
@@ -28,6 +29,7 @@ import eu.ecodex.connector.ui.layout.DCMainLayout;
  */
 @UIScope
 @Route(value = DashboardView.ROUTE, layout = DCMainLayout.class)
+@PermitAll
 @PageTitle("domibusConnector - Administrator")
 public class DashboardView extends VerticalLayout {
     public static final String ROUTE = "";

@@ -23,10 +23,12 @@ import eu.ecodex.connector.ui.layout.DCMainLayout;
 import eu.ecodex.connector.ui.utils.DCTabHandler;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationLayout;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.PermitAll;
 import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 /**
  * The {@code ToolsLayout} class represents the layout for the Tools section in the Domibus
@@ -37,7 +39,8 @@ import org.springframework.context.ApplicationContext;
  * @see RouterLayout
  */
 @UIScope
-@org.springframework.stereotype.Component
+@PermitAll
+@Component
 @RoutePrefix(ToolsLayout.ROUTE)
 @ParentLayout(DCMainLayout.class)
 public class ToolsLayout extends VerticalLayout implements BeforeEnterObserver, RouterLayout {

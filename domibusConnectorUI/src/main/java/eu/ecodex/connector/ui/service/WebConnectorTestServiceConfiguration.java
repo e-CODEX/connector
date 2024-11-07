@@ -14,6 +14,7 @@ import eu.ecodex.connector.c2ctests.config.ConnectorTestConfigurationProperties;
 import eu.ecodex.connector.test.service.DCConnector2ConnectorTestService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -31,6 +32,9 @@ import org.springframework.context.annotation.Configuration;
  * @see ConnectorTestConfigurationProperties
  */
 @Configuration
+@ComponentScan(
+    basePackages = {"eu.ecodex.connector", "eu.ecodex.connectorplugins.link.testbackend"}
+)
 public class WebConnectorTestServiceConfiguration {
     // it might be possible, if the testbackend plugin is not enabled, that the service
     // DCConnector2ConnectorTestService is not available!, in this case do not create

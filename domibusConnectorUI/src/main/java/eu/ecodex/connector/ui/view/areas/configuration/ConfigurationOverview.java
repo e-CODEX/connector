@@ -16,7 +16,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
-import eu.ecodex.connector.ui.utils.RoleRequired;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Component
 @Route(value = ConfigurationOverview.ROUTE, layout = ConfigurationLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 @SuppressWarnings("squid:S1135")
 public class ConfigurationOverview extends VerticalLayout implements BeforeEnterObserver {
     public static final String ROUTE = "";

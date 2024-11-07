@@ -21,6 +21,7 @@ import eu.ecodex.connector.ui.layout.DCVerticalLayoutWithWebMessageGrid;
 import eu.ecodex.connector.ui.persistence.service.DomibusConnectorWebMessagePersistenceService;
 import eu.ecodex.connector.ui.service.WebMessageService;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 @Route(value = MessagesList.ROUTE, layout = MessageLayout.class)
 @Order(1)
 @TabMetadata(title = "All Messages", tabGroup = MessageLayout.TAB_GROUP_NAME)
+@PermitAll
 @SuppressWarnings("squid:S1135")
 public class MessagesList extends VerticalLayout implements AfterNavigationObserver {
     public static final String ROUTE = "messagelist";

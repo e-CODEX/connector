@@ -16,6 +16,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.configuration.SecurityUtils;
 import eu.ecodex.connector.ui.layout.DCMainLayout;
@@ -28,6 +29,7 @@ import eu.ecodex.connector.ui.login.LoginView;
 @UIScope
 @Route(value = AccessDeniedView.ROUTE, layout = DCMainLayout.class)
 @PageTitle("domibusConnector - Administrator")
+@AnonymousAllowed
 @SuppressWarnings("squid:S1135")
 public class AccessDeniedView extends VerticalLayout implements BeforeEnterObserver {
     public static final String ROUTE = "accessDenied";

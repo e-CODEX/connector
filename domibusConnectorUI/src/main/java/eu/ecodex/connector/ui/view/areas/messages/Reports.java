@@ -23,6 +23,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.component.LumoCheckbox;
 import eu.ecodex.connector.ui.dto.WebReport;
@@ -30,6 +31,7 @@ import eu.ecodex.connector.ui.dto.WebReportEntry;
 import eu.ecodex.connector.ui.service.WebReportsService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -52,6 +54,7 @@ import org.springframework.util.CollectionUtils;
 @Route(value = Reports.ROUTE, layout = MessageLayout.class)
 @Order(4)
 @TabMetadata(title = "Reports", tabGroup = MessageLayout.TAB_GROUP_NAME)
+@PermitAll
 public class Reports extends VerticalLayout {
     public static final String ROUTE = "reports";
     private final WebReportsService reportsService;

@@ -24,9 +24,9 @@ import eu.ecodex.connector.domain.enums.ConfigurationSource;
 import eu.ecodex.connector.domain.enums.LinkType;
 import eu.ecodex.connector.domain.model.DomibusConnectorLinkConfiguration;
 import eu.ecodex.connector.link.service.DCLinkFacade;
-import eu.ecodex.connector.ui.utils.RoleRequired;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationOverview;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 @Route(value = DCLinkConfigurationView.ROUTE, layout = ConfigurationLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 public class DCLinkConfigurationView extends VerticalLayout implements HasUrlParameter<String> {
     public static final String ROUTE = "linkConfig";
     public static final String LINK_TYPE_QUERY_PARAM = "linkType";

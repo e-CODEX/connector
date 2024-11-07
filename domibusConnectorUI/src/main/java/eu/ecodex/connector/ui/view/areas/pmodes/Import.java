@@ -33,6 +33,7 @@ import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.configuration.util.ConfigurationUtil;
 import io.micrometer.core.instrument.util.StringUtils;
+import jakarta.annotation.security.PermitAll;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = Import.ROUTE, layout = PmodeLayout.class)
 @Order(1)
+@PermitAll
 @TabMetadata(title = "Import PMode-Set", tabGroup = PmodeLayout.TAB_GROUP_NAME)
 public class Import extends DCVerticalLayoutWithTitleAndHelpButton
     implements AfterNavigationObserver {

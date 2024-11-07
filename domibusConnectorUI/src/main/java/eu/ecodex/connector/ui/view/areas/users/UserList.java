@@ -30,6 +30,7 @@ import eu.ecodex.connector.ui.enums.UserRole;
 import eu.ecodex.connector.ui.service.WebUserService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -46,6 +47,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = UserList.ROUTE, layout = UserLayout.class)
 @Order(1)
+@PermitAll
 @TabMetadata(title = "All Users", tabGroup = UserLayout.TAB_GROUP_NAME)
 public class UserList extends VerticalLayout implements AfterNavigationObserver {
     public static final String ROUTE = "userlist";

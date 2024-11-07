@@ -42,6 +42,7 @@ import eu.ecodex.connector.ui.service.WebPModeService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.DashboardView;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.UUID;
@@ -68,6 +69,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = SendC2CTestMessage.ROUTE, layout = ConnectorTestsLayout.class)
 @Order(2)
+@PermitAll
 @TabMetadata(title = "Send Connector Test Message", tabGroup = ConnectorTestsLayout.TAB_GROUP_NAME)
 public class SendC2CTestMessage extends DCVerticalLayoutWithTitleAndHelpButton
     implements AfterNavigationObserver {

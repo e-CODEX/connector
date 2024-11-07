@@ -16,10 +16,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.domain.enums.LinkType;
 import eu.ecodex.connector.link.service.DCLinkFacade;
-import eu.ecodex.connector.ui.utils.RoleRequired;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.configuration.link.importoldconfig.ImportOldGatewayConfigDialog;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @TabMetadata(title = "Gateway Configuration", tabGroup = ConfigurationLayout.TAB_GROUP_NAME)
 @Route(value = GatewayLinkConfiguration.ROUTE, layout = ConfigurationLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 @Order(2)
 public class GatewayLinkConfiguration extends LinkConfiguration {
     public static final String ROUTE = "gwlink";

@@ -16,10 +16,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.domain.enums.LinkType;
 import eu.ecodex.connector.link.service.DCLinkFacade;
-import eu.ecodex.connector.ui.utils.RoleRequired;
 import eu.ecodex.connector.ui.view.areas.configuration.ConfigurationLayout;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.configuration.link.importoldconfig.ImportOldBackendConfigDialog;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
@@ -32,8 +32,8 @@ import org.springframework.stereotype.Component;
 @UIScope
 @TabMetadata(title = "Backend Configuration", tabGroup = ConfigurationLayout.TAB_GROUP_NAME)
 @Route(value = BackendLinkConfiguration.ROUTE, layout = ConfigurationLayout.class)
-@RoleRequired(role = "ADMIN")
 @Order(1)
+@RolesAllowed("ADMIN")
 public class BackendLinkConfiguration extends LinkConfiguration {
     public static final String ROUTE = "backendlink";
     public static final String TITLE = "Backend Configuration";

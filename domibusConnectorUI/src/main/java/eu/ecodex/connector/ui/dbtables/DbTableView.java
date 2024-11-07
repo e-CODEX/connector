@@ -35,7 +35,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.layout.DCMainLayout;
-import eu.ecodex.connector.ui.utils.RoleRequired;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -49,7 +49,7 @@ import java.util.Optional;
 @UIScope
 @Route(value = DbTableView.ROUTE, layout = DCMainLayout.class)
 @PageTitle("domibusConnector - Administrator")
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 @SuppressWarnings("squid:S1135")
 public class DbTableView extends VerticalLayout implements AfterNavigationObserver {
     public static final String ROUTE = "dbtables";

@@ -21,19 +21,22 @@ import eu.ecodex.connector.ui.component.LumoLabel;
 import eu.ecodex.connector.ui.forms.FormsUtil;
 import eu.ecodex.connector.ui.layout.DCMainLayout;
 import eu.ecodex.connector.ui.utils.UiStyle;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 /**
  * This class represents the Info view in a web application. It is a component that displays various
  * information related to the application.
  */
 @UIScope
-@org.springframework.stereotype.Component
+@Component
 @Route(value = Info.ROUTE, layout = DCMainLayout.class)
+@RolesAllowed("ADMIN")
 public class Info extends VerticalLayout implements InitializingBean {
     public static final String ROUTE = "info";
     private static final String PROPERTY_FILESYSTEM_PATH =

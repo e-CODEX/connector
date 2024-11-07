@@ -38,6 +38,7 @@ import eu.ecodex.connector.ui.layout.DCVerticalLayoutWithTitleAndHelpButton;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.messages.MessageDetails;
 import eu.ecodex.connector.ui.view.areas.monitoring.MonitoringLayout;
+import jakarta.annotation.security.PermitAll;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +60,7 @@ import org.vaadin.firitin.components.grid.PagingGrid;
 @UIScope
 @Component
 @Order(2)
+@PermitAll
 @Route(value = TransportStateMonitoringView.ROUTE_PREFIX, layout = MonitoringLayout.class)
 @TabMetadata(title = TransportStateMonitoringView.TITLE, tabGroup = MonitoringLayout.TAB_GROUP_NAME)
 @SuppressWarnings("squid:S1135")

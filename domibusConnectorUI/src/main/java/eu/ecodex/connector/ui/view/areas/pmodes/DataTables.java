@@ -37,6 +37,7 @@ import eu.ecodex.connector.ui.service.WebPModeService;
 import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.configuration.util.ConfigurationUtil;
+import jakarta.annotation.security.PermitAll;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Route(value = DataTables.ROUTE, layout = PmodeLayout.class)
 @Order(2)
+@PermitAll
 @TabMetadata(title = "PMode-Set Data", tabGroup = PmodeLayout.TAB_GROUP_NAME)
 public class DataTables extends DCVerticalLayoutWithTitleAndHelpButton
     implements AfterNavigationObserver {

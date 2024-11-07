@@ -14,6 +14,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.view.StaticContentView;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Route(value = ConnectorTestsOverview.ROUTE, layout = ConnectorTestsLayout.class)
 @Order(3)
+@PermitAll
 @TabMetadata(
     title = "Information on Connector Tests", tabGroup = ConnectorTestsLayout.TAB_GROUP_NAME
 )

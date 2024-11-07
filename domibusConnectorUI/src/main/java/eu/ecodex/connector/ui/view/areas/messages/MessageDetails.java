@@ -35,6 +35,7 @@ import eu.ecodex.connector.ui.utils.UiStyle;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import io.micrometer.core.instrument.util.StringUtils;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.PermitAll;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,6 +50,7 @@ import org.springframework.stereotype.Component;
 @Route(value = MessageDetails.ROUTE, layout = MessageLayout.class)
 @UIScope
 @Order(3)
+@PermitAll
 @TabMetadata(title = "Message Details", tabGroup = MessageLayout.TAB_GROUP_NAME)
 public class MessageDetails extends VerticalLayout implements HasUrlParameter<String> {
     public static final String ROUTE = "messageDetails";

@@ -16,6 +16,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.utils.RoleRequired;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
 @UIScope
 @Component
 @Route(value = UserOverview.ROUTE, layout = UserLayout.class)
-@RoleRequired(role = "ADMIN")
+@RolesAllowed("ADMIN")
 public class UserOverview extends VerticalLayout implements BeforeEnterObserver {
     // This class does not do much, it is just a redirect
     // maybe it's better to directly route to the default active tab in

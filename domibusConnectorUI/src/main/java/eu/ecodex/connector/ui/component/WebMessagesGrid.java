@@ -243,7 +243,9 @@ public class WebMessagesGrid extends PagingGrid<WebMessage> implements AfterNavi
         Query<WebMessage, WebMessage> webMessageWebMessageQuery) {
         LOGGER.debug("Call fetchCallback");
         int offset = webMessageWebMessageQuery.getOffset();
+        int limit = webMessageWebMessageQuery.getLimit();
         LOGGER.debug("Offset: {}", offset);
+        LOGGER.debug("Limit: {}", limit);
         var collect = getSortOrder()
             .stream()
             .filter(sortOrder -> sortOrder.getSorted().getKey() != null)
@@ -258,7 +260,7 @@ public class WebMessagesGrid extends PagingGrid<WebMessage> implements AfterNavi
         var sort = Sort.by(collect.toArray(new Sort.Order[] {}));
 
         // creating page request with sort order and offset
-        var pageRequest = PageRequest.of(offset / getPageSize(), getPageSize(), sort);
+        var pageRequest = PageRequest.of(offset, limit, sort);
         LOGGER.debug("PageRequest: {}", pageRequest);
         var all = dcMessagePersistenceService.findAll(createExample(), pageRequest);
         LOGGER.debug("Page requested size: {}", all.getSize());

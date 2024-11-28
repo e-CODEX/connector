@@ -105,7 +105,8 @@ public class SecurityConfig {
                 "/frontend/**",
                 // (development mode) H2 debugging console
                 "/h2-console/**",
-
+                //allow access to webservices
+                "/services/**",
                 "/documentation/**" // allow access to documentation
             );
             super.configure(web);

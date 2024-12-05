@@ -41,7 +41,7 @@ public class DCVerticalLayoutWithWebMessageGrid extends VerticalLayout {
     public DCVerticalLayoutWithWebMessageGrid(WebMessagesGrid grid) {
         this.grid = grid;
         grid.setPageSize(pageSize);
-        grid.setPageSize(5); // TODO check if replacement is OK
+        // grid.setPageSize(5); // TODO check if replacement is OK
 
         VerticalLayout gridControl = createGridControlLayout();
 

@@ -229,6 +229,7 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
     private Stream<DomibusConnectorTransportStep> fetchCallback(
         Query<DomibusConnectorTransportStep, DomibusConnectorTransportStep> tfQuery) {
         int offset = tfQuery.getOffset();
+        int limit = tfQuery.getLimit();
         try {
             List<Sort.Order> collect = paginatedGrid.getSortOrder()
                                                     .stream()
@@ -247,10 +248,7 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
                                                     .toList();
             var sort = Sort.by(collect.toArray(new Sort.Order[] {}));
 
-            var pageRequest =
-                PageRequest.of(offset / paginatedGrid.getPageSize(), paginatedGrid.getPageSize(),
-                               sort
-                );
+            var pageRequest = PageRequest.of(offset / limit, limit, sort);
             var domibusConnectorTransportSteps = getDomibusConnectorTransportSteps(pageRequest);
             return domibusConnectorTransportSteps.stream();
         } catch (Exception e) {

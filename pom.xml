@@ -76,13 +76,6 @@
             <name>libs-snapshot</name>
             <url>https://scm.ecodex.eu/artifactory/libs-snapshot</url>
         </repository>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>cxf-snapshots</id>
-            <url>https://repository.apache.org/content/groups/snapshots</url>
-        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -98,13 +91,6 @@
             <id>snapshots</id>
             <name>libs-snapshot</name>
             <url>https://scm.ecodex.eu/artifactory/libs-snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>cxf-snapshots</id>
-            <url>https://repository.apache.org/content/groups/snapshots</url>
         </pluginRepository>
     </pluginRepositories>
     <!-- shared version number properties -->
@@ -161,7 +147,7 @@
         <vaadin.version>24.4.10</vaadin.version>
         <vaadin.viritin.version>2.8.23</vaadin.viritin.version>
         <!-- soap web service -->
-        <apache.cxf.version>4.1.0-SNAPSHOT</apache.cxf.version>
+        <apache.cxf.version>4.1.0</apache.cxf.version>
         <glassfish.jaxb-runtime.version>4.0.5</glassfish.jaxb-runtime.version>
         <jakarta.jws-api.version>3.0.0</jakarta.jws-api.version>
         <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>

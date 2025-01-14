@@ -116,7 +116,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>artemis-jms-server</artifactId>
+            <artifactId>artemis-jakarta-server</artifactId>
             <exclusions>
                 <exclusion>
                     <artifactId>jboss-logmanager</artifactId>

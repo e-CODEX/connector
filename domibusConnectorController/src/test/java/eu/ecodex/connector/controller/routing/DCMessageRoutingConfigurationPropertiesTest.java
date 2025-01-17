@@ -27,7 +27,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 
-@SuppressWarnings("squid:S1135")
+@SuppressWarnings({"squid:S1135", "checkstyle:LineLength"})
 @Import({BusinessDomainScopeConfiguration.class, DCMessageRoutingConfiguration.class})
 @SpringBootTest(classes = {
     DCBusinessDomainManagerImpl.class,

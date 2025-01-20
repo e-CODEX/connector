@@ -82,6 +82,14 @@ NOTE: The following matrix may be always a little behind the current testing and
 | Oracle 19c
 | Liquibase, DB-scripts
 
+| 6.0.x
+| Ubuntu 24.04 LTS
+| Java 21.0.x
+| Tomcat 10.1.x
+| Mysql Connector 8.4.x
+| Mysql 8.0.x
+| Liquibase DB-scripts
+
 |===
 
 == The Connector has been tested with
@@ -93,6 +101,10 @@ NOTE: The following matrix may be always a little behind the current testing and
 | 4.4.x
 | 4.2.x
 | 4.2.x
+
+| 6.0.x
+| 4.5.0
+| 5.1.6
 
 |===
 
@@ -109,5 +121,8 @@ NOTE: The following matrix may be always a little behind the current testing and
 
 | 4.4.x
 | 4.4.x
+
+| 6.0.x
+| 6.0.x
 
 |===

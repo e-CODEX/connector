@@ -23,10 +23,10 @@ Note: mariadb is the opensource fork of mysql and in the standard centos reposit
 ____
 
 ----
-sudo yum install -y java-1.8.0-openjdk-headless mariadb tomcat mysql-connector-java
+sudo yum install -y java-21-openjdk-headless mariadb tomcat mysql-connector-java
 ----
 
-* java-1.8.0-openjdk-headless java runtime environment
+* java-21-openjdk-headless java runtime environment
 * mariadb (the database)
 * tomcat web application container
 * mysql-connector-java jdbc driver for accessing the database

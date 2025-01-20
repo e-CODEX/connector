@@ -11,6 +11,7 @@
 package eu.ecodex.connector.link.impl.gwwspullplugin;
 
 import eu.ecodex.connector.domain.transition.DomibusConnectorMessageType;
+import eu.ecodex.connector.link.util.GetServerAddress;
 import eu.ecodex.connector.ws.gateway.webservice.DomibusConnectorGatewayWebService;
 import eu.ecodex.connector.ws.gateway.webservice.GetMessageByIdRequest;
 import eu.ecodex.connector.ws.gateway.webservice.ListPendingMessageIdsResponse;
@@ -30,7 +31,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
-import eu.ecodex.connector.link.util.GetServerAddress;
 
 /**
  * IMPLEMENTATION OF THE GW WEB SERVICE INTERFACE FOR TESTING PURPOSE.

@@ -17,11 +17,8 @@
  * $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  * $Author: meyerfr $
  */
+
 package eu.ecodex.dss.service.checks;
-
-import java.util.List;
-
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import eu.ecodex.dss.model.ECodexContainer;
 import eu.ecodex.dss.model.checks.CheckResult;
@@ -41,9 +38,11 @@ import eu.ecodex.dss.model.token.TokenValidation;
 import eu.ecodex.dss.model.token.ValidationVerification;
 import eu.ecodex.dss.util.DocumentStreamUtil;
 import eu.europa.esig.dss.model.DSSDocument;
+import java.util.List;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
- * Tests the following rules :
+ * Tests the following rules.
  * <ul>
  * <li>The container is not null</li>
  * <li>The ASIC-S document is set and contains data</li>
@@ -60,7 +59,6 @@ import eu.europa.esig.dss.model.DSSDocument;
  * @version $Revision: 1879 $ - $Date: 2013-04-18 09:39:53 +0200 (jeu., 18 avr. 2013) $
  */
 public class ECodexContainerChecker extends AbstractChecker<ECodexContainer> {
-
     /**
      * {@inheritDoc}
      */
@@ -136,11 +134,11 @@ public class ECodexContainerChecker extends AbstractChecker<ECodexContainer> {
         if (isMissing(verification)) {
             detect(r, true, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_MISSING);
         }
-        // further constraints of the verification object depend on the systemtype (see checkTokenSystemType())
+        // further constraints of the verification object depend on the system type
+        //    (see checkTokenSystemType())
 
         checkTokenValidationTechnical(r, token);
         checkTokenValidationLegal(r, token);
-
     }
 
     private void checkTokenValidationTechnical(final CheckResult r, final Token token) {
@@ -172,7 +170,7 @@ public class ECodexContainerChecker extends AbstractChecker<ECodexContainer> {
             detect(r, true, Findings.TOKEN_VALIDATION_LEGAL_RESULT_TRUSTLEVEL_MISSING);
         } else {
             if (isMissing(result.getDisclaimer())) {
-            	// AK: Actually, this one is allowed
+                // AK: Actually, this one is allowed
                 // detect(r, false, Findings.TOKEN_VALIDATION_LEGAL_RESULT_DISCLAIMER_MISSING);
             }
         }
@@ -186,93 +184,120 @@ public class ECodexContainerChecker extends AbstractChecker<ECodexContainer> {
         }
 
         final ValidationVerification validationVerification = token.getValidationVerificationData();
-        if (!isMissing(validationVerification)) { // the absence is checked and reported in checkTokenValidation()
+        if (!isMissing(
+            // the absence is checked and reported in checkTokenValidation()
+            validationVerification)) {
             if (systemType == AdvancedSystemType.AUTHENTICATION_BASED) {
                 checkTokenSystemTypeAuthBased(r, validationVerification);
             } else if (systemType == AdvancedSystemType.SIGNATURE_BASED) {
                 checkTokenSystemTypeSigBased(r, validationVerification);
             }
         }
-
     }
 
     // klara: changed validation slightly
-    private void checkTokenSystemTypeAuthBased(final CheckResult r, final ValidationVerification verification) {
+    private void checkTokenSystemTypeAuthBased(
+        final CheckResult r, final ValidationVerification verification) {
         final AuthenticationInformation auth = verification.getAuthenticationData();
         final List<Signature> sig = verification.getSignatureData();
-        
+
         if (isMissing(auth) && (isMissing(sig) || sig.isEmpty())) {
             detect(r, true, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_MISSING);
             return;
         }
-        
-        if(auth != null)
-        {
-	        if (isMissing(auth.getUsernameSynonym())) {
-	            detect(r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_USERNAME_MISSING);
-	        }
-	        if (isMissing(auth.getIdentityProvider())) {
-	            detect(r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_IDENTITYPROVIDER_MISSING);
-	        }
-	        if (isMissing(auth.getTimeOfAuthentication())) {
-	            detect(r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_TIME_MISSING);
-	        }
+
+        if (auth != null) {
+            if (isMissing(auth.getUsernameSynonym())) {
+                detect(
+                    r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_USERNAME_MISSING);
+            }
+            if (isMissing(auth.getIdentityProvider())) {
+                detect(
+                    r, false,
+                    Findings.TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_IDENTITYPROVIDER_MISSING
+                );
+            }
+            if (isMissing(auth.getTimeOfAuthentication())) {
+                detect(r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_TIME_MISSING);
+            }
         }
-        
+
         if (sig != null && !sig.isEmpty()) {
-        	checkTokenSystemTypeSigBased(r, verification);
+            checkTokenSystemTypeSigBased(r, verification);
         }
     }
 
-    private void checkTokenSystemTypeSigBased(final CheckResult r, final ValidationVerification verification) {
+    @SuppressWarnings("checkstyle:LineLength")
+    private void checkTokenSystemTypeSigBased(
+        final CheckResult r, final ValidationVerification verification) {
 
         final List<Signature> sig = verification.getSignatureData();
-        
+
         if (isMissing(sig)) {
             detect(r, true, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_MISSING);
             return;
         }
 
-        /**
-         * http://www.jira.e-codex.eu/browse/ECDX-45: take into account tokenSignature.isUnsigned();
-         * only if the data was signed, the attributes are taken into account (the main object exists)
+        /*
+         * http://www.jira.e-codex.eu/browse/ECDX-45: take into account tokenSignature.isUnsigned().
+         * only if the data was signed, the attributes are taken into account
+         * (the main object exists)
          */
-		if (!sig.isEmpty()) {
-			for (Signature signature : sig) {
-				
-				final SignatureCertificate cert = signature.getCertificateInformation();
-				final SignatureAttributes atts = signature.getSignatureInformation();
-				final XMLGregorianCalendar time = signature.getSigningTime();
-				
+        if (!sig.isEmpty()) {
+            for (Signature signature : sig) {
+
+                final SignatureCertificate cert = signature.getCertificateInformation();
+                final SignatureAttributes atts = signature.getSignatureInformation();
+                final XMLGregorianCalendar time = signature.getSigningTime();
+
                 if (atts == null && cert == null && time == null && sig.size() == 1) {
-                	//No validation needed. Document is unsigned in the way it was up to Version 1.08.4
-                } else {				
-	                if (isMissing(cert)) {
-						detect(r, true, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_MISSING);
-					} else {
-						if (isMissing(cert.getIssuer())) {
-							detect(r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_ISSUER_MISSING);
-						}
-					}
-					
-					if (isMissing(atts)) {
-						detect(r, true, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_MISSING);
-					} else {
-	
-						if (isMissing(atts.getSignatureFormat())) {
-							detect(r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_FORMAT_MISSING);
-						}
-						if (isMissing(atts.getSignatureLevel())) {
-							detect(r, false, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_LEVEL_MISSING);
-						}
-					}
-					
-					if (isMissing(time)) {
-						detect(r, true, Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_TIME_MISSING);
-					}
-				}
-			}
-		}
+                    // No validation needed. Document is unsigned in the way it was up to
+                    // Version 1.08.4
+                } else {
+                    if (isMissing(cert)) {
+                        detect(
+                            r, true,
+                            Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_MISSING
+                        );
+                    } else {
+                        if (isMissing(cert.getIssuer())) {
+                            detect(
+                                r, false,
+                                Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_ISSUER_MISSING
+                            );
+                        }
+                    }
+
+                    if (isMissing(atts)) {
+                        detect(
+                            r, true,
+                            Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_MISSING
+                        );
+                    } else {
+
+                        if (isMissing(atts.getSignatureFormat())) {
+                            detect(
+                                r, false,
+                                Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_FORMAT_MISSING
+                            );
+                        }
+                        if (isMissing(atts.getSignatureLevel())) {
+                            detect(
+                                r, false,
+                                Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_LEVEL_MISSING
+                            );
+                        }
+                    }
+
+                    if (isMissing(time)) {
+                        detect(
+                            r, true,
+                            Findings.TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_TIME_MISSING
+                        );
+                    }
+                }
+            }
+        }
     }
 
     private void checkContainerDocuments(final ECodexContainer object, final CheckResult r) {
@@ -333,46 +358,83 @@ public class ECodexContainerChecker extends AbstractChecker<ECodexContainer> {
     }
 
     /**
-     * holds the messages for the known issues
+     * Holds the messages for the known issues.
      */
-    public static interface Findings {
+    @SuppressWarnings("checkstyle:LineLength")
+    public interface Findings {
         String CONTAINER_MISSING = "the eCodexContainer must not be null";
         String TOKEN_MISSING = "the eCodexContainer must not have a null/empty token object";
-        String TOKEN_DOCUMENT_MISSING = "the eCodexContainer's token object must not have a null/empty document object";
-        String TOKEN_DOCUMENT_FILENAME_MISSING = "the eCodexContainer's token document object must not have a null/empty filename";
-        String TOKEN_DOCUMENT_TYPE_MISSING = "the eCodexContainer's token document object must not have a null/empty type";
-        String TOKEN_DOCUMENT_DIGESTMETHOD_MISSING = "the eCodexContainer's token document object must not have a null/empty digestmethod";
-        String TOKEN_DOCUMENT_DIGESTVALUE_MISSING = "the eCodexContainer's token document object must not have a null/empty digestvalue";
-        String TOKEN_VALIDATION_MISSING = "the eCodexContainer's token object must not have a null/empty validation object";
-        String TOKEN_VALIDATION_TIME_MISSING = "the eCodexContainer's token validation object must not have a null/empty verificationtime object";
-        String TOKEN_VALIDATION_TECHNICAL_RESULT_MISSING = "the eCodexContainer's token validation object must not have a null/empty technical result object";
-        String TOKEN_VALIDATION_TECHNICAL_RESULT_TRUSTLEVEL_MISSING = "the eCodexContainer's token technical validationresult object must not have a null/empty trustlevel object";
-        String TOKEN_VALIDATION_TECHNICAL_RESULT_COMMENT_MISSING = "the eCodexContainer's token technical validationresult object should not have a null/empty comment, if the trustlevel is not SUCCESSFUL";
-        String TOKEN_VALIDATION_LEGAL_RESULT_MISSING = "the eCodexContainer's token validation object must not have a null/empty legal result object";
-        String TOKEN_VALIDATION_LEGAL_RESULT_TRUSTLEVEL_MISSING = "the eCodexContainer's token legal validationresult object must not have a null/empty trustlevel object";
-        String TOKEN_VALIDATION_LEGAL_RESULT_DISCLAIMER_MISSING = "the eCodexContainer's token legal validationresult object should not have a null/empty disclaimer";
-        String TOKEN_ISSUER_MISSING = "the eCodexContainer's token object must not have a null/empty issuer object";
-        String TOKEN_ISSUER_SYSTEMTYPE_MISSING = "the eCodexContainer's token issuer object must not have a null/empty advancedsystemtype object";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_MISSING = "the eCodexContainer's token object must not have a null/empty validationverification object";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_MISSING = "the eCodexContainer's token object must not have a null/empty authenticationinformation object, if the system is AUTHENTICATION_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_USERNAME_MISSING = "the eCodexContainer's token authenticationinformation object should not have a null/empty usernamesynonym, if the system is AUTHENTICATION_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_IDENTITYPROVIDER_MISSING = "the eCodexContainer's token authenticationinformation object should not have a null/empty identityprovider, if the system is AUTHENTICATION_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_TIME_MISSING = "the eCodexContainer's token authenticationinformation object should not have a null/empty timeofauthentication, if the system is AUTHENTICATION_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_MISSING = "the eCodexContainer's token object must not have a null/empty signature object, if the system is SIGNATURE_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_MISSING = "the eCodexContainer's token signature object must not have a null/empty signaturecertificate object, if the system is SIGNATURE_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_ISSUER_MISSING = "the eCodexContainer's token signaturecertificate object should not have a null/empty issuer object, if the system is SIGNATURE_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_MISSING = "the eCodexContainer's token signature object must not have a null/empty signatureattributes object, if the system is SIGNATURE_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_FORMAT_MISSING = "the eCodexContainer's token signatureattributes object should not have a null/empty signatureformat object, if the system is SIGNATURE_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_LEVEL_MISSING = "the eCodexContainer's token signatureattributes object should not have a null/empty signaturelevel object, if the system is SIGNATURE_BASED";
-        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_TIME_MISSING = "the eCodexContainer's token signature object must not have a null/empty signingTime object, if the system is SIGNATURE_BASED";
-        String CONTAINER_ASIC_MISSING = "the eCodexContainer must not have a null/empty asic document";
-        String CONTAINER_ASIC_DATA_MISSING = "the eCodexContainer must not have a null/empty asic data stream";
-        String CONTAINER_BUSINESS_MISSING = "the eCodexContainer must not have a null/empty business document";
-        String CONTAINER_BUSINESS_DATA_MISSING = "the eCodexContainer must not have a null/empty business data stream";
-        String CONTAINER_SIGNATURE_DATA_MISSING = "the eCodexContainer must not have a null/empty detached signature data stream";
-        String CONTAINER_TOKENPDF_MISSING = "the eCodexContainer must not have a null/empty token PDF document";
-        String CONTAINER_TOKENPDF_DATA_MISSING = "the eCodexContainer must not have a null/empty token PDF data stream";
-        String CONTAINER_TOKENXML_MISSING = "the eCodexContainer must not have a null/empty token XML document";
-        String CONTAINER_TOKENXML_DATA_MISSING = "the eCodexContainer must not have a null/empty token XML data stream";
+        String TOKEN_DOCUMENT_MISSING =
+            "the eCodexContainer's token object must not have a null/empty document object";
+        String TOKEN_DOCUMENT_FILENAME_MISSING =
+            "the eCodexContainer's token document object must not have a null/empty filename";
+        String TOKEN_DOCUMENT_TYPE_MISSING =
+            "the eCodexContainer's token document object must not have a null/empty type";
+        String TOKEN_DOCUMENT_DIGESTMETHOD_MISSING =
+            "the eCodexContainer's token document object must not have a null/empty digestmethod";
+        String TOKEN_DOCUMENT_DIGESTVALUE_MISSING =
+            "the eCodexContainer's token document object must not have a null/empty digestvalue";
+        String TOKEN_VALIDATION_MISSING =
+            "the eCodexContainer's token object must not have a null/empty validation object";
+        String TOKEN_VALIDATION_TIME_MISSING =
+            "the eCodexContainer's token validation object must not have a null/empty verificationtime object";
+        String TOKEN_VALIDATION_TECHNICAL_RESULT_MISSING =
+            "the eCodexContainer's token validation object must not have a null/empty technical result object";
+        String TOKEN_VALIDATION_TECHNICAL_RESULT_TRUSTLEVEL_MISSING =
+            "the eCodexContainer's token technical validationresult object must not have a null/empty trustlevel object";
+        String TOKEN_VALIDATION_TECHNICAL_RESULT_COMMENT_MISSING =
+            "the eCodexContainer's token technical validationresult object should not have a null/empty comment, if the trustlevel is not SUCCESSFUL";
+        String TOKEN_VALIDATION_LEGAL_RESULT_MISSING =
+            "the eCodexContainer's token validation object must not have a null/empty legal result object";
+        String TOKEN_VALIDATION_LEGAL_RESULT_TRUSTLEVEL_MISSING =
+            "the eCodexContainer's token legal validationresult object must not have a null/empty trustlevel object";
+        String TOKEN_VALIDATION_LEGAL_RESULT_DISCLAIMER_MISSING =
+            "the eCodexContainer's token legal validationresult object should not have a null/empty disclaimer";
+        String TOKEN_ISSUER_MISSING =
+            "the eCodexContainer's token object must not have a null/empty issuer object";
+        String TOKEN_ISSUER_SYSTEMTYPE_MISSING =
+            "the eCodexContainer's token issuer object must not have a null/empty advancedsystemtype object";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_MISSING =
+            "the eCodexContainer's token object must not have a null/empty validationverification object";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_MISSING =
+            "the eCodexContainer's token object must not have a null/empty authenticationinformation object, if the system is AUTHENTICATION_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_USERNAME_MISSING =
+            "the eCodexContainer's token authenticationinformation object should not have a null/empty usernamesynonym, if the system is AUTHENTICATION_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_IDENTITYPROVIDER_MISSING =
+            "the eCodexContainer's token authenticationinformation object should not have a null/empty identityprovider, if the system is AUTHENTICATION_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_AUTHINFO_TIME_MISSING =
+            "the eCodexContainer's token authenticationinformation object should not have a null/empty timeofauthentication, if the system is AUTHENTICATION_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_MISSING =
+            "the eCodexContainer's token object must not have a null/empty signature object, if the system is SIGNATURE_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_MISSING =
+            "the eCodexContainer's token signature object must not have a null/empty signaturecertificate object, if the system is SIGNATURE_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_CERTINFO_ISSUER_MISSING =
+            "the eCodexContainer's token signaturecertificate object should not have a null/empty issuer object, if the system is SIGNATURE_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_MISSING =
+            "the eCodexContainer's token signature object must not have a null/empty signatureattributes object, if the system is SIGNATURE_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_FORMAT_MISSING =
+            "the eCodexContainer's token signatureattributes object should not have a null/empty signatureformat object, if the system is SIGNATURE_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_SIGINFO_LEVEL_MISSING =
+            "the eCodexContainer's token signatureattributes object should not have a null/empty signaturelevel object, if the system is SIGNATURE_BASED";
+        String TOKEN_VALIDATION_VERIFICATIONDATA_SIGDATA_TIME_MISSING =
+            "the eCodexContainer's token signature object must not have a null/empty signingTime object, if the system is SIGNATURE_BASED";
+        String CONTAINER_ASIC_MISSING =
+            "the eCodexContainer must not have a null/empty asic document";
+        String CONTAINER_ASIC_DATA_MISSING =
+            "the eCodexContainer must not have a null/empty asic data stream";
+        String CONTAINER_BUSINESS_MISSING =
+            "the eCodexContainer must not have a null/empty business document";
+        String CONTAINER_BUSINESS_DATA_MISSING =
+            "the eCodexContainer must not have a null/empty business data stream";
+        String CONTAINER_SIGNATURE_DATA_MISSING =
+            "the eCodexContainer must not have a null/empty detached signature data stream";
+        String CONTAINER_TOKENPDF_MISSING =
+            "the eCodexContainer must not have a null/empty token PDF document";
+        String CONTAINER_TOKENPDF_DATA_MISSING =
+            "the eCodexContainer must not have a null/empty token PDF data stream";
+        String CONTAINER_TOKENXML_MISSING =
+            "the eCodexContainer must not have a null/empty token XML document";
+        String CONTAINER_TOKENXML_DATA_MISSING =
+            "the eCodexContainer must not have a null/empty token XML data stream";
     }
 }

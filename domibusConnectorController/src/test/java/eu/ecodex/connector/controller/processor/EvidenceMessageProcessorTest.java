@@ -68,6 +68,7 @@ class EvidenceMessageProcessorTest {
 
     @Test
     @Timeout(30)
+    @SuppressWarnings("checkstyle:LocalVariableName")
     void testDeliverTrigger() throws InterruptedException {
         String EBMSID = "testDeliverTrigger_1";
 
@@ -143,6 +144,7 @@ class EvidenceMessageProcessorTest {
 
     @Test
     @Timeout(30)
+    @SuppressWarnings("checkstyle:LocalVariableName")
     void testDeliverTrigger_evidenceShouldBeSentBack() throws InterruptedException {
         String EBMSID = "testDeliverTrigger_evidenceShouldBeSentBack_1";
 

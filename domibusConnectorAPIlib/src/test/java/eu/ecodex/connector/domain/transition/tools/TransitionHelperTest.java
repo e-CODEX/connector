@@ -10,18 +10,17 @@
 
 package eu.ecodex.connector.domain.transition.tools;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import eu.ecodex.connector.domain.transition.DomibusConnectorMessageConfirmationType;
 import eu.ecodex.connector.domain.transition.DomibusConnectorMessageContentType;
 import eu.ecodex.connector.domain.transition.DomibusConnectorMessageType;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.*;
 
 /**
- *
- *
+ * Transition helper test class.
  */
 public class TransitionHelperTest {
-
     @Test
     public void testIsConfirmationMessage_messageWithContent_shouldBeFalse() {
         DomibusConnectorMessageType messageType = new DomibusConnectorMessageType();
@@ -46,7 +45,4 @@ public class TransitionHelperTest {
 
         assertThat(TransitionHelper.isConfirmationMessage(messageType)).isTrue();
     }
-
-
-
 }

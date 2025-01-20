@@ -95,18 +95,20 @@ public class LookupBackendNameStep implements MessageProcessStep {
                     .filter(r -> r.getMatchClause().matches(domibusConnectorMessage))
                     .map(RoutingRule::getLinkName)
                     .findFirst()
-                    .map(bName -> {
+                    .map(backName -> {
                         LOGGER.info(
                             LoggingMarker.Log4jMarker.BUSINESS_LOG,
-                            "Looked up backend name [{}] for message", bName
+                            "Looked up backend name [{}] for message",
+                            backName
                         );
-                        return bName;
+                        return backName;
                     })
                     .orElseGet(() -> {
                         LOGGER.warn(
                             LoggingMarker.Log4jMarker.BUSINESS_LOG,
-                            "No backend rule pattern has matched! Applying default "
-                                + "backend name [{}]!"
+                            "No backend rule pattern has matched! "
+                                + "Applying default backend name [{}]!",
+                            defaultBackendName
                         );
                         return defaultBackendName;
                     })

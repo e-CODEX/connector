@@ -73,7 +73,7 @@ Since the domibusConnector in its current version {project-version} is a web app
 This can be any JAVA compliant product which supports at least Servlet 3.0 API level.
 During implementation and testing of the domibusConnector the following web-servers were used:
 
-* Apache Tomcat 8
+* Apache Tomcat 10 (minimum)
 
 Be aware that those are neither requirements nor recommendations, but only listed for information.
 
@@ -221,7 +221,7 @@ It is not a requirement that one of the listed web server products must be used.
 ==== Tested Tomcat Version
 The deployment has been tested with the following versions:
 
-* Apache Tomcat 8.5.23 on Windows 10
+* Apache Tomcat 10.1.30 on Windows 10
 ==== Deployment steps
 * Copy the adopted “connector.properties” and “log4j.xml” file into “<path_to_tomcat>/conf/domibusConnector”.
 * Copy the “domibusConnector.war” into “<path_to_tomcat>/webapps”.
@@ -230,7 +230,16 @@ The deployment has been tested with the following versions:
 
 The “setenv” file should be called at startup by the tomcat and should include the following parameters:
 
+===== Windows
 image:screenshot_tomcat_setenv_file.png[screenshot_setenv_file]
+
+===== Linux (Ubuntu)
+----
+export CATALINA_HOME=/opt/tomcat-10.1.30
+
+export JAVA_OPTS="$JAVA_OPTS -Dconnector.config.file=$CATALINA_HOME/conf/connector/connector.properties"
+export JAVA_OPTS="$JAVA_OPTS -Dconnector.logging.config=$CATALINA_HOME/conf/connector/log4j2.xml"
+----
 
 Finally start/restart your Apache Tomcat. The application should be deployed automatically.
 
@@ -244,4 +253,3 @@ The default login already stored in the database for the web user interface is �
 
 At least, the sections "PMode-Set Import" and "Configuration" need to be configured properly.
 Those sections of the Administration UI mostly contain online help pages to give support.
-

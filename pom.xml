@@ -171,7 +171,7 @@
         <liquibase-core.version>4.29.1</liquibase-core.version>
         <mariadb-java-client.version>3.4.1</mariadb-java-client.version>
         <mysql.connector-java.version>9.0.0</mysql.connector-java.version>
-        <oracle.ojdbc8.version>23.5.0.24.07</oracle.ojdbc8.version>
+        <oracle.ojdbc11.version>23.6.0.24.10</oracle.ojdbc11.version>
         <postgresql.version>42.7.4</postgresql.version>
         <!-- other -->
         <atomikos.version>6.0.0</atomikos.version>
@@ -475,14 +475,14 @@
             </dependency>
             <dependency>
                 <groupId>com.oracle.database.jdbc</groupId>
-                <artifactId>ojdbc8</artifactId>
-                <version>${oracle.ojdbc8.version}</version>
+                <artifactId>ojdbc11</artifactId>
+                <version>${oracle.ojdbc11.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ojdbc-bom</artifactId>
-                <version>${oracle.ojdbc8.version}</version>
+                <version>${oracle.ojdbc11.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

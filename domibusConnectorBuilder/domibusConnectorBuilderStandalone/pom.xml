@@ -46,7 +46,7 @@
         </dependency>
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
+            <artifactId>ojdbc11</artifactId>
             <scope>provided</scope>
         </dependency>
         <!--other dependencies-->
@@ -159,8 +159,8 @@
                                 <artifactItem>
                                     <overWrite>true</overWrite>
                                     <groupId>com.oracle.database.jdbc</groupId>
-                                    <artifactId>ojdbc8</artifactId>
-                                    <version>${oracle.ojdbc8.version}</version>
+                                    <artifactId>ojdbc11</artifactId>
+                                    <version>${oracle.ojdbc11.version}</version>
                                 </artifactItem>
                                 <!-- download postgresql driver -->
                                 <artifactItem>

@@ -10,6 +10,7 @@
 
 package eu.ecodex.connector.ui.view.areas.monitoring.lnktransport;
 
+import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -20,6 +21,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.Route;
@@ -39,6 +41,7 @@ import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import eu.ecodex.connector.ui.view.areas.messages.MessageDetails;
 import eu.ecodex.connector.ui.view.areas.monitoring.MonitoringLayout;
 import jakarta.annotation.security.PermitAll;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -77,8 +80,6 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
     private final DCLinkFacade dcLinkFacade;
     private int pageSize = INITIAL_PAGE_SIZE;
     private PagingGrid<DomibusConnectorTransportStep> paginatedGrid;
-    private CallbackDataProvider<DomibusConnectorTransportStep, DomibusConnectorTransportStep>
-        callbackDataProvider;
     private Set<TransportState> filterForState = Stream.of(TransportState.values())
                                                        .filter(s -> s != TransportState.ACCEPTED)
                                                        .collect(Collectors.toSet());
@@ -117,38 +118,34 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
     }
 
     private void initUI() {
-        callbackDataProvider = new CallbackDataProvider<>(this::fetchCallback, this::countCallback);
-
         var buttonBar = new HorizontalLayout();
         var pageSizeField = new IntegerField("Page Size");
-        pageSizeField.setValue(INITIAL_PAGE_SIZE);
-        pageSizeField.addValueChangeListener(e -> {
-            this.pageSize = e.getValue();
-            this.paginatedGrid.setPageSize(pageSize);
-            this.callbackDataProvider.refreshAll();
-        });
         buttonBar.add(pageSizeField);
+        pageSizeField.setValue(this.pageSize);
+        pageSizeField.setValueChangeMode(ValueChangeMode.LAZY);
+        pageSizeField.addValueChangeListener(this::pageSizeChanged);
 
         checkboxGroup.setLabel("Transport State");
         checkboxGroup.setItems(TransportState.values());
         checkboxGroup.setItemLabelGenerator(Enum::name);
         checkboxGroup.addSelectionListener(selectEvent -> {
             this.filterForState = selectEvent.getAllSelectedItems();
-            this.callbackDataProvider.refreshAll();
+            this.loadPaginatedData();
+            this.paginatedGrid.getDataProvider().refreshAll();
         });
 
         buttonBar.add(checkboxGroup);
 
         linkPartnerSelectBox.addSelectionListener(selectEvent -> {
             this.selectedLinkPartners = new HashSet<>(selectEvent.getAllSelectedItems());
-            this.callbackDataProvider.refreshAll();
+            this.loadPaginatedData();
+            this.paginatedGrid.getDataProvider().refreshAll();
         });
         buttonBar.add(linkPartnerSelectBox);
 
         this.add(buttonBar);
 
         paginatedGrid = new PagingGrid<>(DomibusConnectorTransportStep.class);
-        paginatedGrid.setDataProvider(callbackDataProvider);
         paginatedGrid.setPageSize(this.pageSize);
 
         paginatedGrid.setColumns(); // reset all columns...
@@ -175,6 +172,24 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
                      .setHeader("Transport Id");
 
         this.add(paginatedGrid);
+    }
+
+    private void pageSizeChanged(
+        AbstractField.ComponentValueChangeEvent<IntegerField, Integer>
+            integerFieldIntegerComponentValueChangeEvent) {
+
+        try {
+            this.pageSize = integerFieldIntegerComponentValueChangeEvent.getValue();
+        } catch (Exception exception) {
+            this.pageSize = INITIAL_PAGE_SIZE;
+        }
+
+        if (this.pageSize == 0) {
+            this.pageSize = INITIAL_PAGE_SIZE;
+        }
+
+        this.paginatedGrid.setPageSize(pageSize);
+        this.paginatedGrid.getDataProvider().refreshAll();
     }
 
     private HorizontalLayout buttonProvider(DomibusConnectorTransportStep step) {
@@ -210,51 +225,32 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
             // TODO: improve error message and User notification!
             Notification.show("ERROR while retrying message: " + exc.getMessage());
         }
-        this.callbackDataProvider.refreshItem(step);
+        this.paginatedGrid.getDataProvider().refreshItem(step);
     }
 
-    private int countCallback(
-        Query<DomibusConnectorTransportStep, DomibusConnectorTransportStep> tfQuery) {
-        // TODO: introduce own count call on DB so not ALL items are read from DB or check if
-        //  Pageable.ofSize(0) avoids fetching items
-        try {
-            var stepByLastState = getDomibusConnectorTransportSteps(Pageable.ofSize(1));
-            return (int) stepByLastState.getTotalElements();
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return 0;
-        }
-    }
+    private void loadPaginatedData() {
+        this.paginatedGrid.setPagingDataProvider((page, pageSize) -> {
+            int start = (int) (page * this.paginatedGrid.getPageSize());
+            try {
+                List<Sort.Order> collect = paginatedGrid
+                    .getSortOrder()
+                    .stream()
+                    .filter(sortOrder -> sortOrder.getSorted().getKey() != null)
+                    .map(sortOrder ->
+                             sortOrder.getDirection() == SortDirection.ASCENDING
+                                 ? Sort.Order.asc(sortOrder.getSorted().getKey())
+                                 : Sort.Order.desc(sortOrder.getSorted().getKey()))
+                    .toList();
+                var sort = Sort.by(collect.toArray(new Sort.Order[] {}));
 
-    private Stream<DomibusConnectorTransportStep> fetchCallback(
-        Query<DomibusConnectorTransportStep, DomibusConnectorTransportStep> tfQuery) {
-        int offset = tfQuery.getOffset();
-        int limit = tfQuery.getLimit();
-        try {
-            List<Sort.Order> collect = paginatedGrid.getSortOrder()
-                                                    .stream()
-                                                    .filter(
-                                                        sortOrder -> sortOrder.getSorted().getKey()
-                                                            != null)
-                                                    .map(sortOrder ->
-                                                             sortOrder.getDirection()
-                                                                 == SortDirection.ASCENDING
-                                                                 ? Sort.Order.asc(
-                                                                 sortOrder.getSorted()
-                                                                          .getKey())
-                                                                 : Sort.Order.desc(
-                                                                 sortOrder.getSorted()
-                                                                          .getKey()))
-                                                    .toList();
-            var sort = Sort.by(collect.toArray(new Sort.Order[] {}));
-
-            var pageRequest = PageRequest.of(offset / limit, limit, sort);
-            var domibusConnectorTransportSteps = getDomibusConnectorTransportSteps(pageRequest);
-            return domibusConnectorTransportSteps.stream();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Stream.empty();
-        }
+                var pageRequest = PageRequest.of(start / pageSize, pageSize, sort);
+                var domibusConnectorTransportSteps = getDomibusConnectorTransportSteps(pageRequest);
+                return domibusConnectorTransportSteps.stream().toList();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Collections.emptyList();
+            }
+        });
     }
 
     private Page<DomibusConnectorTransportStep> getDomibusConnectorTransportSteps(Pageable p) {
@@ -274,6 +270,7 @@ public class TransportStateMonitoringView extends DCVerticalLayoutWithTitleAndHe
         this.selectedLinkPartners.addAll(allLinkPartners);
         linkPartnerSelectBox.setValue(this.selectedLinkPartners);
 
-        this.callbackDataProvider.refreshAll();
+        loadPaginatedData();
+        this.paginatedGrid.getDataProvider().refreshAll();
     }
 }

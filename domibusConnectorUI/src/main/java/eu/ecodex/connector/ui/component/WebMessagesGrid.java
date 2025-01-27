@@ -17,7 +17,6 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.data.event.SortEvent;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
-import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.provider.SortOrder;
 import com.vaadin.flow.function.ValueProvider;
@@ -30,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +80,8 @@ public class WebMessagesGrid extends PagingGrid<WebMessage> implements AfterNavi
         for (Column<WebMessage> col : getColumns()) {
             col.setResizable(true);
         }
+
+        loadPaginatedData();
 
         setMultiSort(false);
         setWidth("100%");
@@ -235,58 +235,51 @@ public class WebMessagesGrid extends PagingGrid<WebMessage> implements AfterNavi
         );
     }
 
-    private int countCallback(Query<WebMessage, WebMessage> webMessageWebMessageQuery) {
-        return (int) dcMessagePersistenceService.count(createExample());
+    private void loadPaginatedData() {
+        this.setPagingDataProvider((page, pageSize) -> {
+            int start = (int) (page * this.getPageSize());
+
+            LOGGER.debug("Call pagingDataProvider");
+            LOGGER.debug("Offset: {}", start);
+            LOGGER.debug("Limit: {}", pageSize);
+
+            var collect = getSortOrder()
+                .stream()
+                .filter(sortOrder -> sortOrder.getSorted().getKey() != null)
+                .map(sortOrder ->
+                         sortOrder.getDirection() == SortDirection.ASCENDING
+                             ? Sort.Order.asc(sortOrder.getSorted().getKey())
+                             : Sort.Order.desc(sortOrder.getSorted().getKey()))
+                .collect(Collectors.toList());
+            if (collect.isEmpty()) {
+                // set default sort order if none selected
+                collect.add(Sort.Order.desc(TAG_CREATED));
+            }
+            var sort = Sort.by(collect.toArray(new Sort.Order[] {}));
+
+            // creating page request with sort order and offset
+            var pageRequest = PageRequest.of(start / pageSize, pageSize, sort);
+            LOGGER.debug("PageRequest: {}", pageRequest);
+            var all = dcMessagePersistenceService.findAll(createExample(), pageRequest);
+            LOGGER.debug("Page requested size: {}", all.getSize());
+            this.currentPage = all;
+
+            return all.stream().toList();
+        });
     }
 
-    private Stream<WebMessage> fetchCallback(
-        Query<WebMessage, WebMessage> webMessageWebMessageQuery) {
-        LOGGER.debug("Call fetchCallback");
-        int offset = webMessageWebMessageQuery.getOffset();
-        int limit = webMessageWebMessageQuery.getLimit();
-        LOGGER.debug("Offset: {}", offset);
-        LOGGER.debug("Limit: {}", limit);
-        var collect = getSortOrder()
-            .stream()
-            .filter(sortOrder -> sortOrder.getSorted().getKey() != null)
-            .map(sortOrder ->
-                     sortOrder.getDirection() == SortDirection.ASCENDING
-                         ? Sort.Order.asc(sortOrder.getSorted().getKey())
-                         : Sort.Order.desc(sortOrder.getSorted().getKey()))
-            .collect(Collectors.toList());
-        if (collect.isEmpty()) {
-            collect.add(Sort.Order.desc(TAG_CREATED)); // set default sort order if none selected
-        }
-        var sort = Sort.by(collect.toArray(new Sort.Order[] {}));
-
-        // creating page request with sort order and offset
-        var pageRequest = PageRequest.of(offset / limit, limit, sort);
-        LOGGER.debug("PageRequest: {}", pageRequest);
-        var all = dcMessagePersistenceService.findAll(createExample(), pageRequest);
-        LOGGER.debug("Page requested size: {}", all.getSize());
-        this.currentPage = all;
-
-        return all.stream();
-    }
-
+    /**
+     * Reload the current page.
+     */
     public void reloadList() {
         LOGGER.debug("#reloadList");
-        getCallbackDataProvider().refreshAll();
+        this.getDataProvider().refreshAll();
     }
 
-    @Override
+    // @Override
+    // TODO to be removed
     public void afterNavigation(AfterNavigationEvent event) {
-        LOGGER.debug("#afterNavigation: Create and set callbackDataProvider");
-        callbackDataProvider
-            = getCallbackDataProvider();
-        setDataProvider(callbackDataProvider);
-    }
-
-    private CallbackDataProvider<WebMessage, WebMessage> getCallbackDataProvider() {
-        if (callbackDataProvider == null) {
-            callbackDataProvider =
-                new CallbackDataProvider<>(this::fetchCallback, this::countCallback);
-        }
-        return callbackDataProvider;
+        LOGGER.debug("#afterNavigation: Create and set pagingDataProvider");
+        loadPaginatedData();
     }
 }

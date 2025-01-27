@@ -41,7 +41,6 @@ public class DCVerticalLayoutWithWebMessageGrid extends VerticalLayout {
     public DCVerticalLayoutWithWebMessageGrid(WebMessagesGrid grid) {
         this.grid = grid;
         grid.setPageSize(pageSize);
-        // grid.setPageSize(5); // TODO check if replacement is OK
 
         VerticalLayout gridControl = createGridControlLayout();
 
@@ -100,8 +99,18 @@ public class DCVerticalLayoutWithWebMessageGrid extends VerticalLayout {
     private void pageSizeChanged(
         AbstractField.ComponentValueChangeEvent<IntegerField, Integer>
             integerFieldIntegerComponentValueChangeEvent) {
-        this.pageSize = integerFieldIntegerComponentValueChangeEvent.getValue();
-        this.grid.setPageSize(pageSize);
+
+        try {
+            this.pageSize = integerFieldIntegerComponentValueChangeEvent.getValue();
+        } catch (Exception  e) {
+            this.pageSize = INITIAL_PAGE_SIZE;
+        }
+
+        if (this.pageSize == 0) {
+            this.grid.setPageSize(INITIAL_PAGE_SIZE);
+        }
+
+        this.grid.setPageSize(pageSize == 0 ? INITIAL_PAGE_SIZE : pageSize);
         this.grid.reloadList();
     }
 }

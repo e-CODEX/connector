@@ -56,7 +56,6 @@ public class WebMessagesGrid extends PagingGrid<WebMessage> implements AfterNavi
     private final DomibusConnectorWebMessagePersistenceService dcMessagePersistenceService;
     WebMessage exampleWebMessage;
     Page<WebMessage> currentPage;
-    CallbackDataProvider<WebMessage, WebMessage> callbackDataProvider;
 
     /**
      * Constructor.

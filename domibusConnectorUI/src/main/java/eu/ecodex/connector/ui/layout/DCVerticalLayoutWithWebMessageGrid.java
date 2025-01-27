@@ -107,10 +107,10 @@ public class DCVerticalLayoutWithWebMessageGrid extends VerticalLayout {
         }
 
         if (this.pageSize == 0) {
-            this.grid.setPageSize(INITIAL_PAGE_SIZE);
+            this.pageSize = INITIAL_PAGE_SIZE;
         }
 
-        this.grid.setPageSize(pageSize == 0 ? INITIAL_PAGE_SIZE : pageSize);
+        this.grid.setPageSize(pageSize);
         this.grid.reloadList();
     }
 }

@@ -118,7 +118,8 @@ public class Search extends VerticalLayout {
 
         var searchConversationIdBtn = new Button(new Icon(VaadinIcon.SEARCH));
         searchConversationIdBtn.addClickListener(
-            e -> searchByConversationId(searchConversationIdText.getValue()));
+            e -> searchByConversationId(searchConversationIdText.getValue())
+        );
         conversationIdSearch.add(searchConversationIdBtn);
 
         add(conversationIdSearch);

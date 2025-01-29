@@ -186,4 +186,3 @@ public class UserList extends VerticalLayout implements AfterNavigationObserver 
         reloadList();
     }
 }
-

@@ -14,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.spring.annotation.UIScope;
 import eu.ecodex.connector.ui.utils.RoleRequired;
 import jakarta.annotation.security.RolesAllowed;
@@ -43,6 +44,14 @@ public class MessageOverview extends VerticalLayout implements BeforeEnterObserv
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        event.forwardTo(MessagesList.class);
+        var path = RouteConfiguration.forSessionScope().getUrl(MessagesList.class);
+
+        if (!path.endsWith("/")) {
+            // Redirect to the path with a trailing slash if not present
+            // This is a workaround to prevent error during the refresh of a sub tab
+            path = path + "/";
+        }
+
+        event.forwardTo(path);
     }
 }

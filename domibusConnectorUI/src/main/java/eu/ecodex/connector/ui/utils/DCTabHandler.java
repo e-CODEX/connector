@@ -21,7 +21,7 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
-import eu.ecodex.connector.ui.configuration.SecurityUtils;
+import com.vaadin.flow.router.RouteConfiguration;
 import eu.ecodex.connector.ui.view.areas.configuration.TabMetadata;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +60,16 @@ public class DCTabHandler implements BeforeEnterObserver {
             var selectedTab = selectedChangeEvent.getSelectedTab();
             var componentClazz = tabsToPages.get(selectedTab);
             LOGGER.debug("Navigate to [{}]", componentClazz);
-            UI.getCurrent().navigate(componentClazz);
+
+            var path = RouteConfiguration.forSessionScope().getUrl(componentClazz);
+
+            if (!path.endsWith("/")) {
+                // Redirect to the path with a trailing slash if not present
+                // This is a workaround to prevent error during the refresh of a sub tab
+                path = path + "/";
+            }
+
+            UI.getCurrent().navigate(path + "/");
         }
     }
 
@@ -77,22 +86,9 @@ public class DCTabHandler implements BeforeEnterObserver {
         }
     }
 
-    /**
-     * Set tab enabled if the view is accessible by the current user.
-     */
-    private void setTabEnabledOnUserRole() {
-        pagesToTab.entrySet()
-                  .forEach(entry -> entry.getValue()
-                                         .setEnabled(
-                                             SecurityUtils.isUserAllowedToView(entry.getKey())
-                                         )
-                  );
-    }
-
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         setSelectedTab(event);
-        setTabEnabledOnUserRole();
     }
 
     /**
@@ -121,11 +117,6 @@ public class DCTabHandler implements BeforeEnterObserver {
         public TabBuilder withLabel(String label) {
             this.tabLabel = label;
             return this;
-        }
-
-        public Tab addForComponent(Component component) {
-            clz = component.getClass();
-            return addForComponent(clz);
         }
 
         /**

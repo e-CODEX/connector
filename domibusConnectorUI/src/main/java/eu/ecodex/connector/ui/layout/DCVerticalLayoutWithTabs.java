@@ -35,7 +35,7 @@ public class DCVerticalLayoutWithTabs extends VerticalLayout
     protected static final Logger LOGGER = LoggerFactory.getLogger(PmodeLayout.class);
     private final String TAB_GROUP_NAME;
     private final ApplicationContext applicationContext;
-    private final DCTabHandler DCTabHandler = new DCTabHandler();
+    private final DCTabHandler dcTabHandler = new DCTabHandler();
 
     /**
      * This class represents a vertical layout with tabs. It extends the VerticalLayout class and
@@ -59,12 +59,12 @@ public class DCVerticalLayoutWithTabs extends VerticalLayout
 
         setSizeFull();
 
-        DCTabHandler.createTabs(applicationContext, TAB_GROUP_NAME);
-        add(DCTabHandler.getTabs());
+        dcTabHandler.createTabs(applicationContext, TAB_GROUP_NAME);
+        add(dcTabHandler.getTabs());
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        DCTabHandler.beforeEnter(event);
+        dcTabHandler.beforeEnter(event);
     }
 }

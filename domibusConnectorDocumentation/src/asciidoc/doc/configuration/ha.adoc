@@ -18,7 +18,7 @@ endif::mvnbasedir[]
 
 === Introduction
 
-The recommendation is to use a active/passive service environment. For an active/active environment read the following:
+The recommendation is to use an active/passive service environment. For an active/active environment read the following:
 
 * HA support is still experimental and mostly untested
 * UI configuration does not work with HA!

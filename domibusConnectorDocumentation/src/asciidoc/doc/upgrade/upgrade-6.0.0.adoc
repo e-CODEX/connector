@@ -1,0 +1,15 @@
+:path: ../../
+
+ifndef::basepath[]
+:basepath: ../../
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Upgrade to 6.0.0
+
+== Upgrade Manual
+
+Nothing special to do

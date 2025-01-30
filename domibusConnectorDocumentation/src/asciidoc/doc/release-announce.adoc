@@ -20,7 +20,7 @@ Username and password will by provided via e-mail request.
 
 The changelog of this version is available within the zip folder under 'documentation/pdf-documentation/changelog.pdf'.
 
-Please also visit the domibusConnector roadmap on the e-Codex website link:https://www.e-codex.eu/node/45[here].
+Please also visit the domibusConnector roadmap on the e-Codex website link:https://www.ecodex.eu/node/45[here].
 
 Best regards,
 

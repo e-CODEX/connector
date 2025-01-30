@@ -14,7 +14,7 @@ endif::header[]
 
 = Changelog
 
-include::{basepath}/doc/changelog/changelog-6.0.x.adoc[]
+include::{basepath}/doc/changelog/changelog-6.0.0.adoc[]
 
 include::{basepath}/doc/changelog/changelog-4.0.x.adoc[]
 

@@ -1,0 +1,43 @@
+== Changelog for domibusConnector-6.0.0
+
+=== 6.0.0
+==== Changes
+* Migrate from Java 8 to 21
+* Migrate from Spring Boot 2.5.15 to 3.3.3
+* Update libraries and plugins to the latest version
+
+==== Compatibility:
+* The 6.0.0 connector is compatible with the 4.1.3-RELEASE of the domibus-connector-plugin-Distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.1.3-RELEASE/)
+
+==== Testing:
+
+The Connector has been tested on
+
+|===
+| OS | Java | Application Server | Database Connector | Database
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| Mysql Connector 8.4.x
+| Mysql 8.0.x
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| MariaDB Java Client 3.4.1
+| MariaDB 11.6.2
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| PostgreSQL 42.7.4
+| PostgreSQL 17.2
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| OJDBC-11 23.6.0.24.10
+| Oracle 21.3.0 Express
+
+|===

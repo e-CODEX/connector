@@ -96,14 +96,14 @@ Copy `keystore` folder and paste it into the `container/config` folder.
 * `application.properties` sample can be found at:
 
 ```
-domibusConnectorDistribution/target/domibusConnector/documentation/config/prpoperties
+domibusConnectorDistribution/target/domibusConnector/documentation/config
 ```
 Copy `application.properties` file and paste it into `container/config` folder.
 
 * `log4j2.xml` sample can be found at:
 
 ```
-domibusConnectorDistribution/target/domibusConnector/documentation/config/prpoperties
+domibusConnectorDistribution/target/domibusConnector/documentation/config
 ```
 Copy `log4j2.xml` file and paste it into `container/config` folder.
 

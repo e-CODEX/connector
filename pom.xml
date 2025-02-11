@@ -170,7 +170,7 @@
         <github.database-rider-spring.version>1.44.0</github.database-rider-spring.version>
         <liquibase-core.version>4.29.1</liquibase-core.version>
         <mariadb-java-client.version>3.5.1</mariadb-java-client.version>
-        <mysql.connector-java.version>9.0.0</mysql.connector-java.version>
+        <mysql.connector-java.version>9.2.0</mysql.connector-java.version>
         <oracle.ojdbc11.version>23.6.0.24.10</oracle.ojdbc11.version>
         <postgresql.version>42.7.4</postgresql.version>
         <!-- other -->
@@ -195,7 +195,7 @@
         <ow2.asm.version>9.7</ow2.asm.version>
         <saxon.he.version>12.5</saxon.he.version>
         <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
-        <spring.boot.version>3.3.3</spring.boot.version>
+        <spring.boot.version>3.3.8</spring.boot.version>
         <testcontainers.version>1.20.1</testcontainers.version>
         <tomcat.version>8.5.32</tomcat.version>
         <xml-apis.version>1.4.01</xml-apis.version>

@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import javax.crypto.KeyGenerator;
@@ -31,7 +32,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StreamUtils;
 
@@ -106,7 +106,7 @@ class LargeFilePersistenceServiceFilesystemImplTest {
         // TODO: assert file exists in FS
         File f = new File(testStorageLocation + File.separator + storageIdReference);
         assertThat(f).as(String.format("A file <%s> should exist", f.getAbsolutePath()))
-                              .exists();
+                     .exists();
 
         FileBasedLargeFileReference fileReference =
             (FileBasedLargeFileReference) largeFileReference;
@@ -158,7 +158,7 @@ class LargeFilePersistenceServiceFilesystemImplTest {
         kg.init(random);
 
         var secretKeySpec = new SecretKeySpec(
-            Base64Utils.decodeFromString("sJ0kZ3pVBcG75ar4ADWwgg=="),
+            Base64.getDecoder().decode("sJ0kZ3pVBcG75ar4ADWwgg=="),
             "AES"
         );
 

@@ -37,6 +37,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.StreamUtils;
 
 /**
@@ -360,7 +360,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
     InputStream generateDecryptedInputStream(
         FileBasedLargeFileReference bigDataReference, InputStream encryptedInputStream) {
         var ivspec =
-            new IvParameterSpec(Base64Utils.decodeFromString(bigDataReference.getInitVector()));
+            new IvParameterSpec(Base64.getDecoder().decode(bigDataReference.getInitVector()));
         var secretKey = loadFromKeyString(bigDataReference.getEncryptionKey());
 
         Cipher cipher;
@@ -381,7 +381,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
         random.nextBytes(iv);
         var ivspec = new IvParameterSpec(iv);
 
-        var initVector = Base64Utils.encodeToString(ivspec.getIV());
+        var initVector = Base64.getEncoder().encodeToString(ivspec.getIV());
         bigDataReference.setInitVector(initVector);
 
         SecretKey secretKey;
@@ -422,7 +422,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
      */
     public String convertSecretKeyToString(SecretKey key) {
         String alg = key.getAlgorithm();
-        var base64KeyString = Base64Utils.encodeToString(key.getEncoded());
+        var base64KeyString = Base64.getEncoder().encodeToString(key.getEncoded());
         return alg + "#@#" + base64KeyString;
     }
 
@@ -435,7 +435,7 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             ));
         }
         String keyAlgorithm = split[0];
-        byte[] keyBinary = Base64Utils.decodeFromString(split[1]);
+        byte[] keyBinary = Base64.getDecoder().decode(split[1]);
         return new SecretKeySpec(keyBinary, keyAlgorithm);
     }
 
@@ -467,9 +467,9 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             this.fsService = fsService;
             if (!StringUtils.isEmpty(ref.getText())) {
                 String[] s = ref.getText().split("__");
-                encryptionKey = new String(Base64Utils.decodeFromString(s[0]), charset);
-                initVector = new String(Base64Utils.decodeFromString(s[1]), charset);
-                cipherSuite = new String(Base64Utils.decodeFromString(s[2]), charset);
+                encryptionKey = new String(Base64.getDecoder().decode(s[0]), charset);
+                initVector = new String(Base64.getDecoder().decode(s[1]), charset);
+                cipherSuite = new String(Base64.getDecoder().decode(s[2]), charset);
             }
         }
 
@@ -512,11 +512,11 @@ public class LargeFilePersistenceServiceFilesystemImpl implements LargeFilePersi
             if (encryptionKey == null) {
                 return "";
             }
-            return Base64Utils.encodeToString(encryptionKey.getBytes(charset))
+            return Base64.getEncoder().encodeToString(encryptionKey.getBytes(charset))
                 + "__"
-                + Base64Utils.encodeToString(initVector.getBytes(charset))
+                + Base64.getEncoder().encodeToString(initVector.getBytes(charset))
                 + "__"
-                + Base64Utils.encodeToString(cipherSuite.getBytes(charset));
+                + Base64.getEncoder().encodeToString(cipherSuite.getBytes(charset));
         }
     }
 }

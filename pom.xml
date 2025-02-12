@@ -192,7 +192,7 @@
         <guava.version>33.3.0-jre</guava.version>
         <librepdf.openpdf.version>2.0.3</librepdf.openpdf.version>
         <lombok.version>1.18.34</lombok.version>
-        <ow2.asm.version>9.7</ow2.asm.version>
+        <ow2.asm.version>9.7.1</ow2.asm.version>
         <saxon.he.version>12.5</saxon.he.version>
         <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
         <spring.boot.version>3.3.8</spring.boot.version>

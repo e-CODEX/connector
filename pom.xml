@@ -187,7 +187,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-io.version>2.16.1</commons-io.version>
         <commons-lang.commons-lang.version>2.6</commons-lang.commons-lang.version>
-        <dss.tools.version>6.0</dss.tools.version>
+        <dss.tools.version>6.1</dss.tools.version>
         <fusesource.jansi.version>2.4.1</fusesource.jansi.version>
         <guava.version>33.3.0-jre</guava.version>
         <librepdf.openpdf.version>2.0.3</librepdf.openpdf.version>

@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Provides convenience-methods for PDF documents.
@@ -60,10 +60,8 @@ public class PDFUtil {
      * Fonts.
      */
     public enum Font {
-        LIBERATION_REGULAR("LiberationSans-Regular.ttf"),
-        LIBERATION_BOLD_ITALIC("LiberationSans-BoldItalic.ttf"),
-        LIBERATION_BOLD("LiberationSans-Bold.ttf"),
-        LIBERATION_ITALIC("LiberationSans-Italic.ttf");
+        ;
+
         private final String name;
 
         Font(String name) {
@@ -75,14 +73,11 @@ public class PDFUtil {
      * Images and Logos.
      */
     public enum Image {
-        LOGO_ECODEX("pdf_logo_ecodex.jpg"),
-        LOGO_CIP("pdf_logo_cip.png"),
-        TECHNICAL_FAIL("pdf_icon_technical_fail.png"),
-        TECHNICAL_SUFFICIENT("pdf_icon_technical_sufficient.png"),
-        TECHNICAL_SUCCESSFUL("pdf_icon_technical_successful.png"),
-        LEGAL_NOTSUCCESSFUL("pdf_icon_legal_notsuccessful.png"),
-        // LEGAL_UNDETERMINED("pdf_icon_legal_unknown.png"),
-        LEGAL_SUCCESSFUL("pdf_icon_legal_successful.png");
+        HEADER_IMAGE_LOGO("eulisa-header.png"),
+        SUCCESSFUL("green-min.png"),
+        SUFFICIENT("orange-min.png"),
+        FAIL("red-min.png");
+
         private final String name;
 
         Image(String name) {

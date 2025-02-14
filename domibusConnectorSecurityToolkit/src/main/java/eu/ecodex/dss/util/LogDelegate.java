@@ -33,9 +33,9 @@ import org.slf4j.LoggerFactory;
  */
 @SuppressWarnings("checkstyle:MethodName")
 public class LogDelegate {
-    protected final Class clazz;
-    protected final String className;
-    protected final Logger log;
+    public final Class clazz;
+    public final String className;
+    public final Logger log;
 
     /**
      * A utility class for logging messages.
@@ -58,7 +58,7 @@ public class LogDelegate {
      * @param detectMethod the value
      * @return the text for the log-method invocation
      */
-    protected String prepareMessage(final String message, final boolean detectMethod) {
+    public String prepareMessage(final String message, final boolean detectMethod) {
         if (className == null) {
             return message;
         }

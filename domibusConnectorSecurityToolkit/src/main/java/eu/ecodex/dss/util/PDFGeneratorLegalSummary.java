@@ -84,12 +84,7 @@ public class PDFGeneratorLegalSummary extends AbstractPDFGenerator {
 
     private void addTitle(final com.lowagie.text.Document document, final Token token)
         throws DocumentException {
-        var paragraph = new Paragraph("e-CODEX", FONT_H1);
-        paragraph.setAlignment(Element.ALIGN_CENTER);
-        paragraph.setSpacingAfter(30);
-        document.add(paragraph);
-
-        paragraph = new Paragraph("e-Justice Communication via Online Data Exchange", FONT_H2);
+        var paragraph = new Paragraph("e-Justice Communication via Online Data Exchange", FONT_H2);
         paragraph.setAlignment(Element.ALIGN_CENTER);
         paragraph.setSpacingAfter(80);
         document.add(paragraph);
@@ -244,5 +239,27 @@ public class PDFGeneratorLegalSummary extends AbstractPDFGenerator {
         table.addCell(rightCell);
 
         document.add(table);
+
+        var aesDisclaimer =  new Paragraph(
+            "The Advanced Electronic System (AES) assures the recipient of this message that "
+                + "the initiator of the message is representing the sending authority. Origin of "
+                + "the message and initiator's actions can be traced back in the log files of the "
+                + "Case Management System (AES) of the sending authority.", FONT_TEXT
+        );
+
+        var titleCell = new PdfPCell();
+        titleCell.setPadding(5);
+        titleCell.setPaddingBottom(10);
+        titleCell.setPhrase(aesDisclaimer);
+        titleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        titleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+
+        final var aesTable = new PdfPTable(1);
+        aesTable.addCell(titleCell);
+        aesTable.setSpacingAfter(30);
+        aesTable.setSpacingBefore(3);
+
+        document.add(aesTable);
     }
 }

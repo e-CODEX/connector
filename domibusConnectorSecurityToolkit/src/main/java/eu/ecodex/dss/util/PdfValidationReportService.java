@@ -94,18 +94,18 @@ public class PdfValidationReportService {
 
         static {
             try {
-                defaultFont = createFont("LiberationSans-Regular.ttf", 9);
-                header1Font = createFont("LiberationSans-Bold.ttf", 14);
+                defaultFont = new Font(Font.HELVETICA, 9);
+                header1Font = new Font(Font.HELVETICA, 14, Font.BOLD);
                 header1Font.setColor(54, 95, 145);
-                header2Font = createFont("LiberationSans-Bold.ttf", 13);
+                header2Font = new Font(Font.HELVETICA, 13, Font.BOLD);
                 header2Font.setColor(79, 129, 189);
-                header3Font = createFont("LiberationSans-Bold.ttf", 12);
+                header3Font = new Font(Font.HELVETICA, 12, Font.BOLD);
                 header3Font.setColor(79, 129, 189);
-                header4Font = createFont("LiberationSans-BoldItalic.ttf", 11);
+                header4Font = new Font(Font.HELVETICA, 11, Font.BOLDITALIC);
                 header4Font.setColor(79, 129, 189);
-                header5Font = createFont("LiberationSans-Regular.ttf", 10);
+                header5Font = new Font(Font.HELVETICA, 10, Font.NORMAL);
                 header5Font.setColor(79, 129, 189);
-                monoFont = createFont("LiberationMono-Regular.ttf", 8);
+                monoFont = new Font(Font.COURIER, 8);
 
                 okImage = Image.getInstance(
                     ImageIO.read(PdfValidationReportService.class.getResourceAsStream("/ok.jpg")),
@@ -166,7 +166,7 @@ public class PdfValidationReportService {
             var document = new Document();
             var writer = PdfWriter.getInstance(document, pdfStream);
             writer.setPdfVersion(PdfWriter.PDF_VERSION_1_4);
-            writer.setPDFXConformance(PdfWriter.PDFA1B);
+            // writer.setPDFXConformance(PdfWriter.PDFA1B);
             document.open();
 
             document.add(paragraph("Time information", ParagraphStyle.HEADER1));

@@ -180,7 +180,7 @@
         <apache.log4j2.version>2.19.0</apache.log4j2.version>
         <apache.poi.version>5.3.0</apache.poi.version>
         <apache.commons-text.version>1.12.0</apache.commons-text.version>
-        <bouncycastl.version>1.78.1</bouncycastl.version>
+        <bouncycastl.version>1.80</bouncycastl.version>
         <codehaus.jackson.version>1.9.12</codehaus.jackson.version>
         <commons-beanutils.commons-beanutils.version>1.9.4</commons-beanutils.commons-beanutils.version>
         <commons-cli.version>1.9.0</commons-cli.version>
@@ -192,16 +192,16 @@
         <guava.version>33.3.0-jre</guava.version>
         <librepdf.openpdf.version>2.0.3</librepdf.openpdf.version>
         <lombok.version>1.18.34</lombok.version>
-        <ow2.asm.version>9.7</ow2.asm.version>
+        <ow2.asm.version>9.7.1</ow2.asm.version>
         <saxon.he.version>12.5</saxon.he.version>
         <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
         <spring.boot.version>3.3.8</spring.boot.version>
-        <testcontainers.version>1.20.1</testcontainers.version>
+        <testcontainers.version>1.20.4</testcontainers.version>
         <tomcat.version>8.5.32</tomcat.version>
         <xml-apis.version>1.4.01</xml-apis.version>
         <!-- testing -->
         <assertj.version>3.26.3</assertj.version>
-        <dbunit.version>2.8.0</dbunit.version>
+        <dbunit.version>3.0.0</dbunit.version>
         <hamcrest.version>3.0</hamcrest.version>
         <junit.jupiter.version>5.11.0</junit.jupiter.version>
         <xmlunit.core.version>2.10.0</xmlunit.core.version>

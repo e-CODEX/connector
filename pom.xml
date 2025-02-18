@@ -139,7 +139,7 @@
         <asciidoctor.diagram.version>2.3.1</asciidoctor.diagram.version>
         <asciidoctor.diagram-plantuml.version>1.2024.5</asciidoctor.diagram-plantuml.version>
         <asciidoctor.pdf.version>2.3.18</asciidoctor.pdf.version>
-        <asciidoctor.plugin.version>3.0.0</asciidoctor.plugin.version>
+        <asciidoctor.plugin.version>3.1.1</asciidoctor.plugin.version>
         <!-- always update with cxf -->
         <apache.santuario-xmlsec.version>3.0.5</apache.santuario-xmlsec.version>
         <fasterxml.woodstox-core.version>7.0.0</fasterxml.woodstox-core.version>

@@ -200,7 +200,7 @@
         <tomcat.version>8.5.32</tomcat.version>
         <xml-apis.version>1.4.01</xml-apis.version>
         <!-- testing -->
-        <assertj.version>3.26.3</assertj.version>
+        <assertj.version>3.27.3</assertj.version>
         <dbunit.version>3.0.0</dbunit.version>
         <hamcrest.version>3.0</hamcrest.version>
         <junit.jupiter.version>5.11.0</junit.jupiter.version>

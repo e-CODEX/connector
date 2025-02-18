@@ -47,7 +47,7 @@
     </modules>
     <distributionManagement>
         <repository>
-            <id>central</id>
+            <id>releases</id>
             <name>e-CODEX Artifacts-releases</name>
             <url>https://scm.ecodex.eu/artifactory/ecodex-releases</url>
         </repository>
@@ -63,7 +63,7 @@
     </distributionManagement>
     <repositories>
         <repository>
-            <id>central</id>
+            <id>releases</id>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -82,7 +82,7 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>central</id>
+            <id>releases</id>
             <name>libs-release</name>
             <url>https://scm.ecodex.eu/artifactory/libs-release</url>
         </pluginRepository>

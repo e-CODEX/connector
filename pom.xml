@@ -144,7 +144,7 @@
         <apache.santuario-xmlsec.version>3.0.5</apache.santuario-xmlsec.version>
         <fasterxml.woodstox-core.version>7.0.0</fasterxml.woodstox-core.version>
         <!-- vaadin -->
-        <vaadin.version>24.4.10</vaadin.version>
+        <vaadin.version>24.6.5</vaadin.version>
         <vaadin.viritin.version>2.8.23</vaadin.viritin.version>
         <!-- soap web service -->
         <apache.cxf.version>4.1.0</apache.cxf.version>

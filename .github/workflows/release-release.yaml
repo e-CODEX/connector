@@ -1,0 +1,23 @@
+name: Release and push final version to Jfrog
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check-version:
+    name: Check the current release version
+    uses: e-CODEX/workflows/.github/workflows/maven-validate-release-version.yaml@main
+  tag-version:
+    name: Tag the current release version
+    needs:
+      - check-version
+    uses: e-CODEX/workflows/.github/workflows/maven-tag-release-version.yaml@main
+  publish-version:
+    name: Publish the current release version
+    needs:
+      - tag-version
+    uses: e-CODEX/workflows/.github/workflows/maven-release-publish.yaml@main
+    with:
+      java-version: 21
+      maven-repo-id: 'releases'
+      maven-parameters: '-P production,oracle'

@@ -1,0 +1,8 @@
+on:
+  push:
+    branches:
+      - main
+jobs:
+  tag-version:
+    name: Tag the current release version
+    uses: e-CODEX/workflows/.github/workflows/maven-tag-release-version.yaml@main

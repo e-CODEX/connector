@@ -1,0 +1,8 @@
+on:
+  merge_group:
+    branches:
+      - main
+jobs:
+  check-version:
+    name: Check the current release version
+    uses: e-CODEX/workflows/.github/workflows/maven-validate-release-version.yaml@main

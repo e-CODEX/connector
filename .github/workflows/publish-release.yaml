@@ -1,6 +1,7 @@
 on:
   push:
     tags:
+      - '*'
 jobs:
   publish-version:
     name: Publish the current release version

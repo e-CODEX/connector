@@ -2,6 +2,9 @@ on:
   merge_group:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 jobs:
   check-version:
     name: Check the current release version

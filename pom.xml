@@ -1067,19 +1067,6 @@
                     <doclint>all,-missing</doclint>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>deploy-ecodex</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- other plugins -->
             <plugin>
                 <groupId>org.eclipse.jkube</groupId>

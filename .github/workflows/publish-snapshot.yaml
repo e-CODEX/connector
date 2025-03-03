@@ -4,7 +4,7 @@ on:
       - develop
 jobs:
   publish:
-    uses: e-CODEX/workflows/.github/workflows/maven-snapshot-publish.yaml@main
+    uses: e-CODEX/workflows/.github/workflows/maven-publish-snapshot.yaml@main
     with:
       java-version: 21
       maven-repo-id: 'snapshots'

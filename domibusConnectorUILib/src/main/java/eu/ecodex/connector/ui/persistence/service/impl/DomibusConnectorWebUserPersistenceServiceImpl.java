@@ -163,17 +163,16 @@ public class DomibusConnectorWebUserPersistenceServiceImpl
                 );
             }
 
+            var currentPassword = this.passwordDao.findCurrentByUser(user);
+            currentPassword.setCurrentPassword(false);
+            passwordDao.save(currentPassword);
+
             newDbPassword.setSalt(salt);
             newDbPassword.setPassword(passwordDB);
 
             newDbPassword = passwordDao.save(newDbPassword);
 
             user.getPasswords().add(newDbPassword);
-
-            var currentPassword = this.passwordDao.findCurrentByUser(user);
-            currentPassword.setCurrentPassword(false);
-
-            passwordDao.save(currentPassword);
 
             user = userDao.save(user);
 

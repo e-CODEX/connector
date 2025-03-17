@@ -7,7 +7,7 @@
 * Update libraries and plugins to the latest version
 
 ==== Compatibility:
-* The 6.0.0 connector is compatible with the 4.1.3-RELEASE of the domibus-connector-plugin-Distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.1.3-RELEASE/)
+* The 6.0.0 connector is compatible with the 4.6.0 version of the domibus-connector-plugin-distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.6.0/)
 
 ==== Testing:
 
@@ -41,3 +41,10 @@ The Connector has been tested on
 | Oracle 21.3.0 Express
 
 |===
+
+=== 6.0.1
+==== Fixes
+* Password modification from the admin console
+
+==== Compatibility:
+* The 6.0.1 connector is compatible with the 4.6.0 version of the domibus-connector-plugin-distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-distribution/4.6.0/)

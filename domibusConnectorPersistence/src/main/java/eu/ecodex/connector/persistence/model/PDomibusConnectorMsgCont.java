@@ -70,9 +70,8 @@ public class PDomibusConnectorMsgCont {
     @Deprecated
     @Column(name = "CONTENT")
     private byte[] content;
-    @Lob
     @Deprecated
-    @Column(name = "CHECKSUM")
+    @Column(name = "CHECKSUM", columnDefinition = "TEXT")
     private String checksum;
     @Column(name = "DIGEST", length = 512)
     private String digest;
@@ -82,8 +81,7 @@ public class PDomibusConnectorMsgCont {
     private String payloadName;
     @Column(name = "PAYLOAD_IDENTIFIER", length = 512)
     private String payloadIdentifier;
-    @Lob
-    @Column(name = "PAYLOAD_DESCRIPTION")
+    @Column(name = "PAYLOAD_DESCRIPTION", columnDefinition = "TEXT")
     private String payloadDescription;
     @Column(name = "PAYLOAD_MIMETYPE")
     private String payloadMimeType;

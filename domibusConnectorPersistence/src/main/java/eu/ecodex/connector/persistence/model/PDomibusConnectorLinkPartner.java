@@ -59,8 +59,7 @@ public class PDomibusConnectorLinkPartner {
     private Long id;
     @Column(name = "NAME", unique = true, nullable = false)
     private String linkName;
-    @Lob
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     private String description;
     @Column(name = "ENABLED", nullable = false)
     private Boolean enabled = Boolean.FALSE;

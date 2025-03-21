@@ -58,8 +58,7 @@ public class PDomibusConnectorPModeSet {
     )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq" + TABLE_NAME)
     private Long id;
-    @Lob
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     private String description;
     @Column(name = "CREATED")
     private Timestamp created;

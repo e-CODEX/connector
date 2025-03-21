@@ -86,8 +86,7 @@ public class PDomibusConnectorMessage implements Serializable {
     private MessageTargetSource directionSource;
     @Column(name = "DIRECTION_TARGET", length = 20)
     private MessageTargetSource directionTarget;
-    @Lob
-    @Column(name = "HASH_VALUE")
+    @Column(name = "HASH_VALUE", columnDefinition = "TEXT")
     private String hashValue;
     @Column(name = "DELIVERED_BACKEND")
     @Temporal(TemporalType.TIMESTAMP)

@@ -72,14 +72,12 @@ public class PDomibusConnectorMessageError {
     /**
      * contains the stack trace, if given.
      */
-    @Lob
-    @Column(name = "DETAILED_TEXT")
+    @Column(name = "DETAILED_TEXT", columnDefinition = "TEXT")
     private String detailedText;
     /**
      * usually contains the full qualified class name where error happened.
      */
-    @Lob
-    @Column(name = "ERROR_SOURCE")
+    @Column(name = "ERROR_SOURCE", columnDefinition = "TEXT")
     private String errorSource;
     @Column(name = "CREATED", nullable = false)
     private Date created;

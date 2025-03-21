@@ -51,8 +51,7 @@ public class PDomibusConnectorBigData {
     )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq" + TABLE_NAME)
     private Long id;
-    @Lob
-    @Column(name = "NAME")
+    @Column(name = "NAME", columnDefinition = "TEXT")
     private String name;
     @Column(name = "LAST_ACCESS")
     private Date lastAccess;
@@ -61,8 +60,7 @@ public class PDomibusConnectorBigData {
     @Lob
     @Column(name = "CONTENT")
     private byte[] content;
-    @Lob
-    @Column(name = "CHECKSUM")
+    @Column(name = "CHECKSUM", columnDefinition = "TEXT")
     private String checksum;
     @Column(name = "CREATED", nullable = false)
     private Date created;

@@ -51,8 +51,7 @@ public class PDomibusConnectorTransportStepStatusUpdate {
     private String transportStateString;
     @Column(name = "CREATED", nullable = false)
     private LocalDateTime created;
-    @Lob
-    @Column(name = "TEXT")
+    @Column(name = "TEXT", columnDefinition = "TEXT")
     private java.lang.String text;
 
     @PrePersist

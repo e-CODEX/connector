@@ -66,8 +66,7 @@ public class PDomibusConnectorTransportStep {
     private int attempt = 1;
     @Column(name = "TRANSPORT_ID")
     private TransportStateService.TransportId transportId;
-    @Column(name = "TRANSPORTED_MESSAGE")
-    @Lob
+    @Column(name = "TRANSPORTED_MESSAGE", columnDefinition = "TEXT")
     private String transportedMessage;
     /**
      * The message id of the system used to transport the message e.g. jms-message-id,

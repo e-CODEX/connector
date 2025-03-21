@@ -54,8 +54,7 @@ public class PDomibusConnectorMessageLane {
     private Long id;
     @Column(name = "NAME", unique = true, nullable = false)
     private DomibusConnectorBusinessDomain.BusinessDomainId name;
-    @Lob
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(

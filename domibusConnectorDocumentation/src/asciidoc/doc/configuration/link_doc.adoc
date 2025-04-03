@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -9,25 +9,22 @@ include::{basepath}/doc/header.adoc[]
 endif::header[]
 
 ifndef::mvnbasedir[]
-:mvnbasedir: {basepath}/../../../../
+:mvnbasedir: {basepath}/../../..
 endif::mvnbasedir[]
-
 
 = Connector Link Plugins Manual
 
-
 Since 4.3.0 the connector comes with different link plugins.
 
-This document describes how these links are configured with properties. The UI configuration manual is link:../ui/linkconfig/link_configuration.html[here] available.
+This document describes how these links are configured with properties. The UI configuration manual is link:{basepath}/doc/ui/configuration/link_configuration.html[here] available.
 
-The general architecture of the link is link:../architecture/link_partners.html[here] available.
+The general architecture of the link is link:{basepath}/doc/architecture/link_partners.html[here] available.
 
 == The available plugins
 
 * WS Gateway Push Plugins
 * WS Gateway Pull Plugin
 * WS Backend Plugin
-
 
 === Configuration Model
 
@@ -52,13 +49,10 @@ For every link partner a link-partner-name must be stated. This name
 has to be **unique** over all configuration sources. This name is used
 to address the link partner. It is also used within the backend routing.
 
-
-
 //image::plantuml/link_architecture.png[ClassDiagram]
 [plantuml, link config, png]
 ----
 @startuml
-
 
 package "Config" {
   class DomibusConnectorLinkConfiguration {
@@ -66,7 +60,6 @@ package "Config" {
     String linkImpl
     LinkConfigName configName
   }
-
 
   class DomibusConnectorLinkPartner {
     LinkPartnerName linkPartnerName
@@ -77,7 +70,6 @@ package "Config" {
 }
 
 package Active {
-
   class ActiveLink {
     LinkPlugin linkPlugin
     ConfigurableApplicationContext childContext
@@ -89,9 +81,7 @@ package Active {
     ConfigurableApplicationContext childContext
     SubmitToLink submitToLink
   }
-
 }
-
 
 DomibusConnectorLinkConfiguration "*" <-- "1" DomibusConnectorLinkPartner
 
@@ -100,11 +90,8 @@ ActiveLink "1" --> "*" ActiveLinkPartner
 ActiveLink "1" --> "*" DomibusConnectorLinkConfiguration
 ActiveLinkPartner "1" --> "*" DomibusConnectorLinkPartner
 
-
-
 @enduml
 ----
-
 
 CAUTION: The backends are authenticated with certificates at the connector. The CN of the certificate is used to determine which backend is talking to the connector. So make sure every backend has its own CN within its certificate.
 
@@ -138,7 +125,6 @@ to entered within the link-partner-name property and has to be: **default_gatewa
 include::{mvnbasedir}/domibusConnectorLink/src/test/resources/application-gwwspushplugin-test.properties[]
 ----
 
-
 ==== Setting up example for backend Ws Link:
 
 The backend link(s) are configured under the properties prefix 'connector.link.backend[0-99]'.
@@ -151,4 +137,3 @@ the link-partner-name property is used! This property also has to be **unique**!
 ----
 include::{mvnbasedir}/domibusConnectorLink/src/test/resources/application-wsbackendplugin-test.properties[]
 ----
-

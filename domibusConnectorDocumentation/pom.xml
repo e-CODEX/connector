@@ -22,7 +22,7 @@
                 <version>${asciidoctor.plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>asciidoc-to-html</id>
+                        <id>generate-inner-app-html-doc</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
@@ -30,6 +30,22 @@
                         <configuration>
                             <outputDirectory>${html.docu.output.directory}</outputDirectory>
                             <backend>html5</backend>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-html-doc</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/asciidoc/html-doc</sourceDirectory>
+                            <outputDirectory>target/generated-html</outputDirectory>
+                            <backend>html5</backend>
+                            <attributes>
+                                <data-uri>true</data-uri>
+                                <imagesdir>${project.basedir}/src/asciidoc/resources/images</imagesdir>
+                            </attributes>
                         </configuration>
                     </execution>
                     <execution>
@@ -68,15 +84,12 @@
                 <configuration>
                     <sourceDirectory>src/asciidoc/doc</sourceDirectory>
                     <attributes>
-                        <!--                            <sourcedir>${project.build.sourceDirectory}</sourcedir>-->
                         <project-version>${project.version}</project-version>
                         <source-highlighter>rouge</source-highlighter>
                         <rouge-style>github</rouge-style>
-                        <!--                                <data-uri/>-->
                         <mvnbasedir>${project.basedir}/../</mvnbasedir>
                         <basepath>${project.basedir}/src/asciidoc/</basepath>
                         <webimagedir>./images</webimagedir>
-                        <!--                        <imagesdir>../images</imagesdir>-->
                         <icons>font</icons>
                     </attributes>
                     <preserveDirectories>true</preserveDirectories>

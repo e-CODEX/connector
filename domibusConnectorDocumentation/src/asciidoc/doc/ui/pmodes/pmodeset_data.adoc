@@ -1,7 +1,7 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -24,7 +24,7 @@ This is a link that starts a download of the originally imported PModes XML file
 
 === Description and Update PMode-Set Description
 
-The textfield "Description:" displays the actual description entered when the PMode-Set has been imported.
+The text-field "Description:" displays the actual description entered when the PMode-Set has been imported.
 This description can be changed and by hitting the Button "Update PMode-Set Description" the description is replaced.
 
 IMPORTANT: There is no history of descriptions. When updating the description, the previous description of this PMode-Set is replaced!

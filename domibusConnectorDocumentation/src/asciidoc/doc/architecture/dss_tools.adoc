@@ -1,17 +1,12 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
-
-ifndef::mvnbasedir[]
-:mvnbasedir: {basepath}/../../../../
-endif::mvnbasedir[]
-
 
 = Digital Signature Service - DSS library
 
@@ -34,7 +29,7 @@ The connector supports the usage of trust lists for certificate validation with 
 link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#signedDocumentValidator[Certificate Validation / Signed Document validation] is used for the following tasks:
 
 * Validating the incoming ASIC-S container
-* Validating the outgoing Business Document (hence it depends on the used AES-System) for details see: link:../architecture/ecodex_container_creation.html[e-Codex Container Creation]
+* Validating the outgoing Business Document (hence it depends on the used AES-System) for details see: link:{basepath}/doc/architecture/ecodex_container_creation.html[e-Codex Container Creation]
 * Validating evidences [not implemented yet!]
 
 For certificate validation a ETSI conformant validation policy can be provided. As an example the validation policy can be used to exclude algorithms. For details see: link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#_etsi_validation_report[DSS ETSI]
@@ -50,6 +45,3 @@ Signature Creation is used for the following tasks:
 == Time Stamps
 
 The DSS library also supports time stamp servers. Currently, it is possible to configure time stamp servers, but they are not used yet. It is planned to support more link:https://ec.europa.eu/cefdigital/DSS/webapp-demo/doc/dss-documentation.html#_signatures_profile_simplification[signature profiles].
-
-
-

@@ -1,8 +1,7 @@
-
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -22,12 +21,9 @@ The following diagram shows how a message that is sent to the domibusConnector i
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 package domibusConnectorAPI{
 	interface DomibusConnectorGatewayDeliveryWebService
@@ -61,15 +57,12 @@ The following diagram shows how a message that is put on the toConnectorControll
 
 [plantuml,message_proc_in_business_2,format=svg]
 ----
-@startuml
 
+@startuml
 
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
-
 
 queue toConnectorControllerQueue
 queue DLQ.toConnectorControllerQueue
@@ -88,7 +81,6 @@ package domibusConnectorController {
 	}
 	
 }
-
 
 toConnectorControllerQueue --> ToConnectorControllerListener
 ToConnectorControllerListener --> ToBackendBusinessMessageProcessor : For a business message from gateway to backend
@@ -111,12 +103,9 @@ The following diagram shows how a message that is put on the submitToLink queue 
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 package domibusConnectorAPI{
 	interface DomibusConnectorBackendDeliveryWebService
@@ -131,10 +120,8 @@ package domibusConnectorLink{
 	}
 }
 
-
 queue submitToLinkQueue
 queue DLQ.submitToLinkQueue
-
 
 JTATransaction_ToLink -d-> DLQ.submitToLinkQueue : on failure
 submitToLinkQueue -d-> ToLinkPartnerListener
@@ -146,14 +133,12 @@ WsBackendSubmitTo -d-> exit : makeMessageReadyForPull
 @enduml
 ----
 
-
 .Process Incoming Business Message (GW2CON)
 [plantuml,confirmation_message_sequence_diagram,format=svg]
 ----
 @startuml
 
 actor GW
-
 
 box "Connector"
 participant LinkModule
@@ -211,7 +196,6 @@ end
 
 end group
 
-
 JMS -> LinkModule++: send evidence back to GW
 LinkModule -> GW++: submit evidence message
 GW --> LinkModule--: return EBMSID and ack / nack
@@ -220,9 +204,6 @@ LinkModule -> MessageTransportStateService--++: updateTransportState(EBMSID, ack
 MessageTransportStateService -> DB: persist transport state
 MessageTransportStateService --> LinkModule--: return TransportId
 end
-
-
-
 
 @enduml
 ----

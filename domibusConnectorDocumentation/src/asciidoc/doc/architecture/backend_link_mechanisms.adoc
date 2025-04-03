@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -15,7 +15,7 @@ This documents explains the possibilities of setting up a connection from a back
 It focuses on the differences in using the domibusConnectorAPI and its web-services.
 
 For details on configuration of a backend/connector-client link, please see 
-link:../configuration/link_doc.html[Link Configuration Manual]
+link:{basepath}/doc/configuration/link_doc.html[Link Configuration Manual]
 
 For details on the domibusConnectorAPI, its web-services and transition model, please see
  link:domibusConnectorAPI.html[domibusConnectorAPI documentation]
@@ -134,4 +134,4 @@ Besides the possibility of re-sending messages, the administrator can also finis
 
 Details on the UI view can be found in the documentation of that UI view.
 It can be either accessed via the UI view itself as online help, or via this link:
-link:../ui/message_transport_overview.html[Message Transport to Link Partners]
+link:{basepath}/doc/ui/monitoring/message_transport_overview.html[Message Transport to Link Partners]

@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -54,6 +54,3 @@ domibus-connector-plugin documentation.
 == Note on cross-border compatibility
 
 The domibusConnector implements the e-Codex protocol. Only a change within the e-Codex protocol would prevent any e-Codex Connector version from communication with any other domibusConnector.
-
-
-

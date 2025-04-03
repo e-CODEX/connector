@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -19,7 +19,6 @@ Install java, tomcat and mysql:
 ____
 
 Note: mariadb is the opensource fork of mysql and in the standard centos repository available
-
 ____
 
 ----
@@ -33,12 +32,10 @@ sudo yum install -y java-21-openjdk-headless mariadb tomcat mysql-connector-java
 
 Make the database jdbc driver for tomcat available by linking it into the tomcat libs folder.
 By linking you get the benefit, that the driver is updated by the Centos distribution.
-
 ____
 
 Note: if you are using a different database like oracle, you have to copy the database jdbc driver jar
 by yourself into the tomcat lib folder.
-
 ____
 
 ----
@@ -82,7 +79,6 @@ Create a domibusConnectorWebAppModule.xml at /etc/tomcat/Catalina/localhost
 cp ${exampleContext}  /etc/tomcat/Catalina/localhost
 ----
 
-
 ____
 
 ----
@@ -105,7 +101,6 @@ and configure the properties. You might enable liquibase for database initialisa
     spring.liquibase.enabled=true
 ----
 otherwise you have to apply the database scripts to the database.
-
 
 Restart the tomcat
 ----

@@ -1,8 +1,7 @@
-
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -22,12 +21,9 @@ The following diagram shows how a message that is sent to the domibusConnector i
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 package domibusConnectorAPI{
 	interface DomibusConnectorGatewayDeliveryWebService
@@ -61,13 +57,9 @@ The following diagram shows how a message that is put on the toConnectorControll
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
-
 
 queue toConnectorControllerQueue
 queue DLQ.toConnectorControllerQueue
@@ -84,9 +76,7 @@ package domibusConnectorController {
 	    component ResolveECodexContainerStep
 	    component SubmitMessageToLinkModuleQueueStep
 	}
-	
 }
-
 
 toConnectorControllerQueue --> ToConnectorControllerListener
 ToConnectorControllerListener --> ToBackendBusinessMessageProcessor : For a business message from gateway to backend
@@ -109,16 +99,11 @@ The following diagram shows how a message that is put on the submitToLink queue 
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
 
-
-
-
 package domibusConnectorLink{
-	
 	package JTATransaction_ToLink {
 	  component ToLinkPartnerListener
 	  component SubmitToLinkService
@@ -127,10 +112,8 @@ package domibusConnectorLink{
 	}
 }
 
-
 queue submitToLinkQueue
 queue DLQ.submitToLinkQueue
-
 
 JTATransaction_ToLink -d-> DLQ.submitToLinkQueue : on failure
 submitToLinkQueue -d-> ToLinkPartnerListener
@@ -141,4 +124,3 @@ SubmitToTestLink -d-> exit
 
 @enduml
 ----
-

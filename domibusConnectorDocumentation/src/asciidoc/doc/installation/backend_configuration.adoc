@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -13,17 +13,16 @@ endif::header[]
 :description: The connector backend configuration manual
 :library: Asciidoctor
 
-WARNING: With connector 4.3.0 this document is not valid anymore. See link:../doc/link_doc.adoc[Link Configuration]
+WARNING: With connector 4.3.0 this document is not valid anymore. See link:{basepath}/doc/configuration/link_doc.adoc[Link Configuration]
 
 == Backend Configuration or how to configure a connector client?
 
-As you can see at the link:../architecture_overview/[architectural overview] the connector can communicate with different connector clients. The decision
+As you can see at the link:{basepath}/doc/architecture/architecture_overview.adoc/[architectural overview] the connector can communicate with different connector clients. The decision
 which client the incoming message is routed to is made by the service.
 
 The messages between the connectorClient and the connectorBackend are encrypted and signed. For this purpose the setup
 needs cryptographic keys and certificates. The certificates are also used to authenticate the connectorClient and determine
 which connectorClient is talking to the connector.
-
 
 == Configure a additional backend
 
@@ -32,7 +31,6 @@ Configuring a additional backend contains two steps:
 * Creating the certificates and keys
 * Configuring the backend at the connector database
 
-
 === What do I need?
 
 * Access to the connector database.
@@ -40,7 +38,6 @@ Configuring a additional backend contains two steps:
 or the keytool which is distributed with the jdk)
 
 === Configuring Certificates and Keys
-
 
 ==== Creating the key pair for the connector
 
@@ -62,7 +59,6 @@ store path can be configured.
     -keystore ${keystorePath} -storepass ${keystorePassword}
 
 
-
 === Adding a backend to the connector
 
 ==== Creating the keys for the backend
@@ -72,7 +68,6 @@ store path can be configured.
 Consult the client lib documentation how the keystores are configured.
 
 2) Create a RSA key pair:
-
 
     keytool -genkey -alias ${connectorClientName} -keyalg RSA -keysize 2048 \
      -dname CN=${connectorClientName} -validity 1095 \
@@ -101,7 +96,6 @@ messages received from the connector.
     keytool -importcert -alias ${connectorClientName} -file ${connectorClientName}.cer \
     -keystore ${connectorKeystorePath} -storepass ${keystorePassword}
 
-
 ==== Resulting key stores
 
 After you created and imported the keys into the keystores. Your keystores should look similar:
@@ -114,7 +108,6 @@ image:screenshot_connector_backend_keystore.png[]
 After this your connectorClient keystore should look like this:
 
 image:screenshot_connector_client_keystore.png[]
-
 
 === Configuring the backend at the admin UI
 
@@ -141,7 +134,7 @@ leads to the backend name of
 
 The letter case is ignored so CN=backend_alice,DC=example,DC=com and
 CN=backend_alice,DC=EXAmple,DC=com are equivalent. For further information consult the
-link:../../development/backend_message_routing/[Backend Message Routing] page.
+link:{basepath}/doc/configuration/backend_message_routing_configuration.adoc[Backend Message Routing] page.
 '
 
 //.Image Screenshot Create new Backend

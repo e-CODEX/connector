@@ -1,8 +1,7 @@
-
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -22,12 +21,9 @@ The following diagram shows how a message that is sent to the domibusConnector i
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 package domibusConnectorAPI{
 	interface DomibusConnectorGatewayDeliveryWebService
@@ -38,7 +34,6 @@ package domibusConnectorLink{
 	component DCGatewayWebServiceClient
 	component WsGatewayPluginDeliveryServiceEndpoint
 	interface SubmitToConnector
-	
 }
 
 queue toConnectorControllerQueue
@@ -61,12 +56,9 @@ The following diagram shows how a message that is put on the toConnectorControll
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 
 queue toConnectorControllerQueue
@@ -85,9 +77,7 @@ package domibusConnectorController {
 	    component MessageConfirmationStep
 	    component SubmitConfirmationAsEvidenceMessageStep
 	}
-	
 }
-
 
 toConnectorControllerQueue --> ToConnectorControllerListener
 ToConnectorControllerListener --> EvidenceMessageProcessor : For any evidence message or trigger
@@ -110,19 +100,15 @@ The following diagram shows how a message that is put on the submitToLink queue 
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 package domibusConnectorAPI{
 	interface DomibusConnectorBackendDeliveryWebService
 }
 
 package domibusConnectorLink{
-	
 	package JTATransaction_ToLink {
 	  component ToLinkPartnerListener
 	  component SubmitToLinkService
@@ -130,10 +116,8 @@ package domibusConnectorLink{
 	}
 }
 
-
 queue submitToLinkQueue
 queue DLQ.submitToLinkQueue
-
 
 JTATransaction_ToLink -d-> DLQ.submitToLinkQueue : on failure
 submitToLinkQueue -d-> ToLinkPartnerListener
@@ -144,4 +128,3 @@ WsBackendSubmitTo -d-> exit : makeMessageReadyForPull
 
 @enduml
 ----
-

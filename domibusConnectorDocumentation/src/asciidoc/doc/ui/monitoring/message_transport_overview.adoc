@@ -1,4 +1,4 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
 :basepath: {path}
@@ -12,7 +12,7 @@ endif::header[]
 
 The domibus connector communicates with different other components (gateway, connector-client) this is done over the link module. But sometimes the messages are failing during this transport. An overview of these transports is provided by the link:/monitoring/linktransport[Monitoring - Message Transport] UI.
 
-For details see link:../../architecture/link_partners.html[Link Module Architecture Doc]
+For details see link:{basepath}/doc/architecture/link_partners.html[Link Module Architecture Doc]
 
 == Overview
 
@@ -41,6 +41,3 @@ image::screenshot_msg_transport.png[]
 
 No, that is not possible. Since this would also interfere with the
 routing logic and other components.
-
-
-

@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -26,7 +26,7 @@ Also check the automatically generated properties report: link:../aggregated-spr
 === Database
 
 There has also been multiple changes to the database regarding the support for loopback message sending
-and first work on full support on multi usecase handling. For the database changes migration scripts are
+and first work on full support on multi use-case handling. For the database changes migration scripts are
 provided within the documentation folder.
 
 * dbscripts/migrate/oracle_migrate_4.1.x_to_4.2.0.sql
@@ -44,7 +44,7 @@ do not use the provided migration scripts to avoid conflicts!
 The source and target could be GATEWAY, BACKEND, CONNECTOR
 * The EBMS id is now unique per target, so the connector can now fully support a loop backed message
 also the evidences get correctly assigned to the specific message
-* Additionally to the backend name of a message also a gateway name has been added to support multiple
+* Additionally, to the backend name of a message also a gateway name has been added to support multiple
 backends or the domibus gateway within multi tenancy mode. This feature is not complete yet!
 * A tracking table for message transport to backend or connector has been added, for the future
 messages delivered to a pull backend will be stored within the database instead a message queue,

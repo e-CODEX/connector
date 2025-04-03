@@ -1,9 +1,8 @@
+:path: ../..
 :description: The architecture overview
 
-:path: ../../
-
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -36,4 +35,3 @@ image:e-CODEX_building_blocks_overview.png[e-CODEX building blocks overview]
 
 The main features of the domibusConnector, the domibusConnectorClient and the domibus-connector-plugin
 is also on the e-CODEX website link:https://www.e-codex.eu/node/47[here].
-

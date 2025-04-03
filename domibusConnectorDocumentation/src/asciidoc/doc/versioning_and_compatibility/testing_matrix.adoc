@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]

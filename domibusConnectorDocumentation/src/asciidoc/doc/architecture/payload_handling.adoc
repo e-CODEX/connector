@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -19,7 +19,6 @@ Streaming support means that the content of the file is streamed into the applic
 == Class diagram
 
 The main entry point for using the storage system is the DCBusinessDomainPersistenceService. This services offers to create, get, delete a Storage reference.
-
 
 [plantuml,storage_architecture,format=svg]
 ----
@@ -39,7 +38,6 @@ class LargeFilePersistenceServiceJpaImpl
 
 LargeFilePersistenceServiceJpaImpl -u-> LargeFilePersistenceProvider
 LargeFilePersistenceServiceFilesystemImpl -u-> LargeFilePersistenceProvider
-
 
 DCBusinessDomainPersistenceServiceImpl "1" -r- "*"  LargeFilePersistenceProvider
 

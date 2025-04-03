@@ -5,7 +5,7 @@ ifndef::basedirs[]
 endif::basedirs[]
 
 :doctype: book
-:title: Changelog : domibusConnector-{project-version}
+:title: Domibus Connector API : domibusConnector-{project-version}
 :title-logo-image: {basedirs}/resources/images/logo_ecodex_0.png
 
-include::{basedirs}/doc/changelog/index.adoc[]
+include::{basedirs}/doc/architecture/domibusConnectorAPI.adoc[]

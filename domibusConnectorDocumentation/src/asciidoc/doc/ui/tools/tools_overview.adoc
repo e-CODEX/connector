@@ -1,7 +1,7 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -11,6 +11,3 @@ endif::header[]
 = Tools
 
 This tab offers the connector user some tools
-
-
-

@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -46,7 +46,6 @@ on every connector node, quartz must also be aware of running within a cluster.
 
 === Configuration
 
-
 ==== Configure Message Server
 
 The JMS Server is configured by the spring-framework so the default spring-properties can be uses:
@@ -80,5 +79,3 @@ Also see: link:http://www.quartz-scheduler.org/documentation/quartz-2.3.0/config
 
 As the connector exposes webservices to gateway and the backends, this
 services should be made fault-tolerant with a load-balancer.
-
-

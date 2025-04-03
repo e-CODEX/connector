@@ -1,4 +1,4 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
 :basepath: {path}
@@ -30,8 +30,6 @@ The link table has the following columns:
 |===
 | Column name | Description
 
-
-
 | Link Partner Name / Link Configuration Name
 | The link partner name or link configuration name, this name has to be unique. **The uniqueness is currently not enforced!**
 
@@ -59,11 +57,9 @@ require a restart of the connector.
 
 |===
 
-
 [#img-backend-config]
 .Screenshot Backend Configuration
 image:screenshot_link_overview.png[Screenshot Backend Configuration]
-
 
 == Add Link / Add New Link Configuration Button
 
@@ -97,11 +93,6 @@ A link partner can be added to a link configuration by using the + button. But t
 
 4. The link partner also can have multiple implementation specific properties. The following table contains these properties. Currently, there is only a very limited validation in place. So pay attention when you are entering your settings here. Also consult the manual for the specific implementation.
 
-
 [#img-add-link-screenshot2]
 .Screenshot adding link partner
 image:screenshot_add_link_partner.png[]
-
-
-
-

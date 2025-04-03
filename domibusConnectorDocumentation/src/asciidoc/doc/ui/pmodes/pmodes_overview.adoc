@@ -1,16 +1,14 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
-
 = PModes data in domibusConnector
-
 
 == PMode-Set definition
 
@@ -84,4 +82,3 @@ a| * initiatorRole=ROLE_TYPE.initiator
 |Within the process definition sets of initiatorParties and responderParties are listed. A party that is listed as initiator gets the role type initiator and a party listed as responder gets the role type responder. This can lead to double definition of parties in the table relating to the PMode set. The domibusConnector resolves the role type itself and picks the correct party definition when a message is processed.
 
 |===
-

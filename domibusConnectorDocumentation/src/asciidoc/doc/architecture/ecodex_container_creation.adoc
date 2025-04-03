@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -38,7 +38,7 @@ image:msg_transf_out_business_2.png[msg_transf_out_business_2]
 
 === Signature Based Validation
 
-The signature based validation uses DSS library to validate the document signature according to the provided rules. This rules can be configured by the link:../ui/configuration/business_document_verification.adoc[Business Document Verification] configuration. The connector supports setting:
+The signature based validation uses DSS library to validate the document signature according to the provided rules. This rules can be configured by the link:{basepath}/doc/ui/configuration/business_document_verification.adoc[Business Document Verification] configuration. The connector supports setting:
 
 * A custom certificate validation policy.
 * A trust store (which holds all certificates considered as trusted for signing a document)
@@ -60,8 +60,3 @@ NOTE: Since the eIDAS regulation this approach seems a little bit odd, but still
 This approach most likely needs som adaptions to national systems. Like passing on authentication tokens to the connector for validation (e.g. SAML-Token, JWT-Token, ...). There are plenty of use cases for that. Please contact the ME-Codex consortium if you need adaptions/extensions on this part.
 
 Still the recommendation is if possible use eIDAS conformant signatures.
-
-
-
-
-

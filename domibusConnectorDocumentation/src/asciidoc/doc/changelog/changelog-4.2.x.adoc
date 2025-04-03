@@ -1,14 +1,20 @@
+:path: ../..
+
+ifndef::basepath[]
+:basepath: {path}
+endif::basepath[]
+
 == Changelog for domibusConnector-4.2.x
 
 === 4.2.0
 
 ==== Upgrade Manual:
-link:upgrade/upgrade-4.2.0.html[Upgrade to 4.2.0]
+link:{basepath}/doc/upgrade/upgrade-4.2.0.html[Upgrade to 4.2.0]
 
 ==== Changes
 * Loopback message sending support
 * Support for distributed timer jobs (needed for cluster setup)
-* Monitoring/Logging link:doc/logging.html[Logging Manual]
+* Monitoring/Logging link:{basepath}/doc/configuration/logging.html[Logging Manual]
 ** Integration of spring-actuator (for monitoring)
 ** Integration of spring-sleuth (to improve/enable distributed monitoring with backend eg. e-Evidence RI)
 * Packaging:
@@ -23,7 +29,7 @@ link:upgrade/upgrade-4.2.0.html[Upgrade to 4.2.0]
 * Bugfixes/Security Improvements:
 ** Multiple updates/enhancements on database handling of p-Mode handling
 ** Removed Java de-/serialization from connector code
-* ETSI-REM evidence handling: generated evidences to be sent back to backend/client using the known IDs. link:domibusConnectorAPI/interface_description.html[Interface Description]
+* ETSI-REM evidence handling: generated evidences to be sent back to backend/client using the known IDs. link:{basepath}/doc/../../../../domibusConnectorAPI/src/site/asciidoc/interface_description.html[Interface Description]
 
 ==== Compatibility:
 * The 4.2.x connector is compatible with the 4.1.3-RELEASE of the domibus-connector-plugin-Distribution (available via nexus: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.1.3-RELEASE/)
@@ -75,7 +81,6 @@ Also special thanks to Maris (Latvia) for testing with Ubuntu and Mysql.
 
 * Documentation updates
 
-
 === 4.2.2
 
 ==== Changes
@@ -94,7 +99,6 @@ Also special thanks to Maris (Latvia) for testing with Ubuntu and Mysql.
 ==== Changes
 
 * Fix a problem with mariadb/mysql in liquibase upgrade scripts in changeset with id 'create_p_mode_set_table_default_values'
-
 
 === 4.2.5
 
@@ -150,4 +154,3 @@ because its loading ALL messages from DB
 
 * Fixed handling of partyRoles: roles are now taken into account whether it is an initiator or responder. Important for PModes where role for initiator and responder are different.
 * Fix: upper/lower case bug in database script for generating reports with evidences as own messages. Concerns MySQL based DBMS (as those are case sensitive).
-

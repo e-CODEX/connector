@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -40,11 +40,11 @@ As the security lib configuration has been split into the eCodexContainer and Bu
 
 More details are available here:
 
-* link:../ui/business_document_verification.html[Business Document UI configuration]
+* link:{basepath}/doc/ui/configuration/business_document_verification.html[Business Document UI configuration]
 
-* link:../ui/ecodex_container_configuration.html[eCodex Container UI configuration]
+* link:{basepath}/doc/ui/configuration/ecodex_container_configuration.html[eCodex Container UI configuration]
 
-* link:../architecture/ecodex_container_creation.html[eCodex container creation]
+* link:{basepath}/doc/architecture/ecodex_container_creation.html[eCodex container creation]
 
 ===== Rename the following properties:
 
@@ -94,12 +94,9 @@ Change the following properties:
 
 * spring.jta.enabled=true
 
-
-
 Delete or comment the following properties
 
 * spring.activemq.broker-url=vm://broker1?brokerConfig=xbean:config/activemq.xml
-
 
 === Database scripts
 
@@ -107,9 +104,4 @@ Apply the provided migration scripts
 
 === P-Modes
 
-* Reupload p-Modes and trusted connectors keystore.
-
-
-
-
-
+* Re-upload p-Modes and trusted connectors keystore.

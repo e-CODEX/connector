@@ -1,4 +1,4 @@
-:path: ../
+:path: ..
 
 ifndef::basepath[]
 :basepath: {path}
@@ -9,6 +9,5 @@ include::{basepath}/doc/header.adoc[]
 endif::header[]
 
 = Documentation
-
 
 //TODO: create index

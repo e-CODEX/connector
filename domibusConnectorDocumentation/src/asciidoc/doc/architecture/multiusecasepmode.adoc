@@ -1,14 +1,14 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
-= Multiusecase/Multitenancy
+= Multi-usecase/Multitenancy
 
 == Definitions
 
@@ -51,7 +51,6 @@ CAUTION: Within a p-Modes set every Action, Party, Service, ServiceLeg must be u
 * Every UseCase is within the same P-Mode set. This means that the merged usecases must not use the same name for a p-Mode item.
 * Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name]
 
-
 [plantuml,multiusecase_1]
 ----
 @startuml
@@ -73,7 +72,6 @@ connector -down-> backend1
 connector -down-> backend2
 
 backend2 -[hidden]- backend1
-
 
 @enduml
 ----
@@ -110,11 +108,8 @@ connector -down-> backend2
 
 backend2 -[hidden]- backend1
 
-
 @enduml
 ----
-
-
 
 == Multi Tenancy Based Routing [implementation in progress]
 
@@ -151,7 +146,6 @@ connector -down-> backend2
 
 backend2 -[hidden]- backend1
 
-
 @enduml
 ----
 
@@ -161,7 +155,6 @@ WARNING: As all P-Modes have to be merged together into one set to import it int
 
 * Different p-Mode sets
 * Different use-cases are routed by the connector to different backends based on the use-case [AS4 Service Name] and the p-Mode set (domain name of Gateway)
-
 
 [plantuml,multiusecase_4]
 ----
@@ -193,8 +186,6 @@ AS4_Gateway_Tenant2 -down-> connector2
 connector1 -down-> backend1
 
 connector2 -down-> backend2
-
-
 
 @enduml
 ----
@@ -247,7 +238,6 @@ service_domain_router -down-> service_domain1
 service_domain_router -down-> service_domain2
 'service_domain1 -[hidden]d- service_domain_out_router
 
-
 service_domain1 -down-> backend1
 service_domain1 -down-> backend4
 
@@ -259,8 +249,6 @@ service_domain2 -down-> backend4
 'backend2 -up-> service_domain_out_router
 'backend3 -up-> service_domain_out_router
 'backend4 -up-> service_domain_out_router
-
-
 
 @enduml
 ----

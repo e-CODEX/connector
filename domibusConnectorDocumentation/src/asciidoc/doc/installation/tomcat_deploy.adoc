@@ -1,13 +1,12 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
-
 
 = DEPLOY ON TOMCAT
 
@@ -21,8 +20,6 @@ endif::header[]
  4. Copy the database jdbc driver .jar into the tomcat lib folder
  5. Put the domibusConnector.war into ${CATALINA_BASE}/webapps/connector.war
     The connector will be served by tomcat under http://{HOST:PORT}/connector/
-
-
 
 === War deployment
 
@@ -46,7 +43,6 @@ the base directory of the tomcat instance. You can use this variable within
 connector.properties to reference paths/files.
 
  eg. logging.config=${CATALINA_BASE}/conf/common/log4j2-common.xml
-
 
 === Context Configuration Deployment
 
@@ -72,16 +68,13 @@ context and are available to the starting application.
 ==== Description of the example context
 
 ----
-<Context docBase="<path to domibusConnectorWebAppModule.war>">  
-
+<Context docBase="<path to domibusConnectorWebAppModule.war>">
     <Parameter  name="spring.config.location" 
                   value="<path to the folder containing the connector.properties"
-                  override="false" />  
-
+                  override="false" />
 </Context>
 ----
 
 The attribute 'docBase' contains the path of the war file, which should be deployed in this context.
-
 
 Configure the application properties according to your needs. Especially the security stores link:certificates.html[Configuring Trust- and Keystores].

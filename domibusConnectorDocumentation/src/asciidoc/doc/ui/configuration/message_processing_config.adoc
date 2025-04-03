@@ -1,17 +1,12 @@
-:path: ../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
-
-ifndef::mvnbasedir[]
-:mvnbasedir: {basepath}/../../../../
-endif::mvnbasedir[]
-
 
 = General Message Processing Configuration View
 
@@ -39,8 +34,6 @@ This has only an effect if the EBMS-ID has not been set by the backend!
 | How should the p-modes be checked. For details see link:../../architecture/message_processing_steps/verify_pmodes_step.html[Verify PModes Step]
 
 | PMode verification mode for incoming business msg
-| How should the p-modes be checked. For details see link:../../architecture/message_processing_steps/verify_pmodes_step.html[Verify PModes Step]
+| How should the p-modes be checked. For details see link:{basepath}/doc/architecture/message_processing_steps/verify_pmodes_step.html[Verify PModes Step]
 
 |===
-
-

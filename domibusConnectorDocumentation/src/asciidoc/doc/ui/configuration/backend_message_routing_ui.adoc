@@ -1,17 +1,12 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
-
-ifndef::mvnbasedir[]
-:mvnbasedir: {basepath}/../../../../
-endif::mvnbasedir[]
-
 
 = Backend Message Routing View
 
@@ -218,5 +213,4 @@ Syntax definition:
 <AS4_TYPE> ::= ServiceType | ServiceName | FinalRecipient | Action | FromPartyId | FromPartyRole | FromPartyIdType
 <VALUE> ::= <VALUE><LETTER> | <LETTER>
 <LETTER> can be every letter [a-z][A-Z][0-9] other printable characters might work, but they untested! ['\|&)( will definitiv not work!]
-
 ----

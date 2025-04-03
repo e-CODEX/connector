@@ -1,7 +1,7 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -21,12 +21,9 @@ The following diagram shows how a message that is sent to the domibusConnector i
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 package domibusConnectorAPI{
 	interface DomibusConnectorBackendWebService
@@ -63,13 +60,9 @@ The following diagram shows how a message that is put on the toConnectorControll
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
-
 
 queue toConnectorControllerQueue
 queue DLQ.toConnectorControllerQueue
@@ -86,9 +79,7 @@ package domibusConnectorController {
 	    component SubmitMessageToLinkModuleQueueStep
 	    component SubmitConfirmationAsEvidenceMessageStep
 	}
-	
 }
-
 
 toConnectorControllerQueue --> ToConnectorControllerListener
 ToConnectorControllerListener --> ToGatewayBusinessMessageProcessor : identified as business message from backend to gateway
@@ -118,12 +109,9 @@ The following diagram shows how a message that is put on the submitToLink queue 
 ----
 @startuml
 
-
 top to bottom direction
 skinparam monochrome false
 skinparam linetype ortho
-
-
 
 package domibusConnectorAPI{
 	interface DomibusConnectorGatewaySubmissionWebService
@@ -131,7 +119,6 @@ package domibusConnectorAPI{
 }
 
 package domibusConnectorLink{
-	
 	package JTATransaction_ToLink {
 	  component ToLinkPartnerListener
 	  component SubmitToLinkService
@@ -140,10 +127,8 @@ package domibusConnectorLink{
 	}
 }
 
-
 queue submitToLinkQueue
 queue DLQ.submitToLinkQueue
-
 
 JTATransaction_ToLink -d-> DLQ.submitToLinkQueue : on failure
 submitToLinkQueue -d-> ToLinkPartnerListener
@@ -161,4 +146,3 @@ At the domibusConnectorLink, before the message is submitted to the gateway, it 
 Diagram: domibusConnectorLink message transformation
 
 image:msg_transf_out_business_3.png[msg_transf_out_business_3]
-

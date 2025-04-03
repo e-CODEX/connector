@@ -10,6 +10,9 @@ adding **server.servlet.session.cookie.name=CONNECTOR_J_SESSION_ID** to the prop
 * Support String LOB as TEXT field for PostgreSQL
 * First-time login for default users no longer requires password change
 
+==== Documentation
+* Improve documentation structure
+
 === 6.0.0
 ==== Changes
 * Migrate from Java 8 to 21

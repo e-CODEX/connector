@@ -1,20 +1,14 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
-ifndef::mvnbasedir[]
-:mvnbasedir: {basepath}/../../../../
-endif::mvnbasedir[]
-
-
 = LOGGING
-
 
 == Logging Manual
 
@@ -23,7 +17,6 @@ a collection of different logging appenders which can be used to write logging m
 centralized logging collecting systems, files, ...
 
 For details consult the link:https://logging.apache.org/log4j/2.x/manual/configuration.html[log4j2] configuration manual.
-
 
 == Logging Marker
 
@@ -68,7 +61,6 @@ public class LoggingMarker {
         BUSINESS_EVIDENCE_LOG.add(BUSINESS_LOG);
         BUSINESS_CONTENT_LOG.add(BUSINESS_LOG);
     }
-
 }
 ----
 
@@ -83,7 +75,6 @@ even more:
     * BUSINESS_CERT (Certificate Logging messages)
     * BUSINESS_EVIDENCE (Evidence related logging messages)
     * BUSINESS_CONTENT (business message/content related logging messages)
-
 
 == Logging Context Values
 
@@ -104,5 +95,3 @@ can be grouped together over multiple systems.
 To enable logging to graylog, an additional library is required by logj42. This library is not part of the
 connector so it has to be added to the lib folder - next to the database driver jar. And of course graylog
 has to be configured within the log4j config to.
-
-

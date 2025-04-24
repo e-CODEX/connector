@@ -1,7 +1,15 @@
+name: Manual Release Workflow
+
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
 jobs:
   check-version:
     name: Check the current release version
@@ -10,6 +18,8 @@ jobs:
     name: Tag the current release version
     needs: check-version
     uses: e-CODEX/workflows/.github/workflows/maven-tag-release-version.yaml@main
+    with:
+      environment: ${{ inputs.environment }}
   publish-version:
     name: Publish the current release version
     uses: e-CODEX/workflows/.github/workflows/maven-publish-release.yaml@main
@@ -19,9 +29,11 @@ jobs:
       maven-repo-id: 'releases'
       maven-parameters: '-P production,oracle'
       tag: ${{ needs.tag-version.outputs.tag }}
+      environment: ${{ inputs.environment }}
   publish-docker:
     uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
     needs: tag-version
     with:
       image-name: connector
       tag: ${{ needs.tag-version.outputs.tag }}
+      environment: ${{ inputs.environment }}

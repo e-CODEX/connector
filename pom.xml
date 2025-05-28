@@ -182,7 +182,7 @@
         <apache.commons-text.version>1.12.0</apache.commons-text.version>
         <bouncycastl.version>1.80</bouncycastl.version>
         <codehaus.jackson.version>1.9.12</codehaus.jackson.version>
-        <commons-beanutils.commons-beanutils.version>1.9.4</commons-beanutils.commons-beanutils.version>
+        <commons-beanutils.commons-beanutils.version>1.11.0</commons-beanutils.commons-beanutils.version>
         <commons-cli.version>1.9.0</commons-cli.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-io.version>2.16.1</commons-io.version>

@@ -39,7 +39,6 @@ import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * The abstract class {@code LinkConfiguration} represents a configuration UI for managing web
@@ -52,10 +51,12 @@ import java.util.stream.Collectors;
 public abstract class LinkConfiguration extends DCVerticalLayoutWithTitleAndHelpButton
     implements AfterNavigationObserver {
     public static final String HELP_ID = "ui/configuration/link_configuration.html";
+    public static final String LINK = "Link ";
     private final DCLinkFacade dcLinkFacade;
     private final LinkType linkType;
-    private final WebLinkItemHierachicalDataProvider webLinkItemHierachicalDataProvider;
+    private final WebLinkItemHierarchicalDataProvider webLinkItemHierarchicalDataProvider;
     private final TreeGrid<WebLinkItem> treeGrid = new TreeGrid<>();
+    private static final int PAGE_SIZE = 50;
     protected Button addLinkButton = new Button("Add Link");
     protected HorizontalLayout buttonBar = new HorizontalLayout();
 
@@ -71,19 +72,19 @@ public abstract class LinkConfiguration extends DCVerticalLayoutWithTitleAndHelp
         DCLinkFacade dcLinkFacade,
         LinkType linkType, final String TITLE) {
         super(HELP_ID, TITLE);
-        this.webLinkItemHierachicalDataProvider =
-            new WebLinkItemHierachicalDataProvider(dcLinkFacade, linkType);
+        this.webLinkItemHierarchicalDataProvider =
+                new WebLinkItemHierarchicalDataProvider(dcLinkFacade, linkType, PAGE_SIZE);
         this.dcLinkFacade = dcLinkFacade;
         this.linkType = linkType;
     }
 
     @PostConstruct
-    private void initUI() {
+    private void init() {
         this.setSizeFull();
         addAndExpand(buttonBar);
         buttonBar.add(addLinkButton);
         addLinkButton.addClickListener(this::addLinkConfigurationButtonClicked);
-        treeGrid.setDataProvider(webLinkItemHierachicalDataProvider);
+        treeGrid.setDataProvider(webLinkItemHierarchicalDataProvider);
 
         treeGrid.addHierarchyColumn(WebLinkItem::getName)
                 .setResizable(true)
@@ -247,7 +248,7 @@ public abstract class LinkConfiguration extends DCVerticalLayoutWithTitleAndHelp
         ClickEvent<Button> event, DomibusConnectorLinkPartner linkPartner) {
         try {
             dcLinkFacade.shutdownLinkPartner(linkPartner);
-            Notification.show("Link " + linkPartner.getLinkPartnerName() + " stopped");
+            Notification.show(LINK + linkPartner.getLinkPartnerName() + " stopped");
         } finally {
             refreshList();
         }
@@ -257,10 +258,11 @@ public abstract class LinkConfiguration extends DCVerticalLayoutWithTitleAndHelp
         ClickEvent<Button> event, DomibusConnectorLinkPartner linkPartner) {
         try {
             dcLinkFacade.startLinkPartner(linkPartner);
-            Notification.show("Link " + linkPartner.getLinkPartnerName() + " started");
+            Notification.show(LINK + linkPartner.getLinkPartnerName() + " started");
         } catch (LinkPluginException e) {
             Notification.show(
-                "Link " + linkPartner.getLinkPartnerName() + " start failed!\n" + e.getMessage());
+                    LINK + linkPartner.getLinkPartnerName() + " start failed!\n" + e.getMessage()
+            );
         }
         refreshList();
     }
@@ -282,12 +284,11 @@ public abstract class LinkConfiguration extends DCVerticalLayoutWithTitleAndHelp
     }
 
     protected void refreshList() {
-
-        webLinkItemHierachicalDataProvider.refreshAll();
-        treeGrid.expand(webLinkItemHierachicalDataProvider
-                            .fetchChildren(new HierarchicalQuery<>(new WebLinkItemFilter(), null))
-                            .collect(Collectors.toSet())); // expand root items.
-
+        // expand root items.
+        treeGrid.expand(webLinkItemHierarchicalDataProvider.fetchChildren(
+                new HierarchicalQuery<>(new WebLinkItemFilter(), null)
+                ).toList()
+        );
         // TODO: show warning label, if more than one link or configuration with same name detected!
     }
 }

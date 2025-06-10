@@ -1,5 +1,9 @@
 == Changelog for domibusConnector-6.0.0
 
+=== 6.0.2-SNAPSHOT
+==== Fixes
+* TreeGrid pagination for Backend and Gateway links configurations
+
 === 6.0.1
 ==== Fixes
 * Password modification from the admin console

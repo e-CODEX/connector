@@ -23,9 +23,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SuppressWarnings({"squid:S1135", "checkstyle:LineLength"})
 @Import({BusinessDomainScopeConfiguration.class, DCMessageRoutingConfiguration.class})
@@ -49,7 +49,7 @@ class DCMessageRoutingConfigurationPropertiesTest {
     DCMessageRoutingConfigurationProperties props;
     @Autowired
     ApplicationContext ctx;
-    @MockBean
+    @MockitoBean
     DCBusinessDomainPersistenceService mock;
 
     @AfterEach
@@ -60,7 +60,8 @@ class DCMessageRoutingConfigurationPropertiesTest {
     @Test
     void testProps() {
         CurrentBusinessDomain.setCurrentBusinessDomain(
-            DomibusConnectorBusinessDomain.getDefaultMessageLaneId());
+            DomibusConnectorBusinessDomain.getDefaultMessageLaneId()
+        );
         Map<String, RoutingRule> backendRules = props.getBackendRules();
         String property = ctx.getEnvironment().getProperty("connector.routing.rule.link-name");
         // assertThat(props.getRule()).isNotNull();

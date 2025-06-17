@@ -51,18 +51,24 @@ public class BusinessScopedPropertySource
 
     @Override
     public DomibusConnectorBusinessDomain getSource() {
-        if (CurrentBusinessDomain.getCurrentBusinessDomain() != null) {
+        var currentBusinessDomain = CurrentBusinessDomain.getCurrentBusinessDomain();
+
+        if (currentBusinessDomain != null) {
             DCBusinessDomainManager businessDomainManager =
                 applicationContext.getBean(DCBusinessDomainManager.class);
             Optional<DomibusConnectorBusinessDomain> businessDomain =
-                businessDomainManager.getBusinessDomain(
-                    CurrentBusinessDomain.getCurrentBusinessDomain());
-            return businessDomain.orElseThrow(() -> new IllegalArgumentException(
-                "No Business Domain found for id"
-                    + CurrentBusinessDomain.getCurrentBusinessDomain()));
-        } else {
-            return DomibusConnectorBusinessDomain.getDefaultMessageLane();
+                businessDomainManager.getBusinessDomain(currentBusinessDomain);
+            if (businessDomain.isPresent()) {
+                return businessDomain.get();
+            }
+
+            LOGGER.warn(
+                    "No Business Domain found for id{}. Falling back to default domain.",
+                    currentBusinessDomain
+            );
         }
+
+        return DomibusConnectorBusinessDomain.getDefaultMessageLane();
     }
 
     @Override

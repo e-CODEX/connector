@@ -44,7 +44,7 @@ import org.springframework.context.annotation.Configuration;
 public class DCGatewayPullPluginConfiguration {
     private static final Logger LOGGER =
         LogManager.getLogger(DCGatewayPullPluginConfiguration.class);
-    public static final String DC_GATEWAY_PULL_PLUGIN_PROFILE = "link.gwwspullplugin";
+    public static final String DC_GATEWAY_PULL_PLUGIN_PROFILE = "link-gwwspullplugin";
     @Autowired
     DCGatewayPullPluginConfigurationProperties configurationProperties;
     @Autowired

@@ -13,3 +13,4 @@ jobs:
     uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
     with:
       image-name: connector
+      registry: scm.ecodex.eu/ecodex-docker-snapshots

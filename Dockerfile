@@ -16,7 +16,9 @@ ARG APP_FOLDER=/app
 
 WORKDIR ${APP_FOLDER}
 
-RUN groupadd -g ${USER_GID} ${USERNAME} \
+RUN apt-get update -y \
+    && apt-get upgrade -y \
+    && groupadd -g ${USER_GID} ${USERNAME} \
     && useradd -u ${USER_UID} -g ${USER_GID} -m ${USERNAME} \
     && mkdir -p data temp ../logs config \
     && chown -R ${USERNAME}:${USERNAME} ${APP_FOLDER} \

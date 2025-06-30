@@ -13,12 +13,20 @@ The following section assumes that you are familiar with Docker and have it inst
 
 ### Already built image
 
-A built image of the connector is available here: [here](https://scm.ecodex.eu/docker/connector:latest).
+Built images of the connector are available [here](https://scm.ecodex.eu/docker/connector:latest) for the latest final release and [here](https://scm.ecodex.eu/ecodex-docker-snapshots/connector:edge) for the latest snapshot.
 
 Pull the image by running:
 
+- for the latest release:
+
 ```shell
 docker pull https://scm.ecodex.eu/docker/connector:latest
+```
+
+- for the latest snapshot:
+
+```shell
+docker pull https://scm.ecodex.eu/ecodex-docker-snapshots/connector:edge
 ```
 
 ### Build your own image

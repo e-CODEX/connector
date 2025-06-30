@@ -35,6 +35,6 @@ public class InstallationDocumentationView extends StaticContentView {
      * Constructor.
      */
     public InstallationDocumentationView() {
-        super("documentation/installation/installation_index.html");
+        super("documentation/installation/index.html");
     }
 }

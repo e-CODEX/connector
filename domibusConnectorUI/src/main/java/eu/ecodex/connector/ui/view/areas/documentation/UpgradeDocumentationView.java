@@ -41,6 +41,6 @@ public class UpgradeDocumentationView extends StaticContentView {
      * Constructor.
      */
     public UpgradeDocumentationView() {
-        super("documentation/upgrade/upgrade_index.html");
+        super("documentation/upgrade/index.html");
     }
 }

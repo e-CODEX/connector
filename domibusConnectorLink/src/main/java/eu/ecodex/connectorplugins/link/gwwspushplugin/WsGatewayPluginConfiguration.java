@@ -41,7 +41,7 @@ import org.springframework.context.annotation.Profile;
 @ComponentScan(basePackageClasses = WsGatewayPluginConfiguration.class)
 public class WsGatewayPluginConfiguration {
     private static final Logger LOGGER = LogManager.getLogger(WsGatewayPluginConfiguration.class);
-    public static final String WS_GATEWAY_PLUGIN = "link.wsgatewayplugin";
+    public static final String WS_GATEWAY_PLUGIN = "link-wsgatewayplugin";
     @Autowired
     WsGatewayPluginConfigurationProperties configurationProperties;
     @Autowired

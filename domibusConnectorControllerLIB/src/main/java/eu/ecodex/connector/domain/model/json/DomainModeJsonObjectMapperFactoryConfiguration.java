@@ -18,6 +18,7 @@ import eu.ecodex.connector.common.annotations.DomainModelJsonObjectMapper;
 import eu.ecodex.connector.domain.model.LargeFileReference;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * Configuration class for creating an ObjectMapper bean with specific configurations and modules.
@@ -43,6 +44,7 @@ public class DomainModeJsonObjectMapperFactoryConfiguration {
      *
      * @return The ObjectMapper bean for domain model to JSON object mapping.
      */
+    @Primary
     @Bean(name = DomainModelJsonObjectMapper.VALUE)
     public ObjectMapper getMapper() {
         var mapper = new ObjectMapper();

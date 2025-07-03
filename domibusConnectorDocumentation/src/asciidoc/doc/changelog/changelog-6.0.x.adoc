@@ -1,13 +1,13 @@
 == Changelog for domibusConnector-6.0.0
 
 === 6.0.2-SNAPSHOT
-==== Fixes
-* TreeGrid pagination for Backend and Gateway links configurations
-
-=== 6.0.2-SNAPSHOT
 ==== Changes
 * Bump dependencies
 * Bump from spring boot 3.3.8 to 3.5.3
+
+==== Fixes
+* TreeGrid pagination for Backend and Gateway links configurations
+* Admin panel embedded documentation URLs
 
 === 6.0.1
 ==== Fixes

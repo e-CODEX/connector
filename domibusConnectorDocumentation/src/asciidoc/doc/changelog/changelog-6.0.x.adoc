@@ -4,6 +4,7 @@
 ==== Changes
 * Bump dependencies
 * Bump from spring boot 3.3.8 to 3.5.3
+* Support the **@** character in backend link names.
 
 ==== Fixes
 * TreeGrid pagination for Backend and Gateway links configurations

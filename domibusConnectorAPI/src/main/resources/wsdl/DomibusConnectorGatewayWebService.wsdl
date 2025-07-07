@@ -3,9 +3,10 @@
         xmlns:tns="http://connector.ecodex.eu/ws/gateway/webservice"
         xmlns:dct="transition.domain.connector.ecodex.eu"
         xmlns:wp="http://connector.ecodex.eu/ws/gateway/webservice"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorGatewayWebService"
+        xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        name="DomibusConnectorGatewayWebService"
         targetNamespace="http://connector.ecodex.eu/ws/gateway/webservice">
 
     <wsdl:import
@@ -32,34 +33,60 @@
     </wsdl:types>
 
     <wsdl:message name="submitMessageRequest">
+        <wsdl:documentation>
+            Request object containing a business message to submit to the gateway.
+        </wsdl:documentation>
         <wsdl:part name="submitMessageRequest" type="dct:DomibusConnectorMessageType"/>
     </wsdl:message>
     <wsdl:message name="submitMessageResponse">
+        <wsdl:documentation>
+            Response object containing an acknowledgement message for the connector.
+        </wsdl:documentation>
         <wsdl:part name="submitMessageResponse" type="dct:DomibsConnectorAcknowledgementType"/>
     </wsdl:message>
     <wsdl:message name="listPendingMessageIdsRequest">
+        <wsdl:documentation>Request object containing literally nothing</wsdl:documentation>
         <wsdl:part name="listPendingMessageIdsRequest" type="wp:ListPendingMessageIdsRequest"/>
     </wsdl:message>
     <wsdl:message name="listPendingMessageIdsResponse">
+        <wsdl:documentation>
+            Response object containing a list of the business message transport ids pending for
+            the requesting connector at the gateway.
+        </wsdl:documentation>
         <wsdl:part name="listPendingMessageIdsResponse" type="wp:ListPendingMessageIdsResponse"/>
     </wsdl:message>
     <wsdl:message name="getMessageByIdRequest">
+        <wsdl:documentation>
+            Request object containing a business message transport ID.
+        </wsdl:documentation>
         <wsdl:part name="getMessageByIdRequest" type="wp:GetMessageByIdRequest"/>
     </wsdl:message>
     <wsdl:message name="getMessageByIdResponse">
+        <wsdl:documentation>
+            Response object containing a business message
+        </wsdl:documentation>
         <wsdl:part name="getMessageByIdResponse" type="dct:DomibusConnectorMessageType"/>
     </wsdl:message>
 
     <wsdl:portType name="DomibusConnectorGatewayWebService">
         <wsdl:operation name="submitMessage">
+            <wsdl:documentation>Submit a business message to the gateway.</wsdl:documentation>
             <wsdl:input message="tns:submitMessageRequest"/>
             <wsdl:output message="tns:submitMessageResponse"/>
         </wsdl:operation>
         <wsdl:operation name="listPendingMessageIds">
+            <wsdl:documentation>
+                Return the connector internal business message transport IDs of messages pending at
+                the gateway.
+            </wsdl:documentation>
             <wsdl:input message="tns:listPendingMessageIdsRequest"/>
             <wsdl:output message="tns:listPendingMessageIdsResponse"/>
         </wsdl:operation>
         <wsdl:operation name="getMessageById">
+            <wsdl:documentation>
+                Retrieve the connector internal business message from the gateway based on its
+                transport ID.
+            </wsdl:documentation>
             <wsdl:input message="tns:getMessageByIdRequest"/>
             <wsdl:output message="tns:getMessageByIdResponse"/>
         </wsdl:operation>
@@ -97,6 +124,9 @@
     </wsdl:binding>
 
     <wsdl:service name="DomibusConnectorGatewayWSService">
+        <wsdl:documentation>
+            This is the main entry point for the DomibusConnectorGatewayWebService SOAP API.
+        </wsdl:documentation>
         <wsdl:port binding="tns:DomibusConnectorGatewayWSBinding" name="DomibusConnectorGatewayWebService">
             <soap12:backendPublishAddress location="http://connector.ecodex.eu/ws/gateway/webservice"/>
         </wsdl:port>

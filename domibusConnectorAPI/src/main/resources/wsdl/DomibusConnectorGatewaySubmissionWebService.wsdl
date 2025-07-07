@@ -2,27 +2,43 @@
 <wsdl:definitions
         xmlns:tns="http://connector.ecodex.eu/ws/gateway/submission/webservice"
         xmlns:dct="transition.domain.connector.ecodex.eu"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorGatewaySubmissionWebService"
+        xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        name="DomibusConnectorGatewaySubmissionWebService"
         targetNamespace="http://connector.ecodex.eu/ws/gateway/submission/webservice">
+
+    <wsdl:documentation>
+        The DomibusConnectorGatewaySubmissionWebService provides a SOAP interface for message exchange
+        operations from connector to an AS4 gateway.
+
+        Available operations:
+        - submitMessage: Submit a new business message for delivery
+
+        This service uses SOAP 1.2 over HTTP for all operations.
+    </wsdl:documentation>
 
     <wsdl:import
             namespace="transition.domain.connector.ecodex.eu"
             location="eu.ecodex.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
 
     <wsdl:message name="submitMessageRequest">
+        <wsdl:documentation>
+            Request object containing a business message to submit to the gateway.
+        </wsdl:documentation>
         <wsdl:part name="submitMessageRequest" type="dct:DomibusConnectorMessageType"/>
     </wsdl:message>
     <wsdl:message name="submitMessageResponse">
+        <wsdl:documentation>
+            Response object containing an acknowledgement message for the connector.
+        </wsdl:documentation>
         <wsdl:part name="submitMessageResponse" type="dct:DomibsConnectorAcknowledgementType"/>
     </wsdl:message>
 
     <wsdl:portType name="DomibusConnectorGatewaySubmissionWebService">
         <wsdl:operation name="submitMessage">
+            <wsdl:documentation>Submit a business message to the gateway.</wsdl:documentation>
             <wsdl:input message="tns:submitMessageRequest"/>
             <wsdl:output message="tns:submitMessageResponse"/>
-            <!-- <wsdl:fault name="fault" message="tns:deliverMessageFault"></wsdl:fault> -->
         </wsdl:operation>
     </wsdl:portType>
 
@@ -41,6 +57,9 @@
     </wsdl:binding>
 
     <wsdl:service name="DomibusConnectorGatewaySubmissionWSService">
+        <wsdl:documentation>
+            This is the main entry point for the DomibusConnectorGatewaySubmissionWebService SOAP API.
+        </wsdl:documentation>
         <wsdl:port binding="tns:DomibusConnectorGatewaySubmissionWSBinding"
                 name="DomibusConnectorGatewaySubmissionWebService">
             <soap12:backendPublishAddress location="http://connector.ecodex.eu/ws/gateway/submission/webservice"/>

@@ -25,7 +25,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @BusinessDomainScoped
-@ConfigurationProperties(prefix = DCMessageRoutingConfigurationProperties.ROUTING_CONFIG_PREFIX)
+@ConfigurationProperties(
+        prefix = DCMessageRoutingConfigurationProperties.ROUTING_CONFIG_PREFIX,
+        ignoreInvalidFields = true
+)
 public class DCMessageRoutingConfigurationProperties {
     public static final String ROUTING_CONFIG_PREFIX = "connector.routing";
     private boolean enabled = true;

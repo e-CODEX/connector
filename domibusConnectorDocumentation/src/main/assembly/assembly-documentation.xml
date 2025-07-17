@@ -3,6 +3,7 @@
     <id>documentation</id>
     <formats>
         <format>zip</format>
+        <format>dir</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
@@ -10,22 +11,16 @@
             <includes>
                 <include>**</include>
             </includes>
-            <directory>${html.docu.output.directory}</directory>
-            <outputDirectory>online-documentation/documentation</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <includes>
-                <include>**</include>
-            </includes>
-            <directory>${html.docu.output.directory}/../images</directory>
-            <outputDirectory>online-documentation/images</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <includes>
-                <include>**</include>
-            </includes>
             <directory>${project.basedir}/src/main/config</directory>
             <outputDirectory>config</outputDirectory>
+        </fileSet>
+        <!-- cupy html and pdf documentation -->
+        <fileSet>
+            <includes>
+                <include>**</include>
+            </includes>
+            <directory>${project.basedir}/target/generated-html</directory>
+            <outputDirectory>online-documentation</outputDirectory>
         </fileSet>
         <fileSet>
             <includes>

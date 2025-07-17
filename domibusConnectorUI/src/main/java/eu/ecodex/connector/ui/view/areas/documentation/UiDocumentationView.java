@@ -42,6 +42,6 @@ public class UiDocumentationView extends StaticContentView {
      * Constructor.
      */
     public UiDocumentationView() {
-        super("documentation/ui/ui_index.html");
+        super("documentation/ui/index.html");
     }
 }

@@ -1,16 +1,15 @@
+:path: ../..
 :description: The connector architecture overview
 
-:path: ../../
-
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
-= domibusConnector architecture
+= Domibus Connector architecture
 
 This page describes the architectural principles the domibusConnector is build upon.
 

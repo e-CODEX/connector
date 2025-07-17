@@ -1,4 +1,4 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basedir[]
 :basedir: {path}
@@ -18,7 +18,11 @@ Some of the examples also contain diagrams to show how messages are transformed 
 For a better understanding the flows are simplified.
 
 include::{basedir}/doc/architecture/message_processing/message_processing_outgoing_business.adoc[leveloffset=+1]
+
 include::{basedir}/doc/architecture/message_processing/message_processing_outgoing_evidence.adoc[leveloffset=+1]
+
 include::{basedir}/doc/architecture/message_processing/message_processing_incoming_business.adoc[leveloffset=+1]
+
 include::{basedir}/doc/architecture/message_processing/message_processing_incoming_evidence.adoc[leveloffset=+1]
+
 // include::{basedir}/doc/architecture/message_processing/message_processing_incoming_business.adoc[leveloffset=+1]

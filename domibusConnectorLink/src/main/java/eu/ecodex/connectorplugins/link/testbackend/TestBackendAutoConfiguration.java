@@ -39,7 +39,7 @@ import org.springframework.util.StringUtils;
  */
 //@Profile("plugin-" + TestbackendPlugin.IMPL_NAME)
 @Configuration
-@ComponentScan(basePackageClasses = TestBackendAutoConfiguration.class)
+// @ComponentScan(basePackageClasses = TestBackendAutoConfiguration.class)
 @ConditionalOnProperty(
     prefix = "connector.link.plugins." + "plugin-" + TestbackendPlugin.IMPL_NAME, value = "enabled",
     havingValue = "true", matchIfMissing = true

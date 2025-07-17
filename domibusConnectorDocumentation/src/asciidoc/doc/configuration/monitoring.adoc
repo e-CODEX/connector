@@ -1,16 +1,12 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
-
-ifndef::mvnbasedir[]
-:mvnbasedir: {basepath}/../../../../
-endif::mvnbasedir[]
 
 = Monitoring
 
@@ -56,7 +52,6 @@ Currently, no custom HealthEndpoint is created. For the future it is planned to 
 NOTE: A preview on the health metrics is here link:https://scm.ecodex.eu/artifactory/libs-release/eu/ecodex/utils/monitor/ecodex-monitor-app/0.0.12-RELEASE/[]
 available. It is a war deployable which can be deployed next to the domibusGateway or connector and can expose
 certificates and activeMQ queues over a spring actuator interface.
-
 
 === Internal JMS Monitoring
 

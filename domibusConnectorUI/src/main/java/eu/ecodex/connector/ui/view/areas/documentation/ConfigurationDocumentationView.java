@@ -42,6 +42,6 @@ public class ConfigurationDocumentationView extends StaticContentView {
      * Constructor.
      */
     public ConfigurationDocumentationView() {
-        super("documentation/configuration/configuration_index.html");
+        super("documentation/configuration/index.html");
     }
 }

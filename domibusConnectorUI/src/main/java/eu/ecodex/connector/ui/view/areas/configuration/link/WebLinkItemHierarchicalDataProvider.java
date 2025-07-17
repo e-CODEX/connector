@@ -27,10 +27,11 @@ import java.util.stream.Stream;
  *
  * @see AbstractHierarchicalDataProvider
  */
-public class WebLinkItemHierachicalDataProvider
+public class WebLinkItemHierarchicalDataProvider
     extends AbstractHierarchicalDataProvider<WebLinkItem, WebLinkItemFilter> {
     private final DCLinkFacade dcLinkFacade;
     private final LinkType linkType;
+    private int pageSize;
 
     /**
      * Constructor.
@@ -38,11 +39,11 @@ public class WebLinkItemHierachicalDataProvider
      * @param dcLinkFacade the DCLinkFacade used for retrieving link information
      * @param linkType     the type of link
      */
-    public WebLinkItemHierachicalDataProvider(
-        DCLinkFacade dcLinkFacade,
-        LinkType linkType) {
+    public WebLinkItemHierarchicalDataProvider(
+            DCLinkFacade dcLinkFacade, LinkType linkType, int pageSize) {
         this.dcLinkFacade = dcLinkFacade;
         this.linkType = linkType;
+        this.pageSize = pageSize;
     }
 
     @Override
@@ -53,7 +54,10 @@ public class WebLinkItemHierachicalDataProvider
     @Override
     public Stream<WebLinkItem> fetchChildren(
         HierarchicalQuery<WebLinkItem, WebLinkItemFilter> hierarchicalQuery) {
-        return doQuery(hierarchicalQuery);
+        var page = hierarchicalQuery.getPage();
+        return doQuery(hierarchicalQuery)
+                .skip((long) page * this.pageSize)
+                .limit(this.pageSize);
     }
 
     private Stream<WebLinkItem> doQuery(

@@ -1,0 +1,11 @@
+:path: ..
+
+ifndef::basedirs[]
+:basedirs: {path}
+endif::basedirs[]
+
+:doctype: book
+:title: Architecture : domibusConnector-{project-version}
+:title-logo-image: {basedirs}/resources/images/logo_ecodex_0.png
+
+include::{basedirs}/doc/architecture/index.adoc[]

@@ -65,8 +65,7 @@ public class PDomibusConnectorEvidence {
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private EvidenceType type;
-    @Lob
-    @Column(name = "EVIDENCE")
+    @Column(name = "EVIDENCE", columnDefinition = "TEXT")
     private String evidence;
     @Column(name = "DELIVERED_NAT")
     @Temporal(TemporalType.TIMESTAMP)

@@ -1,7 +1,7 @@
-:path: ../../../
+:path: ../../..
 
 ifndef::basepath[]
-:basepath: ../../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -12,7 +12,7 @@ endif::header[]
 
 Monitoring the internal queues of the domibusConnector.
 
-A description on how the internal message queues are used, see the description of link:../../architecture/message_processing/message_processing.html[message processing].
+A description on how the internal message queues are used, see the description of link:{basepath}/doc/architecture/message_processing/message_processing.html[message processing].
 
 == Use the UI to monitor jms messages
 

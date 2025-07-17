@@ -1,0 +1,21 @@
+:path: ..
+
+ifndef::basedirs[]
+:basedirs: {path}
+endif::basedirs[]
+
+:doctype: book
+:title: Documentation : domibusConnector-{project-version}
+:toc: left
+:toclevels: 5
+:title-logo-image: {basepath}/resources/images/logo_ecodex_0.png
+
+include::{basedirs}/doc/architecture/domibusConnectorAPI.adoc[]
+
+include::{basedirs}/doc/architecture/index.adoc[]
+
+include::{basedirs}/doc/installation/installation_guide.adoc[]
+
+include::{basedirs}/doc/upgrade/index.adoc[]
+
+include::{basedirs}/doc/changelog/index.adoc[]

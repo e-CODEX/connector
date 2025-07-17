@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -14,7 +14,6 @@ Also see:
 
  * link:../configuration/link_doc.html[Link Configuration Manual]
  * link:../ui/linkconfig/link_configuration.html[Link UI Configuration Manual]
-
 
 == Message Flow
 
@@ -29,14 +28,12 @@ So a link configuration consists multiple link partners.
 ----
 @startuml
 
-
 package "Config" {
   class DomibusConnectorLinkConfiguration {
     Properties properties
     String linkImpl
     LinkConfigName configName
   }
-
 
   class DomibusConnectorLinkPartner {
     LinkPartnerName linkPartnerName
@@ -47,7 +44,6 @@ package "Config" {
 }
 
 package Active {
-
   class ActiveLink {
     LinkPlugin linkPlugin
     ConfigurableApplicationContext childContext
@@ -59,9 +55,7 @@ package Active {
     ConfigurableApplicationContext childContext
     SubmitToLink submitToLink
   }
-
 }
-
 
 DomibusConnectorLinkConfiguration "*" <-- "1" DomibusConnectorLinkPartner
 
@@ -69,8 +63,6 @@ ActiveLink "1" --> "*" ActiveLinkPartner
 
 ActiveLink "1" --> "*" DomibusConnectorLinkConfiguration
 ActiveLinkPartner "1" --> "*" DomibusConnectorLinkPartner
-
-
 
 @enduml
 ----

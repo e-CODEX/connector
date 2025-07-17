@@ -31,7 +31,6 @@ For further details see the following chapters of the domibusConnector-Architect
 
 * Chapter 5. Message Processing
 
-
 ==== UI implementations/features
 
 * New PMode-Set handling.
@@ -58,25 +57,27 @@ They are:
 * domibusConnector-Architecture.pdf
 * Changelog.pdf
 
-
 === 4.4.1
 
+==== Fixes
 * Multiple Fixes within UI
 
 === 4.4.2
 
+==== Fixes
 * Fix related to log4j2 security issue  (upgrade to 2.15.0)
 
 === 4.4.3
 
+==== Fixes
 * Fix related to log4j2 security issue (upgrade to 2.17.0)
 
 === 4.4.4
 
+==== Fixes
 * Fix problems with certificate verification: The CommonCertificateVerifier has ignored any
 configured restrictions on AIA checking. This has lead to a very long message processing
 if the AIA source was not reachable.
-
 
 === 4.4.5
 
@@ -115,7 +116,6 @@ will use /dev/urandom as entropy source by default.
 * Update minor version of dependencies
 * Update Testdata keystores
 
-
 === 4.4.8
 
 With 4.4.8 the DSS Tools are upgraded to stay as compatible as possible with CXF. But
@@ -143,7 +143,6 @@ This is done by loading our class first.
 === 4.4.9
 
 ==== Fixes
-
 
 * Improved Logging im Backend Link JQEUP-1979
 * Retry behaviour changed within Backend Link if push is used JUEUSW-734 (Some errors have not triggered in contrary to the intended behaviour a retry, this is the fix for it)

@@ -1,7 +1,7 @@
-:path: ../../
+:path: ../..
 
 ifndef::basepath[]
-:basepath: ../../
+:basepath: {path}
 endif::basepath[]
 
 ifndef::header[]
@@ -29,7 +29,7 @@ The domibusConnector is one building block provided to support the connectivity 
 To be fully functional with an e-CODEX use case and to exchange messages with other e-CODEX partners,
 the proper installation of other building blocks are required.
 
-The description of the e-CODEX building blocks and additional information on the e-CODEX system can be found on the link:https://www.e-codex.eu/tech[e-CODEX website].
+The description of the e-CODEX building blocks and additional information on the e-CODEX system can be found on the link:https://www.ecodex.eu/tech[e-CODEX website].
 
 == Preconditions and technical requirements
 This chapter describes what has to be in place prior to install the domibusConnector.It also lists some technical specifications of the domibusConnector to give a more detailed insight.
@@ -45,7 +45,7 @@ During implementation and testing phase of the domibusConnector, it was installe
 === Java Runtime
 As the domibusConnector is a JAVA application, it also requires a proper installation of a Java Runtime to be able to run the software.
 
-Please have a look at the link:../versioning_and_compatibility/testing_matrix.adoc[Testing Matrix]
+Please have a look at the link:{basepath}/doc/versioning_and_compatibility/testing_matrix.adoc[Testing Matrix]
 
 [#_database]
 === Database
@@ -57,7 +57,7 @@ The domibusConnector needs an underlying database to store information. Currentl
 * PostgresSQL 13.2 and higher
 * Oracle 12g and higher
 
-Please have a look at the link:../versioning_and_compatibility/testing_matrix.adoc[Testing Matrix]
+Please have a look at the link:{basepath}/doc/versioning_and_compatibility/testing_matrix.adoc[Testing Matrix]
 
 The domibusConnector distribution package offers SQL scripts that are meant to either set up a completely new database for the connector, or to migrate an existing domibusConnector database to its current version.
 

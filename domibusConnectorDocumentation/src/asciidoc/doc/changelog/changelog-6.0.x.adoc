@@ -1,0 +1,66 @@
+== Changelog for domibusConnector-6.0.0
+
+=== 6.0.2-SNAPSHOT
+==== Changes
+* Bump dependencies
+* Bump from spring boot 3.3.8 to 3.5.3
+* Support the **@** character in backend link names.
+
+==== Fixes
+* TreeGrid pagination for Backend and Gateway links configurations
+* Admin panel embedded documentation URLs
+
+=== 6.0.1
+==== Fixes
+* Password modification from the admin console
+* Session ID clash when other application with same domain name and/or same context and/or same path are opened in the same browser (standalone version only) by
+adding **server.servlet.session.cookie.name=CONNECTOR_J_SESSION_ID** to the properties file.
+* Delete duplicates in initial database scripts
+* Use true or false as value for PostgreSQL boolean column
+* Support String LOB as TEXT field for PostgreSQL
+* First-time login for default users no longer requires password change
+
+==== Documentation
+* Improve documentation structure
+
+=== 6.0.0
+==== Changes
+* Migrate from Java 8 to 21
+* Migrate from Spring Boot 2.5.15 to 3.3.3
+* Update libraries and plugins to the latest version
+
+==== Compatibility:
+* The 6.0.0 connector is compatible with the 4.6.0 version of the domibus-connector-plugin-distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.6.0/)
+
+==== Testing:
+
+The Connector has been tested on
+
+|===
+| OS | Java | Application Server | Database Connector | Database
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| Mysql Connector 8.4.x
+| Mysql 8.0.x
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| MariaDB Java Client 3.4.1
+| MariaDB 11.6.2
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| PostgreSQL 42.7.4
+| PostgreSQL 17.2
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| OJDBC-11 23.6.0.24.10
+| Oracle 21.3.0 Express
+
+|===

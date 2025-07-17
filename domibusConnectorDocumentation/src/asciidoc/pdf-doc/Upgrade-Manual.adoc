@@ -1,13 +1,11 @@
-ifndef::rootpath[]
-:rootpath: ../
-endif::rootpath[]
+:path: ..
 
-//ifndef::imagesdir[]
-//:imagesdir: {rootpath}/resources/images/
-//endif::imagesdir[]
+ifndef::basedirs[]
+:basedirs: {path}
+endif::basedirs[]
 
 :doctype: book
-:title: domibusConnector - Upgrade Manual : domibusConnector-{project-version}
-:title-logo-image: ../resources/images/logo_ecodex_0.png
+:title: Upgrade Manual : domibusConnector-{project-version}
+:title-logo-image: {basedirs}/resources/images/logo_ecodex_0.png
 
-include::../doc/upgrade/upgrade_index.adoc[]
+include::{basedirs}/doc/upgrade/index.adoc[]

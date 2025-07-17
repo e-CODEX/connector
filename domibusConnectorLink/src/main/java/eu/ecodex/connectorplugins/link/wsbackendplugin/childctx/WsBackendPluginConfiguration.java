@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackageClasses = WsBackendPluginConfiguration.class)
 public class WsBackendPluginConfiguration {
     private static final Logger LOGGER = LogManager.getLogger(WsBackendPluginConfiguration.class);
-    public static final String WS_BACKEND_PLUGIN_PROFILE_NAME = "link.wsbackendplugin";
+    public static final String WS_BACKEND_PLUGIN_PROFILE_NAME = "link-wsbackendplugin";
     private final WsBackendPluginConfigurationProperties configurationProperties;
     private final SpringBus springBus;
     private final MerlinPropertiesFactory merlinPropertiesFactory;

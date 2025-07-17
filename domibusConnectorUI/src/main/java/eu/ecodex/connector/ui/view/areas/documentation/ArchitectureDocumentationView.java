@@ -35,6 +35,6 @@ public class ArchitectureDocumentationView extends StaticContentView {
      * Constructor.
      */
     public ArchitectureDocumentationView() {
-        super("documentation/architecture/architecture_index.html");
+        super("documentation/architecture/index.html");
     }
 }

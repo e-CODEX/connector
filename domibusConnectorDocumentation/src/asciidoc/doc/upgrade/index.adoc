@@ -1,5 +1,5 @@
 ifndef::basepath[]
-:basepath: ../../
+:basepath: ../..
 endif::basepath[]
 
 ifndef::header[]
@@ -21,6 +21,9 @@ Upgrades, in principle, do contain of the following steps:
 IMPORTANT: We strictly recommend to create a backup of all the parts to be upgraded before doing the actual upgrade. Especially for database migration! 
 
 include::{basepath}/doc/upgrade/upgrade-4.2.0.adoc[leveloffset=+1]
+
 include::{basepath}/doc/upgrade/upgrade-4.3.0.adoc[leveloffset=+1]
+
 include::{basepath}/doc/upgrade/upgrade-4.4.0.adoc[leveloffset=+1]
+
 include::{basepath}/doc/upgrade/upgrade-6.0.0.adoc[leveloffset=+1]

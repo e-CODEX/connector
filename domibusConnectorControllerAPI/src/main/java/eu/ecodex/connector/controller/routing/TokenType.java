@@ -41,7 +41,7 @@ public enum TokenType {
     BRACKET_OPEN("\\(", "("),
     BRACKET_CLOSE("\\)", ")"),
     WHITESPACE("\\p{javaWhitespace}"),
-    VALUE("'[\\w:_\\-~\\./#\\?]+'"),
+    VALUE("'[\\w:@_\\-~\\./#\\?]+'"),
     ILLEGAL_TOKEN("", "Illegal Token"), // special token for illegal none parseable tokens
     START_TOKEN(
         "", "Start Token"), // the start token, a placeholder to mark the start of processing

@@ -2,35 +2,43 @@
 <wsdl:definitions
         xmlns:tns="http://connector.ecodex.eu/ws/backend/delivery/webservice/"
         xmlns:dct="transition.domain.connector.ecodex.eu"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
         xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
         name="DomibusConnectorBackendDeliveryWebService"
         targetNamespace="http://connector.ecodex.eu/ws/backend/delivery/webservice/">
+
+    <wsdl:documentation>
+        This WSDL file defines the DomibusConnectorBackendDelivery web service interface.
+        It provides a SOAP-based API for message delivery to a connector client/backend.
+
+        Available operations:
+        - deliverMessage: Deliver a business message to the backend
+
+        This service uses SOAP 1.2 over HTTP for all operations.
+    </wsdl:documentation>
 
     <wsdl:import
             namespace="transition.domain.connector.ecodex.eu"
             location="eu.ecodex.connector.domain.transition/DomibusConnectorTransitionModel.xsd"/>
 
     <wsdl:message name="deliverMessageRequest">
+        <wsdl:documentation>The message to deliver to the backend</wsdl:documentation>
         <wsdl:part name="deliverMessageRequest" type="dct:DomibusConnectorMessageType"/>
     </wsdl:message>
     <wsdl:message name="deliverMessageResponse">
+        <wsdl:documentation>Acknowledgement response</wsdl:documentation>
         <wsdl:part name="deliverMessageResponse" type="dct:DomibsConnectorAcknowledgementType"/>
     </wsdl:message>
 
     <wsdl:portType name="DomibusConnectorBackendDeliveryWebService">
         <wsdl:operation name="deliverMessage">
+            <wsdl:documentation>Push a business message to the client/backend</wsdl:documentation>
             <wsdl:input message="tns:deliverMessageRequest"/>
             <wsdl:output message="tns:deliverMessageResponse"/>
-            <!-- <wsdl:fault name="fault" message="tns:deliverMessageFault"></wsdl:fault> -->
         </wsdl:operation>
     </wsdl:portType>
 
     <wsdl:binding name="DomibusConnectorBackendDeliveryWSBinding" type="tns:DomibusConnectorBackendDeliveryWebService">
-        <!--<wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#UsernameToken"/>-->
         <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="deliverMessage">
             <soap12:operation soapAction="" style="document"/>
@@ -40,13 +48,13 @@
             <wsdl:output>
                 <soap12:body use="literal"/>
             </wsdl:output>
-            <!-- <wsdl:fault name="fault">
-                <soap12:fault use="literal" name="fault" />
-            </wsdl:fault> -->
         </wsdl:operation>
     </wsdl:binding>
 
     <wsdl:service name="DomibusConnectorBackendDeliveryWSService">
+        <wsdl:documentation>
+            This is the main entry point for the DomibusConnectorBackendDeliveryWSService SOAP API.
+        </wsdl:documentation>
         <wsdl:port binding="tns:DomibusConnectorBackendDeliveryWSBinding"
                 name="DomibusConnectorBackendDeliveryWebService">
             <soap12:backendPublishAddress location="http://connector.ecodex.eu/ws/backend/delivery/webservice/"/>

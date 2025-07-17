@@ -2,10 +2,25 @@
 <wsdl:definitions
         xmlns:tns="http://connector.ecodex.eu/ws/backend/webservice"
         xmlns:dct="transition.domain.connector.ecodex.eu"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xmime="http://www.w3.org/2005/05/xmlmime" name="DomibusConnectorBackendWebService"
+        xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        name="DomibusConnectorBackendWebService"
         targetNamespace="http://connector.ecodex.eu/ws/backend/webservice">
+
+    <wsdl:documentation>
+        The DomibusConnectorBackendWebService provides a SOAP interface for message exchange
+        operations from backend to the connector.
+
+        Available operations:
+        - submitMessage: Submit a new business message for delivery
+        - requestMessages: Retrieve available business messages
+        - listPendingMessageIds: Get transport IDs of pending business messages
+        - getMessageById: Retrieve a specific business message by its transport ID
+        - acknowledgeMessage: Acknowledge receipt of a business message
+
+        This service uses SOAP 1.2 over HTTP for all operations.
+    </wsdl:documentation>
 
     <wsdl:import
             namespace="transition.domain.connector.ecodex.eu"
@@ -36,54 +51,99 @@
     </wsdl:types>
 
     <wsdl:message name="submitMessageRequest">
+        <wsdl:documentation>
+            Request object containing a business message to submit to the connector.
+        </wsdl:documentation>
         <wsdl:part name="submitMessageRequest" type="dct:DomibusConnectorMessageType"/>
     </wsdl:message>
     <wsdl:message name="submitMessageResponse">
+        <wsdl:documentation>
+            Response object containing an acknowledgement message for the client/backend.
+        </wsdl:documentation>
         <wsdl:part name="submitMessageResponse" type="dct:DomibsConnectorAcknowledgementType"/>
     </wsdl:message>
     <wsdl:message name="requestMessagesRequest">
+        <wsdl:documentation>
+            Request object containing literally nothing.
+        </wsdl:documentation>
         <wsdl:part name="requestMessagesRequest" type="tns:EmptyRequestType"/>
     </wsdl:message>
     <wsdl:message name="requestMessagesResponse">
+        <wsdl:documentation>
+            Response object containing all pending business messages for the client/backend.
+        </wsdl:documentation>
         <wsdl:part name="requestMessagesResponse" type="dct:DomibusConnectorMessagesType"/>
     </wsdl:message>
     <wsdl:message name="listPendingMessageIdsRequest">
+        <wsdl:documentation>Request object containing literally nothing</wsdl:documentation>
         <wsdl:part name="listPendingMessageIdsRequest" type="tns:EmptyRequestType"/>
     </wsdl:message>
     <wsdl:message name="listPendingMessageIdsResponse">
+        <wsdl:documentation>
+            Response object containing a list of the business message transport ids pending for
+            the requesting client/backend at the connector.
+        </wsdl:documentation>
         <wsdl:part name="listPendingMessageIdsResponse" type="tns:ListPendingMessageIdsResponse"/>
     </wsdl:message>
     <wsdl:message name="getMessageByIdRequest">
+        <wsdl:documentation>
+            Request object containing a business message transport ID.
+        </wsdl:documentation>
         <wsdl:part name="getMessageByIdRequest" type="tns:GetMessageByIdRequest"/>
     </wsdl:message>
     <wsdl:message name="getMessageByIdResponse">
+        <wsdl:documentation>
+            Response object containing a business message
+        </wsdl:documentation>
         <wsdl:part name="getMessageByIdResponse" type="dct:DomibusConnectorMessageType"/>
     </wsdl:message>
     <wsdl:message name="acknowledgeMessageRequest">
+        <wsdl:documentation>
+            Request object containing acknowledgement message
+        </wsdl:documentation>
         <wsdl:part name="acknowledgeMessageRequest" type="dct:DomibusConnectorMessageResponseType"/>
     </wsdl:message>
     <wsdl:message name="acknowledgeMessageResponse">
+        <wsdl:documentation>
+            Request object containing literally nothing
+        </wsdl:documentation>
         <wsdl:part name="acknowledgeMessageResponse" type="tns:EmptyRequestType"/>
     </wsdl:message>
 
     <wsdl:portType name="DomibusConnectorBackendWebService">
         <wsdl:operation name="submitMessage">
+            <wsdl:documentation>Submit a business message to the domibusConnector.</wsdl:documentation>
             <wsdl:input message="tns:submitMessageRequest"/>
             <wsdl:output message="tns:submitMessageResponse"/>
         </wsdl:operation>
         <wsdl:operation name="requestMessages">
+            <wsdl:documentation>
+                Load all pending business messages for the client and returns them in one request.
+            </wsdl:documentation>
             <wsdl:input message="tns:requestMessagesRequest"/>
             <wsdl:output message="tns:requestMessagesResponse"/>
         </wsdl:operation>
         <wsdl:operation name="listPendingMessageIds">
+            <wsdl:documentation>
+                Return the connector internal business message transport ids of messages pending for
+                requesting client/backend.
+            </wsdl:documentation>
             <wsdl:input message="tns:listPendingMessageIdsRequest"/>
             <wsdl:output message="tns:listPendingMessageIdsResponse"/>
         </wsdl:operation>
         <wsdl:operation name="getMessageById">
+            <wsdl:documentation>
+                Given the connector internal business message transport id, this request returns
+                the message object.
+            </wsdl:documentation>
             <wsdl:input message="tns:getMessageByIdRequest"/>
             <wsdl:output message="tns:getMessageByIdResponse"/>
         </wsdl:operation>
         <wsdl:operation name="acknowledgeMessage">
+            <wsdl:documentation>
+                Technically acknowledges a business message at the connector causing the message
+                to be finished.
+            </wsdl:documentation>
             <wsdl:input message="tns:acknowledgeMessageRequest"/>
             <wsdl:output message="tns:acknowledgeMessageResponse"/>
         </wsdl:operation>
@@ -139,6 +199,9 @@
     </wsdl:binding>
 
     <wsdl:service name="DomibusConnectorBackendWSService">
+        <wsdl:documentation>
+            This is the main entry point for the DomibusConnectorBackendWSService SOAP API.
+        </wsdl:documentation>
         <wsdl:port binding="tns:DomibusConnectorBackendWSBinding" name="DomibusConnectorBackendWebService">
             <soap12:backendPublishAddress location="http://connector.ecodex.eu/ws/backend/webservice"/>
         </wsdl:port>

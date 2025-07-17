@@ -1,27 +1,18 @@
 ifndef::basepath[]
-:basepath: ../
+:basepath: ..
 endif::basepath[]
 
 ifndef::header[]
-
-//# tag::header[]
-
+:header: header
 //TODO: insert html header with navigation here..
-
 :toc: left
 :toc-title: Table of Content
 :toclevels: 4
 :sectnums:
-
-
-:header: header
-
-//# end::header[]
-
 endif::header[]
 
 ifndef::imgdir[]
-:imgdir: ../resources/images/
+:imgdir: resources/images
 endif::imgdir[]
 
 ifndef::imagesdir[]
@@ -31,12 +22,3 @@ endif::imagesdir[]
 ifdef::webimagedir[]
 :imagesdir: {path}{webimagedir}
 endif::webimagedir[]
-
-
-//ifdef::rootpath[]
-//:imagesdir: {rootpath}{path}{imagesdir}
-//endif::rootpath[]
-//
-//ifndef::rootpath[]
-//:rootpath: ./../../
-//endif::rootpath[]

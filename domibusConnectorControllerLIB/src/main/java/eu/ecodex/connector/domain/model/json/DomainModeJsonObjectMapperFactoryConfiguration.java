@@ -45,6 +45,7 @@ public class DomainModeJsonObjectMapperFactoryConfiguration {
      * @return The ObjectMapper bean for domain model to JSON object mapping.
      */
     @Primary
+    @DomainModelJsonObjectMapper
     @Bean(name = DomainModelJsonObjectMapper.VALUE)
     public ObjectMapper getMapper() {
         var mapper = new ObjectMapper();

@@ -195,7 +195,7 @@
         <ow2.asm.version>9.7.1</ow2.asm.version>
         <saxon.he.version>12.5</saxon.he.version>
         <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
-        <spring.boot.version>3.5.3</spring.boot.version>
+        <spring.boot.version>3.3.13</spring.boot.version>
         <testcontainers.version>1.20.4</testcontainers.version>
         <tomcat.version>8.5.32</tomcat.version>
         <xml-apis.version>1.4.01</xml-apis.version>

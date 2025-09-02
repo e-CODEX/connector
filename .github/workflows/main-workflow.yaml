@@ -67,7 +67,7 @@ jobs:
           echo "Run Qodana: ${{ inputs.run_qodana }}"
           echo "Run Docker: ${{ inputs.run_docker }}"
           echo "Run Maven Publish: ${{ inputs.run_maven_publish }}"
-          echo "Java.js Version: ${{ inputs.node_version }}"
+          echo "Java.js Version: ${{ inputs.java_version }}"
           echo "Docker Image: ${{ inputs.docker_image }}"
           echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
           echo "GITHUB_REF=$GITHUB_REF"
@@ -79,7 +79,7 @@ jobs:
   call-ctp-automated-testing:
     uses: e-CODEX/workflows/.github/workflows/ctp-automated-testing.yml@ctp-automated-testing
     with:
-      node_version: ${{ github.event.inputs.node_version }}
+      java_version: ${{ github.event.inputs.java_version }}
       run_test: ${{ fromJSON(github.event.inputs.run_test || 'false') }}
       run_sonarcloud: ${{ fromJSON(github.event.inputs.run_sonarcloud || 'false') }}
       run_codeql: ${{ fromJSON(github.event.inputs.run_codeql || 'false') }}

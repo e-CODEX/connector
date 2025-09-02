@@ -1,0 +1,90 @@
+on:
+  workflow_dispatch:
+        inputs:
+            java_version:
+              description: 'Java version'
+              required: true
+              default: '21'
+          #  docker_image:
+          #    description: 'Name of the docker image to build and push'
+          #    required: false
+          #    type: string
+          #    default: ''
+            run_test:
+              description: 'Run test stage'
+              required: false
+              default: false
+              type: boolean
+            run_sonarcloud:
+              description: 'Run SonarCloud analysis'
+              required: false
+              default: false
+              type: boolean
+            run_codeql:
+              description: 'Run CodeQL analysis'
+              required: false
+              default: false
+              type: boolean
+            run_qodana:
+              description: 'Run Qodana analysis'
+              required: false
+              default: false
+              type: boolean
+            run_docker:
+              description: 'Build and push Docker image'
+              required: false
+              default: false
+              type: boolean
+            run_maven_publish:
+              description: 'Publish Maven release'
+              required: false
+              default: false
+              type: boolean
+  push:
+  pull_request:
+  merge_group:
+name: CI Pipeline
+jobs:
+  CI:
+    uses: e-CODEX/workflows/.github/workflows/ctp-automated-testing.yml@ctp-automated-testing
+    with:
+      java_version: ${{ github.event.inputs.java_version }}
+      run_test: ${{ fromJSON(github.event.inputs.run_test || 'false') }}
+      run_sonarcloud: ${{ fromJSON(github.event.inputs.run_sonarcloud || 'false') }}
+      run_codeql: ${{ fromJSON(github.event.inputs.run_codeql || 'false') }}
+      run_qodana: ${{ fromJSON(github.event.inputs.run_qodana || 'false') }}
+      run_docker: ${{ fromJSON(github.event.inputs.run_docker || 'false') }}
+      run_maven_publish: ${{ fromJSON(github.event.inputs.run_maven_publish || 'false') }}
+   
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug info
+        run: |
+          echo "Run Tests: ${{ inputs.run_test }}"
+          echo "Run SonarCloud: ${{ inputs.run_sonarcloud }}"
+          echo "Run CodeQL: ${{ inputs.run_codeql }}"
+          echo "Run Qodana: ${{ inputs.run_qodana }}"
+          echo "Run Docker: ${{ inputs.run_docker }}"
+          echo "Run Maven Publish: ${{ inputs.run_maven_publish }}"
+          echo "Java.js Version: ${{ inputs.node_version }}"
+          echo "Docker Image: ${{ inputs.docker_image }}"
+          echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+          echo "GITHUB_SHA=$GITHUB_SHA"
+
+
+        
+  call-ctp-automated-testing:
+    uses: e-CODEX/workflows/.github/workflows/ctp-automated-testing.yml@ctp-automated-testing
+    with:
+      node_version: ${{ github.event.inputs.node_version }}
+      run_test: ${{ fromJSON(github.event.inputs.run_test || 'false') }}
+      run_sonarcloud: ${{ fromJSON(github.event.inputs.run_sonarcloud || 'false') }}
+      run_codeql: ${{ fromJSON(github.event.inputs.run_codeql || 'false') }}
+      run_qodana: ${{ fromJSON(github.event.inputs.run_qodana || 'false') }}
+      run_docker: ${{ fromJSON(github.event.inputs.run_docker || 'false') }}
+      run_maven_publish: ${{ fromJSON(github.event.inputs.run_maven_publish || 'false') }}
+    secrets: inherit
+

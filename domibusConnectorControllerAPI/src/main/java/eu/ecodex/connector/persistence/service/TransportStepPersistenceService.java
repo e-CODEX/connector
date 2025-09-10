@@ -37,6 +37,9 @@ public interface TransportStepPersistenceService {
     List<DomibusConnectorTransportStep> findPendingStepBy(
         DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
 
+    List<String> findPendingStepIdsByLinkPartner(
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
+
     Optional<DomibusConnectorTransportStep> findStepById(
         TransportStateService.TransportId transportId);
 

@@ -201,8 +201,8 @@ class WsBackendPluginTest {
         var backendName = new DomibusConnectorLinkPartner.LinkPartnerName("backend_bob");
         // return the 2 pending message ids, when plugin asks for it
         Mockito.when(
-                   transportStateServiceMock.getPendingTransportsForLinkPartner(backendName))
-               .thenReturn(Stream.of(step1, step2).toList());
+                   transportStateServiceMock.getPendingTransportsIdsForLinkPartner(backendName))
+               .thenReturn(Stream.of(tid1.getTransportId(), tid2.getTransportId()).toList());
         // return the corresponding step
         Mockito.when(transportStateServiceMock.getTransportStepById(tid1))
                .thenReturn(Optional.of(step1));

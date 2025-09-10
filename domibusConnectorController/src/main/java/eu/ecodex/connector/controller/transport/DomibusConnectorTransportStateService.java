@@ -219,6 +219,12 @@ public class DomibusConnectorTransportStateService implements TransportStateServ
     }
 
     @Override
+    public List<String> getPendingTransportsIdsForLinkPartner(
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) {
+        return transportStepPersistenceService.findPendingStepIdsByLinkPartner(linkPartnerName);
+    }
+
+    @Override
     public Optional<DomibusConnectorTransportStep> getTransportStepById(TransportId transportId) {
         return transportStepPersistenceService.findStepById(transportId);
     }

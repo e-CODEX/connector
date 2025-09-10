@@ -34,7 +34,6 @@ import eu.ecodex.connectorplugins.link.wsbackendplugin.WsBackendPluginActiveLink
 import jakarta.annotation.Resource;
 import jakarta.xml.ws.WebServiceContext;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxws.context.WrappedMessageContext;
@@ -183,23 +182,17 @@ public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebS
 
     @Override
     public ListPendingMessageIdsResponse listPendingMessageIds(
-        EmptyRequestType listPendingMessageIdsRequest) {
+            EmptyRequestType listPendingMessageIdsRequest) {
         var listPendingMessageIdsResponse = new ListPendingMessageIdsResponse();
         try {
             Optional<DomibusConnectorLinkPartner> backendClientInfoByName = checkBackendClient();
             if (backendClientInfoByName.isPresent()) {
-                List<DomibusConnectorTransportStep> pendingTransportsForLinkPartner =
-                    transportStateService.getPendingTransportsForLinkPartner(
-                        backendClientInfoByName.get().getLinkPartnerName());
-
-                List<String> pendingIds = pendingTransportsForLinkPartner
-                    .stream()
-                    .map(DomibusConnectorTransportStep::getTransportId)
-                    .map(TransportStateService.TransportId::getTransportId)
-                    .filter(Objects::nonNull)
-                    .toList();
-
-                listPendingMessageIdsResponse.getMessageTransportIds().addAll(pendingIds);
+                List<String> pendingTransportsForLinkPartner =
+                        transportStateService.getPendingTransportsIdsForLinkPartner(
+                                backendClientInfoByName.get().getLinkPartnerName());
+                listPendingMessageIdsResponse
+                        .getMessageTransportIds()
+                        .addAll(pendingTransportsForLinkPartner);
             } else {
                 LOGGER.warn("No backend found, returning empty DomibusConnectorMessagesType!");
             }
@@ -207,8 +200,8 @@ public class WsBackendServiceEndpointImpl implements DomibusConnectorBackendWebS
             LOGGER.error("Exception", e);
         }
         LOGGER.debug(
-            "#listPendingMessageIds returns pending message ids: [{}]",
-            listPendingMessageIdsResponse.getMessageTransportIds().size()
+                "#listPendingMessageIds returns pending message ids: [{}]",
+                listPendingMessageIdsResponse.getMessageTransportIds().size()
         );
         return listPendingMessageIdsResponse;
     }

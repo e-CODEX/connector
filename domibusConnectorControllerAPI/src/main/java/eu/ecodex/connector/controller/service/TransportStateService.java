@@ -64,6 +64,9 @@ public interface TransportStateService {
     List<DomibusConnectorTransportStep> getPendingTransportsForLinkPartner(
         DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
 
+    List<String> getPendingTransportsIdsForLinkPartner(
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName);
+
     Optional<DomibusConnectorTransportStep> getTransportStepById(TransportId transportId);
 
     /**

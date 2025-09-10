@@ -121,9 +121,24 @@ public class TransportStepPersistenceServiceImpl implements TransportStepPersist
         var linkNames = new DomibusConnectorLinkPartner.LinkPartnerName[] {linkPartnerName};
         var p = Pageable.unpaged();
         return transportStepDao.findLastAttemptStepByLastStateAndLinkPartnerIsOneOf(
-                                   states, linkNames, p).stream()
-                               .map(this::mapTransportStepToDomain)
-                               .toList();
+                                   states, linkNames, p
+                ).stream()
+                .map(this::mapTransportStepToDomain)
+                .toList();
+    }
+
+    @Override
+    public List<String> findPendingStepIdsByLinkPartner(
+            DomibusConnectorLinkPartner.LinkPartnerName linkPartnerName) {
+        var states = new String[] {TransportState.PENDING.getDbName()};
+        var linkNames = new DomibusConnectorLinkPartner.LinkPartnerName[] {linkPartnerName};
+        var p = Pageable.unpaged();
+        return transportStepDao.findLastAttemptStepIdsByLastStateAndLinkPartnerIsOneOf(
+                states, linkNames, p
+                )
+                .stream()
+                .map(TransportStateService.TransportId::getTransportId)
+                .toList();
     }
 
     @Override

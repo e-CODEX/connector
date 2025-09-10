@@ -5,6 +5,7 @@
 * Bump dependencies
 * Bump from spring boot 3.3.8 to 3.3.13
 * Support the **@** character in backend link names.
+* Improve the performance of the listPendingMessageIds web service
 
 ==== Fixes
 * TreeGrid pagination for Backend and Gateway links configurations

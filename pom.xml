@@ -172,10 +172,10 @@
         <mariadb-java-client.version>3.5.1</mariadb-java-client.version>
         <mysql.connector-java.version>9.2.0</mysql.connector-java.version>
         <oracle.ojdbc11.version>23.6.0.24.10</oracle.ojdbc11.version>
-        <postgresql.version>42.7.4</postgresql.version>
+        <postgresql.version>42.7.7</postgresql.version>
         <!-- other -->
         <atomikos.version>6.0.0</atomikos.version>
-        <apache.commons-lang3.version>3.16.0</apache.commons-lang3.version>
+        <apache.commons-lang3.version>3.18.0</apache.commons-lang3.version>
         <apache.commons-compress.version>1.27.1</apache.commons-compress.version>
         <apache.log4j2.version>2.19.0</apache.log4j2.version>
         <apache.poi.version>5.4.1</apache.poi.version>

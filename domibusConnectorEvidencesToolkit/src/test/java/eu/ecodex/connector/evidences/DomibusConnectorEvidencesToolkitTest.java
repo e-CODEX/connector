@@ -45,8 +45,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
@@ -59,7 +59,7 @@ class DomibusConnectorEvidencesToolkitTest {
 
     private static final Logger LOGGER =
         LoggerFactory.getLogger(DomibusConnectorEvidencesToolkitTest.class);
-    @MockBean
+    @MockitoBean
     DCBusinessDomainManager dcBusinessDomainManager;
     @Autowired
     private DomibusConnectorEvidencesToolkit evidencesToolkit;

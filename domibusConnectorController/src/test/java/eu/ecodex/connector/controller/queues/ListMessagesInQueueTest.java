@@ -11,7 +11,6 @@
 package eu.ecodex.connector.controller.queues;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import eu.ecodex.connector.controller.processor.CleanupMessageProcessor;
 import eu.ecodex.connector.controller.processor.EvidenceMessageProcessor;
 import eu.ecodex.connector.controller.processor.ToBackendBusinessMessageProcessor;
@@ -38,12 +37,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @SuppressWarnings("squid:S1135")
@@ -63,19 +62,19 @@ class ListMessagesInQueueTest {
     @Autowired
     @Qualifier("TestDlq1")
     Queue dlq1;
-    @MockBean
+    @MockitoBean
     SubmitToLinkService submitToLinkService;
-    @MockBean
+    @MockitoBean
     SubmitToConnector submitToConnector;
-    @MockBean
+    @MockitoBean
     EvidenceMessageProcessor evidenceMessageProcessor;
-    @MockBean
+    @MockitoBean
     ToBackendBusinessMessageProcessor toBackendBusinessMessageProcessor;
-    @MockBean
+    @MockitoBean
     ToGatewayBusinessMessageProcessor toGatewayBusinessMessageProcessor;
-    @MockBean
+    @MockitoBean
     ToLinkPartnerListener toLinkPartnerListener;
-    @MockBean
+    @MockitoBean
     CleanupMessageProcessor cleanupMessageProcessor;
     @Autowired
     ToLinkQueue toLinkQueueProducer;

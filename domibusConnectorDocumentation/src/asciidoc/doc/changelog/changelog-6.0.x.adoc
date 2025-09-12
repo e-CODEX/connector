@@ -3,7 +3,7 @@
 === 6.0.2-SNAPSHOT
 ==== Changes
 * Bump dependencies
-* Bump from spring boot 3.3.8 to 3.3.13
+* Bump from spring boot 3.3.8 to 3.5.5
 * Support the **@** character in backend link names.
 * Improve the performance of the listPendingMessageIds web service
 * Enable loopback messaging support

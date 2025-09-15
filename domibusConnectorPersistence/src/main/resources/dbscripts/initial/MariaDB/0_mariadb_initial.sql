@@ -175,10 +175,6 @@ create table DOMIBUS_CONNECTOR_MESSAGE
     HASH_VALUE           longtext     null,
     REJECTED             datetime(6)  null,
     UPDATED              datetime(6)  not null,
-    constraint UK_81o66ln4txujh8p62a6g6lqx9
-        unique (BACKEND_MESSAGE_ID),
-    constraint UK_e71rh4n71m4mpgcokhengr592
-        unique (EBMS_MESSAGE_ID),
     constraint UK_s9y5ajqyjnjb7gjf2na4ae7ur
         unique (CONNECTOR_MESSAGE_ID)
 );

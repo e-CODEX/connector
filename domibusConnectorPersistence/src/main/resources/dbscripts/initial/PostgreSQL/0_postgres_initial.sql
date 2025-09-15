@@ -202,9 +202,7 @@ create table domibus_connector_message
 (
     id                   bigint       not null
         primary key,
-    backend_message_id   varchar(255)
-        constraint uk_81o66ln4txujh8p62a6g6lqx9
-            unique,
+    backend_message_id   varchar(255),
     backend_name         varchar(255),
     confirmed            timestamp,
     connector_message_id varchar(255) not null
@@ -216,9 +214,7 @@ create table domibus_connector_message
     delivered_backend    timestamp,
     direction_source     varchar(20),
     direction_target     varchar(20),
-    ebms_message_id      varchar(255)
-        constraint uk_e71rh4n71m4mpgcokhengr592
-            unique,
+    ebms_message_id      varchar(255),
     gateway_name         varchar(255),
     hash_value           text,
     rejected             timestamp,

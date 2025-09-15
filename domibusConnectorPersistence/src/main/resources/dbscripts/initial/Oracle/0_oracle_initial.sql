@@ -283,13 +283,7 @@ alter table DC_MESSAGE_LANE
     add constraint UK_ljuyrly9is6sioein0ro1yfh3 unique (NAME)
 /
 alter table DOMIBUS_CONNECTOR_MESSAGE
-    add constraint UK_81o66ln4txujh8p62a6g6lqx9 unique (BACKEND_MESSAGE_ID)
-/
-alter table DOMIBUS_CONNECTOR_MESSAGE
     add constraint UK_s9y5ajqyjnjb7gjf2na4ae7ur unique (CONNECTOR_MESSAGE_ID)
-/
-alter table DOMIBUS_CONNECTOR_MESSAGE
-    add constraint UK_e71rh4n71m4mpgcokhengr592 unique (EBMS_MESSAGE_ID)
 /
 alter table DC_LINK_CONFIG_PROPERTY
     add constraint FK62l6hjp3v8y2mgs1rfwaqslqm foreign key (DC_LINK_CONFIGURATION_ID) references DC_LINK_CONFIGURATION

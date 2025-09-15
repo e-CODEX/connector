@@ -39,5 +39,5 @@ VALUES (1, 'defaultMessageLane', 'default message lane');
 
 
 INSERT INTO DC_DB_VERSION (TAG)
-VALUES ('V4.4.5')
+VALUES ('V6.0.2')
 ;

@@ -108,7 +108,7 @@
         <!-- other dependencies -->
         <dependency>
             <groupId>com.atomikos</groupId>
-            <artifactId>transactions-spring-boot-starter</artifactId>
+            <artifactId>transactions-spring-boot3-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -32,8 +32,6 @@ import eu.ecodex.connector.tools.logging.LoggingMarker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * Takes a originalMessage from backend and creates evidences for it and also wraps it into
@@ -126,13 +124,7 @@ public class ToGatewayBusinessMessageProcessor implements DomibusConnectorMessag
             message.getTransportedMessageConfirmations().add(submissionAcceptanceConfirmation);
 
             // submit message to GW
-            TransactionSynchronizationManager.registerSynchronization(
-                    new TransactionSynchronization() {
-                    @Override
-                    public void afterCommit() {
-                        submitMessageToLinkStep.submitMessage(message);
-                    }
-            });
+            submitMessageToLinkStep.submitMessage(message);
             // submit evidence message to BACKEND
             // TODO: do this after submitMessage was successful! offload into TransportStateService
             submitAsEvidenceMessageToLink.submitOppositeDirection(

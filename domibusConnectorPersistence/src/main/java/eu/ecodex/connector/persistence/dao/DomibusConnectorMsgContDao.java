@@ -32,4 +32,6 @@ public interface DomibusConnectorMsgContDao extends CrudRepository<PDomibusConne
 
     @Query("SELECT c FROM PDomibusConnectorMsgCont c where c.connectorMessageId = ?1")
     List<PDomibusConnectorMsgCont> findByMessage(String messageId);
+
+    void deleteAllByMessageIdIn(List<Long> messageIds);
 }

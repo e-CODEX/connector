@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -181,4 +182,13 @@ public interface DomibusConnectorMessageDao extends JpaRepository<PDomibusConnec
             + "WHERE m.connectorMessageId = ?1"
     )
     void setMessageDeliveredToGateway(String connectorid, Date deliveryDate);
+
+    @Query(
+            value = "SELECT DCM.ID FROM DOMIBUS_CONNECTOR_MESSAGE DCM "
+                    + "WHERE DCM.CONNECTOR_MESSAGE_ID IN (:messageIds)",
+            nativeQuery = true
+    )
+    List<Long> getMessageIntegerIds(@Param("messageIds") List<String> messageIds);
+
+    void deleteAllByIdIn(List<Long> ids);
 }

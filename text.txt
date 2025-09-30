@@ -1,0 +1,1 @@
+Illegal destination: [ActiveMQDestination [address=DLQ.connector.queues.submitToLinkQueue, name=DLQ.connector.queues.submitToLinkQueue, type =DESTINATION]] Other destinations then queues are not supported!

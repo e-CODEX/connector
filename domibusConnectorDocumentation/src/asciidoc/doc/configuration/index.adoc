@@ -25,3 +25,5 @@ include::{basepath}/doc/configuration/link_doc.adoc[leveloffset=+1]
 include::{basepath}/doc/configuration/logging.adoc[leveloffset=+1]
 
 include::{basepath}/doc/configuration/monitoring.adoc[leveloffset=+1]
+
+include::{basepath}/doc/configuration/database_cleaning.adoc[leveloffset=+1]

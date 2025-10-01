@@ -203,7 +203,7 @@
         <assertj.version>3.27.3</assertj.version>
         <dbunit.version>3.0.0</dbunit.version>
         <hamcrest.version>3.0</hamcrest.version>
-        <junit.jupiter.version>5.13.1</junit.jupiter.version>
+        <junit.jupiter.version>6.0.0</junit.jupiter.version>
         <xmlunit.core.version>2.10.0</xmlunit.core.version>
         <xmlunit.matchers.version>2.10.0</xmlunit.matchers.version>
     </properties>

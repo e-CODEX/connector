@@ -46,4 +46,6 @@ public interface DomibusConnectorEvidenceDao
             + "WHERE e.id = ?1"
     )
     int setEvidenceDeliveredToBackend(Long id);
+
+    void deleteAllByBusinessMessageIdIn(List<Long> ids);
 }

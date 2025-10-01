@@ -1,6 +1,17 @@
-== Changelog for domibusConnector-6.0.0
+== Changelog for domibusConnector-6.0.x
 
-=== 6.0.2-SNAPSHOT
+=== 6.0.3-SNAPSHOT
+==== Changes
+* N/A
+
+==== Fixes
+* N/A
+
+==== Technical
+* Set up a database cleaning strategy. Cleaning cron job is defined via the
+**connector.database.cleaning.cron** property key and uses Quartz-like cron expressions. Default value is **0 0 0 * * 7** (At 00:00 every Sunday).
+
+=== 6.0.2
 ==== Changes
 * Bump dependencies
 * Bump from spring boot 3.3.8 to 3.3.13

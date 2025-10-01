@@ -11,6 +11,7 @@
 package eu.ecodex.connector.persistence.dao;
 
 import eu.ecodex.connector.persistence.model.PDomibusConnectorBigData;
+import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DomibusConnectorBigDataDao extends CrudRepository<PDomibusConnectorBigData, Long> {
+    void deleteAllByConnectorMessageIdIn(List<String> connectorMessageIds);
 }

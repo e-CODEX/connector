@@ -18,7 +18,9 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -109,4 +111,18 @@ public interface DomibusConnectorTransportStepDao
         "SELECT step FROM PDomibusConnectorTransportStep step WHERE step.connectorMessageId = ?1"
     )
     List<PDomibusConnectorTransportStep> findByConnectorMessageId(String connectorMessageId);
+
+    @Query(
+            value = "SELECT DTS.CONNECTOR_MESSAGE_ID "
+                    + "FROM DC_TRANSPORT_STEP DTS WHERE DTS.ID IN (:transportsIds)",
+            nativeQuery = true
+    )
+    List<String> getCompletedMessageIds(@Param("transportsIds") List<Long> transportsIds);
+
+    @Modifying
+    @Query(
+            value = "DELETE FROM DC_TRANSPORT_STEP DTS WHERE DTS.ID IN (:transportsIds)",
+            nativeQuery = true
+    )
+    void clean(@Param("transportsIds") List<Long> transportsIds);
 }

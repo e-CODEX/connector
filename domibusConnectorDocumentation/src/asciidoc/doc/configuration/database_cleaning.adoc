@@ -1,0 +1,36 @@
+:path: ../..
+
+ifndef::basepath[]
+:basepath: {path}
+endif::basepath[]
+
+ifndef::header[]
+include::{basepath}/doc/header.adoc[]
+endif::header[]
+
+= Database cleaning
+
+== Cleaning strategy
+
+Over time, the database can accumulate a large volume of processed messages. These messages are typically no longer needed once they've been successfully processed and stored or forwarded.
+
+By default, the system is configured with an automatic cleaning strategy that periodically processed messages from the database. This ensures disk space is preserved without requiring manual intervention.
+
+A job has been configured to run this strategy every Sunday at midnight.
+
+The schedule can be adjusted via the following configuration property:
+
+----
+connector.database.cleaning.cron
+----
+
+This property supports cron expressions and uses Quartz-like cron expressions. Default value is **0 0 0 * * 7** (At 00:00 every Sunday).
+
+Updating this value allows administrators to fine-tune the frequency and timing of the cleanup process as needed.
+
+The example below shows the default configuration.
+
+[source,properties]
+----
+connector.database.cleaning.cron:0 0 0 * * 7
+----

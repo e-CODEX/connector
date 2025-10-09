@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,46 +71,80 @@ public class QueueController {
         this.converter = converter;
     }
 
+    /**
+     * Deletes a given JMS message from the associated queue. If the destination is not a valid
+     * queue or is null, a warning is logged, and a notification is displayed. Handles any
+     * potential JMS exceptions during the deletion process.
+     *
+     * @param message The JMS message to be deleted. The message should contain a valid destination
+     *            that corresponds to a queue.
+     */
     @Transactional
-    public void deleteMsg(Message msg) {
-        // can be any queue
-        queueMap.values().stream().findFirst().ifPresent(q -> q.deleteMsg(msg));
+    public void deleteMessage(Message message) {
+        try {
+            var destination = (ActiveMQDestination) message.getJMSDestination();
+            if (destination != null) {
+
+                var jmsDestination = destination.getName();
+                var manageableQueue = errorQueueMap.get(jmsDestination);
+                manageableQueue.deleteMessage(message);
+            } else {
+                String error = String.format(
+                        "Illegal destination: [%s]. "
+                                + "Other destinations than queues are not supported!",
+                        message.getJMSDestination()
+                );
+                LOGGER.warn(error);
+                Notification.show(error);
+            }
+        } catch (JMSException e) {
+            var error = "An exception occurred while deleting message from DLQ";
+            LOGGER.warn(error, e);
+            Notification.show(error);
+        }
     }
 
     /**
      * Retrieves the text content of a message.
      *
-     * @param msg The message for which to retrieve the text content.
+     * @param message The message for which to retrieve the text content.
      * @return The text content of the message. If the message is a TextMessage, the text value of
      *      the message is returned. If the message is not a TextMessage, an
      *      IllegalArgumentException is thrown.
      */
-    public String getMsgText(Message msg) {
+    public String getMessageText(Message message) {
         // can be any queue
-        return queueMap.values().stream().findFirst().map(q -> q.getMessageAsText(msg))
-                       .orElse("[none]");
+        return queueMap
+                .values()
+                .stream()
+                .findFirst()
+                .map(q -> q.getMessageAsText(message))
+                .orElse("[none]");
     }
 
     /**
      * Moves a message from the dead letter queue (DLQ) to the original queue.
      *
-     * @param msg The message to be moved. The message should be an instance of javax.jms.Message.
+     * @param message The message to be moved. The message should be an instance
+     *                of jakarta.jms.Message.
      * @throws IllegalArgumentException If the message's destination is not a queue.
      * @throws IllegalArgumentException If the DLQ with the given name is not found.
      */
     @Transactional
-    public void moveMsgFromDlqToQueue(Message msg) {
+    public void moveMessageFromDlqToQueue(Message message) {
         String jmsDestination = null;
         try {
-            if (msg.getJMSDestination() instanceof jakarta.jms.Queue queue) {
-                jmsDestination = queue.getQueueName();
+            var destination = (ActiveMQDestination) message.getJMSDestination();
+            if (destination != null) {
+                jmsDestination = destination.getName();
             } else {
-                String error = "Illegal destination: [" + msg.getJMSDestination()
+                String error = "Illegal destination: [" + message.getJMSDestination()
                     + "] Other destinations then queues are not supported!";
                 LOGGER.warn(error);
                 Notification.show(error);
             }
             if (jmsDestination != null) {
+                System.out.println("MOVE DESTINATION: " + jmsDestination);
                 var manageableQueue = errorQueueMap.get(jmsDestination);
                 if (manageableQueue == null) {
                     throw new IllegalArgumentException(String.format(
@@ -118,7 +153,7 @@ public class QueueController {
                         String.join(",", errorQueueMap.keySet())
                     ));
                 }
-                manageableQueue.moveMsgFromDlqToQueue(msg);
+                manageableQueue.moveMessageFromDlqToQueue(message);
             } else {
                 var error = "Illegal destination: null";
                 Notification.show(error);
@@ -142,10 +177,12 @@ public class QueueController {
      */
     @Transactional
     public List<WebQueue> getQueues() {
-        return queueMap.values().stream()
-                       .map(this::mapQueueToWebQueue)
-                       .filter(Objects::nonNull)
-                       .toList();
+        return queueMap
+                .values()
+                .stream()
+                .map(this::mapQueueToWebQueue)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     private WebQueue mapQueueToWebQueue(ManageableQueue manageableQueue) {
@@ -154,25 +191,28 @@ public class QueueController {
             webQueue.setName(manageableQueue.getName());
             final var cleanupMessages = manageableQueue.listAllMessages();
             webQueue.setMessages(cleanupMessages);
-            webQueue.setMsgsOnQueue(cleanupMessages.size());
+            webQueue.setMessagesOnQueue(cleanupMessages.size());
 
             try {
                 final List<Message> cleanupDlqMessages = manageableQueue.listAllMessagesInDlq();
                 webQueue.setDlqMessages(cleanupDlqMessages);
-                webQueue.setMsgsOnDlq(cleanupDlqMessages.size());
+                webQueue.setMessagesOnDlq(cleanupDlqMessages.size());
             } catch (InvalidDestinationException ide) {
-                LOGGER.trace(
-                    "Error occurred while reading from DLQ [{}] (maybe the queue has not "
-                        + "been created yet)", manageableQueue.getDlqName(), ide);
+                var error = String.format(
+                        "Error occurred while reading from DLQ [%s]. "
+                                + "(maybe the queue has not been created yet)",
+                        manageableQueue.getDlqName()
+                );
+                LOGGER.trace(error, ide);
             } catch (Exception e) {
                 LOGGER.warn(
-                    "Error occurred while reading from DLQ [{}]", manageableQueue.getDlqName(), e
+                    "Error occurred while reading from DLQ: [{}]", manageableQueue.getDlqName(), e
                 );
             }
 
             return webQueue;
         } catch (Exception e) {
-            LOGGER.warn("Error occurred", e);
+            LOGGER.warn("Error occurred while mapping queue to WebQueue", e);
             return null;
         }
     }
@@ -183,7 +223,7 @@ public class QueueController {
      * @param message The message to be displayed.
      */
     public void showMessage(Message message) {
-        String messageText = this.getMsgText(message);
+        String messageText = this.getMessageText(message);
         var d = new Dialog();
         d.add(new NativeLabel(messageText));
         d.open();

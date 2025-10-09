@@ -16,12 +16,15 @@ import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.Queue;
 import jakarta.jms.TextMessage;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import lombok.Getter;
+import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 
 /**
@@ -55,7 +58,7 @@ import org.springframework.jms.core.JmsTemplate;
  * </pre>
  */
 public class QueueHelper implements HasManageableDlq {
-    public static final String JMS_MESSAGE_ID_SELECTOR = "JMSMessageID = '";
+    public static final String JMS_MESSAGE_ID_SELECTOR = "JMSMessageID";
     private static final Logger LOGGER = LogManager.getLogger(QueueHelper.class);
     @Getter
     private final Queue destination;
@@ -83,71 +86,95 @@ public class QueueHelper implements HasManageableDlq {
 
     @Override
     public List<Message> listAllMessages() {
-        return list(destination);
+        return listMessages(destination);
     }
 
     @Override
     public List<Message> listAllMessagesInDlq() {
-        return list(dlq);
+        return listMessages(dlq);
     }
 
-    private List<Message> list(Queue destination) {
+    private List<Message> listMessages(Queue destination) {
         return jmsTemplate.browse(destination, (s, qb) -> {
             List<Message> result = new ArrayList<>();
-            @SuppressWarnings("unchecked") final Enumeration<Message> enumeration =
-                qb.getEnumeration();
+            @SuppressWarnings("unchecked")
+            final Enumeration<Message> enumeration = qb.getEnumeration();
             while (enumeration.hasMoreElements()) {
                 final var message = enumeration.nextElement();
+                try {
+                    LOGGER.debug("MESSAGE JMS DESTINATION: {}, JMSMessageID: {}, browsing from: {}",
+                            message.getJMSDestination(),
+                            message.getJMSMessageID(),
+                            destination.getQueueName());
+                } catch (JMSException e) {
+                    LOGGER.warn("Error reading message properties", e);
+                }
                 result.add(message);
             }
             return result;
         });
     }
 
-    @SuppressWarnings("squid:S1135")
-    // TODO this is a replacement for the method below, this method does not depend on a
-    //  destination. It can restore any dlq message to the queue where it failed processing.
-    private void moveAnyDlqMessageBackToItsOrigQueue(Message msg) {
+    private String generateMessageSelector(Message message) {
         try {
-            jmsTemplate.receiveSelected(
-                msg.getJMSDestination(), JMS_MESSAGE_ID_SELECTOR + msg.getJMSMessageID() + "'"
-            );
-            jmsTemplate.send(
-                msg.getJMSDestination().toString().replace("DLQ.", ""), session -> msg
-            );
+            return String.format("%s = '%s'", JMS_MESSAGE_ID_SELECTOR, message.getJMSMessageID());
         } catch (JMSException e) {
             LOGGER.debug(e.getMessage());
+            return "";
         }
     }
 
-    @SuppressWarnings("squid:S1135")
-    // TODO this is not working, throws:
-    //      XA resource 'jmsConnectionFactory': commit for XID 'bla.bla' raised
-    //      -4: the supplied XID is invalid for this XA resource
-    @Override
-    public void moveMsgFromDlqToQueue(Message msg) {
+    private Message receiveMessageFromDlq(Message message) {
+        var messageSelector = this.generateMessageSelector(message);
         try {
-            final DomibusConnectorMessage c =
-                (DomibusConnectorMessage) jmsTemplate.receiveSelectedAndConvert(
-                    msg.getJMSDestination(), JMS_MESSAGE_ID_SELECTOR + msg.getJMSMessageID() + "'");
-            putOnQueue(c);
-        } catch (JMSException e) {
-            LOGGER.debug(e.getMessage());
-        }
-    }
-
-    @Override
-    public void deleteMsg(Message msg) {
-        try {
-            final Message m = jmsTemplate.receiveSelected(
-                msg.getJMSDestination(),
-                JMS_MESSAGE_ID_SELECTOR + msg.getJMSMessageID() + "'"
-            );
-
-            if (m != null) {
-                m.acknowledge();
+            return jmsTemplate.receiveSelected(this.dlq, messageSelector);
+        } catch (JmsException e) {
+            LOGGER.warn("Failed to receive using Queue object, trying FQQN: {}", e.getMessage());
+            ActiveMQDestination activeMQdestination;
+            try {
+                activeMQdestination = (ActiveMQDestination) message.getJMSDestination();
+            } catch (JMSException ex) {
+                throw new RuntimeException(ex);
             }
-        } catch (JMSException e) {
+
+            if (activeMQdestination != null) {
+                String fullQualifiedQueueName = String.format(
+                        "%s::%s", activeMQdestination.getAddress(), activeMQdestination.getName()
+                );
+
+                LOGGER.warn("Trying FQQN format: {}", fullQualifiedQueueName);
+                var received = jmsTemplate.receiveSelected(fullQualifiedQueueName, messageSelector);
+
+                if (received != null) {
+                    LOGGER.warn("Successfully received message using FQQN: {}", received);
+                    return received;
+                }
+                LOGGER.warn("Failed receiving message using FQQN: {}", fullQualifiedQueueName);
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void moveMessageFromDlqToQueue(Message message) {
+        try {
+            var receivedMessage = this.receiveMessageFromDlq(message);
+            if (receivedMessage != null) {
+                // send the message to the original queue
+                jmsTemplate.send(this.destination, session -> message);
+            }
+
+        } catch (JmsException e) {
+            LOGGER.debug(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteMessage(Message message) {
+        try {
+            this.receiveMessageFromDlq(message);
+        } catch (JmsException e) {
             LOGGER.debug(e.getMessage());
         }
     }
@@ -162,8 +189,8 @@ public class QueueHelper implements HasManageableDlq {
     }
 
     @Override
-    public String getMessageAsText(Message msg) {
-        if (msg instanceof TextMessage textMessage) {
+    public String getMessageAsText(Message message) {
+        if (message instanceof TextMessage textMessage) {
             try {
                 return textMessage.getText();
             } catch (JMSException e) {

@@ -19,8 +19,8 @@ import eu.ecodex.connector.ui.dto.WebQueue;
  * @see Grid
  * @see WebQueue
  * @see WebQueue#getName()
- * @see WebQueue#getMsgsOnQueue()
- * @see WebQueue#getMsgsOnDlq()
+ * @see WebQueue#getMessagesOnQueue()
+ * @see WebQueue#getMessagesOnDlq()
  */
 public class QueueGrid extends Grid<WebQueue> {
     /**
@@ -33,7 +33,7 @@ public class QueueGrid extends Grid<WebQueue> {
         this.setAllRowsVisible(true);
 
         addColumn(WebQueue::getName).setHeader("Queue").setWidth("40%");
-        addColumn(WebQueue::getMsgsOnQueue).setHeader("Messages on Queue").setWidth("30%");
-        addColumn(WebQueue::getMsgsOnDlq).setHeader("Messages on Error Queue").setWidth("30%");
+        addColumn(WebQueue::getMessagesOnQueue).setHeader("Messages on Queue").setWidth("30%");
+        addColumn(WebQueue::getMessagesOnDlq).setHeader("Messages on Error Queue").setWidth("30%");
     }
 }

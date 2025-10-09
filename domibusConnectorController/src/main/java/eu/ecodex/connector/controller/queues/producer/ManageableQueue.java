@@ -16,6 +16,7 @@ import eu.ecodex.connector.domain.model.DomibusConnectorMessage;
 import jakarta.jms.Message;
 import jakarta.jms.Queue;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The ManageableQueue class is an abstract class that implements the HasManageableDlq interface. It
@@ -89,13 +90,15 @@ public abstract class ManageableQueue implements HasManageableDlq {
     }
 
     @Override
-    public void moveMsgFromDlqToQueue(Message msg) {
-        queueHelper.moveMsgFromDlqToQueue(msg);
+    @Transactional
+    public void moveMessageFromDlqToQueue(Message msg) {
+        queueHelper.moveMessageFromDlqToQueue(msg);
     }
 
     @Override
-    public void deleteMsg(Message msg) {
-        queueHelper.deleteMsg(msg);
+    @Transactional
+    public void deleteMessage(Message msg) {
+        queueHelper.deleteMessage(msg);
     }
 
     @Override

@@ -67,8 +67,7 @@ public class DCDatabaseServiceImpl implements DCDatabaseService {
 
     @Override
     @Transactional
-    // @Scheduled(cron = "${connector.database.cleaning.cron:0 0 0 * * 7}")
-    @Scheduled(cron = "${connector.database.cleaning.cron:0 * * * * *}")
+    @Scheduled(cron = "${connector.database.cleaning.cron:0 0 0 * * 7}")
     public void clean() {
         LOGGER.info("Start the message cleanup process in the database");
         var completedTransportStepIds = this.transportStepStatusDao.getCompletedTransportStepIds();

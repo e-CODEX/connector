@@ -103,19 +103,19 @@ public class JmsConfiguration {
             // Configure Queue Settings, DLQ, Expiry, ...
             var addressSettings1 = basicAddressConfig();
             addressSettings1.setDeadLetterAddress(
-                new SimpleString(prop.getToLinkDeadLetterQueue()));
+                SimpleString.of(prop.getToLinkDeadLetterQueue()));
             configuration.getAddressesSettings()
                 .put(prop.getToLinkQueue(), addressSettings1);
 
             var addressSettings2 = basicAddressConfig();
             addressSettings2.setDeadLetterAddress(
-                new SimpleString(prop.getToConnectorControllerDeadLetterQueue()));
+                    SimpleString.of(prop.getToConnectorControllerDeadLetterQueue()));
             configuration.getAddressesSettings()
                 .put(prop.getToConnectorControllerQueue(), addressSettings2);
 
             var addressSettings3 = basicAddressConfig();
             addressSettings3.setDeadLetterAddress(
-                new SimpleString(prop.getCleanupDeadLetterQueue()));
+                    SimpleString.of(prop.getCleanupDeadLetterQueue()));
             configuration.getAddressesSettings()
                 .put(prop.getCleanupQueue(), addressSettings3);
 
@@ -138,8 +138,8 @@ public class JmsConfiguration {
         addressSettings.setAutoCreateExpiryResources(true);
         addressSettings.setAutoDeleteQueues(false);
         addressSettings.setAutoDeleteAddresses(false);
-        addressSettings.setDeadLetterAddress(new SimpleString("DLA"));
-        addressSettings.setExpiryAddress(new SimpleString("expiry"));
+        addressSettings.setDeadLetterAddress(SimpleString.of("DLA"));
+        addressSettings.setExpiryAddress(SimpleString.of("expiry"));
         addressSettings.setMaxDeliveryAttempts(5);
         addressSettings.setRedeliveryDelay(60000); // set 60s redelivery delay
         addressSettings.setRedeliveryMultiplier(2);

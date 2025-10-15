@@ -11,7 +11,6 @@
 package eu.ecodex.connector.controller.routing;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import eu.ecodex.connector.common.configuration.ConnectorConfigurationProperties;
 import eu.ecodex.connector.common.service.CurrentBusinessDomain;
 import eu.ecodex.connector.common.service.DCBusinessDomainManagerImpl;
@@ -23,9 +22,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SuppressWarnings({"squid:S1135", "checkstyle:LineLength"})
 @Import({BusinessDomainScopeConfiguration.class, DCMessageRoutingConfiguration.class})
@@ -49,7 +48,7 @@ class DCMessageRoutingConfigurationPropertiesTest {
     DCMessageRoutingConfigurationProperties props;
     @Autowired
     ApplicationContext ctx;
-    @MockBean
+    @MockitoBean
     DCBusinessDomainPersistenceService mock;
 
     @AfterEach

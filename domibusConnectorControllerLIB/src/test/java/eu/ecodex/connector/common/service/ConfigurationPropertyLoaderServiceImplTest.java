@@ -32,10 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
     properties = {
@@ -70,7 +70,7 @@ class ConfigurationPropertyLoaderServiceImplTest {
     ApplicationContext ctx;
     @Autowired
     MyTestProperties2 myTestProperties2;
-    @MockBean
+    @MockitoBean
     DCBusinessDomainManagerImpl dcBusinessDomainManagerImpl;
     private static BusinessDomainConfigurationChange lastChange;
 

@@ -46,12 +46,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 /**
  * The LinkTestContext class is used for configuring the test context for LinkModule tests.
@@ -76,11 +76,11 @@ public class LinkTestContext {
         return new MerlinPropertiesFactory();
     }
 
-    @MockBean
+    @MockitoBean
     DomibusConnectorLinkPartnerDao dao;
-    @MockBean
+    @MockitoBean
     DomibusConnectorBusinessDomainDao domainDao;
-    @MockBean
+    @MockitoBean
     DCRoutingRulesManager rulesManager;
 
     /**

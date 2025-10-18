@@ -1,11 +1,11 @@
 == Changelog for domibusConnector-6.0.x
 
-=== 6.0.3-SNAPSHOT
+=== 6.1.0-SNAPSHOT
 ==== Changes
 * N/A
 
 ==== Fixes
-* N/A
+* Admin panel **Monitoring** JMS Queue UI: Remove the "delete" and "restore" buttons because the UI is not aligned with the functioning.
 
 ==== Technical
 * Set up a database cleaning strategy. Cleaning cron job is defined via the

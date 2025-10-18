@@ -33,10 +33,10 @@ public class WebQueue {
     private List<Message> dlqMessages = new ArrayList<>();
     @Getter
     @Setter
-    private int msgsOnQueue;
+    private int messagesOnQueue;
     @Getter
     @Setter
-    private int msgsOnDlq;
+    private int messagesOnDlq;
 
     public String getName() {
         return StringUtils.capitalize(name).replace("/([A-Z])/g", "$1").trim();

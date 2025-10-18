@@ -12,6 +12,7 @@ package eu.ecodex.connector.controller.queues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.ecodex.connector.common.annotations.DomainModelJsonObjectMapper;
+import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Queue;
 import jakarta.validation.Validator;
 import org.apache.activemq.artemis.api.core.RoutingType;
@@ -23,6 +24,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -92,6 +94,24 @@ public class JmsConfiguration {
     }
 
     /**
+     * Configures and provides a {@link JmsTemplate} bean for sending and receiving JMS messages.
+     *
+     * @param connectionFactory the JMS {@link ConnectionFactory} used
+     *                          to create connections to the message broker
+     * @param messageConverter the {@link MessageConverter} used
+     *                         to serialize and deserialize message payloads
+     * @return a configured {@link JmsTemplate} instance
+     */
+    @Bean
+    public JmsTemplate jmsTemplate(
+            ConnectionFactory connectionFactory,
+            MessageConverter messageConverter) {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+        jmsTemplate.setMessageConverter(messageConverter);
+        return jmsTemplate;
+    }
+
+    /**
      * Configures embedded Artemis Broker specific settings for queues.
      *
      * @param prop The QueuesConfigurationProperties object containing the queue properties.
@@ -138,7 +158,7 @@ public class JmsConfiguration {
         addressSettings.setAutoCreateExpiryResources(true);
         addressSettings.setAutoDeleteQueues(false);
         addressSettings.setAutoDeleteAddresses(false);
-        addressSettings.setDeadLetterAddress(new SimpleString("DLA"));
+        addressSettings.setDeadLetterAddress(new SimpleString("DLQ"));
         addressSettings.setExpiryAddress(new SimpleString("expiry"));
         addressSettings.setMaxDeliveryAttempts(5);
         addressSettings.setRedeliveryDelay(60000); // set 60s redelivery delay

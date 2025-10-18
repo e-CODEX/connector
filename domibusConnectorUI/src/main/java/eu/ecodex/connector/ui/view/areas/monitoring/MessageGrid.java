@@ -19,11 +19,15 @@ import eu.ecodex.connector.ui.dto.WebQueue;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The MessageGrid class is a custom grid component for displaying messages in a tabular format.
  */
 public class MessageGrid extends Grid<Message> {
+    private static final Logger LOGGER = LogManager.getLogger(MessageGrid.class);
+
     private final QueueController queueController;
     private final JmsMonitoringView parentView;
     private WebQueue queue;
@@ -52,59 +56,59 @@ public class MessageGrid extends Grid<Message> {
     }
 
     private Button viewMessageButton(Message message) {
-        final var viewMessageBtn = new Button("View");
-        viewMessageBtn.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        viewMessageBtn.addClickListener(buttonClickEvent -> {
+        final var viewButton = new Button("View");
+        viewButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
+        viewButton.addClickListener(buttonClickEvent -> {
             queueController.showMessage(message);
             parentView.updateData(queue);
         });
-        return viewMessageBtn;
+        return viewButton;
     }
 
     private Button restoreButton(Message message) {
-        final var restore = new Button("Restore");
-        restore.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        restore.addClickListener(buttonClickEvent -> {
-            queueController.moveMsgFromDlqToQueue(message);
+        final var restoreButton = new Button("Restore");
+        restoreButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        restoreButton.addClickListener(buttonClickEvent -> {
+            queueController.moveMessageFromDlqToQueue(message);
             parentView.updateData(queue);
         });
-        return restore;
+        return restoreButton;
     }
 
     private Button deleteButton(Message message) {
-        final var delete = new Button("Delete");
-        delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
-        delete.addClickListener(buttonClickEvent -> {
-            queueController.deleteMsg(message);
+        final var deleteButton = new Button("Delete");
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+        deleteButton.addClickListener(buttonClickEvent -> {
+            queueController.deleteMessage(message);
             parentView.updateData(queue);
         });
-        return delete;
+        return deleteButton;
     }
 
     private String getJMSMessageID(Message message) {
-        String result = null;
+        String jmsMessageID = null;
         try {
-            result = message.getJMSMessageID();
+            jmsMessageID = message.getJMSMessageID();
         } catch (JMSException e) {
-            e.printStackTrace();
+            LOGGER.debug("Error occurred while retrieving JMS Message ID", e);
         }
-        return result;
+        return jmsMessageID;
     }
 
-    public void setData(List<Message> msgs, WebQueue queue) {
-        this.setItems(msgs);
+    public void setData(List<Message> messages, WebQueue queue) {
+        this.setItems(messages);
         this.queue = queue;
     }
 
-    private String getConnectorId(Message msg) {
-        String result = null;
+    private String getConnectorId(Message message) {
+        String connectorId = null;
         try {
             final var domibusConnectorMessage =
-                (DomibusConnectorMessage) queueController.getConverter().fromMessage(msg);
-            result = domibusConnectorMessage.getConnectorMessageId().getConnectorMessageId();
+                (DomibusConnectorMessage) queueController.getConverter().fromMessage(message);
+            connectorId = domibusConnectorMessage.getConnectorMessageId().getConnectorMessageId();
         } catch (JMSException e) {
-            e.printStackTrace();
+            LOGGER.debug("Error occurred while retrieving Connector ID", e);
         }
-        return result;
+        return connectorId;
     }
 }

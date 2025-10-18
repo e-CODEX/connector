@@ -156,9 +156,9 @@ class DeleteMessagesFromQueuesTest {
         assertThat(dlq).isNotEmpty();
 
         // Act
-        sut.deleteMsg(jmsMsgQueue);
-        sut.deleteMsg(jmsMsgDlq);
-        sut.deleteMsg(
+        sut.deleteMessage(jmsMsgQueue);
+        sut.deleteMessage(jmsMsgDlq);
+        sut.deleteMessage(
             // tests that code works if you delete a msg that is not there, should be in another
             // test, but no time
             jmsMsgDlq

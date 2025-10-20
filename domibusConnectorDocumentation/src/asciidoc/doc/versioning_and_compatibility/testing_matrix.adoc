@@ -10,7 +10,7 @@ endif::header[]
 
 = Testing Matrix
 
-NOTE: The following matrix may be always a little behind the current testing and installation, because it is generated with the release. The release afterwards is being tested. The result will then become part of the next release!
+NOTE: The following matrix may always be a little behind the current testing and installation because it is generated with the release. The release afterward is being tested. The result will then become part of the next release!
 
 == The Connector has been tested on
 
@@ -82,7 +82,7 @@ NOTE: The following matrix may be always a little behind the current testing and
 | Oracle 19c
 | Liquibase, DB-scripts
 
-| 6.0.0
+| 6.0.x
 | Ubuntu 24.04 LTS
 | Open JDK 21.0.x
 | Tomcat 10.1.30 / Standalone
@@ -90,7 +90,7 @@ NOTE: The following matrix may be always a little behind the current testing and
 | Mysql 8.0.x
 | Liquibase DB-scripts
 
-| 6.0.0
+| 6.0.x
 | Ubuntu 24.04 LTS
 | Open JDK 21.0.x
 | Tomcat 10.1.30 / Standalone
@@ -98,7 +98,7 @@ NOTE: The following matrix may be always a little behind the current testing and
 | MariaDB 11.6.2
 | Liquibase DB-scripts
 
-| 6.0.0
+| 6.0.x
 | Ubuntu 24.04 LTS
 | Open JDK 21.0.x
 | Tomcat 10.1.30 / Standalone
@@ -106,13 +106,46 @@ NOTE: The following matrix may be always a little behind the current testing and
 | PostgreSQL 17.2
 | Liquibase DB-scripts
 
-| 6.0.0
+| 6.0.x
 | Ubuntu 24.04 LTS
 | Open JDK 21.0.x
 | Tomcat 10.1.30 / Standalone
 | OJDBC-11 23.6.0.24.10
 | Oracle 21.3.0 Express
 | Liquibase DB-scripts
+
+
+| 6.1.x
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30 / Standalone
+| Mysql Connector 9.2.0
+| Mysql 8.0.x
+| DB-scripts
+
+| 6.1.x
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30 / Standalone
+| MariaDB Java Client 3.5.1
+| MariaDB 11.6.2
+| DB-scripts
+
+| 6.1.x
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30 / Standalone
+| PostgreSQL 42.7.4
+| PostgreSQL 17.2
+| DB-scripts
+
+| 6.1.x
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30 / Standalone
+| OJDBC-11 23.6.0.24.10
+| Oracle 21.3.0 Express
+| DB-scripts
 
 |===
 
@@ -126,9 +159,25 @@ NOTE: The following matrix may be always a little behind the current testing and
 | 4.2.x
 | 4.2.x
 
-| 6.0.0
+| 6.0.x
 | 4.5.0
 | 5.1.6
+
+| 6.0.x
+| 4.5.0
+| 5.1.7
+
+| 6.0.x
+| 4.6.0
+| 5.1.6
+
+| 6.0.x
+| 4.6.0
+| 5.1.7
+
+| 6.1.x
+| 4.6.0
+| 5.1.7
 
 |===
 
@@ -146,7 +195,10 @@ NOTE: The following matrix may be always a little behind the current testing and
 | 4.4.x
 | 4.4.x
 
-| 6.0.0
-| 6.0.0
+| 6.0.x
+| 6.0.x
+
+| 6.1.x
+| 6.1.x
 
 |===

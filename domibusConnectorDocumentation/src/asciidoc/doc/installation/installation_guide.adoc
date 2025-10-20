@@ -27,19 +27,19 @@ As an InstallationGuide this document does not focus on features and functionali
 
 The domibusConnector is one building block provided to support the connectivity and functionality of e-CODEX.
 To be fully functional with an e-CODEX use case and to exchange messages with other e-CODEX partners,
-the proper installation of other building blocks are required.
+the proper installation of other building blocks is required.
 
 The description of the e-CODEX building blocks and additional information on the e-CODEX system can be found on the link:https://www.ecodex.eu/tech[e-CODEX website].
 
 == Preconditions and technical requirements
-This chapter describes what has to be in place prior to install the domibusConnector.It also lists some technical specifications of the domibusConnector to give a more detailed insight.
+This chapter describes what has to be in place prior to installing the domibusConnector.It also lists some technical specifications of the domibusConnector to give a more detailed insight.
 
 === Supported operating systems
 The domibusConnector is a software that has been completely implemented using the JAVA programming language.
 
-As JAVA is by definition a platform independent environment, every operating system with a proper JAVA installation should fit the needs of setting up the domibusConnector.
+As JAVA is by definition a platform-independent environment, every operating system with a proper JAVA installation should fit the needs of setting up the domibusConnector.
 
-During implementation and testing phase of the domibusConnector, it was installed and tested on the following environments:
+During the implementation and testing phase of the domibusConnector, it was installed and tested in the following environments:
 
 
 === Java Runtime
@@ -59,7 +59,7 @@ The domibusConnector needs an underlying database to store information. Currentl
 
 Please have a look at the link:{basepath}/doc/versioning_and_compatibility/testing_matrix.adoc[Testing Matrix]
 
-The domibusConnector distribution package offers SQL scripts that are meant to either set up a completely new database for the connector, or to migrate an existing domibusConnector database to its current version.
+The domibusConnector distribution package offers SQL scripts that are meant to either set up a completely new database for the connector or to migrate an existing domibusConnector database to its current version.
 
 Be aware that most web-servers need to have proper JDBC drivers installed to be able to set the connection to the database.
 
@@ -81,7 +81,7 @@ This installation guide does not focus on specifics of web-server technologies i
 Details on how to deploy the domibusConnector on that web server products can be found in chapter Deployment.
 
 === Internet connection
-As the domibusConnector needs some sources from the internet for the security library features, also an internet connection from the installation point must be given.To be able to configure your environment the domibusConnector gives the opportunity to configure proxy settings in the connector properties described in chapter xref:_configuration_properties[Configuration properties].
+As the domibusConnector needs some sources from the internet for the security library features, also an internet connection from the installation point must be given.To be able to configure your environment, the domibusConnector gives the opportunity to configure proxy settings in the connector properties described in chapter xref:_configuration_properties[Configuration properties].
 
 === The domibusConnector distribution package
 To get started, you first need to have downloaded and extracted the distribution package.
@@ -90,7 +90,7 @@ https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/domibusConne
 
 * domibusConnectorDistribution-{project-version}.zip
 
-Once downloaded and extracted it has the following structure:
+Once downloaded and extracted, it has the following structure:
 
 [cols="1,1"]
 |===
@@ -110,7 +110,7 @@ For more details see chapter xref:_database_installation[Database Installation].
 |Contains the complete documentation of the domibusConnector as websites.
 
 |documentation/pdf-documentation
-|This guide as well as some other important documentations are here as PDF documents.
+|This guide, as well as some other important documentation, are here as PDF documents.
 
 |standalone
 |Contains a prepared structure for the domibusConnector to be installed and operated without web/application server.
@@ -124,11 +124,11 @@ For more details see chapter xref:_database_installation[Database Installation].
 The domibusConnectorDistribution package contains database scripts to either create a new database schema or migrate an existing database from any domibusConnector version of 3.5.x or higher to the current {project-version} version.
 
 As a precondition a supported DBMS already needs to be in place.
-We recommend to create an own schema/user for the domibusConnector database.
+We recommend creating an own schema/user for the domibusConnector database.
 
 === Supported database vendors
 
-You can find list of supported database in the previous section xref:_database[Database].
+You can find the list of supported databases in the previous section xref:_database[Database].
 
 === New Database / Fresh Installation
 Starting with a new installation and therefore have an empty schema/user on the database system created, one has just to execute the provided "initial" scripts.
@@ -147,9 +147,9 @@ Since domibusConnector-4.4-RELEASE these scripts *must be executed in order*:
 2. initial-data.sql
 3. quartz.sql
 
-First the schemas must be created for the data to be inserted.
+First, the schemas must be created for the data to be inserted.
 
-Anyway once those scripts are executed on the dedicated schema, the database setup for domibusConnector is complete.
+Anyway, once those scripts are executed on the dedicated schema, the database setup for domibusConnector is complete.
 
 //==== Using liquibase
 //It is also possible to let liquibase create your database tables. See xref:_migrate_with_liquibase[Migrate with Liquibase] in the "Migration" section down below.
@@ -192,23 +192,23 @@ In order to give the domibusConnector the missing links about your environment, 
 
 There is also the possibility to adopt the logging configuration.This gives the opportunity to control where logs are written to and what to log.
 
-Example properties and an empty property file, as well as an example for logging configuration can be found in the distribution package at “documentation/config”.
+Example properties and an empty property file, as well as an example for logging configuration, can be found in the distribution package at “documentation/config”.
 
-The properties in those file are all well described on what is expected there.
+The properties in those files are all well described on what is expected there.
 
-The connector is a spring-boot application so the config location should be passed by providing spring.config.location.
+The connector is a spring-boot application, so the config location should be passed by providing spring.config.location.
 For more details see: https://docs.spring.io/spring-boot/docs/2.6.8/reference/htmlsingle/#features.external-config.files
 
 This enables the possibility to integrate spring config server or similar products.
 
-The variants on how to set those environment variables on your web server environment is dependent on what product you have in place.
-For the web server products Apache Tomcat this is described exemplary in the Chapter xref:_deployment[Deployment].
+The variants on how to set those environment variables on your web server environment are dependent on what product you have in place.
+For the web server products Apache Tomcat this is described as exemplary in the Chapter xref:_deployment[Deployment].
 
 Also consider that most configuration parts can be done using the domibusConnector-Administration UI once installed and started.
 
 Though, some properties need to be configured beforehand to be able to start the domibusConnector. For example, the connection properties to the database schema.
 
-NOTE: The connector.config.file java property still works for passing the location of the connector.properties file but using the spring-framework default approach is strongly recommended.
+NOTE: The connector.config.file java property still works for passing the location of the connector.properties file, but using the spring-framework default approach is strongly recommended.
 The content of connector.config.file will be copied 1:1 into spring.config.location.
 
 [#_deployment]
@@ -226,7 +226,7 @@ The deployment has been tested with the following versions:
 * Copy the adopted “connector.properties” and “log4j.xml” file into “<path_to_tomcat>/conf/domibusConnector”.
 * Copy the “domibusConnector.war” into “<path_to_tomcat>/webapps”.
 * Create or edit a “setenv” file at “<path_to_tomcat>/bin”.
-* Optionally copy your database driver JAR into “<path_to_tomcat>/lib”.
+* Optionally, copy your database driver JAR into “<path_to_tomcat>/lib”.
 
 The “setenv” file should be called at startup by the tomcat and should include the following parameters:
 

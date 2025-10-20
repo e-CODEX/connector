@@ -43,7 +43,7 @@ adding **server.servlet.session.cookie.name=CONNECTOR_J_SESSION_ID** to the prop
 * Update libraries and plugins to the latest version
 
 ==== Compatibility:
-* The 6.0.0 connector is compatible with the 4.6.0 version of the domibus-connector-plugin-distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.6.0/)
+* The 6.1.x connector is compatible with the 4.6.0 version of the domibus-connector-plugin-distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.6.0/)
 
 ==== Testing:
 
@@ -55,13 +55,13 @@ The Connector has been tested on
 | Ubuntu 24.04 LTS
 | Open JDK 21.0.x
 | Tomcat 10.1.30
-| Mysql Connector 8.4.x
+| Mysql Connector 9.2.0
 | Mysql 8.0.x
 
 | Ubuntu 24.04 LTS
 | Open JDK 21.0.x
 | Tomcat 10.1.30
-| MariaDB Java Client 3.4.1
+| MariaDB Java Client 3.5.1
 | MariaDB 11.6.2
 
 | Ubuntu 24.04 LTS

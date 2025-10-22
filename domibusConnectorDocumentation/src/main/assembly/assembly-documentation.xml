@@ -19,13 +19,21 @@
             <includes>
                 <include>**</include>
             </includes>
+            <excludes>
+                <exclude>header.html</exclude>
+            </excludes>
             <directory>${project.basedir}/target/generated-html</directory>
-            <outputDirectory>online-documentation</outputDirectory>
+            <outputDirectory>html-documentation</outputDirectory>
         </fileSet>
         <fileSet>
             <includes>
-                <include>*.pdf</include>
+                <include>**</include>
             </includes>
+            <excludes>
+                <exclude>index.pdf</exclude>
+                <exclude>header.pdf</exclude>
+                <exclude>minor-release-announce.pdf</exclude>
+            </excludes>
             <directory>${project.basedir}/target/generated-pdfs</directory>
             <outputDirectory>pdf-documentation/</outputDirectory>
         </fileSet>

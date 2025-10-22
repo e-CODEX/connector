@@ -8,6 +8,8 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+
+[[business-document-verification-configuration]]
 = Business document verification configuration
 
 The business document which is sent by the backend is verified by the connector. 

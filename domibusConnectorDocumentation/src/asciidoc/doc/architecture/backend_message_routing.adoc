@@ -8,6 +8,7 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[backend-message-routing]]
 = Backend message routing
 
 How are the messages distributed to the different connectorClients?
@@ -20,7 +21,7 @@ The routing occurs in the following priority:
 
 3. Routing Rule: If the backend_name is still empty, the routing rules are processed.
 
-4. Default Backend: If the backend_name is still empty the default backend will be used.
+4. Default Backend: If the backend_name is still empty, the default backend will be used.
 
 == Routing Rule
 

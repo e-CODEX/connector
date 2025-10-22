@@ -8,6 +8,7 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[certificates]]
 = Certificate Configurations
 
 The connector uses multiple certificates for different purposes.

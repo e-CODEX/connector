@@ -49,7 +49,7 @@ SubmitToConnector --> toConnectorControllerQueue
 @enduml
 ----
 
-Before the message is submitted to the queue it is transformed to the internal domain model. During this transformation the payload is handled by the link:../payload_handling.html[Large File Persistence Service].
+Before the message is submitted to the queue, it is transformed to the internal domain model. During this transformation, the payload is handled by the link:../../architecture/payload_handling.html#payload-handling[Large File Persistence Service].
 
 == Message processing in domibusConnectorController
 

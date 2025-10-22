@@ -8,11 +8,12 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[large-file-storage-configuration]]
 = Large File Storage configuration
 
 The large file storage can currently only be configured via the spring environment (connector.properties file).
 
-For more details about the payload handling see: link:{basepath}/doc/architecture/payload_handling.html[Payload Handling]
+For more details about the payload handling see: link:../architecture/payload_handling.html#payload-handling[Payload Handling]
 
 == Changing the default LargeFilePersistenceProvider
 

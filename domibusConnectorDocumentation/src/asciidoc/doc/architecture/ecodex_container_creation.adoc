@@ -8,6 +8,7 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[ecodex-container-creation]]
 = e-Codex Container Creation
 
 == e-Codex Container Format
@@ -38,7 +39,7 @@ image:msg_transf_out_business_2.png[msg_transf_out_business_2]
 
 === Signature Based Validation
 
-The signature based validation uses DSS library to validate the document signature according to the provided rules. This rules can be configured by the link:{basepath}/doc/ui/configuration/business_document_verification.adoc[Business Document Verification] configuration. The connector supports setting:
+The signature based validation uses DSS library to validate the document signature according to the provided rules. This rule can be configured by the link:../ui/configuration/business_document_verification.html#ecodex-container-creation[Business Document Verification] configuration. The connector supports setting:
 
 * A custom certificate validation policy.
 * A trust store (which holds all certificates considered as trusted for signing a document)

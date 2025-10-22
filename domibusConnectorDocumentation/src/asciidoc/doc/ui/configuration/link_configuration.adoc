@@ -8,6 +8,7 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[link-configuration]]
 = Link configuration manual
 
 Configuring the links via the UI.

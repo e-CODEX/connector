@@ -10,12 +10,12 @@ endif::basedirs[]
 :toclevels: 5
 :title-logo-image: {basepath}/resources/images/logo_ecodex_0.png
 
-include::{basedirs}/doc/architecture/domibusConnectorAPI.adoc[]
+include::../doc/architecture/domibusConnectorAPI.adoc[]
 
-include::{basedirs}/doc/architecture/index.adoc[]
+include::../doc/architecture/index.adoc[]
 
-include::{basedirs}/doc/installation/installation_guide.adoc[]
+include::../doc/installation/index.adoc[]
 
-include::{basedirs}/doc/upgrade/index.adoc[]
+include::../doc/upgrade/index.adoc[]
 
-include::{basedirs}/doc/changelog/index.adoc[]
+include::../doc/changelog/index.adoc[]

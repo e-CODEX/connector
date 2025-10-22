@@ -8,6 +8,7 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[testing-matrix]]
 = Testing Matrix
 
 NOTE: The following matrix may always be a little behind the current testing and installation because it is generated with the release. The release afterward is being tested. The result will then become part of the next release!

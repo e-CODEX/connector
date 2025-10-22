@@ -9,6 +9,7 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[architectural-overview]]
 = Architectural Overview
 
 This document gives a brief overview.
@@ -17,7 +18,7 @@ This document gives a brief overview.
 
 The overall e-CODEX technical architecture foresees that an e-CODEX access point consists of installed and configured building blocks.
 Communication over e-CODEX in principle works via connected gateways. The e-CODEX interpretation of messages is done by the domibusConnector.
-In the end, every e-CODEX partner participating in one or more business use-cases requires a use-case specific software to handle the business
+In the end, every e-CODEX partner participating in one or more business use-cases requires use-case specific software to handle the business
 side of the use-case. This can either be a generic domibusConnectorClient, a reference implementation for the use-case, or a specific software product implemented
 for that particular use-case at the e-CODEX partner.
 
@@ -34,4 +35,4 @@ image:e-CODEX_building_blocks_overview.png[e-CODEX building blocks overview]
 == domibusConnector and supporting products
 
 The main features of the domibusConnector, the domibusConnectorClient and the domibus-connector-plugin
-is also on the e-CODEX website link:https://www.e-codex.eu/node/47[here].
+is also on the e-CODEX website link:https://www.ecodex.eu[here].

@@ -1,0 +1,11 @@
+:path: ..
+
+ifndef::basedirs[]
+:basedirs: {path}
+endif::basedirs[]
+
+:doctype: book
+:title: Testing Matrix: domibusConnector-{project-version}
+:title-logo-image: {basedirs}/resources/images/logo_ecodex_0.png
+
+include::{basedirs}/doc/versioning_and_compatibility/testing_matrix.adoc[]

@@ -8,11 +8,12 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[message-transport-overview]]
 = Message Transport to Link Partners
 
 The domibus connector communicates with different other components (gateway, connector-client) this is done over the link module. But sometimes the messages are failing during this transport. An overview of these transports is provided by the link:/monitoring/linktransport[Monitoring - Message Transport] UI.
 
-For details see link:{basepath}/doc/architecture/link_partners.html[Link Module Architecture Doc]
+For details see link:../../architecture/link_partners.html[Link Module Architecture Doc]
 
 == Overview
 

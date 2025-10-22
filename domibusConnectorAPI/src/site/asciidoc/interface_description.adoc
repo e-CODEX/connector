@@ -1,3 +1,4 @@
+[[interface-description]]
 = Interface Description
 
 The domibusConnectorAPI module contains classes and wsdls for communicating with the domibusConnector.

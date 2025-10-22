@@ -13,11 +13,11 @@ endif::header[]
 :description: The connector backend configuration manual
 :library: Asciidoctor
 
-WARNING: With connector 4.3.0 this document is not valid anymore. See link:{basepath}/doc/configuration/link_doc.adoc[Link Configuration]
+WARNING: With connector 4.3.0 this document is not valid anymore. See link:../configuration/link_doc.html#connector-link-plugins[Link Configuration]
 
 == Backend Configuration or how to configure a connector client?
 
-As you can see at the link:{basepath}/doc/architecture/architecture_overview.adoc/[architectural overview] the connector can communicate with different connector clients. The decision
+As you can see at the link:../architecture/architecture_overview.html#architectural-overview[architectural overview] the connector can communicate with different connector clients. The decision
 which client the incoming message is routed to is made by the service.
 
 The messages between the connectorClient and the connectorBackend are encrypted and signed. For this purpose the setup
@@ -134,8 +134,7 @@ leads to the backend name of
 
 The letter case is ignored so CN=backend_alice,DC=example,DC=com and
 CN=backend_alice,DC=EXAmple,DC=com are equivalent. For further information consult the
-link:{basepath}/doc/configuration/backend_message_routing_configuration.adoc[Backend Message Routing] page.
-'
+link:../configuration/backend_message_routing_configuration.html#routing-rule-configuration[Backend Message Routing] page.
 
 //.Image Screenshot Create new Backend
 //image:screenshot_connector_backend_configuration_create_new.png[Screenshot Create new Backend]

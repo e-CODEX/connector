@@ -12,13 +12,14 @@ ifndef::mvnbasedir[]
 :mvnbasedir: {basepath}/../../..
 endif::mvnbasedir[]
 
+[[connector-link-plugins]]
 = Connector Link Plugins Manual
 
 Since 4.3.0 the connector comes with different link plugins.
 
-This document describes how these links are configured with properties. The UI configuration manual is link:{basepath}/doc/ui/configuration/link_configuration.html[here] available.
+This document describes how these links are configured with properties. The UI configuration manual is link:../ui/configuration/link_configuration.html#link-configuration[here] available.
 
-The general architecture of the link is link:{basepath}/doc/architecture/link_partners.html[here] available.
+The general architecture of the link is link:../architecture/link_partners.html#link-partners[here] available.
 
 == The available plugins
 

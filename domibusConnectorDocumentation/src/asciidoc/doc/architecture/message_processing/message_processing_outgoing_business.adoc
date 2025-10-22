@@ -45,7 +45,7 @@ SubmitToConnector --> toConnectorControllerQueue
 @enduml
 ----
 
-Within the domibusConnectorLink, the message is transformed from the transition model of the API to the domibusConnector internal domain model. During this transformation the payload is handled by the link:../payload_handling.html[Large File Persistence Service].
+Within the domibusConnectorLink, the message is transformed from the transition model of the API to the domibusConnector internal domain model. During this transformation the payload is handled by the link:../../architecture/payload_handling.html#payload-handling[Large File Persistence Service].
 Also, a connector_message_id is generated with which the message is now identified.
 
 Diagram: domibusConnectorLink message transformation

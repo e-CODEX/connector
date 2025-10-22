@@ -40,11 +40,11 @@ As the security lib configuration has been split into the eCodexContainer and Bu
 
 More details are available here:
 
-* link:{basepath}/doc/ui/configuration/business_document_verification.html[Business Document UI configuration]
+* link:../ui/configuration/business_document_verification.html#business-document-verification-configuration[Business Document UI configuration]
 
-* link:{basepath}/doc/ui/configuration/ecodex_container_configuration.html[eCodex Container UI configuration]
+* link:../ui/configuration/ecodex_container_configuration.html#container-configuration[eCodex Container UI configuration]
 
-* link:{basepath}/doc/architecture/ecodex_container_creation.html[eCodex container creation]
+* link:../architecture/ecodex_container_creation.html#ecodex-container-creation[eCodex container creation]
 
 ===== Rename the following properties:
 

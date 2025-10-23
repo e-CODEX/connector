@@ -8,6 +8,7 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+[[container-configuration]]
 = ECodex Container Configuration
 
 The eCodexContainer (ASIC-S container) is built by the domibusConnector. The built container will then be signed with an electronic signature.

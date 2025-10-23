@@ -39,11 +39,12 @@
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>src/asciidoc/html-doc</sourceDirectory>
+                            <sourceDirectory>src/asciidoc/doc</sourceDirectory>
                             <outputDirectory>target/generated-html</outputDirectory>
                             <backend>html5</backend>
+                            <preserveDirectories>true</preserveDirectories>
                             <attributes>
-                                <data-uri>true</data-uri>
+                                <data-uri>false</data-uri>
                                 <imagesdir>${project.basedir}/src/asciidoc/resources/images</imagesdir>
                             </attributes>
                         </configuration>
@@ -56,6 +57,21 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>src/asciidoc/pdf-doc</sourceDirectory>
+                            <outputDirectory>target/generated-pdfs</outputDirectory>
+                            <backend>pdf</backend>
+                            <attributes>
+                                <imagesdir>${project.basedir}/src/asciidoc/resources/images</imagesdir>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-pdf-doc-all</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/asciidoc/doc</sourceDirectory>
                             <outputDirectory>target/generated-pdfs</outputDirectory>
                             <backend>pdf</backend>
                             <attributes>

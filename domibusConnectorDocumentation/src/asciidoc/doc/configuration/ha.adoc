@@ -49,7 +49,7 @@ on every connector node, quartz must also be aware of running within a cluster.
 ==== Configure Message Server
 
 The JMS Server is configured by the spring-framework so the default spring-properties can be uses:
-A detail overview of the used queues is provided by this document: xref:../architecture/connector_message_flow.adoc[Connector Message Flow]
+A detail overview of the used queues is provided by this document: link:../architecture/connector_message_flow.adoc[Connector Message Flow]
 
 Example for Artemis-Configuration (also see link:https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/boot-features-messaging.html#boot-features-artemis[]):
 ----

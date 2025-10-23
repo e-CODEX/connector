@@ -14,7 +14,7 @@ endif::mvnbasedir[]
 
 = DSS Tools configuration
 
-The connector uses the link:{basepath}/doc/architecture/dss_tools.html[DSS library]. Which can be configured:
+The connector uses the link:../architecture/dss_tools.html#dss-tools[DSS library]. Which can be configured:
 
 == Trusted list configuration
 
@@ -39,7 +39,7 @@ include::{mvnbasedir}/domibusConnectorDssToolkit/src/test/resources/config/appli
 === Example configuration of the EU-LOTL
 
 This configuration shows how the EU-LOTL is configured. Keep in mind that at this config **list1** is the name of the trust source: connector.dss.trust-list-sources.**list1**.lotl-sources[0]
-A trust source can contain multiple Lists of Trusted List (LOTL) or trusted lists (TL). The name of the trust source can be used within the link:{basepath}/doc/ui/configuration/business_document_verification.html[business document validation configuration].
+A trust source can contain multiple Lists of Trusted List (LOTL) or trusted lists (TL). The name of the trust source can be used within the link:ui/configuration/business_document_verification.html#business-document-verification-configuration[business document validation configuration].
 
 [source,properties]
 ----

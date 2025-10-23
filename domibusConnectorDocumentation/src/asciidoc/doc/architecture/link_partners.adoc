@@ -8,12 +8,13 @@ ifndef::header[]
 include::{basepath}/doc/header.adoc[]
 endif::header[]
 
+
 = Link Partners
 
 Also see:
 
- * link:../configuration/link_doc.html[Link Configuration Manual]
- * link:../ui/linkconfig/link_configuration.html[Link UI Configuration Manual]
+ * link:../configuration/link_doc.html#connector-link-plugins[Link Configuration Manual]
+ * link:../ui/configuration/link_configuration.html#link-configuration[Link UI Configuration Manual]
 
 == Message Flow
 
@@ -21,8 +22,8 @@ Any message to the Link Module is submitted by the SubmitToLink interface. For d
 
 == Different Links
 
-The links are implemented by plugins. A link is build by a link configuration and a link partner configuration.
-So a link configuration consists multiple link partners.
+The links are implemented by plugins. A link is built by a link configuration and a link partner configuration.
+So a link configuration consists of multiple link partners.
 
 [plantuml, link config, png]
 ----

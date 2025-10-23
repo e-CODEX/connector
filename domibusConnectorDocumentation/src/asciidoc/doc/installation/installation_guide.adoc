@@ -45,7 +45,7 @@ During the implementation and testing phase of the domibusConnector, it was inst
 === Java Runtime
 As the domibusConnector is a JAVA application, it also requires a proper installation of a Java Runtime to be able to run the software.
 
-Please have a look at the link:{basepath}/doc/versioning_and_compatibility/testing_matrix.adoc[Testing Matrix]
+link:../versioning_and_compatibility/testing_matrix.html#testing-matrix[Testing Matrix]
 
 [#_database]
 === Database
@@ -57,7 +57,7 @@ The domibusConnector needs an underlying database to store information. Currentl
 * PostgresSQL 13.2 and higher
 * Oracle 12g and higher
 
-Please have a look at the link:{basepath}/doc/versioning_and_compatibility/testing_matrix.adoc[Testing Matrix]
+link:../versioning_and_compatibility/testing_matrix.html#testing-matrix[Testing Matrix]
 
 The domibusConnector distribution package offers SQL scripts that are meant to either set up a completely new database for the connector or to migrate an existing domibusConnector database to its current version.
 
@@ -184,7 +184,7 @@ To ensure the highest reasonable level of security, the domibusConnector uses se
 * Signing the secure container (ASIC-S) that is created by the Connector.
 * Signing the ETSI-REM evidences.
 
-A more detailed description of the certificates and stores and how they can be configured is on page link:certificates.html[certificates].
+A more detailed description of the certificates and stores and how they can be configured is on page link:certificates.html#certificates[certificates].
 
 [#_configuration_properties]
 == Configuration Properties

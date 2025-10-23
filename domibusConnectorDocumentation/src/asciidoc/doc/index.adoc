@@ -1,13 +1,27 @@
 :path: ..
 
-ifndef::basepath[]
-:basepath: {path}
-endif::basepath[]
+ifndef::basedirs[]
+:basedirs: {path}
+endif::basedirs[]
 
-ifndef::header[]
-include::{basepath}/doc/header.adoc[]
-endif::header[]
+:doctype: book
+:title: Documentation : domibusConnector-{project-version}
+:toc: left
+:toclevels: 5
+:title-logo-image: {basepath}/resources/images/logo_ecodex_0.png
 
-= Documentation
+= Welcome to the e-CODEX connector documentation
 
-//TODO: create index
+link:architecture/domibusConnectorAPI.html[API Documentation]
+
+link:architecture/index.html[Architecture Documentation]
+
+link:installation/index.html[Installation Documentation]
+
+link:upgrade/index.html[Upgrade Documentation]
+
+link:versioning_and_compatibility/testing_matrix.html[Testing Matrix]
+
+link:release-announce.html[Release Announcement]
+
+link:changelog/index.html[Changelog]

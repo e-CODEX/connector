@@ -18,7 +18,7 @@ Username and password will be provided via e-mail request.
 
 == Changelog
 
-The changelog of this version is available within the zip folder under 'documentation-site/changelog.html'
+The changelog of this version is available within the zip folder under 'html-documentation/changelog/index.html'
 
 Best regards,
 

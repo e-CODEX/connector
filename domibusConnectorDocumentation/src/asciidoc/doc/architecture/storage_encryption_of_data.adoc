@@ -49,7 +49,7 @@ The connector treats the following as payload data:
 * AS4 container
 * XML Business Document
 
-The payload data is handled by the large file handling module. Currently, the connector has 2 modules for that (for mor details see link:payload_handling.adoc[Payload Handling]) :
+The payload data is handled by the large file handling module. Currently, the connector has 2 modules for that (for mor details see link:architecture/payload_handling.html[Payload Handling]) :
 
 ** FileSystem (Payload can be stored encrypted on disk, Password is stored in DB and JMS Broker)
 ** Database (Payload is written into DB)
@@ -70,4 +70,4 @@ The connector treats the following as legal data. This data is stored without ti
 Logging is done by the log4j2 framework and configured within the log4j2.xml.
 Passwords are only logged if the logging level is increased to TRACE.
 
-For more information about logging see: link:../configuration/logging.adoc[Logging Configuration]
+For more information about logging see: link:../configuration/logging.html#logging[Logging Configuration]

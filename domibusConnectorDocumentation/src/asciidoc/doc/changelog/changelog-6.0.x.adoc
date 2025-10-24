@@ -5,11 +5,14 @@
 * N/A
 
 ==== Fixes
-* Admin panel **Monitoring** JMS Queue UI: Remove the "delete" and "restore" buttons because the UI is not aligned with the functioning.
+* Admin panel **Monitoring** JMS Queue UI: Fix broken "delete" and "restore" actions.
 
 ==== Technical
 * Set up a database cleaning strategy. Cleaning cron job is defined via the
-**connector.database.cleaning.cron** property key and uses Quartz-like cron expressions. Default value is **0 0 0 * * 7** (At 00:00 every Sunday).
+**connector.database.cleaning.cron** property key and uses Quartz-like cron expressions. The default value is **0 0 0 * * 7** (At 00:00 every Sunday).
+
+==== Documentation
+* Improve generated *HTML* and *PDF* documentation structure
 
 === 6.0.2
 ==== Changes

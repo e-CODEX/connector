@@ -105,26 +105,26 @@
         <ecodex.utils.version>6.0.2</ecodex.utils.version>
         <ecodex.spring-properties-reporting-plugin.version>0.9.2-RELEASE</ecodex.spring-properties-reporting-plugin.version>
         <!-- plugins -->
-        <codehaus.xml-plugin.version>1.1.0</codehaus.xml-plugin.version>
+        <codehaus.xml-plugin.version>1.2.0</codehaus.xml-plugin.version>
         <cyclonedx.plugin.version>2.9.1</cyclonedx.plugin.version>
         <ferstl.depgraph-plugin.version>4.0.3</ferstl.depgraph-plugin.version>
         <github.commit-id-plugin.version>9.0.2</github.commit-id-plugin.version>
         <github.sortpom-plugin.version>4.0.0</github.sortpom-plugin.version>
-        <jacoco.plugin.version>0.8.13</jacoco.plugin.version>
-        <jaxb.plugin.version>4.0.9</jaxb.plugin.version>
+        <jacoco.plugin.version>0.8.14</jacoco.plugin.version>
+        <jaxb.plugin.version>4.0.12</jaxb.plugin.version>
         <maven.assembly-plugin.version>3.7.1</maven.assembly-plugin.version>
-        <maven.compiler-plugin.version>3.14.0</maven.compiler-plugin.version>
-        <maven.dependency-plugin.version>3.8.1</maven.dependency-plugin.version>
+        <maven.compiler-plugin.version>3.14.1</maven.compiler-plugin.version>
+        <maven.dependency-plugin.version>3.9.0</maven.dependency-plugin.version>
         <maven.deploy-plugin.version>3.1.4</maven.deploy-plugin.version>
-        <maven.enforcer-plugin.version>3.5.0</maven.enforcer-plugin.version>
-        <maven.failsafe-plugin.version>3.5.3</maven.failsafe-plugin.version>
-        <maven.jar-plugin.version>3.4.2</maven.jar-plugin.version>
+        <maven.enforcer-plugin.version>3.6.2</maven.enforcer-plugin.version>
+        <maven.failsafe-plugin.version>3.5.4</maven.failsafe-plugin.version>
+        <maven.jar-plugin.version>3.5.0</maven.jar-plugin.version>
         <maven.javadoc-plugin.version>3.11.2</maven.javadoc-plugin.version>
         <maven.resources-plugin.version>3.3.1</maven.resources-plugin.version>
         <maven.source-plugin.version>3.3.1</maven.source-plugin.version>
         <maven.site-plugin.version>4.0.0-M16</maven.site-plugin.version>
-        <maven.surefire-plugin.version>3.5.3</maven.surefire-plugin.version>
-        <maven.war-plugin.version>3.4.0</maven.war-plugin.version>
+        <maven.surefire-plugin.version>3.5.4</maven.surefire-plugin.version>
+        <maven.war-plugin.version>3.5.0</maven.war-plugin.version>
         <openshift-plugin.version>1.17.0</openshift-plugin.version>
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -134,18 +134,17 @@
             ${project.basedir}/coverage/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <!-- documentation -->
-        <asciidoclet.version>1.5.6</asciidoclet.version>
         <asciidoctor.version>2.5.12</asciidoctor.version>
-        <asciidoctor.diagram.version>2.3.1</asciidoctor.diagram.version>
-        <asciidoctor.diagram-plantuml.version>1.2024.5</asciidoctor.diagram-plantuml.version>
-        <asciidoctor.pdf.version>2.3.18</asciidoctor.pdf.version>
+        <asciidoctor.diagram.version>3.0.1</asciidoctor.diagram.version>
+        <asciidoctor.diagram-plantuml.version>1.2025.3</asciidoctor.diagram-plantuml.version>
+        <asciidoctor.pdf.version>2.3.23</asciidoctor.pdf.version>
         <asciidoctor.plugin.version>3.2.0</asciidoctor.plugin.version>
         <!-- always update with cxf -->
-        <apache.santuario-xmlsec.version>3.0.5</apache.santuario-xmlsec.version>
+        <apache.santuario-xmlsec.version>3.0.6</apache.santuario-xmlsec.version>
         <fasterxml.woodstox-core.version>7.0.0</fasterxml.woodstox-core.version>
         <!-- vaadin -->
-        <vaadin.version>24.7.6</vaadin.version>
-        <vaadin.viritin.version>2.8.23</vaadin.viritin.version>
+        <vaadin.version>24.7.14</vaadin.version>
+        <vaadin.viritin.version>2.21.1</vaadin.viritin.version>
         <!-- soap web service -->
         <apache.cxf.version>4.1.0</apache.cxf.version>
         <glassfish.jaxb-runtime.version>4.0.5</glassfish.jaxb-runtime.version>
@@ -166,46 +165,41 @@
         <jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
         <jakarta.xml.ws-api.version>4.0.2</jakarta.xml.ws-api.version>
         <!-- database -->
-        <h2database.h2.version>2.3.232</h2database.h2.version>
+        <h2database.h2.version>2.4.240</h2database.h2.version>
         <github.database-rider-spring.version>1.44.0</github.database-rider-spring.version>
-        <liquibase-core.version>4.29.1</liquibase-core.version>
-        <mariadb-java-client.version>3.5.1</mariadb-java-client.version>
-        <mysql.connector-java.version>9.2.0</mysql.connector-java.version>
-        <oracle.ojdbc11.version>23.6.0.24.10</oracle.ojdbc11.version>
-        <postgresql.version>42.7.4</postgresql.version>
+        <liquibase-core.version>5.0.1</liquibase-core.version>
+        <mariadb-java-client.version>3.5.6</mariadb-java-client.version>
+        <mysql.connector-java.version>9.5.0</mysql.connector-java.version>
+        <oracle.ojdbc11.version>23.26.0.0.0</oracle.ojdbc11.version>
+        <postgresql.version>42.7.8</postgresql.version>
         <!-- other -->
         <atomikos.version>6.0.0</atomikos.version>
-        <apache.commons-lang3.version>3.16.0</apache.commons-lang3.version>
-        <apache.commons-compress.version>1.27.1</apache.commons-compress.version>
-        <apache.log4j2.version>2.19.0</apache.log4j2.version>
-        <apache.poi.version>5.4.1</apache.poi.version>
-        <apache.commons-text.version>1.12.0</apache.commons-text.version>
-        <bouncycastl.version>1.81</bouncycastl.version>
+        <apache.commons-lang3.version>3.20.0</apache.commons-lang3.version>
+        <apache.commons-compress.version>1.28.0</apache.commons-compress.version>
+        <apache.poi.version>5.5.0</apache.poi.version>
+        <apache.commons-text.version>1.14.0</apache.commons-text.version>
+        <bouncycastl.version>1.83</bouncycastl.version>
         <codehaus.jackson.version>1.9.12</codehaus.jackson.version>
         <commons-beanutils.commons-beanutils.version>1.11.0</commons-beanutils.commons-beanutils.version>
-        <commons-cli.version>1.9.0</commons-cli.version>
+        <commons-cli.version>1.11.0</commons-cli.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-        <commons-io.version>2.19.0</commons-io.version>
+        <commons-io.version>2.21.0</commons-io.version>
         <commons-lang.commons-lang.version>2.6</commons-lang.commons-lang.version>
         <dss.tools.version>6.0</dss.tools.version>
-        <fusesource.jansi.version>2.4.1</fusesource.jansi.version>
-        <guava.version>33.3.0-jre</guava.version>
-        <librepdf.openpdf.version>2.0.3</librepdf.openpdf.version>
-        <lombok.version>1.18.34</lombok.version>
-        <ow2.asm.version>9.7.1</ow2.asm.version>
-        <saxon.he.version>12.5</saxon.he.version>
-        <spring.cloud.version>2.2.8.RELEASE</spring.cloud.version>
+        <fusesource.jansi.version>2.4.2</fusesource.jansi.version>
+        <guava.version>33.5.0-jre</guava.version>
+        <librepdf.openpdf.version>2.4.0</librepdf.openpdf.version>
+        <lombok.version>1.18.42</lombok.version>
+        <ow2.asm.version>9.9</ow2.asm.version>
         <spring.boot.version>3.3.13</spring.boot.version>
-        <testcontainers.version>1.20.4</testcontainers.version>
-        <tomcat.version>8.5.32</tomcat.version>
+        <testcontainers.version>1.21.3</testcontainers.version>
         <xml-apis.version>1.4.01</xml-apis.version>
         <!-- testing -->
-        <assertj.version>3.27.3</assertj.version>
+        <assertj.version>3.27.6</assertj.version>
         <dbunit.version>3.0.0</dbunit.version>
         <hamcrest.version>3.0</hamcrest.version>
-        <junit.jupiter.version>5.13.1</junit.jupiter.version>
-        <xmlunit.core.version>2.10.0</xmlunit.core.version>
-        <xmlunit.matchers.version>2.10.0</xmlunit.matchers.version>
+        <junit.jupiter.version>6.0.1</junit.jupiter.version>
+        <xmlunit.version>2.11.0</xmlunit.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -665,7 +659,7 @@
             <dependency>
                 <groupId>org.xmlunit</groupId>
                 <artifactId>xmlunit-matchers</artifactId>
-                <version>${xmlunit.matchers.version}</version>
+                <version>${xmlunit.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -705,7 +699,7 @@
             <dependency>
                 <groupId>org.xmlunit</groupId>
                 <artifactId>xmlunit-core</artifactId>
-                <version>${xmlunit.core.version}</version>
+                <version>${xmlunit.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -828,13 +822,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>xml-maven-plugin</artifactId>
                     <version>${codehaus.xml-plugin.version}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>net.sf.saxon</groupId>
-                            <artifactId>Saxon-HE</artifactId>
-                            <version>${saxon.he.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <!-- ecodex -->
                 <plugin>

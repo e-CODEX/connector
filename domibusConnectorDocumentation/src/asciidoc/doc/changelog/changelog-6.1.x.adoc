@@ -1,0 +1,51 @@
+== Changelog for domibusConnector-6.0.x
+
+=== 6.1.0-SNAPSHOT
+==== Changes
+* N/A
+
+==== Fixes
+* Admin panel **Monitoring** JMS Queue UI: Fix broken "delete" and "restore" actions.
+
+==== Technical
+* Set up a database cleaning strategy. Cleaning cron job is defined via the
+**connector.database.cleaning.cron** property key and uses Quartz-like cron expressions. The default value is **0 0 0 * * 7** (At 00:00 every Sunday).
+
+==== Documentation
+* Improve generated *HTML* and *PDF* documentation structure
+
+==== Compatibility:
+* The 6.1.x connector is compatible with the 4.6.0 version of the domibus-connector-plugin-distribution (available via JFrog: https://scm.ecodex.eu/artifactory/libs-release/eu/domibus/connector/plugin/domibus-connector-plugin-Distribution/4.6.0/)
+
+==== Testing:
+
+The Connector has been tested on
+
+|===
+| OS | Java | Application Server | Database Connector | Database
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| Mysql Connector 9.5.0
+| Mysql 8.0.x
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| MariaDB Java Client 3.5.6
+| MariaDB 11.6.2
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| PostgreSQL 42.7.8
+| PostgreSQL 17.2
+
+| Ubuntu 24.04 LTS
+| Open JDK 21.0.x
+| Tomcat 10.1.30
+| OJDBC-11 23.26.0.0.0
+| Oracle 21.3.0 Express
+
+|===

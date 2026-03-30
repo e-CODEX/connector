@@ -4,7 +4,7 @@
     <parent>
         <groupId>eu.ecodex.connector</groupId>
         <artifactId>domibusConnectorBuilder</artifactId>
-        <version>6.1.0</version>
+        <version>6.1.1-SNAPSHOT</version>
     </parent>
     <artifactId>domibusConnectorBuilderDeployable</artifactId>
     <packaging>war</packaging>

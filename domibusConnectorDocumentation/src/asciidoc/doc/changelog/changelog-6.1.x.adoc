@@ -1,6 +1,19 @@
 == Changelog for domibusConnector-6.0.x
 
-=== 6.1.0-SNAPSHOT
+=== 6.1.1-SNAPSHOT
+==== Changes
+* N/A
+
+==== Fixes
+* Fix table columns *CHECKSUM*, *CONTENT*, *PAYLOAD_DESCRIPTION*, *CREATED*, and *DELETED* in *DOMIBUS_CONNECTOR_MSG_CONT* to use appropriate data types for *MySQL* and *MariaDB*
+
+==== Technical
+* N/A
+
+==== Documentation
+* N/A
+
+=== 6.1.0
 ==== Changes
 * N/A
 

@@ -70,8 +70,9 @@ public class PDomibusConnectorMsgCont {
     @Deprecated
     @Column(name = "CONTENT")
     private byte[] content;
+    @Lob
     @Deprecated
-    @Column(name = "CHECKSUM", columnDefinition = "TEXT")
+    @Column(name = "CHECKSUM")
     private String checksum;
     @Column(name = "DIGEST", length = 512)
     private String digest;
@@ -81,7 +82,8 @@ public class PDomibusConnectorMsgCont {
     private String payloadName;
     @Column(name = "PAYLOAD_IDENTIFIER", length = 512)
     private String payloadIdentifier;
-    @Column(name = "PAYLOAD_DESCRIPTION", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "PAYLOAD_DESCRIPTION")
     private String payloadDescription;
     @Column(name = "PAYLOAD_MIMETYPE")
     private String payloadMimeType;
@@ -95,10 +97,8 @@ public class PDomibusConnectorMsgCont {
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "DETACHED_SIGNATURE_ID", referencedColumnName = "ID")
     private PDomibusConnectorDetachedSignature detachedSignature;
-    @jakarta.persistence.Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "DELETED")
     private Date deleted;
-    @jakarta.persistence.Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CREATED", nullable = false)
     private Date created;
 

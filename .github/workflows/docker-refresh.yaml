@@ -1,0 +1,62 @@
+name: Refresh Docker Image
+# Fixes vulnerabilities of a released Docker image without releasing a new version of the software.
+#
+# The released git tag is checked out (same application source as the release) and the image is rebuilt with
+# the newest base image and without layer cache, so OS packages and the JRE pick up their latest security
+# fixes. The result is pushed over the existing '<tag>' image tag in scm.ecodex.eu/docker, recorded in a new
+# JFrog build-info and attested like a release image.
+#
+# Floating tags are opt-in: tick 'floating-tags' only when refreshing the newest patch of a minor line
+# (moves '<major>.<minor>' and '<major>') and 'latest' only when refreshing the newest release, so that
+# refreshing an old release never takes these tags away from a newer one.
+#
+# Requires Delete/Overwrite permission on the Docker repository for the JFrog OIDC identity.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Released version (git tag) to rebuild, e.g. 6.1.0'
+        required: true
+        type: string
+      floating-tags:
+        description: 'Also move the <major>.<minor> and <major> tags (only for the newest patch of that line)'
+        required: false
+        default: false
+        type: boolean
+      latest:
+        description: "Also move the 'latest' tag (only for the newest release)"
+        required: false
+        default: false
+        type: boolean
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+
+# No default token permissions: the job gets only what it needs.
+permissions: {}
+
+# Never refresh the same tag twice in parallel (the last push would win unpredictably).
+concurrency:
+  group: docker-refresh-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Rebuild and push the docker image ${{ inputs.tag }}
+    permissions:
+      contents: read
+      id-token: write     # GitHub OIDC: JFrog login and attestation signing
+      attestations: write # store the attestations in GitHub
+    uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
+    with:
+      image-name: connector
+      tag: ${{ inputs.tag }}
+      refresh: true
+      floating-tags: ${{ inputs.floating-tags }}
+      latest: ${{ inputs.latest }}
+      environment: ${{ inputs.environment }}

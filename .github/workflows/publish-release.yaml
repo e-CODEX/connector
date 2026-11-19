@@ -1,4 +1,13 @@
 name: Manual Release Workflow
+# Releases the version currently in the build file of the branch it is run on:
+#   1. check-version   - fails if the version is a -SNAPSHOT or its git tag already exists
+#   2. tag-version     - creates and pushes the git tag of the version
+#   3. publish         - builds the tag and deploys it to Artifactory with the JFrog CLI: artifacts, build-info,
+#                        CycloneDX SBOM, and provenance + SBOM attestations of the distribution zip
+#                        (stored in GitHub and as JFrog evidence)
+#   4. docker          - builds the tag's Docker image and pushes it to Artifactory with build-info, embedded
+#                        SBOM/provenance and a provenance attestation (in the registry, in GitHub and as JFrog evidence)
+# The shared workflows live in e-CODEX/workflows.
 
 on:
   workflow_dispatch:
@@ -10,29 +19,49 @@ on:
         type: choice
         options:
           - production
+
+# No default token permissions: every job gets only what it needs. This is also required for the reusable
+# workflows to obtain 'id-token: write', which a caller without explicit permissions does not grant.
+permissions: {}
+
 jobs:
   check-version:
     name: Check the current release version
+    permissions:
+      contents: read
     uses: e-CODEX/workflows/.github/workflows/maven-validate-release-version.yaml@main
   tag-version:
     name: Tag the current release version
     needs: check-version
+    permissions:
+      contents: write # push the release tag
     uses: e-CODEX/workflows/.github/workflows/maven-tag-release-version.yaml@main
     with:
       environment: ${{ inputs.environment }}
   publish-version:
     name: Publish the current release version
-    uses: e-CODEX/workflows/.github/workflows/maven-publish-release.yaml@main
     needs: tag-version
+    permissions:
+      contents: write     # dependency submission
+      id-token: write     # GitHub OIDC: JFrog login and attestation signing
+      attestations: write # store the attestations in GitHub
+    # TODO: pin to a commit SHA once the JFrog CLI changes are merged in e-CODEX/workflows
+    uses: e-CODEX/workflows/.github/workflows/maven-publish-release.yaml@main
     with:
       java-version: 21
-      maven-repo-id: 'releases'
+      deploy-repo: 'ecodex-releases'
+      distribution-path: 'domibusConnectorDistribution/target/domibusConnector.zip'
       maven-parameters: '-P production,oracle'
       tag: ${{ needs.tag-version.outputs.tag }}
       environment: ${{ inputs.environment }}
   publish-docker:
-    uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
+    name: Build and push the docker image
     needs: tag-version
+    permissions:
+      contents: read
+      id-token: write     # GitHub OIDC: JFrog login and attestation signing
+      attestations: write # store the attestations in GitHub
+    uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
     with:
       image-name: connector
       tag: ${{ needs.tag-version.outputs.tag }}

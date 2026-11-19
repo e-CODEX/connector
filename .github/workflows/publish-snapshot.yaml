@@ -1,15 +1,40 @@
+name: Publish Snapshot
+# On every push to develop:
+#   - publish: deploys the -SNAPSHOT to Artifactory with the JFrog CLI (artifacts, build-info, CycloneDX SBOM,
+#     provenance + SBOM attestations of the distribution zip, stored in GitHub and as JFrog evidence).
+#     Skipped automatically when the version is not a -SNAPSHOT.
+#   - docker: builds the image and pushes it as 'edge' and 'sha-<short sha>' to the snapshot Docker repository,
+#     with build-info, embedded SBOM/provenance and a provenance attestation.
+
 on:
   push:
     branches:
       - develop
+
+# No default token permissions: every job gets only what it needs (and 'id-token: write' must be granted
+# explicitly for the reusable workflows to log in to JFrog).
+permissions: {}
+
 jobs:
   publish:
+    name: Publish the snapshot
+    permissions:
+      contents: write     # dependency submission
+      id-token: write     # GitHub OIDC: JFrog login and attestation signing
+      attestations: write # store the attestations in GitHub
+    # TODO: pin to a commit SHA once the JFrog CLI changes are merged in e-CODEX/workflows
     uses: e-CODEX/workflows/.github/workflows/maven-publish-snapshot.yaml@main
     with:
       java-version: 21
-      maven-repo-id: 'snapshots'
+      deploy-repo: 'ecodex-snapshots'
+      distribution-path: 'domibusConnectorDistribution/target/domibusConnector.zip'
       maven-parameters: '-Pproduction'
   docker:
+    name: Build and push the docker image
+    permissions:
+      contents: read
+      id-token: write     # GitHub OIDC: JFrog login and attestation signing
+      attestations: write # store the attestations in GitHub
     uses: e-CODEX/workflows/.github/workflows/docker-build-push.yaml@main
     with:
       image-name: connector
